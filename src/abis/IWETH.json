@@ -1,0 +1,5 @@
+[
+  "function deposit() payable",
+  "function transfer(address,uint256) returns (bool)",
+  "function withdraw(uint256)"
+]

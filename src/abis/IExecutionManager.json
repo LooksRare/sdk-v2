@@ -1,0 +1,7 @@
+[
+  "function addStrategy(address)",
+  "function isStrategyWhitelisted(address) view returns (bool)",
+  "function removeStrategy(address)",
+  "function viewCountWhitelistedStrategies() view returns (uint256)",
+  "function viewWhitelistedStrategies(uint256,uint256) view returns (address[], uint256)"
+]

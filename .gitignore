@@ -5,9 +5,12 @@ node_modules
 coverage
 coverage.json
 
-# production
+# build
 lib
 dist
+cache
+typechain
+artifacts
 
 # misc
 .DS_Store
