@@ -1,7 +1,0 @@
-[
-  "function addCurrency(address)",
-  "function isCurrencyWhitelisted(address) view returns (bool)",
-  "function removeCurrency(address)",
-  "function viewCountWhitelistedCurrencies() view returns (uint256)",
-  "function viewWhitelistedCurrencies(uint256,uint256) view returns (address[], uint256)"
-]

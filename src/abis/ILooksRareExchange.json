@@ -1,5 +1,0 @@
-[
-  "function matchAskWithTakerBid(tuple(bool,address,uint256,uint256,uint256,bytes),tuple(bool,address,address,uint256,uint256,uint256,address,address,uint256,uint256,uint256,uint256,bytes,uint8,bytes32,bytes32))",
-  "function matchAskWithTakerBidUsingETHAndWETH(tuple(bool,address,uint256,uint256,uint256,bytes),tuple(bool,address,address,uint256,uint256,uint256,address,address,uint256,uint256,uint256,uint256,bytes,uint8,bytes32,bytes32)) payable",
-  "function matchBidWithTakerAsk(tuple(bool,address,uint256,uint256,uint256,bytes),tuple(bool,address,address,uint256,uint256,uint256,address,address,uint256,uint256,uint256,uint256,bytes,uint8,bytes32,bytes32))"
-]
