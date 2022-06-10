@@ -1,7 +1,9 @@
 {
   "root": true,
   "env": {
-    "es6": true
+    "es6": true,
+    "node": true,
+    "mocha": true
   },
   "extends": ["plugin:@typescript-eslint/recommended"],
   "plugins": ["@typescript-eslint"],

@@ -7,7 +7,9 @@
     "*.{js,jsx,ts,tsx,json,yaml,yml}": "yarn format:write"
   },
   "scripts": {
-    "build": "tsc -d",
+    "build:ts": "tsc -d",
+    "build:sc": "hardhat compile",
+    "test": "hardhat test",
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'"
@@ -18,14 +20,29 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@typechain/ethers-v5": "^10.0.0",
+    "@typechain/hardhat": "^6.0.0",
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
     "@types/node": "^17.0.40",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "chai": "^4.3.6",
     "eslint": "^8.17.0",
+    "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.8",
+    "hardhat": "^2.9.9",
+    "hardhat-abi-exporter": "^2.9.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.0",
+    "mocha": "^10.0.0",
     "prettier": "^2.6.2",
+    "typechain": "^8.0.0",
     "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "solidity-template": "LooksRare/contracts-exchange-v2"
   }
 }

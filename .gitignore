@@ -5,9 +5,12 @@ node_modules
 coverage
 coverage.json
 
-# production
+# build
 lib
 dist
+cache
+typechain
+artifacts
 
 # misc
 .DS_Store
@@ -18,3 +21,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 tsconfig.tsbuildinfo
+
+# TMP 
+abis
