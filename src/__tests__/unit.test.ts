@@ -1,7 +1,10 @@
 import { expect } from "chai";
+import { LooksRare } from "../LooksRare";
+import { SupportedChainId } from "../types";
 
 describe("Unit test", () => {
-  it("dummy", () => {
-    expect(1 + 1).to.equal(2);
+  it("instanciate LooksRare with the correct chain id", () => {
+    expect(new LooksRare(1).chainId).to.equal(1);
+    expect(new LooksRare(SupportedChainId.RINKEBY).chainId).to.equal(SupportedChainId.RINKEBY);
   });
 });
