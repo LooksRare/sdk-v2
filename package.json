@@ -9,6 +9,7 @@
   "scripts": {
     "build:ts": "tsc -d",
     "build:sc": "hardhat compile",
+    "build": "yarn build:ts && yarn build:sc",
     "test": "hardhat test",
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
