@@ -724,6 +724,17 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@looksrare/contract-libs@LooksRare/contracts-libs":
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/LooksRare/contracts-libs.git#88912a436eda9881069799d84385c3330fab1e2d"
+
+"@looksrare/contracts-exchange-v1@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@looksrare/contracts-exchange-v1/-/contracts-exchange-v1-1.1.0.tgz#bdeca1e3d3be766b17d84bcf92e455f96dd228bc"
+  integrity sha512-7uEzJhNeiVdum1g7SQZ1VB0flRVyWcyhhIvLEWGXQFcD5bD9I/VXPwGMlzjghKePFO9AuHgaAxeQtjUqVhkNPw==
+  dependencies:
+    "@openzeppelin/contracts" "4.4.2"
+
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@metamask/eth-sig-util/-/eth-sig-util-4.0.1.tgz#3ad61f6ea9ad73ba5b19db780d40d9aae5157088"
@@ -768,6 +779,11 @@
   dependencies:
     "@types/sinon-chai" "^3.2.3"
     "@types/web3" "1.0.19"
+
+"@openzeppelin/contracts@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.4.2.tgz#4e889c9c66e736f7de189a53f8ba5b8d789425c2"
+  integrity sha512-NyJV7sJgoGYqbtNUWgzzOGW4T6rR19FmX1IJgXGdapGPWsuMelGJn9h03nos0iqfforCbCB0iYIR0MtIuIFLLw==
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"
@@ -2767,6 +2783,13 @@ content-type@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
   integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
+
+contracts-exchange-v2@LooksRare/contracts-exchange-v2:
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#a122fd5af13268775fb3bb661d44dcd049bbc336"
+  dependencies:
+    "@looksrare/contract-libs" LooksRare/contracts-libs
+    "@looksrare/contracts-exchange-v1" "^1.1.0"
 
 conventional-changelog-angular@^5.0.11:
   version "5.0.13"
@@ -8040,10 +8063,6 @@ solc@^0.6.3:
     require-from-string "^2.0.0"
     semver "^5.5.0"
     tmp "0.0.33"
-
-solidity-template@LooksRare/contracts-exchange-v2:
-  version "1.0.0"
-  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#0810a99143460e9420156d7f731bae1c5c1d738b"
 
 source-map-resolve@^0.5.0:
   version "0.5.3"

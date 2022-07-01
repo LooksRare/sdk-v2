@@ -1,0 +1,6 @@
+[
+  "function royaltyFeeInfoCollection(address) view returns (address, address, uint256)",
+  "function royaltyInfo(address,uint256) view returns (address, uint256)",
+  "function updateRoyaltyFeeLimit(uint256)",
+  "function updateRoyaltyInfoForCollection(address,address,address,uint256)"
+]

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { SupportedChainId } from "./types";
-import { greet } from "./calls/greeter";
+import { information } from "./calls/LooksRareProtocol";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 
 export class LooksRare {
@@ -14,7 +14,7 @@ export class LooksRare {
     this.addresses = addressesByNetwork[this.chainId];
   }
 
-  async greet(signerOrProvider: ethers.Signer | ethers.providers.Provider) {
-    return greet(this.addresses.EXCHANGE, signerOrProvider);
+  async information(signerOrProvider: ethers.Signer | ethers.providers.Provider) {
+    return information(this.addresses.EXCHANGE, signerOrProvider);
   }
 }

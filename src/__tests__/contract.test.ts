@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { BigNumber } from "ethers";
 import { setUpContracts, Mocks } from "./helpers/setup";
 
 describe("E2E test", () => {
@@ -7,8 +8,8 @@ describe("E2E test", () => {
     contracts = await setUpContracts();
   });
   it("dummy", async () => {
-    const { greeter } = contracts;
-    const greeting = await greeter.greet();
-    expect(greeting).to.equal("Hello");
+    const { looksRareProtocol } = contracts;
+    const information = await looksRareProtocol.information();
+    expect(information.initialChainId).to.equal(BigNumber.from("31337"));
   });
 });
