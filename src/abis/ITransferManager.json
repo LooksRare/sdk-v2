@@ -1,0 +1,5 @@
+[
+  "function transferBatchItems(address,uint8,address,address,uint256[],uint256[])",
+  "function transferBatchItemsAcrossCollections(address[],uint8[],address,address,uint256[][],uint256[][])",
+  "function transferSingleItem(address,uint8,address,address,uint256,uint256)"
+]

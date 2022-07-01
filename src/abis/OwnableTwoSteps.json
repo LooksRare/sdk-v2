@@ -1,0 +1,15 @@
+[
+  "constructor()",
+  "error NoPotentialOwner()",
+  "error NotOwner()",
+  "error TransferAlreadyInProgress()",
+  "error WrongPotentialOwner()",
+  "event CancelOwnershipTransfer(address)",
+  "event InitiateOwnershipTransfer(address,address)",
+  "event NewOwner(address)",
+  "function cancelOwnershipTransfer()",
+  "function confirmOwnershipTransfer()",
+  "function initiateOwnershipTransfer(address)",
+  "function owner() view returns (address)",
+  "function potentialOwner() view returns (address)"
+]

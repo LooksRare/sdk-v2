@@ -1,0 +1,21 @@
+[
+  "error CurrencyAlreadyWhitelisted(address)",
+  "error CurrencyNotContract(address)",
+  "error CurrencyNotWhitelisted(address)",
+  "error NoPotentialOwner()",
+  "error NotOwner()",
+  "error TransferAlreadyInProgress()",
+  "error WrongPotentialOwner()",
+  "event CancelOwnershipTransfer(address)",
+  "event CurrencyRemoved(address)",
+  "event CurrencyWhitelisted(address)",
+  "event InitiateOwnershipTransfer(address,address)",
+  "event NewOwner(address)",
+  "function addCurrency(address)",
+  "function cancelOwnershipTransfer()",
+  "function confirmOwnershipTransfer()",
+  "function initiateOwnershipTransfer(address)",
+  "function owner() view returns (address)",
+  "function potentialOwner() view returns (address)",
+  "function removeCurrency(address)"
+]

@@ -1,9 +1,9 @@
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
-import type { Greeter } from "../../../typechain";
+import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 
 export interface Mocks {
-  greeter: Greeter;
+  looksRareProtocol: LooksRareProtocol;
 }
 
 const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
@@ -14,6 +14,11 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 };
 
 export async function setUpContracts(): Promise<Mocks> {
-  const greeter = await deploy("Greeter", "Hello");
-  return { greeter: greeter as Greeter };
+  const transferManager = await deploy("TransferManager");
+  const looksRareProtocol = await deploy(
+    "LooksRareProtocol",
+    transferManager.address,
+    "0x0000000000000000000000000000000000000000"
+  );
+  return { looksRareProtocol: looksRareProtocol as LooksRareProtocol };
 }

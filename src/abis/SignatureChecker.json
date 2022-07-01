@@ -1,0 +1,8 @@
+[
+  "error BadSignatureS()",
+  "error BadSignatureV(uint8)",
+  "error InvalidSignatureEOA()",
+  "error InvalidSignatureERC1271()",
+  "error NullSignerAddress()",
+  "error WrongSignatureLength(uint256)"
+]

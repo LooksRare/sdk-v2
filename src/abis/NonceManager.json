@@ -1,0 +1,10 @@
+[
+  "error NoNonceToIncrement()",
+  "error WrongLengths()",
+  "event NewBidAskNonces(uint112,uint112)",
+  "event OrderNoncesCancelled(uint112[])",
+  "event SubsetNoncesCancelled(uint112[])",
+  "function cancelOrderNonces(uint112[])",
+  "function cancelSubsetNonces(uint112[])",
+  "function incrementBidAskNonces(bool,bool)"
+]

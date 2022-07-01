@@ -1,0 +1,4 @@
+[
+  "function royaltyInfo(uint256,uint256) view returns (address, uint256)",
+  "function supportsInterface(bytes4) view returns (bool)"
+]
