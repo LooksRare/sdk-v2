@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
 import { SupportedChainId, MultipleMakerBidOrders, MultipleMakerAskOrders } from "./types";
-import { information } from "./utils/LooksRareProtocol";
+import { information } from "./utils/looksRareProtocol";
 import { signMakerOrders } from "./utils/signMakerOrders";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version, types as eip712OrderTypes } from "./constants/eip712";
