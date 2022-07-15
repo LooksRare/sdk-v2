@@ -1,8 +1,11 @@
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
+
+export { SignerWithAddress };
 
 export interface Mocks {
   looksRareProtocol: LooksRareProtocol;
@@ -11,7 +14,14 @@ export interface Mocks {
   collection3: MockERC1155;
 }
 
-export const getSigners = async () => {
+export interface Signers {
+  owner: SignerWithAddress;
+  user1: SignerWithAddress;
+  user2: SignerWithAddress;
+  user3: SignerWithAddress;
+}
+
+export const getSigners = async (): Promise<Signers> => {
   const signers = await ethers.getSigners();
   return {
     owner: signers[0],

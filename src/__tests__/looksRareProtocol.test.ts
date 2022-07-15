@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
-import { information } from "../utils/looksRareProtocol";
 import { setUpContracts, Mocks } from "./helpers/setup";
+import { information } from "../utils/looksRareProtocol";
 
 describe("looksRareProtocol", () => {
   let contracts: Mocks;
