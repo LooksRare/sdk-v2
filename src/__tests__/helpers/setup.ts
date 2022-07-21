@@ -5,8 +5,6 @@ import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 
-export { SignerWithAddress };
-
 export interface Mocks {
   looksRareProtocol: LooksRareProtocol;
   collection1: MockERC721;
@@ -16,18 +14,22 @@ export interface Mocks {
 
 export interface Signers {
   owner: SignerWithAddress;
+  operator: SignerWithAddress;
   user1: SignerWithAddress;
   user2: SignerWithAddress;
   user3: SignerWithAddress;
 }
 
+export const NB_NFT_PER_USER = 5;
+
 export const getSigners = async (): Promise<Signers> => {
   const signers = await ethers.getSigners();
   return {
     owner: signers[0],
-    user1: signers[1],
-    user2: signers[2],
-    user3: signers[3],
+    operator: signers[1],
+    user1: signers[2],
+    user2: signers[3],
+    user3: signers[4],
   };
 };
 
@@ -46,17 +48,21 @@ export const setUpContracts = async (): Promise<Mocks> => {
     transferManager.address,
     "0x0000000000000000000000000000000000000000"
   );
-  const collection1 = await deploy("MockERC721");
-  const collection2 = await deploy("MockERC721");
-  const collection3 = await deploy("MockERC1155");
+  const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
+  const collection2 = (await deploy("MockERC721", "Collection2", "COL2")) as MockERC721;
+  const collection3 = (await deploy("MockERC1155")) as MockERC1155;
+  const collection4 = (await deploy("MockERC721", "Collection4", "COL4")) as MockERC721;
 
   // Setup balances
   const signers = await getSigners();
-  for (let i = 0; i < 5; i++) {
-    collection1.mint(signers.user1, i);
-    collection2.mint(signers.user2, i);
-    collection3.mint(signers.user3, i, 10);
+  const promises = [];
+  for (let i = 0; i < NB_NFT_PER_USER; i++) {
+    promises.push(collection1.mint(signers.user1.address, i));
+    promises.push(collection2.mint(signers.user2.address, i));
+    promises.push(collection3.mint(signers.user3.address, i, 10));
+    promises.push(collection4.mint(signers.user1.address, i));
   }
+  await Promise.all(promises);
 
   return {
     looksRareProtocol: looksRareProtocol as LooksRareProtocol,
