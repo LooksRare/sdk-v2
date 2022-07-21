@@ -2,11 +2,13 @@ import { Contract } from "ethers";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
+import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 
 export interface Mocks {
   looksRareProtocol: LooksRareProtocol;
+  transferManager: TransferManager;
   collection1: MockERC721;
   collection2: MockERC721;
   collection3: MockERC1155;
@@ -66,6 +68,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
 
   return {
     looksRareProtocol: looksRareProtocol as LooksRareProtocol,
+    transferManager: transferManager as TransferManager,
     collection1: collection1 as MockERC721,
     collection2: collection2 as MockERC721,
     collection3: collection3 as MockERC1155,
