@@ -1,31 +1,34 @@
-import { ethers, Contract, BigNumber } from "ethers";
+import { Contract, Signer, providers, BigNumber, Overrides } from "ethers";
 import { LooksRareProtocol } from "../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../abis/LooksRareProtocol.json";
 
 export const cancelOrderNonces = (
-  signerOrProvider: ethers.Signer | ethers.providers.Provider,
+  signerOrProvider: Signer | providers.Provider,
   address: string,
-  nonces: BigNumber[]
+  nonces: BigNumber[],
+  overrides?: Overrides
 ) => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
-  return contract.cancelOrderNonces(nonces);
+  return contract.cancelOrderNonces(nonces, { ...overrides });
 };
 
 export const cancelSubsetNonces = (
-  signerOrProvider: ethers.Signer | ethers.providers.Provider,
+  signerOrProvider: Signer | providers.Provider,
   address: string,
-  nonces: BigNumber[]
+  nonces: BigNumber[],
+  overrides?: Overrides
 ) => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
-  return contract.cancelSubsetNonces(nonces);
+  return contract.cancelSubsetNonces(nonces, { ...overrides });
 };
 
 export const incrementBidAskNonces = (
-  signerOrProvider: ethers.Signer | ethers.providers.Provider,
+  signerOrProvider: Signer | providers.Provider,
   address: string,
   bid: boolean,
-  ask: boolean
+  ask: boolean,
+  overrides?: Overrides
 ) => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
-  return contract.incrementBidAskNonces(bid, ask);
+  return contract.incrementBidAskNonces(bid, ask, { ...overrides });
 };
