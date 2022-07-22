@@ -6,6 +6,11 @@ export enum SupportedChainId {
   HARDHAT = 31337,
 }
 
+export enum AssetType {
+  ERC721 = 0,
+  ERC1155 = 1,
+}
+
 // Orders
 
 export interface BaseMakerOrder {
