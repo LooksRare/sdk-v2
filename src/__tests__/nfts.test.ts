@@ -22,12 +22,21 @@ describe("ERC721 & ERC1155", () => {
     );
     expect(isApproved).to.be.false;
 
-    const transaction = await setApprovalForAll(signers.user1, collection1.address, signers.operator.address);
-    const receipt = await transaction.wait();
+    // Approve
+    let transaction = await setApprovalForAll(signers.user1, collection1.address, signers.operator.address);
+    let receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
     isApproved = await isApprovedForAll(provider, collection1.address, signers.user1.address, signers.operator.address);
     expect(isApproved).to.be.true;
+
+    // Cancel approval
+    transaction = await setApprovalForAll(signers.user1, collection1.address, signers.operator.address, false);
+    receipt = await transaction.wait();
+    expect(receipt.status).to.equal(1);
+
+    isApproved = await isApprovedForAll(provider, collection1.address, signers.user1.address, signers.operator.address);
+    expect(isApproved).to.be.false;
   });
   it("approve ERC1155", async () => {
     const provider = ethers.provider;
