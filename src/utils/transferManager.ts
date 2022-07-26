@@ -49,3 +49,23 @@ export const transferBatchItemsAcrossCollections = (
     ...overrides,
   });
 };
+
+export const grantApprovals = (
+  signerOrProvider: Signer | providers.Provider,
+  address: string,
+  operators: string[],
+  overrides?: Overrides
+) => {
+  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  return contract.grantApprovals(operators, { ...overrides });
+};
+
+export const revokeApprovals = (
+  signerOrProvider: Signer | providers.Provider,
+  address: string,
+  operators: string[],
+  overrides?: Overrides
+) => {
+  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  return contract.revokeApprovals(operators, { ...overrides });
+};
