@@ -46,12 +46,18 @@ export interface SingleMakerBidOrder {
 export interface MultipleMakerBidOrders {
   makerBidOrders: SingleMakerBidOrder[];
   baseMakerOrder: BaseMakerOrder;
+}
+
+export interface MultipleMakerBidOrdersWithSignature extends MultipleMakerBidOrders {
   signature: string;
 }
 
 export interface MultipleMakerAskOrders {
   makerAskOrders: SingleMakerAskOrder[];
   baseMakerOrder: BaseMakerOrder;
+}
+
+export interface MultipleMakerAskOrdersWithSignature extends MultipleMakerAskOrders {
   signature: string;
 }
 
