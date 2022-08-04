@@ -18,13 +18,13 @@ export const makerBidOrdersTypes: Record<string, Array<TypedDataField>> = {
     { name: "signer", type: "address" },
     { name: "startTime", type: "uint256" },
     { name: "endTime", type: "uint256" },
+    { name: "minNetRatio", type: "uint16" },
   ],
   SingleMakerBidOrder: [
-    { name: "minPrice", type: "uint256" },
+    { name: "maxPrice", type: "uint256" },
     { name: "itemIds", type: "uint256[]" },
     { name: "amounts", type: "uint256[]" },
     { name: "orderNonce", type: "uint112" },
-    { name: "minNetRatio", type: "uint16" },
     { name: "additionalParameters", type: "bytes" },
   ],
 };

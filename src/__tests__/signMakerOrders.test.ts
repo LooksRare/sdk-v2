@@ -6,7 +6,7 @@ import { contractName, version, makerBidOrdersTypes } from "../constants/eip712"
 import { signMakerOrders } from "../utils/signMakerOrders";
 import { SupportedChainId, MultipleMakerBidOrders, AssetType } from "../types";
 
-describe("SignMakerOrders", () => {
+describe.only("SignMakerOrders", () => {
   let contracts: Mocks;
   let signers: Signers;
   beforeEach(async () => {
@@ -30,8 +30,8 @@ describe("SignMakerOrders", () => {
         currency: contracts.weth.address,
         recipient: signers.user1.address,
         signer: signers.user1.address,
-        startTime: Date.now() / 1000,
-        endTime: Date.now() / 1000 + 3600,
+        startTime: Math.floor(Date.now() / 1000),
+        endTime: Math.floor(Date.now() / 1000 + 3600),
         minNetRatio: 8500,
       },
       makerBidOrders: [
@@ -46,5 +46,9 @@ describe("SignMakerOrders", () => {
     };
 
     const signature = await signMakerOrders(signers.user1, domain, makerBidOrdersTypes, makerOrder);
+    expect(utils.verifyTypedData(domain, makerBidOrdersTypes, makerOrder, signature)).to.equal(signers.user1.address);
+
+    // TODO Check signature validity with
+    // - The contract helpers https://github.com/LooksRare/contracts-libs/blob/master/contracts/SignatureChecker.sol
   });
 });
