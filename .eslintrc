@@ -5,7 +5,7 @@
     "node": true,
     "mocha": true
   },
-  "extends": ["plugin:@typescript-eslint/recommended"],
+  "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "plugins": ["@typescript-eslint"],
   "rules": {
     "curly": "warn",
