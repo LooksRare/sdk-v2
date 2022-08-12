@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.14;
 
 import "@rari-capital/solmate/src/tokens/ERC1155.sol";

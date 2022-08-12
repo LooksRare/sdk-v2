@@ -4,9 +4,9 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
 import { contractName, version, makerBidOrdersTypes } from "../constants/eip712";
 import { signMakerOrders } from "../utils/signMakerOrders";
-import { SupportedChainId, MultipleMakerBidOrders, AssetType } from "../types";
+import { SupportedChainId, MultipleMakerBidOrders, MultipleMakerBidOrdersWithSignature, AssetType } from "../types";
 
-describe.only("SignMakerOrders", () => {
+describe("SignMakerOrders", () => {
   let contracts: Mocks;
   let signers: Signers;
   beforeEach(async () => {
@@ -14,11 +14,14 @@ describe.only("SignMakerOrders", () => {
     signers = await getSigners();
   });
   it("sign maker order", async () => {
+    const { looksRareProtocol, collection1, weth, verifier } = contracts;
+    const { user1 } = signers;
+
     const domain: TypedDataDomain = {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: contracts.looksRareProtocol.address,
+      verifyingContract: looksRareProtocol.address,
     };
     const makerOrder: MultipleMakerBidOrders = {
       baseMakerOrder: {
@@ -26,10 +29,10 @@ describe.only("SignMakerOrders", () => {
         subsetNonce: 0,
         strategyId: 0,
         assetType: AssetType.ERC721,
-        collection: contracts.collection1.address,
-        currency: contracts.weth.address,
-        recipient: signers.user1.address,
-        signer: signers.user1.address,
+        collection: collection1.address,
+        currency: weth.address,
+        recipient: user1.address,
+        signer: user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
         minNetRatio: 8500,
@@ -45,10 +48,19 @@ describe.only("SignMakerOrders", () => {
       ],
     };
 
-    const signature = await signMakerOrders(signers.user1, domain, makerBidOrdersTypes, makerOrder);
-    expect(utils.verifyTypedData(domain, makerBidOrdersTypes, makerOrder, signature)).to.equal(signers.user1.address);
+    const signature = await signMakerOrders(user1, domain, makerBidOrdersTypes, makerOrder);
+    expect(utils.verifyTypedData(domain, makerBidOrdersTypes, makerOrder, signature)).to.equal(user1.address);
 
-    // TODO Check signature validity with
-    // - The contract helpers https://github.com/LooksRare/contracts-libs/blob/master/contracts/SignatureChecker.sol
+    const faultyOrderWithSig: MultipleMakerBidOrdersWithSignature = {
+      ...makerOrder,
+      signature,
+    };
+    await expect(verifier.verifyBidOrders(faultyOrderWithSig)).to.eventually.be.rejectedWith("call revert exception");
+
+    const orderWithSig: MultipleMakerBidOrdersWithSignature = {
+      ...makerOrder,
+      signature,
+    };
+    await expect(verifier.verifyBidOrders(orderWithSig)).to.eventually.be.fulfilled;
   });
 });
