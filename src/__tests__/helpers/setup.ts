@@ -1,10 +1,16 @@
 import { Contract } from "ethers";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
+import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
+import type { Verifier } from "../../../typechain/src/contracts/tests/Verifier";
+
+chai.use(chaiAsPromised);
 
 export interface Mocks {
   looksRareProtocol: LooksRareProtocol;
@@ -12,6 +18,8 @@ export interface Mocks {
   collection1: MockERC721;
   collection2: MockERC721;
   collection3: MockERC1155;
+  weth: MockERC20;
+  verifier: Verifier;
 }
 
 export interface Signers {
@@ -54,6 +62,8 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const collection2 = (await deploy("MockERC721", "Collection2", "COL2")) as MockERC721;
   const collection3 = (await deploy("MockERC1155")) as MockERC1155;
   const collection4 = (await deploy("MockERC721", "Collection4", "COL4")) as MockERC721;
+  const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
+  const verifier = (await deploy("Verifier", looksRareProtocol.address)) as Verifier;
 
   // Setup balances
   const signers = await getSigners();
@@ -72,5 +82,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
     collection1: collection1 as MockERC721,
     collection2: collection2 as MockERC721,
     collection3: collection3 as MockERC1155,
+    weth: weth as MockERC20,
+    verifier: verifier as Verifier,
   };
 };
