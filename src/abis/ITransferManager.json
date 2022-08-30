@@ -1,4 +1,15 @@
 [
+  "error AlreadyApproved()",
+  "error AlreadyWhitelisted()",
+  "error NotApproved()",
+  "error NotWhitelisted()",
+  "error TransferCallerInvalid()",
+  "error WrongAssetType(uint8)",
+  "error WrongLengths()",
+  "event ApprovalsGranted(address,address[])",
+  "event ApprovalsRemoved(address,address[])",
+  "event OperatorRemoved(address)",
+  "event OperatorWhitelisted(address)",
   "function transferBatchItems(address,uint8,address,address,uint256[],uint256[])",
   "function transferBatchItemsAcrossCollections(address[],uint8[],address,address,uint256[][],uint256[][])",
   "function transferSingleItem(address,uint8,address,address,uint256,uint256)"

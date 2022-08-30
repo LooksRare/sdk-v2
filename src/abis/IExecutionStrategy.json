@@ -1,4 +1,4 @@
 [
-  "function executeStrategyWithTakerAsk(tuple(address,uint256,uint256[],uint256[],uint256,bytes),tuple(uint256,uint256[],uint256[],uint128,bytes),address,uint256,uint256) returns (uint256, uint256[], uint256[])",
-  "function executeStrategyWithTakerBid(tuple(uint256,address,uint256[],uint256[],bytes),tuple(uint256,uint256[],uint256[],uint112,bytes),address,uint256,uint256) returns (uint256, uint256[], uint256[])"
+  "function executeStrategyWithTakerAsk(tuple(address,uint16,uint256,uint256[],uint256[],bytes),tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes)) returns (uint256, uint256[], uint256[])",
+  "function executeStrategyWithTakerBid(tuple(address,uint16,uint256,uint256[],uint256[],bytes),tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes)) returns (uint256, uint256[], uint256[])"
 ]

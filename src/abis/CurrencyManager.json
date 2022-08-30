@@ -15,6 +15,7 @@
   "function cancelOwnershipTransfer()",
   "function confirmOwnershipTransfer()",
   "function initiateOwnershipTransfer(address)",
+  "function isCurrencyWhitelisted(address) view returns (bool)",
   "function owner() view returns (address)",
   "function potentialOwner() view returns (address)",
   "function removeCurrency(address)"

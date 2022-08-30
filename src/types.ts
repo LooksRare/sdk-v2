@@ -13,79 +13,58 @@ export enum AssetType {
 
 // Orders
 
-export interface BaseMakerOrder {
-  bidAskNonce: BigNumberish;
+export interface MakerAsk {
+  askNonce: BigNumberish;
   subsetNonce: BigNumberish;
-  strategyId: number;
-  assetType: number;
+  strategyId: number; // 0: Standard; 1: Collection; 2. etc.
+  assetType: AssetType;
+  orderNonce: BigNumberish;
+  minNetRatio: number; // e.g., 8500 = At least, 85% of the sale proceeds to the maker ask
   collection: string;
   currency: string;
   recipient: string;
   signer: string;
   startTime: BigNumberish;
   endTime: BigNumberish;
-  minNetRatio: BigNumberish;
-}
-
-export interface SingleMakerAskOrder {
   minPrice: BigNumberish;
   itemIds: BigNumberish[];
-  amounts: BigNumberish[];
-  orderNonce: BigNumberish;
+  amounts: BigNumberish[]; // length = 1 if single sale // length > 1 if batch sale
   additionalParameters: BytesLike;
 }
 
-export interface SingleMakerBidOrder {
+export interface MakerBid {
+  bidNonce: BigNumberish;
+  subsetNonce: BigNumberish;
+  strategyId: number; // 0: Standard; 1: Collection; 2. etc.
+  assetType: AssetType;
+  orderNonce: BigNumberish;
+  minNetRatio: number; // e.g., 8500 = At least, 85% of the sale proceeds to the maker ask
+  collection: string;
+  currency: string;
+  recipient: string;
+  signer: string;
+  startTime: BigNumberish;
+  endTime: BigNumberish;
   maxPrice: BigNumberish;
   itemIds: BigNumberish[];
   amounts: BigNumberish[];
-  orderNonce: BigNumberish;
   additionalParameters: BytesLike;
 }
 
-export interface MultipleMakerBidOrders {
-  makerBidOrders: SingleMakerBidOrder[];
-  baseMakerOrder: BaseMakerOrder;
-}
-
-export interface MultipleMakerBidOrdersWithSignature extends MultipleMakerBidOrders {
-  signature: string;
-}
-
-export interface MultipleMakerAskOrders {
-  makerAskOrders: SingleMakerAskOrder[];
-  baseMakerOrder: BaseMakerOrder;
-}
-
-export interface MultipleMakerAskOrdersWithSignature extends MultipleMakerAskOrders {
-  signature: string;
-}
-
-export interface TakerBidOrder {
-  maxPrice: BigNumberish;
+export interface TakerAsk {
   recipient: string;
-  itemIds: BigNumberish[];
-  amounts: BigNumberish[];
-  additionalParameters: BytesLike;
-}
-
-export interface MultipleTakerBidOrders {
-  referrer: string;
-  currency: string;
-  takerBidOrders: TakerBidOrder[];
-}
-
-export interface TakerAskOrder {
-  recipient: string;
+  minNetRatio: number;
   minPrice: BigNumberish;
-  itemIds: BigNumberish[];
-  amounts: BigNumberish[];
-  minNetRatio: BigNumberish;
+  itemIds: BigNumberish;
+  amounts: BigNumberish;
   additionalParameters: BytesLike;
 }
 
-export interface MultipleTakerAskOrders {
-  referrer: string;
-  currency: string;
-  takerAskOrders: TakerAskOrder[];
+export interface TakerBid {
+  recipient: string;
+  minNetRatio: number;
+  maxPrice: BigNumberish;
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
+  additionalParameters: BytesLike;
 }

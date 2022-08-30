@@ -1,0 +1,12 @@
+[
+  "error NoTransferManagerForAssetType(uint16)",
+  "error SameDomainSeparator()",
+  "error WrongAssetType(uint8)",
+  "error WrongCaller()",
+  "error WrongCurrency()",
+  "error WrongMerkleProof()",
+  "error WrongNonces()",
+  "event NewDomainSeparator()",
+  "event TakerAsk(uint128,address,address,address,address,uint256,address,address,uint256[],uint256[],address[],uint256[])",
+  "event TakerBid(uint128,address,address,address,uint256,address,address,uint256[],uint256[],address[],uint256[])"
+]

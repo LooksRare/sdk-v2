@@ -1,0 +1,7 @@
+[
+  "error NoNonceToIncrement()",
+  "error WrongLengths()",
+  "event NewBidAskNonces(uint112,uint112)",
+  "event OrderNoncesCancelled(uint112[])",
+  "event SubsetNoncesCancelled(uint112[])"
+]

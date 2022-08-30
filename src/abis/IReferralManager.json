@@ -1,0 +1,8 @@
+[
+  "error NotController()",
+  "error NotReferrer()",
+  "error PercentageTooHigh()",
+  "event NewReferralController(address)",
+  "event NewReferrer(address,uint16)",
+  "event ReferrerRemoved(address)"
+]
