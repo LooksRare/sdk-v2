@@ -3,6 +3,8 @@ pragma solidity ^0.8.14;
 
 import "contracts-exchange-v2/contracts/LooksRareProtocol.sol";
 
+import "hardhat/console.sol";
+
 contract Verifier is SignatureChecker {
     using OrderStructs for OrderStructs.MakerAsk;
     using OrderStructs for OrderStructs.MakerBid;

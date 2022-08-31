@@ -4,7 +4,7 @@ export const contractName = "LooksRareProtocol";
 export const version = 2;
 
 export const makerAskTypes: Record<string, Array<TypedDataField>> = {
-  MakerBid: [
+  MakerAsk: [
     { name: "askNonce", type: "uint112" },
     { name: "subsetNonce", type: "uint112" },
     { name: "strategyId", type: "uint16" },
