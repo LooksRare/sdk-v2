@@ -6,5 +6,8 @@
   "event SubsetNoncesCancelled(uint112[])",
   "function cancelOrderNonces(uint112[])",
   "function cancelSubsetNonces(uint112[])",
-  "function incrementBidAskNonces(bool,bool)"
+  "function incrementBidAskNonces(bool,bool)",
+  "function viewUserBidAskNonces(address) view returns (tuple(uint112,uint112))",
+  "function viewUserOrderNonce(address,uint112) view returns (bool)",
+  "function viewUserSubsetNonce(address,uint112) view returns (bool)"
 ]

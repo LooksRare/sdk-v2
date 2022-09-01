@@ -1,0 +1,15 @@
+[
+  "error CollectionDiscountFactorTooHigh()",
+  "error OrderInvalid()",
+  "error OutsideOfTimeRange()",
+  "error SlippageAsk()",
+  "error SlippageBid()",
+  "error StrategyNotAvailable(uint16)",
+  "error StrategyNotUsed(uint16)",
+  "error StrategyProtocolFeeTooHigh(uint16)",
+  "error StrategyUsed(uint16)",
+  "event NewCollectionDiscountFactor(address,uint256)",
+  "event NewProtocolFeeRecipient(address)",
+  "event NewStrategy(uint16,address)",
+  "event StrategyUpdated(uint16,bool,bool,uint16)"
+]

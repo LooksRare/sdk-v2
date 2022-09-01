@@ -1,0 +1,7 @@
+[
+  "error CurrencyAlreadyWhitelisted(address)",
+  "error CurrencyNotContract(address)",
+  "error CurrencyNotWhitelisted(address)",
+  "event CurrencyRemoved(address)",
+  "event CurrencyWhitelisted(address)"
+]
