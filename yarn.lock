@@ -2950,7 +2950,7 @@ content-type@~1.0.4:
 
 contracts-exchange-v2@LooksRare/contracts-exchange-v2:
   version "1.0.0"
-  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#45c57d0e85e35ac3570cd42077a9784ced16fcdf"
+  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#83a083e4fe2896ba0705deab44ce80d3a4a42e6f"
   dependencies:
     "@looksrare/contracts-exchange-v1" "^1.1.0"
     "@looksrare/contracts-libs" "^1.0.0"

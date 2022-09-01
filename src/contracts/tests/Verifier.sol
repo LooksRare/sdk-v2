@@ -8,6 +8,8 @@ import "hardhat/console.sol";
 contract Verifier is SignatureChecker {
     using OrderStructs for OrderStructs.MakerAsk;
     using OrderStructs for OrderStructs.MakerBid;
+    using OrderStructs for bytes32;
+
     LooksRareProtocol public immutable looksRareProtocol;
 
     string internal constant _ENCODING_PREFIX = "\x19\x01";
@@ -16,9 +18,22 @@ contract Verifier is SignatureChecker {
         looksRareProtocol = LooksRareProtocol(_looksRareProtocol);
     }
 
-    function verifyAskOrders(OrderStructs.MakerAsk calldata makerAsk, bytes calldata signature) external view {
+    function getMakerOrderHash(OrderStructs.MakerAsk memory makerAsk) public view returns (bytes32 orderHash) {
+        return makerAsk.hash();
+    }
+
+    function getDomainSeparator() public view returns (bytes32) {
         (, , bytes32 domainSeparator, ) = looksRareProtocol.information();
-        bytes32 digest = keccak256(abi.encodePacked(_ENCODING_PREFIX, domainSeparator, makerAsk.hash()));
+        return domainSeparator;
+    }
+
+    function computeDigestMakerAsk(OrderStructs.MakerAsk memory makerAsk) public view returns (bytes32 digest) {
+        (, , bytes32 domainSeparator, ) = looksRareProtocol.information();
+        return keccak256(abi.encodePacked(_ENCODING_PREFIX, domainSeparator, makerAsk.hash()));
+    }
+
+    function verifyAskOrders(OrderStructs.MakerAsk calldata makerAsk, bytes calldata signature) external view {
+        bytes32 digest = computeDigestMakerAsk(makerAsk);
         _verify(digest, makerAsk.signer, signature);
     }
 
