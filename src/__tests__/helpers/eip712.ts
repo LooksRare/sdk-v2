@@ -1,6 +1,6 @@
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import { MakerAsk } from "../../types";
+import { MakerAsk, SolidityType } from "../../types";
 
 // Emulate contract cryptographic functions using JS. Used for testing purpose.
 
@@ -11,7 +11,7 @@ import { MakerAsk } from "../../types";
  * @returns string (bytes32)
  */
 export const getDomainSeparator = (domain: TypedDataDomain): string => {
-  const types = ["bytes32", "bytes32", "bytes32", "uint256", "address"];
+  const types: SolidityType[] = ["bytes32", "bytes32", "bytes32", "uint256", "address"];
   const values = [
     utils.keccak256(
       utils.toUtf8Bytes("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")
@@ -31,7 +31,7 @@ export const getDomainSeparator = (domain: TypedDataDomain): string => {
  * @returns string (bytes32)
  */
 export const getMakerOrderHash = (makerOrder: MakerAsk): string => {
-  const types = [
+  const types: SolidityType[] = [
     "bytes32",
     "uint112",
     "uint112",
@@ -82,5 +82,6 @@ export const getMakerOrderHash = (makerOrder: MakerAsk): string => {
 export const computeDigestMakerAsk = (domain: TypedDataDomain, makerOrder: MakerAsk): string => {
   const domainSeparator = getDomainSeparator(domain);
   const hash = getMakerOrderHash(makerOrder);
-  return utils.keccak256(utils.solidityPack(["string", "bytes32", "bytes32"], ["\x19\x01", domainSeparator, hash]));
+  const types: SolidityType[] = ["string", "bytes32", "bytes32"];
+  return utils.keccak256(utils.solidityPack(types, ["\x19\x01", domainSeparator, hash]));
 };

@@ -4,6 +4,7 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
 import { contractName, version, makerAskTypes } from "../constants/eip712";
 import { signMakerOrders } from "../utils/signMakerOrders";
+import { encodeStrategyParams } from "../utils/encodeOrderParams";
 import { SupportedChainId, MakerAsk, AssetType } from "../types";
 
 const faultySignature =
@@ -43,7 +44,7 @@ describe("SignMakerOrders", () => {
       minPrice: utils.parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
-      additionalParameters: utils.defaultAbiCoder.encode([], []),
+      additionalParameters: encodeStrategyParams([], "standard"),
     };
 
     const signature = await signMakerOrders(user1, domain, makerAskTypes, makerOrder);
