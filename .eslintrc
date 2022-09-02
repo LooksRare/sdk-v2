@@ -12,6 +12,7 @@
     "no-await-in-loop": "warn",
     "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     // Typescript overrides
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",

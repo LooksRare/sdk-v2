@@ -12,26 +12,27 @@ const faultySignature =
 describe("SignMakerOrders", () => {
   let contracts: Mocks;
   let signers: Signers;
+  let domain: TypedDataDomain;
   beforeEach(async () => {
     contracts = await setUpContracts();
     signers = await getSigners();
-  });
-  it("sign maker ask order", async () => {
-    const { looksRareProtocol, collection1, weth, verifier } = contracts;
-    const { user1 } = signers;
-
-    const domain: TypedDataDomain = {
+    domain = {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: looksRareProtocol.address,
+      verifyingContract: contracts.looksRareProtocol.address,
     };
+  });
+  it("sign maker ask order", async () => {
+    const { collection1, weth, verifier } = contracts;
+    const { user1 } = signers;
+
     const makerOrder: MakerAsk = {
-      askNonce: 0,
-      subsetNonce: 0,
-      strategyId: 0,
+      askNonce: 1,
+      subsetNonce: 1,
+      strategyId: 1,
       assetType: AssetType.ERC721,
-      orderNonce: 0,
+      orderNonce: 1,
       minNetRatio: 8500,
       collection: collection1.address,
       currency: weth.address,
@@ -40,12 +41,13 @@ describe("SignMakerOrders", () => {
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
       minPrice: utils.parseEther("1").toString(),
-      itemIds: [0],
+      itemIds: [1],
       amounts: [1],
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
     const signature = await signMakerOrders(user1, domain, makerAskTypes, makerOrder);
+
     expect(utils.verifyTypedData(domain, makerAskTypes, makerOrder, signature)).to.equal(user1.address);
     await expect(verifier.verifyAskOrders(makerOrder, signature)).to.eventually.be.fulfilled;
     await expect(verifier.verifyAskOrders(makerOrder, faultySignature)).to.eventually.be.rejectedWith(

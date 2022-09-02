@@ -1,0 +1,14 @@
+[
+  "constructor(address)",
+  "error BadSignatureS()",
+  "error BadSignatureV(uint8)",
+  "error InvalidSignatureEOA()",
+  "error InvalidSignatureERC1271()",
+  "error NullSignerAddress()",
+  "error WrongSignatureLength(uint256)",
+  "function computeDigestMakerAsk(tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes)) view returns (bytes32)",
+  "function computeDigestMakerBid(tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes)) view returns (bytes32)",
+  "function looksRareProtocol() view returns (address)",
+  "function verifyMakerAskOrder(tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes),bytes,address) view returns (bool)",
+  "function verifyMakerBidOrder(tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes),bytes,address) view returns (bool)"
+]
