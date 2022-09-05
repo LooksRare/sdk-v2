@@ -5,7 +5,7 @@ import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
 import { contractName, version, makerAskTypes } from "../constants/eip712";
 import { signMakerOrders } from "../utils/signMakerOrders";
 import { encodeStrategyParams } from "../utils/encodeOrderParams";
-import { SupportedChainId, MakerAsk, AssetType } from "../types";
+import { SupportedChainId, MakerAsk, AssetType, StrategyType } from "../types";
 
 const faultySignature =
   "0xcafe829116da9a4b31a958aa790682228b85e5d03b1ae7bb15f8ce4c8432a20813934991833da8e913894c9f35f1f018948c58d68fb61bbca0e07bd43c4492fa2b";
@@ -44,7 +44,7 @@ describe("SignMakerOrders", () => {
       minPrice: utils.parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
-      additionalParameters: encodeStrategyParams([], "standard"),
+      additionalParameters: encodeStrategyParams([], StrategyType.standard),
     };
 
     const signature = await signMakerOrders(user1, domain, makerAskTypes, makerOrder);
