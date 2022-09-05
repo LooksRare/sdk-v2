@@ -11,6 +11,21 @@ export enum AssetType {
   ERC1155 = 1,
 }
 
+export type Strategy = "standard" | "collection";
+
+export type SolidityType =
+  | "bool"
+  | "address"
+  | "uint8"
+  | "uint16"
+  | "uint112"
+  | "uint256"
+  | "uint256[]"
+  | "bytes"
+  | "bytes32"
+  | "bytes32[]"
+  | "string";
+
 // Orders
 
 export interface MakerAsk {
