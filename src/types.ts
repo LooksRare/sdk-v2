@@ -11,7 +11,10 @@ export enum AssetType {
   ERC1155 = 1,
 }
 
-export type Strategy = "standard" | "collection";
+export enum StrategyType {
+  standard = 0,
+  collection = 1,
+}
 
 export type SolidityType =
   | "bool"
@@ -31,7 +34,7 @@ export type SolidityType =
 export interface MakerAsk {
   askNonce: BigNumberish;
   subsetNonce: BigNumberish;
-  strategyId: number; // 0: Standard; 1: Collection; 2. etc.
+  strategyId: StrategyType; // 0: Standard; 1: Collection; 2. etc.
   assetType: AssetType;
   orderNonce: BigNumberish;
   minNetRatio: number; // e.g., 8500 = At least, 85% of the sale proceeds to the maker ask
