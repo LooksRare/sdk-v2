@@ -1,9 +1,8 @@
-import { ethers } from "ethers";
-import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import { SupportedChainId } from "./types";
-import { information } from "./utils/looksRareProtocol";
+import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
+import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
+import { MakerAsk, MakerBid, SupportedChainId } from "./types";
 
 export class LooksRare {
   public chainId: SupportedChainId;
@@ -23,7 +22,11 @@ export class LooksRare {
     };
   }
 
-  async information(signerOrProvider: ethers.Signer | ethers.providers.Provider) {
-    return information(this.addresses.EXCHANGE, signerOrProvider);
+  public async signMakerAsk(signer: TypedDataSigner, makerAsk: MakerAsk): Promise<string> {
+    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
+  }
+
+  public async signMakerBid(signer: TypedDataSigner, makerBid: MakerBid): Promise<string> {
+    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
   }
 }

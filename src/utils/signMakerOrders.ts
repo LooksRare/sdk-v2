@@ -1,11 +1,19 @@
-import { TypedDataSigner, TypedDataDomain, TypedDataField } from "@ethersproject/abstract-signer";
+import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
 import { MakerAsk, MakerBid } from "../types";
+import { makerAskTypes, makerBidTypes } from "../constants/eip712";
 
-export const signMakerOrders = async (
+export const signMakerAsk = async (
   signer: TypedDataSigner,
   domain: TypedDataDomain,
-  types: Record<string, Array<TypedDataField>>,
-  makerOrders: MakerAsk | MakerBid
+  makerOrder: MakerAsk
 ): Promise<string> => {
-  return signer._signTypedData(domain, types, makerOrders);
+  return signer._signTypedData(domain, makerAskTypes, makerOrder);
+};
+
+export const signMakerBid = async (
+  signer: TypedDataSigner,
+  domain: TypedDataDomain,
+  makerOrder: MakerBid
+): Promise<string> => {
+  return signer._signTypedData(domain, makerBidTypes, makerOrder);
 };
