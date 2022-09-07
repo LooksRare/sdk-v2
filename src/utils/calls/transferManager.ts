@@ -1,7 +1,7 @@
 import { Contract, Signer, providers, BigNumberish, Overrides } from "ethers";
-import { TransferManager } from "../../typechain/contracts-exchange-v2/contracts/TransferManager";
-import abi from "../abis/TransferManager.json";
-import { AssetType } from "../types";
+import { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
+import abi from "../../abis/TransferManager.json";
+import { AssetType } from "../../types";
 
 export const transferSingleItem = (
   signerOrProvider: Signer | providers.Provider,

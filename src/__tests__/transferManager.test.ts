@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
-import { grantApprovals, revokeApprovals } from "../utils/transferManager";
+import { grantApprovals, revokeApprovals } from "../utils/calls/transferManager";
 
 describe("TransferManager", () => {
   let contracts: Mocks;

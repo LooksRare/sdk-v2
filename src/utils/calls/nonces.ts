@@ -1,6 +1,6 @@
 import { Contract, Signer, providers, BigNumber, Overrides } from "ethers";
-import { LooksRareProtocol } from "../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
-import abi from "../abis/LooksRareProtocol.json";
+import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
+import abi from "../../abis/LooksRareProtocol.json";
 
 export const cancelOrderNonces = (
   signerOrProvider: Signer | providers.Provider,
