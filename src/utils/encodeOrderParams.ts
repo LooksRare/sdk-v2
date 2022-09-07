@@ -1,7 +1,14 @@
 import { BytesLike, utils } from "ethers";
 import { SolidityType, StrategyType } from "../types";
 
-export const getStrategyParamsTypes = (strategy: StrategyType): SolidityType[] => {
+export const getMakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
+  if (strategy === StrategyType.standard || strategy === StrategyType.collection) {
+    return [];
+  }
+  return [];
+};
+
+export const getTakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
   if (strategy === StrategyType.standard || strategy === StrategyType.collection) {
     return [];
   }
@@ -15,7 +22,6 @@ export const getStrategyParamsTypes = (strategy: StrategyType): SolidityType[] =
  * @param strategy array of params
  * @returns encoded params
  */
-export const encodeStrategyParams = (params: any[], strategy: StrategyType): BytesLike => {
-  const paramsTypes = getStrategyParamsTypes(strategy);
-  return utils.defaultAbiCoder.encode(paramsTypes, params);
+export const encodeParams = (params: any[], types: SolidityType[]): BytesLike => {
+  return utils.defaultAbiCoder.encode(types, params);
 };

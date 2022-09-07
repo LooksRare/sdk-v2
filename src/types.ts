@@ -29,6 +29,42 @@ export type SolidityType =
   | "bytes32[]"
   | "string";
 
+export interface MakerAskInputs {
+  signer: string;
+  collection: string;
+  strategy: StrategyType;
+  assetType: AssetType;
+  askNonce: BigNumberish;
+  subsetNonce: BigNumberish;
+  orderNonce: BigNumberish;
+  endTime: BigNumberish;
+  price: BigNumberish;
+  currency: string;
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
+  recipient?: string;
+  startTime?: BigNumberish;
+  additionalParameters?: any[];
+}
+
+export interface MakerBidInputs {
+  signer: string;
+  collection: string;
+  strategy: StrategyType;
+  assetType: AssetType;
+  bidNonce: BigNumberish;
+  subsetNonce: BigNumberish;
+  orderNonce: BigNumberish;
+  endTime: BigNumberish;
+  price: BigNumberish;
+  currency: string;
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
+  recipient?: string;
+  startTime?: BigNumberish;
+  additionalParameters?: any[];
+}
+
 // Orders
 
 export interface MakerAsk {
@@ -73,8 +109,8 @@ export interface TakerAsk {
   recipient: string;
   minNetRatio: number;
   minPrice: BigNumberish;
-  itemIds: BigNumberish;
-  amounts: BigNumberish;
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
   additionalParameters: BytesLike;
 }
 

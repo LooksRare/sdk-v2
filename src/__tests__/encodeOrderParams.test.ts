@@ -1,25 +1,36 @@
 import { expect } from "chai";
-import { getStrategyParamsTypes, encodeStrategyParams } from "../utils/encodeOrderParams";
+import { getMakerParamsTypes, getTakerParamsTypes, encodeParams } from "../utils/encodeOrderParams";
 import { StrategyType } from "../types";
 
 describe("getStrategyParamsTypes", () => {
   it("standard", () => {
-    const paramsTypes = getStrategyParamsTypes(StrategyType.standard);
+    const paramsTypes = getMakerParamsTypes(StrategyType.standard);
     expect(paramsTypes).to.eql([]);
   });
   it("collection", () => {
-    const paramsTypes = getStrategyParamsTypes(StrategyType.collection);
+    const paramsTypes = getMakerParamsTypes(StrategyType.collection);
+    expect(paramsTypes).to.eql([]);
+  });
+});
+
+describe("getStrategyParamsTypes", () => {
+  it("standard", () => {
+    const paramsTypes = getTakerParamsTypes(StrategyType.standard);
+    expect(paramsTypes).to.eql([]);
+  });
+  it("collection", () => {
+    const paramsTypes = getTakerParamsTypes(StrategyType.collection);
     expect(paramsTypes).to.eql([]);
   });
 });
 
 describe("encodeOrderParams", () => {
   it("standard", () => {
-    const encodedParams = encodeStrategyParams([], StrategyType.standard);
+    const encodedParams = encodeParams([], getMakerParamsTypes(StrategyType.standard));
     expect(encodedParams).to.equal("0x");
   });
   it("collection", () => {
-    const encodedParams = encodeStrategyParams([], StrategyType.collection);
+    const encodedParams = encodeParams([], getMakerParamsTypes(StrategyType.collection));
     expect(encodedParams).to.equal("0x");
   });
 });

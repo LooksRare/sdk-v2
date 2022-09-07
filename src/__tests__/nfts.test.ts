@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, Signers, NB_NFT_PER_USER } from "./helpers/setup";
-import { isApprovedForAll, setApprovalForAll, balanceOf, ownerOf } from "../utils/nft";
+import { isApprovedForAll, setApprovalForAll, balanceOf, ownerOf } from "../utils/calls/nft";
 
 describe("ERC721 & ERC1155", () => {
   let contracts: Mocks;

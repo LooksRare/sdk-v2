@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
-import { cancelOrderNonces, cancelSubsetNonces, incrementBidAskNonces } from "../utils/nonces";
+import { cancelOrderNonces, cancelSubsetNonces, incrementBidAskNonces } from "../utils/calls/nonces";
 
 describe("Nonces", () => {
   let contracts: Mocks;
