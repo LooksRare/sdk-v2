@@ -1,4 +1,4 @@
-import { Contract, Signer, providers, Overrides } from "ethers";
+import { Contract, Signer, providers, Overrides, constants } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
 import { MakerAsk, MakerBid, TakerAsk, TakerBid } from "../../types";
@@ -9,9 +9,9 @@ export const executeTakerBid = (
   takerBid: TakerBid,
   makerAsk: MakerAsk,
   makerSignature: string,
-  merkleRoot: string,
-  merkleProof: string[],
-  referrer?: string,
+  merkleRoot: string = constants.HashZero,
+  merkleProof: string[] = [],
+  referrer: string = constants.AddressZero,
   overrides?: Overrides
 ) => {
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
@@ -26,9 +26,9 @@ export const executeTakerAsk = (
   takerAsk: TakerAsk,
   makerBid: MakerBid,
   makerSignature: string,
-  merkleRoot: string,
-  merkleProof: string[],
-  referrer?: string,
+  merkleRoot: string = constants.HashZero,
+  merkleProof: string[] = [],
+  referrer: string = constants.AddressZero,
   overrides?: Overrides
 ) => {
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
