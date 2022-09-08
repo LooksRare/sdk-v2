@@ -12,7 +12,7 @@ const mainnetAddresses: Addresses = {
   TRANSFER_MANAGER: "",
 };
 
-const rinkebyAddresses: Addresses = {
+const goerliAddresses: Addresses = {
   LOOKS: "",
   EXCHANGE: "",
   TRANSFER_MANAGER: "",
@@ -20,6 +20,6 @@ const rinkebyAddresses: Addresses = {
 
 export const addressesByNetwork: { [chainId in SupportedChainId]: Addresses } = {
   [SupportedChainId.MAINNET]: mainnetAddresses,
-  [SupportedChainId.RINKEBY]: rinkebyAddresses,
-  [SupportedChainId.HARDHAT]: rinkebyAddresses,
+  [SupportedChainId.GOERLI]: goerliAddresses,
+  [SupportedChainId.HARDHAT]: goerliAddresses,
 };
