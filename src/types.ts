@@ -1,4 +1,5 @@
-import { BigNumberish, BytesLike } from "ethers";
+import { ethers, BigNumberish, BytesLike } from "ethers";
+import { TypedDataSigner } from "@ethersproject/abstract-signer";
 
 export enum SupportedChainId {
   MAINNET = 1,
@@ -28,6 +29,12 @@ export type SolidityType =
   | "bytes32"
   | "bytes32[]"
   | "string";
+
+// Ethers override
+
+export type Signer = ethers.Signer & TypedDataSigner;
+
+// Orders inputs
 
 export interface MakerAskInputs {
   signer: string;

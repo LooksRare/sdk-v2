@@ -1,11 +1,24 @@
-import { BigNumber } from "ethers";
-import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
+import { BigNumber, Contract } from "ethers";
+import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "./utils/encodeOrderParams";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { minNetPriceRatio } from "./constants/";
-import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, MakerAskInputs, MakerBidInputs } from "./types";
+import {
+  MakerAsk,
+  MakerBid,
+  TakerAsk,
+  TakerBid,
+  SupportedChainId,
+  MakerAskInputs,
+  MakerBidInputs,
+  Signer,
+} from "./types";
+import abiIERC721 from "./abis/IERC721.json";
+import abiIERC20 from "./abis/IERC20.json";
+import { IERC721 } from "../typechain/contracts-exchange-v2/contracts/interfaces/IERC721";
+import { IERC20 } from "../typechain/contracts-exchange-v2/contracts/interfaces/IERC20";
 
 export class LooksRare {
   public chainId: SupportedChainId;
@@ -111,11 +124,25 @@ export class LooksRare {
     return order;
   }
 
-  public async signMakerAsk(signer: TypedDataSigner, makerAsk: MakerAsk): Promise<string> {
+  public async signMakerAsk(signer: Signer, makerAsk: MakerAsk): Promise<string> {
+    const signerAddress = await signer.getAddress();
+    const contract = new Contract(makerAsk.collection, abiIERC721, signer) as IERC721;
+
+    const isCollectionApproved = await contract.isApprovedForAll(signerAddress, this.addresses.TRANSFER_MANAGER);
+    if (!isCollectionApproved) {
+      throw new Error("NFT not approved for transfer");
+    }
     return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
   }
 
-  public async signMakerBid(signer: TypedDataSigner, makerBid: MakerBid): Promise<string> {
+  public async signMakerBid(signer: Signer, makerBid: MakerBid): Promise<string> {
+    const signerAddress = await signer.getAddress();
+    const contract = new Contract(makerBid.currency, abiIERC20, signer) as IERC20;
+
+    const allowance = await contract.allowance(signerAddress, this.addresses.TRANSFER_MANAGER);
+    if (BigNumber.from(allowance).lt(makerBid.maxPrice)) {
+      throw new Error("Allowance too low");
+    }
     return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
   }
 
