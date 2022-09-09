@@ -24,9 +24,9 @@ export class LooksRare {
   public chainId: SupportedChainId;
   public addresses: Addresses;
 
-  constructor(chainId: SupportedChainId) {
+  constructor(chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
-    this.addresses = addressesByNetwork[this.chainId];
+    this.addresses = override ?? addressesByNetwork[this.chainId];
   }
 
   getTypedDataDomain(): TypedDataDomain {
