@@ -1,10 +1,10 @@
-import { Contract, Signer, providers, BigNumberish, Overrides } from "ethers";
+import { Contract, BigNumberish, Overrides } from "ethers";
 import { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import abi from "../../abis/TransferManager.json";
-import { AssetType } from "../../types";
+import { AssetType, Signer } from "../../types";
 
 export const transferSingleItem = (
-  signerOrProvider: Signer | providers.Provider,
+  signer: Signer,
   address: string,
   collection: string,
   assetType: AssetType,
@@ -14,12 +14,12 @@ export const transferSingleItem = (
   amount: BigNumberish = 1,
   overrides?: Overrides
 ) => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  const contract = new Contract(address, abi, signer) as TransferManager;
   return contract.transferSingleItem(collection, assetType, from, to, itemId, amount, { ...overrides });
 };
 
 export const transferBatchItems = (
-  signerOrProvider: Signer | providers.Provider,
+  signer: Signer,
   address: string,
   collection: string,
   assetType: AssetType,
@@ -29,12 +29,12 @@ export const transferBatchItems = (
   amounts: BigNumberish[],
   overrides?: Overrides
 ) => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  const contract = new Contract(address, abi, signer) as TransferManager;
   return contract.transferBatchItems(collection, assetType, from, to, itemIds, amounts, { ...overrides });
 };
 
 export const transferBatchItemsAcrossCollections = (
-  signerOrProvider: Signer | providers.Provider,
+  signer: Signer,
   address: string,
   collections: string[],
   assetTypes: AssetType[],
@@ -44,28 +44,18 @@ export const transferBatchItemsAcrossCollections = (
   amounts: BigNumberish[][],
   overrides?: Overrides
 ) => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  const contract = new Contract(address, abi, signer) as TransferManager;
   return contract.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
     ...overrides,
   });
 };
 
-export const grantApprovals = (
-  signerOrProvider: Signer | providers.Provider,
-  address: string,
-  operators: string[],
-  overrides?: Overrides
-) => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+export const grantApprovals = (signer: Signer, address: string, operators: string[], overrides?: Overrides) => {
+  const contract = new Contract(address, abi, signer) as TransferManager;
   return contract.grantApprovals(operators, { ...overrides });
 };
 
-export const revokeApprovals = (
-  signerOrProvider: Signer | providers.Provider,
-  address: string,
-  operators: string[],
-  overrides?: Overrides
-) => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+export const revokeApprovals = (signer: Signer, address: string, operators: string[], overrides?: Overrides) => {
+  const contract = new Contract(address, abi, signer) as TransferManager;
   return contract.revokeApprovals(operators, { ...overrides });
 };
