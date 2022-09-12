@@ -2,6 +2,7 @@ import { BigNumber, Contract, ContractTransaction, constants } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
+import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "./utils/encodeOrderParams";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
@@ -172,6 +173,16 @@ export class LooksRare {
 
   public async signMakerBid(signer: Signer, makerBid: MakerBid): Promise<string> {
     return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
+  }
+
+  public async executeTakerAsk(signer: Signer, makerBid: MakerBid, takerAsk: TakerAsk, signature: string) {
+    const tx = await executeTakerAsk(signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
+    return tx.wait();
+  }
+
+  public async executeTakerBid(signer: Signer, makerAsk: MakerAsk, takerBid: TakerBid, signature: string) {
+    const tx = await executeTakerBid(signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
+    return tx.wait();
   }
 
   public async cancelAllOrders(signer: Signer, bid: boolean, ask: boolean) {
