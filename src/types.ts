@@ -37,7 +37,7 @@ export type Signer = ethers.Signer & TypedDataSigner;
 // Orders inputs
 
 export interface MakerAskInputs {
-  signer: string;
+  signer: Signer;
   collection: string;
   strategy: StrategyType;
   assetType: AssetType;
@@ -55,7 +55,7 @@ export interface MakerAskInputs {
 }
 
 export interface MakerBidInputs {
-  signer: string;
+  signer: Signer;
   collection: string;
   strategy: StrategyType;
   assetType: AssetType;
