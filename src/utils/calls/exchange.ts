@@ -1,10 +1,10 @@
-import { Contract, Signer, providers, Overrides, constants } from "ethers";
+import { Contract, Overrides, constants } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
-import { MakerAsk, MakerBid, TakerAsk, TakerBid } from "../../types";
+import { MakerAsk, MakerBid, TakerAsk, TakerBid, Signer } from "../../types";
 
 export const executeTakerBid = (
-  signer: Signer | providers.JsonRpcSigner,
+  signer: Signer,
   address: string,
   takerBid: TakerBid,
   makerAsk: MakerAsk,
@@ -21,7 +21,7 @@ export const executeTakerBid = (
 };
 
 export const executeTakerAsk = (
-  signer: Signer | providers.JsonRpcSigner,
+  signer: Signer,
   address: string,
   takerAsk: TakerAsk,
   makerBid: MakerBid,

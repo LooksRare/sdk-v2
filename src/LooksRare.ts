@@ -1,6 +1,7 @@
 import { BigNumber, Contract, ContractTransaction, constants } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
+import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "./utils/encodeOrderParams";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
@@ -141,14 +142,6 @@ export class LooksRare {
     return { order, action };
   }
 
-  public async signMakerAsk(signer: Signer, makerAsk: MakerAsk): Promise<string> {
-    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
-  }
-
-  public async signMakerBid(signer: Signer, makerBid: MakerBid): Promise<string> {
-    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
-  }
-
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
     const order: TakerAsk = {
       recipient: recipient,
@@ -171,5 +164,28 @@ export class LooksRare {
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(makerAsk.strategyId)),
     };
     return order;
+  }
+
+  public async signMakerAsk(signer: Signer, makerAsk: MakerAsk): Promise<string> {
+    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
+  }
+
+  public async signMakerBid(signer: Signer, makerBid: MakerBid): Promise<string> {
+    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
+  }
+
+  public async cancelAllOrders(signer: Signer, bid: boolean, ask: boolean) {
+    const tx = await incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
+    return tx.wait();
+  }
+
+  public async cancelOrders(signer: Signer, nonces: BigNumber[]) {
+    const tx = await cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
+    return tx.wait();
+  }
+
+  public async cancelSubsetOrders(signer: Signer, nonces: BigNumber[]) {
+    const tx = await cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
+    return tx.wait();
   }
 }
