@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ContractReceipt } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
@@ -19,27 +19,20 @@ import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from
 export class LooksRare {
   public chainId: SupportedChainId;
   public addresses: Addresses;
+  public signer: Signer;
 
-  constructor(chainId: SupportedChainId, override?: Addresses) {
+  constructor(signer: Signer, chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
+    this.signer = signer;
   }
 
-  getTypedDataDomain(): TypedDataDomain {
-    return {
-      name: contractName,
-      version: version.toString(),
-      chainId: this.chainId,
-      verifyingContract: this.addresses.EXCHANGE,
-    };
+  public async createMakerAsk(makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
+    return await createMakerAsk(this.signer, this.addresses.TRANSFER_MANAGER, makerAskInputs);
   }
 
-  public async createMakerAsk(signer: Signer, makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
-    return await createMakerAsk(signer, this.addresses.TRANSFER_MANAGER, makerAskInputs);
-  }
-
-  public async createMakerBid(signer: Signer, makerOrderInputs: MakerBidInputs): Promise<MakerBidOutputs> {
-    return await createMakerBid(signer, this.addresses.TRANSFER_MANAGER, makerOrderInputs);
+  public async createMakerBid(makerOrderInputs: MakerBidInputs): Promise<MakerBidOutputs> {
+    return await createMakerBid(this.signer, this.addresses.TRANSFER_MANAGER, makerOrderInputs);
   }
 
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
@@ -66,36 +59,45 @@ export class LooksRare {
     return order;
   }
 
-  public async signMakerAsk(signer: Signer, makerAsk: MakerAsk): Promise<string> {
-    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
+  public getTypedDataDomain(): TypedDataDomain {
+    return {
+      name: contractName,
+      version: version.toString(),
+      chainId: this.chainId,
+      verifyingContract: this.addresses.EXCHANGE,
+    };
   }
 
-  public async signMakerBid(signer: Signer, makerBid: MakerBid): Promise<string> {
-    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
+  public async signMakerAsk(makerAsk: MakerAsk): Promise<string> {
+    return await signMakerAsk(this.signer, this.getTypedDataDomain(), makerAsk);
   }
 
-  public async executeTakerAsk(signer: Signer, makerBid: MakerBid, takerAsk: TakerAsk, signature: string) {
-    const tx = await executeTakerAsk(signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
+  public async signMakerBid(makerBid: MakerBid): Promise<string> {
+    return await signMakerBid(this.signer, this.getTypedDataDomain(), makerBid);
+  }
+
+  public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
+    const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
     return tx.wait();
   }
 
-  public async executeTakerBid(signer: Signer, makerAsk: MakerAsk, takerBid: TakerBid, signature: string) {
-    const tx = await executeTakerBid(signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
+  public async executeTakerBid(makerAsk: MakerAsk, takerBid: TakerBid, signature: string): Promise<ContractReceipt> {
+    const tx = await executeTakerBid(this.signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
     return tx.wait();
   }
 
-  public async cancelAllOrders(signer: Signer, bid: boolean, ask: boolean) {
-    const tx = await incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
+  public async cancelAllOrders(bid: boolean, ask: boolean): Promise<ContractReceipt> {
+    const tx = await incrementBidAskNonces(this.signer, this.addresses.EXCHANGE, bid, ask);
     return tx.wait();
   }
 
-  public async cancelOrders(signer: Signer, nonces: BigNumber[]) {
-    const tx = await cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
+  public async cancelOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
+    const tx = await cancelOrderNonces(this.signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 
-  public async cancelSubsetOrders(signer: Signer, nonces: BigNumber[]) {
-    const tx = await cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
+  public async cancelSubsetOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
+    const tx = await cancelSubsetNonces(this.signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 }
