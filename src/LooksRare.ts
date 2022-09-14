@@ -1,26 +1,20 @@
-import { BigNumber, Contract, ContractTransaction, constants } from "ethers";
+import { BigNumber } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
-import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "./utils/encodeOrderParams";
-import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, version } from "./constants/eip712";
-import { minNetPriceRatio } from "./constants/";
 import {
-  MakerAsk,
-  MakerBid,
-  TakerAsk,
-  TakerBid,
-  SupportedChainId,
+  createMakerAsk,
+  createMakerBid,
   MakerAskInputs,
   MakerBidInputs,
-  Signer,
-} from "./types";
-import abiIERC721 from "./abis/IERC721.json";
-import abiIERC20 from "./abis/IERC20.json";
-import { IERC721 } from "../typechain/contracts-exchange-v2/contracts/interfaces/IERC721";
-import { IERC20 } from "../typechain/contracts-exchange-v2/contracts/interfaces/IERC20";
+  MakerAskOutputs,
+  MakerBidOutputs,
+} from "./utils/makerOrders";
+import { encodeParams, getTakerParamsTypes } from "./utils/encodeOrderParams";
+import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { contractName, version } from "./constants/eip712";
+import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from "./types";
 
 export class LooksRare {
   public chainId: SupportedChainId;
@@ -40,107 +34,12 @@ export class LooksRare {
     };
   }
 
-  public async createMakerAsk({
-    signer,
-    collection,
-    strategy,
-    assetType,
-    askNonce,
-    subsetNonce,
-    orderNonce,
-    endTime,
-    price,
-    currency,
-    startTime = Math.floor(Date.now() / 1000),
-    recipient = undefined,
-    itemIds = [],
-    amounts = [1],
-    additionalParameters = [],
-  }: MakerAskInputs): Promise<{ order: MakerAsk; action?: () => Promise<ContractTransaction> }> {
-    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw new Error("Timestamps should be in seconds");
-    }
-
-    const signerAddress = await signer.getAddress();
-
-    const order: MakerAsk = {
-      askNonce: askNonce,
-      subsetNonce: subsetNonce,
-      strategyId: strategy,
-      assetType: assetType,
-      orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
-      collection: collection,
-      currency: currency,
-      recipient: recipient ?? signerAddress,
-      signer: signerAddress,
-      startTime: startTime,
-      endTime: endTime,
-      minPrice: price,
-      itemIds: itemIds,
-      amounts: amounts,
-      additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategy)),
-    };
-
-    const contract = new Contract(collection, abiIERC721, signer) as IERC721;
-    const isCollectionApproved = await contract.isApprovedForAll(signerAddress, this.addresses.TRANSFER_MANAGER);
-    const action = isCollectionApproved
-      ? undefined
-      : () => contract.setApprovalForAll(this.addresses.TRANSFER_MANAGER, true);
-
-    return { order, action };
+  public async createMakerAsk(signer: Signer, makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
+    return await createMakerAsk(signer, this.addresses.TRANSFER_MANAGER, makerAskInputs);
   }
 
-  public async createMakerBid({
-    signer,
-    collection,
-    strategy,
-    assetType,
-    bidNonce,
-    subsetNonce,
-    orderNonce,
-    endTime,
-    price,
-    currency,
-    startTime = Math.floor(Date.now() / 1000),
-    recipient = undefined,
-    itemIds = [],
-    amounts = [1],
-    additionalParameters = [],
-  }: MakerBidInputs): Promise<{ order: MakerBid; action?: () => Promise<ContractTransaction> }> {
-    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw new Error("Timestamps should be in seconds");
-    }
-
-    const signerAddress = await signer.getAddress();
-
-    const order: MakerBid = {
-      bidNonce: bidNonce,
-      subsetNonce: subsetNonce,
-      strategyId: strategy,
-      assetType: assetType,
-      orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
-      collection: collection,
-      currency: currency,
-      recipient: recipient ?? signerAddress,
-      signer: signerAddress,
-      startTime: startTime,
-      endTime: endTime,
-      maxPrice: price,
-      itemIds: itemIds,
-      amounts: amounts,
-      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategy)),
-    };
-
-    const contract = new Contract(currency, abiIERC20, signer) as IERC20;
-
-    const allowance = await contract.allowance(signerAddress, this.addresses.TRANSFER_MANAGER);
-    const action = BigNumber.from(allowance).lt(price)
-      ? () => contract.approve(this.addresses.TRANSFER_MANAGER, constants.MaxUint256)
-      : undefined;
-
-    return { order, action };
+  public async createMakerBid(signer: Signer, makerOrderInputs: MakerBidInputs): Promise<MakerBidOutputs> {
+    return await createMakerBid(signer, this.addresses.TRANSFER_MANAGER, makerOrderInputs);
   }
 
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
