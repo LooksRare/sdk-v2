@@ -34,44 +34,6 @@ export type SolidityType =
 
 export type Signer = ethers.Signer & TypedDataSigner;
 
-// Orders inputs
-
-export interface MakerAskInputs {
-  signer: Signer;
-  collection: string;
-  strategy: StrategyType;
-  assetType: AssetType;
-  askNonce: BigNumberish;
-  subsetNonce: BigNumberish;
-  orderNonce: BigNumberish;
-  endTime: BigNumberish;
-  price: BigNumberish;
-  currency: string;
-  itemIds: BigNumberish[];
-  amounts: BigNumberish[];
-  recipient?: string;
-  startTime?: BigNumberish;
-  additionalParameters?: any[];
-}
-
-export interface MakerBidInputs {
-  signer: Signer;
-  collection: string;
-  strategy: StrategyType;
-  assetType: AssetType;
-  bidNonce: BigNumberish;
-  subsetNonce: BigNumberish;
-  orderNonce: BigNumberish;
-  endTime: BigNumberish;
-  price: BigNumberish;
-  currency: string;
-  itemIds: BigNumberish[];
-  amounts: BigNumberish[];
-  recipient?: string;
-  startTime?: BigNumberish;
-  additionalParameters?: any[];
-}
-
 // Orders
 
 export interface MakerAsk {
