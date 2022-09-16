@@ -63,6 +63,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "@0xsequence/multicall": "^0.40.6",
     "contracts-exchange-v2": "LooksRare/contracts-exchange-v2"
   }
 }

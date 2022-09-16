@@ -1,5 +1,6 @@
 import { BigNumber, ContractReceipt } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
+import multicall from "@0xsequence/multicall";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
@@ -17,14 +18,21 @@ import { contractName, version } from "./constants/eip712";
 import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from "./types";
 
 export class LooksRare {
-  public chainId: SupportedChainId;
-  public addresses: Addresses;
-  public signer: Signer;
+  public readonly chainId: SupportedChainId;
+  public readonly addresses: Addresses;
+  public readonly signer: Signer;
+  public readonly multicallProvider: multicall.providers.MulticallProvider;
 
   constructor(signer: Signer, chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
+
+    if (!signer.provider) {
+      throw new Error("No provider found");
+    }
+
+    this.multicallProvider = new multicall.providers.MulticallProvider(signer.provider);
   }
 
   public async createMakerAsk(makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
