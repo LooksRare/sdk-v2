@@ -1,5 +1,6 @@
-import { BigNumber, ContractReceipt, providers } from "ethers";
+import { BigNumber, ContractReceipt, providers, constants } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
+import multicall from "@0xsequence/multicall";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
@@ -36,7 +37,7 @@ export class LooksRare {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
-    this.provider = provider;
+    this.provider = new multicall.providers.MulticallProvider(provider);
   }
 
   public async createMakerAsk({
@@ -47,11 +48,11 @@ export class LooksRare {
     orderNonce,
     endTime,
     price,
-    currency,
+    itemIds,
+    amounts = [1],
+    currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
     recipient = undefined,
-    itemIds = [],
-    amounts = [1],
     additionalParameters = [],
   }: MakerAskInputs): Promise<MakerAskOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -99,11 +100,11 @@ export class LooksRare {
     orderNonce,
     endTime,
     price,
-    currency,
+    itemIds,
+    amounts = [1],
+    currency = this.addresses.WETH,
     startTime = Math.floor(Date.now() / 1000),
     recipient = undefined,
-    itemIds = [],
-    amounts = [1],
     additionalParameters = [],
   }: MakerBidInputs): Promise<MakerBidOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -185,6 +186,14 @@ export class LooksRare {
   public async signMakerBid(makerBid: MakerBid): Promise<string> {
     return await signMakerBid(this.signer, this.getTypedDataDomain(), makerBid);
   }
+
+  /**
+   * TODO
+   * signMultipleMaker
+      1. Array of order hashes (bytes32)
+      2. Alphabetical sort 
+      3. Compute merkleroot
+   */
 
   public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
     const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
