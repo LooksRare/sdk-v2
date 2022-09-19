@@ -13,7 +13,7 @@ export interface MakerAskOutputs {
 
 export interface MakerAskInputs {
   collection: string;
-  strategy: StrategyType;
+  strategyId: StrategyType;
   assetType: AssetType;
   askNonce: BigNumberish;
   subsetNonce: BigNumberish;
@@ -33,7 +33,7 @@ export const createMakerAsk = async (
   spenderAddress: string,
   {
     collection,
-    strategy,
+    strategyId,
     assetType,
     askNonce,
     subsetNonce,
@@ -57,7 +57,7 @@ export const createMakerAsk = async (
   const order: MakerAsk = {
     askNonce: askNonce,
     subsetNonce: subsetNonce,
-    strategyId: strategy,
+    strategyId: strategyId,
     assetType: assetType,
     orderNonce: orderNonce,
     minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
@@ -70,7 +70,7 @@ export const createMakerAsk = async (
     minPrice: price,
     itemIds: itemIds,
     amounts: amounts,
-    additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategy)),
+    additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
   };
 
   const isCollectionApproved = await isApprovedForAll(signer, collection, signerAddress, spenderAddress);
@@ -88,7 +88,7 @@ export interface MakerBidOutputs {
 
 export interface MakerBidInputs {
   collection: string;
-  strategy: StrategyType;
+  strategyId: StrategyType;
   assetType: AssetType;
   bidNonce: BigNumberish;
   subsetNonce: BigNumberish;
@@ -108,7 +108,7 @@ export const createMakerBid = async (
   spenderAddress: string,
   {
     collection,
-    strategy,
+    strategyId,
     assetType,
     bidNonce,
     subsetNonce,
@@ -132,7 +132,7 @@ export const createMakerBid = async (
   const order: MakerBid = {
     bidNonce: bidNonce,
     subsetNonce: subsetNonce,
-    strategyId: strategy,
+    strategyId: strategyId,
     assetType: assetType,
     orderNonce: orderNonce,
     minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
@@ -145,7 +145,7 @@ export const createMakerBid = async (
     maxPrice: price,
     itemIds: itemIds,
     amounts: amounts,
-    additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategy)),
+    additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
   };
 
   const currentAllowance = await allowance(signer, currency, signerAddress, spenderAddress);

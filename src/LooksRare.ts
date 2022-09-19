@@ -1,4 +1,4 @@
-import { BigNumber, ContractReceipt } from "ethers";
+import { BigNumber, ContractReceipt, providers } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
@@ -17,14 +17,16 @@ import { contractName, version } from "./constants/eip712";
 import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from "./types";
 
 export class LooksRare {
-  public chainId: SupportedChainId;
-  public addresses: Addresses;
-  public signer: Signer;
+  public readonly chainId: SupportedChainId;
+  public readonly addresses: Addresses;
+  public readonly signer: Signer;
+  public readonly provider: providers.Provider;
 
-  constructor(signer: Signer, chainId: SupportedChainId, override?: Addresses) {
+  constructor(signer: Signer, provider: providers.Provider, chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
+    this.provider = provider;
   }
 
   public async createMakerAsk(makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
