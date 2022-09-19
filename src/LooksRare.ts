@@ -1,7 +1,12 @@
 import { BigNumber, ContractReceipt, providers } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
-import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
+import {
+  incrementBidAskNonces,
+  cancelOrderNonces,
+  cancelSubsetNonces,
+  viewUserBidAskNonces,
+} from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { minNetPriceRatio } from "./constants";
@@ -38,7 +43,6 @@ export class LooksRare {
     collection,
     strategyId,
     assetType,
-    askNonce,
     subsetNonce,
     orderNonce,
     endTime,
@@ -55,9 +59,15 @@ export class LooksRare {
     }
 
     const signerAddress = await this.signer.getAddress();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+
+    const [isCollectionApproved, userBidAskNonce] = await Promise.all([
+      isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+    ]);
 
     const order: MakerAsk = {
-      askNonce: askNonce,
+      askNonce: userBidAskNonce.askNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
       assetType: assetType,
@@ -75,24 +85,16 @@ export class LooksRare {
       additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
     };
 
-    const isCollectionApproved = await isApprovedForAll(
-      this.signer,
-      collection,
-      signerAddress,
-      this.addresses.TRANSFER_MANAGER
-    );
-    const action = isCollectionApproved
-      ? undefined
-      : () => setApprovalForAll(this.signer, collection, this.addresses.TRANSFER_MANAGER);
-
-    return { order, action };
+    return {
+      order,
+      action: isCollectionApproved ? undefined : () => setApprovalForAll(this.signer, collection, spenderAddress),
+    };
   }
 
   public async createMakerBid({
     collection,
     strategyId,
     assetType,
-    bidNonce,
     subsetNonce,
     orderNonce,
     endTime,
@@ -109,9 +111,15 @@ export class LooksRare {
     }
 
     const signerAddress = await this.signer.getAddress();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+
+    const [currentAllowance, userBidAskNonce] = await Promise.all([
+      allowance(this.provider, currency, signerAddress, spenderAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+    ]);
 
     const order: MakerBid = {
-      bidNonce: bidNonce,
+      bidNonce: userBidAskNonce.bidNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
       assetType: assetType,
@@ -129,12 +137,12 @@ export class LooksRare {
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
     };
 
-    const currentAllowance = await allowance(this.signer, currency, signerAddress, this.addresses.TRANSFER_MANAGER);
-    const action = BigNumber.from(currentAllowance).lt(price)
-      ? () => approve(this.signer, currency, this.addresses.TRANSFER_MANAGER)
-      : undefined;
-
-    return { order, action };
+    return {
+      order,
+      action: BigNumber.from(currentAllowance).lt(price)
+        ? () => approve(this.signer, currency, spenderAddress)
+        : undefined,
+    };
   }
 
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {

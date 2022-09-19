@@ -4,12 +4,12 @@ import abi from "../../abis/LooksRareProtocol.json";
 import { Signer } from "../../types";
 
 export const viewUserBidAskNonces = (
-  provider: providers.Provider,
+  signerOrProvider: providers.Provider | Signer,
   address: string,
   account: string,
   overrides?: Overrides
 ) => {
-  const contract = new Contract(address, abi, provider) as LooksRareProtocol;
+  const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
   return contract.viewUserBidAskNonces(account, { ...overrides });
 };
 

@@ -45,7 +45,6 @@ export interface MakerAskInputs {
   collection: string;
   strategyId: StrategyType;
   assetType: AssetType;
-  askNonce: BigNumberish;
   subsetNonce: BigNumberish;
   orderNonce: BigNumberish;
   endTime: BigNumberish;
@@ -69,7 +68,6 @@ export interface MakerBidInputs {
   collection: string;
   strategyId: StrategyType;
   assetType: AssetType;
-  bidNonce: BigNumberish;
   subsetNonce: BigNumberish;
   orderNonce: BigNumberish;
   endTime: BigNumberish;
