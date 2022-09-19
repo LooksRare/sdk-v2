@@ -50,7 +50,7 @@ export interface MakerAskInputs {
   endTime: BigNumberish;
   price: BigNumberish;
   currency: string;
-  itemIds?: BigNumberish[];
+  itemIds: BigNumberish[];
   amounts?: BigNumberish[];
   recipient?: string;
   startTime?: BigNumberish;
@@ -73,7 +73,7 @@ export interface MakerBidInputs {
   endTime: BigNumberish;
   price: BigNumberish;
   currency: string;
-  itemIds?: BigNumberish[];
+  itemIds: BigNumberish[];
   amounts?: BigNumberish[];
   recipient?: string;
   startTime?: BigNumberish;

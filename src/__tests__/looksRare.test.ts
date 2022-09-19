@@ -21,6 +21,7 @@ describe("LooksRare class", () => {
       EXCHANGE: contracts.looksRareProtocol.address,
       LOOKS: constants.AddressZero,
       TRANSFER_MANAGER: contracts.transferManager.address,
+      WETH: constants.AddressZero,
     };
     expect(new LooksRare(signers.user1, provider, SupportedChainId.HARDHAT, addresses).addresses).to.be.eql(addresses);
   });
