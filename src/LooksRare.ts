@@ -1,38 +1,148 @@
-import { BigNumber, ContractReceipt } from "ethers";
+import { BigNumber, ContractReceipt, providers } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
-import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
-import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
 import {
-  createMakerAsk,
-  createMakerBid,
+  incrementBidAskNonces,
+  cancelOrderNonces,
+  cancelSubsetNonces,
+  viewUserBidAskNonces,
+} from "./utils/calls/nonces";
+import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
+import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
+import { minNetPriceRatio } from "./constants";
+import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { contractName, version } from "./constants/eip712";
+import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
+import {
+  MakerAsk,
+  MakerBid,
+  TakerAsk,
+  TakerBid,
+  SupportedChainId,
+  Signer,
   MakerAskInputs,
   MakerBidInputs,
   MakerAskOutputs,
   MakerBidOutputs,
-} from "./utils/makerOrders";
-import { encodeParams, getTakerParamsTypes } from "./utils/encodeOrderParams";
-import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, version } from "./constants/eip712";
-import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from "./types";
+} from "./types";
 
 export class LooksRare {
-  public chainId: SupportedChainId;
-  public addresses: Addresses;
-  public signer: Signer;
+  public readonly chainId: SupportedChainId;
+  public readonly addresses: Addresses;
+  public readonly signer: Signer;
+  public readonly provider: providers.Provider;
 
-  constructor(signer: Signer, chainId: SupportedChainId, override?: Addresses) {
+  constructor(signer: Signer, provider: providers.Provider, chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
+    this.provider = provider;
   }
 
-  public async createMakerAsk(makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
-    return await createMakerAsk(this.signer, this.addresses.TRANSFER_MANAGER, makerAskInputs);
+  public async createMakerAsk({
+    collection,
+    strategyId,
+    assetType,
+    subsetNonce,
+    orderNonce,
+    endTime,
+    price,
+    currency,
+    startTime = Math.floor(Date.now() / 1000),
+    recipient = undefined,
+    itemIds = [],
+    amounts = [1],
+    additionalParameters = [],
+  }: MakerAskInputs): Promise<MakerAskOutputs> {
+    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+      throw new Error("Timestamps should be in seconds");
+    }
+
+    const signerAddress = await this.signer.getAddress();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+
+    const [isCollectionApproved, userBidAskNonce] = await Promise.all([
+      isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+    ]);
+
+    const order: MakerAsk = {
+      askNonce: userBidAskNonce.askNonce,
+      subsetNonce: subsetNonce,
+      strategyId: strategyId,
+      assetType: assetType,
+      orderNonce: orderNonce,
+      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      collection: collection,
+      currency: currency,
+      recipient: recipient ?? signerAddress,
+      signer: signerAddress,
+      startTime: startTime,
+      endTime: endTime,
+      minPrice: price,
+      itemIds: itemIds,
+      amounts: amounts,
+      additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
+    };
+
+    return {
+      order,
+      action: isCollectionApproved ? undefined : () => setApprovalForAll(this.signer, collection, spenderAddress),
+    };
   }
 
-  public async createMakerBid(makerOrderInputs: MakerBidInputs): Promise<MakerBidOutputs> {
-    return await createMakerBid(this.signer, this.addresses.TRANSFER_MANAGER, makerOrderInputs);
+  public async createMakerBid({
+    collection,
+    strategyId,
+    assetType,
+    subsetNonce,
+    orderNonce,
+    endTime,
+    price,
+    currency,
+    startTime = Math.floor(Date.now() / 1000),
+    recipient = undefined,
+    itemIds = [],
+    amounts = [1],
+    additionalParameters = [],
+  }: MakerBidInputs): Promise<MakerBidOutputs> {
+    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+      throw new Error("Timestamps should be in seconds");
+    }
+
+    const signerAddress = await this.signer.getAddress();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+
+    const [currentAllowance, userBidAskNonce] = await Promise.all([
+      allowance(this.provider, currency, signerAddress, spenderAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+    ]);
+
+    const order: MakerBid = {
+      bidNonce: userBidAskNonce.bidNonce,
+      subsetNonce: subsetNonce,
+      strategyId: strategyId,
+      assetType: assetType,
+      orderNonce: orderNonce,
+      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      collection: collection,
+      currency: currency,
+      recipient: recipient ?? signerAddress,
+      signer: signerAddress,
+      startTime: startTime,
+      endTime: endTime,
+      maxPrice: price,
+      itemIds: itemIds,
+      amounts: amounts,
+      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
+    };
+
+    return {
+      order,
+      action: BigNumber.from(currentAllowance).lt(price)
+        ? () => approve(this.signer, currency, spenderAddress)
+        : undefined,
+    };
   }
 
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {

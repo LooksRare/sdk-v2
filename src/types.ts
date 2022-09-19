@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike } from "ethers";
+import { ethers, BigNumberish, BytesLike, ContractTransaction } from "ethers";
 import { TypedDataSigner } from "@ethersproject/abstract-signer";
 
 export enum SupportedChainId {
@@ -33,6 +33,52 @@ export type SolidityType =
 // Ethers override
 
 export type Signer = ethers.Signer & TypedDataSigner;
+
+// Orders inputs
+
+export interface MakerAskOutputs {
+  order: MakerAsk;
+  action?: () => Promise<ContractTransaction>;
+}
+
+export interface MakerAskInputs {
+  collection: string;
+  strategyId: StrategyType;
+  assetType: AssetType;
+  subsetNonce: BigNumberish;
+  orderNonce: BigNumberish;
+  endTime: BigNumberish;
+  price: BigNumberish;
+  currency: string;
+  itemIds?: BigNumberish[];
+  amounts?: BigNumberish[];
+  recipient?: string;
+  startTime?: BigNumberish;
+  additionalParameters?: any[];
+}
+
+// Create and sign maker bid order
+
+export interface MakerBidOutputs {
+  order: MakerBid;
+  action?: () => Promise<ContractTransaction>;
+}
+
+export interface MakerBidInputs {
+  collection: string;
+  strategyId: StrategyType;
+  assetType: AssetType;
+  subsetNonce: BigNumberish;
+  orderNonce: BigNumberish;
+  endTime: BigNumberish;
+  price: BigNumberish;
+  currency: string;
+  itemIds?: BigNumberish[];
+  amounts?: BigNumberish[];
+  recipient?: string;
+  startTime?: BigNumberish;
+  additionalParameters?: any[];
+}
 
 // Orders
 
