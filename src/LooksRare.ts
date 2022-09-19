@@ -3,18 +3,23 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import { incrementBidAskNonces, cancelOrderNonces, cancelSubsetNonces } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
+import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
+import { minNetPriceRatio } from "./constants";
+import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { contractName, version } from "./constants/eip712";
+import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import {
-  createMakerAsk,
-  createMakerBid,
+  MakerAsk,
+  MakerBid,
+  TakerAsk,
+  TakerBid,
+  SupportedChainId,
+  Signer,
   MakerAskInputs,
   MakerBidInputs,
   MakerAskOutputs,
   MakerBidOutputs,
-} from "./utils/makerOrders";
-import { encodeParams, getTakerParamsTypes } from "./utils/encodeOrderParams";
-import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, version } from "./constants/eip712";
-import { MakerAsk, MakerBid, TakerAsk, TakerBid, SupportedChainId, Signer } from "./types";
+} from "./types";
 
 export class LooksRare {
   public readonly chainId: SupportedChainId;
@@ -29,12 +34,107 @@ export class LooksRare {
     this.provider = provider;
   }
 
-  public async createMakerAsk(makerAskInputs: MakerAskInputs): Promise<MakerAskOutputs> {
-    return await createMakerAsk(this.signer, this.addresses.TRANSFER_MANAGER, makerAskInputs);
+  public async createMakerAsk({
+    collection,
+    strategyId,
+    assetType,
+    askNonce,
+    subsetNonce,
+    orderNonce,
+    endTime,
+    price,
+    currency,
+    startTime = Math.floor(Date.now() / 1000),
+    recipient = undefined,
+    itemIds = [],
+    amounts = [1],
+    additionalParameters = [],
+  }: MakerAskInputs): Promise<MakerAskOutputs> {
+    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+      throw new Error("Timestamps should be in seconds");
+    }
+
+    const signerAddress = await this.signer.getAddress();
+
+    const order: MakerAsk = {
+      askNonce: askNonce,
+      subsetNonce: subsetNonce,
+      strategyId: strategyId,
+      assetType: assetType,
+      orderNonce: orderNonce,
+      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      collection: collection,
+      currency: currency,
+      recipient: recipient ?? signerAddress,
+      signer: signerAddress,
+      startTime: startTime,
+      endTime: endTime,
+      minPrice: price,
+      itemIds: itemIds,
+      amounts: amounts,
+      additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
+    };
+
+    const isCollectionApproved = await isApprovedForAll(
+      this.signer,
+      collection,
+      signerAddress,
+      this.addresses.TRANSFER_MANAGER
+    );
+    const action = isCollectionApproved
+      ? undefined
+      : () => setApprovalForAll(this.signer, collection, this.addresses.TRANSFER_MANAGER);
+
+    return { order, action };
   }
 
-  public async createMakerBid(makerOrderInputs: MakerBidInputs): Promise<MakerBidOutputs> {
-    return await createMakerBid(this.signer, this.addresses.TRANSFER_MANAGER, makerOrderInputs);
+  public async createMakerBid({
+    collection,
+    strategyId,
+    assetType,
+    bidNonce,
+    subsetNonce,
+    orderNonce,
+    endTime,
+    price,
+    currency,
+    startTime = Math.floor(Date.now() / 1000),
+    recipient = undefined,
+    itemIds = [],
+    amounts = [1],
+    additionalParameters = [],
+  }: MakerBidInputs): Promise<MakerBidOutputs> {
+    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+      throw new Error("Timestamps should be in seconds");
+    }
+
+    const signerAddress = await this.signer.getAddress();
+
+    const order: MakerBid = {
+      bidNonce: bidNonce,
+      subsetNonce: subsetNonce,
+      strategyId: strategyId,
+      assetType: assetType,
+      orderNonce: orderNonce,
+      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      collection: collection,
+      currency: currency,
+      recipient: recipient ?? signerAddress,
+      signer: signerAddress,
+      startTime: startTime,
+      endTime: endTime,
+      maxPrice: price,
+      itemIds: itemIds,
+      amounts: amounts,
+      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
+    };
+
+    const currentAllowance = await allowance(this.signer, currency, signerAddress, this.addresses.TRANSFER_MANAGER);
+    const action = BigNumber.from(currentAllowance).lt(price)
+      ? () => approve(this.signer, currency, this.addresses.TRANSFER_MANAGER)
+      : undefined;
+
+    return { order, action };
   }
 
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
