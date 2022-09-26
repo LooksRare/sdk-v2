@@ -1,6 +1,6 @@
 import { BigNumber, ContractReceipt, providers, constants } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import multicall from "@0xsequence/multicall";
+import * as multicall from "@0xsequence/multicall";
 import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,

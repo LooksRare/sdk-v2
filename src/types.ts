@@ -49,9 +49,9 @@ export interface MakerAskInputs {
   orderNonce: BigNumberish;
   endTime: BigNumberish;
   price: BigNumberish;
-  currency: string;
   itemIds: BigNumberish[];
   amounts?: BigNumberish[];
+  currency?: string;
   recipient?: string;
   startTime?: BigNumberish;
   additionalParameters?: any[];
@@ -72,9 +72,9 @@ export interface MakerBidInputs {
   orderNonce: BigNumberish;
   endTime: BigNumberish;
   price: BigNumberish;
-  currency: string;
   itemIds: BigNumberish[];
   amounts?: BigNumberish[];
+  currency?: string;
   recipient?: string;
   startTime?: BigNumberish;
   additionalParameters?: any[];

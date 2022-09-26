@@ -1,16 +1,17 @@
-import { Contract, BigNumber, Overrides, providers } from "ethers";
+import { Contract, BigNumber, Overrides, providers, BigNumberish } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
 import { Signer } from "../../types";
 
-export const viewUserBidAskNonces = (
+export const viewUserBidAskNonces = async (
   signerOrProvider: providers.Provider | Signer,
   address: string,
   account: string,
   overrides?: Overrides
-) => {
+): Promise<{ bidNonce: BigNumberish; askNonce: BigNumberish }> => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
-  return contract.viewUserBidAskNonces(account, { ...overrides });
+  const nonces = await contract.viewUserBidAskNonces(account, { ...overrides });
+  return { bidNonce: nonces[0], askNonce: nonces[1] };
 };
 
 export const cancelOrderNonces = (signer: Signer, address: string, nonces: BigNumber[], overrides?: Overrides) => {

@@ -1,7 +1,12 @@
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
-import { cancelOrderNonces, cancelSubsetNonces, incrementBidAskNonces } from "../utils/calls/nonces";
+import {
+  cancelOrderNonces,
+  cancelSubsetNonces,
+  incrementBidAskNonces,
+  viewUserBidAskNonces,
+} from "../utils/calls/nonces";
 
 describe("Nonces", () => {
   let contracts: Mocks;
@@ -45,17 +50,26 @@ describe("Nonces", () => {
     const transaction = await incrementBidAskNonces(signers.user1, looksRareProtocol.address, true, false);
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
+    const userNonces = await viewUserBidAskNonces(signers.user1, looksRareProtocol.address, signers.user1.address);
+    expect(userNonces.bidNonce).to.be.equal(1);
+    expect(userNonces.askNonce).to.be.equal(0);
   });
   it("increment ask nonce", async () => {
     const { looksRareProtocol } = contracts;
     const transaction = await incrementBidAskNonces(signers.user1, looksRareProtocol.address, false, true);
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
+    const userNonces = await viewUserBidAskNonces(signers.user1, looksRareProtocol.address, signers.user1.address);
+    expect(userNonces.bidNonce).to.be.equal(0);
+    expect(userNonces.askNonce).to.be.equal(1);
   });
   it("increment bid/ask nonces", async () => {
     const { looksRareProtocol } = contracts;
-    const transaction = await incrementBidAskNonces(signers.user1, looksRareProtocol.address, true, false);
+    const transaction = await incrementBidAskNonces(signers.user1, looksRareProtocol.address, true, true);
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
+    const userNonces = await viewUserBidAskNonces(signers.user1, looksRareProtocol.address, signers.user1.address);
+    expect(userNonces.bidNonce).to.be.equal(1);
+    expect(userNonces.askNonce).to.be.equal(1);
   });
 });
