@@ -1,3 +1,7 @@
 [
-  "error TransferFail()"
+  {
+    "inputs": [],
+    "name": "TransferFail",
+    "type": "error"
+  }
 ]

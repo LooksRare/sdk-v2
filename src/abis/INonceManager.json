@@ -1,7 +1,57 @@
 [
-  "error NoNonceToIncrement()",
-  "error WrongLengths()",
-  "event NewBidAskNonces(uint112,uint112)",
-  "event OrderNoncesCancelled(uint112[])",
-  "event SubsetNoncesCancelled(uint112[])"
+  {
+    "inputs": [],
+    "name": "NoNonceToIncrement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongLengths",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "NewBidAskNonces",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "OrderNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "SubsetNoncesCancelled",
+    "type": "event"
+  }
 ]

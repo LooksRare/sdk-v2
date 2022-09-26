@@ -1,87 +1,1462 @@
 [
-  "constructor(address,address)",
-  "error BadSignatureS()",
-  "error BadSignatureV(uint8)",
-  "error CollectionDiscountFactorTooHigh()",
-  "error CurrencyAlreadyWhitelisted(address)",
-  "error CurrencyNotContract(address)",
-  "error CurrencyNotWhitelisted(address)",
-  "error InvalidSignatureEOA()",
-  "error InvalidSignatureERC1271()",
-  "error NoNonceToIncrement()",
-  "error NoPotentialOwner()",
-  "error NoTransferManagerForAssetType(uint16)",
-  "error NotController()",
-  "error NotOwner()",
-  "error NotReferrer()",
-  "error NullSignerAddress()",
-  "error OrderInvalid()",
-  "error OutsideOfTimeRange()",
-  "error PercentageTooHigh()",
-  "error ReentrancyFail()",
-  "error SameDomainSeparator()",
-  "error SlippageAsk()",
-  "error SlippageBid()",
-  "error StrategyNotAvailable(uint16)",
-  "error StrategyNotUsed(uint16)",
-  "error StrategyProtocolFeeTooHigh(uint16)",
-  "error StrategyUsed(uint16)",
-  "error TransferAlreadyInProgress()",
-  "error TransferERC20Fail()",
-  "error TransferFail()",
-  "error WrongAssetType(uint8)",
-  "error WrongCaller()",
-  "error WrongCurrency()",
-  "error WrongLengths()",
-  "error WrongMerkleProof()",
-  "error WrongNonces()",
-  "error WrongPotentialOwner()",
-  "error WrongSignatureLength(uint256)",
-  "event CancelOwnershipTransfer(address)",
-  "event CurrencyRemoved(address)",
-  "event CurrencyWhitelisted(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewBidAskNonces(uint112,uint112)",
-  "event NewCollectionDiscountFactor(address,uint256)",
-  "event NewDomainSeparator()",
-  "event NewOwner(address)",
-  "event NewProtocolFeeRecipient(address)",
-  "event NewReferralController(address)",
-  "event NewReferrer(address,uint16)",
-  "event NewStrategy(uint16,address)",
-  "event OrderNoncesCancelled(uint112[])",
-  "event ReferrerRemoved(address)",
-  "event StrategyUpdated(uint16,bool,bool,uint16)",
-  "event SubsetNoncesCancelled(uint112[])",
-  "event TakerAsk(uint128,address,address,address,address,uint256,address,address,uint256[],uint256[],address[],uint256[])",
-  "event TakerBid(uint128,address,address,address,uint256,address,address,uint256[],uint256[],address[],uint256[])",
-  "function addCurrency(address)",
-  "function addStrategy(uint16,bool,uint16,uint16,address)",
-  "function addTransferManagerForAssetType(uint8,address)",
-  "function adjustDiscountFactorCollection(address,uint256)",
-  "function cancelOrderNonces(uint112[])",
-  "function cancelOwnershipTransfer()",
-  "function cancelSubsetNonces(uint112[])",
-  "function confirmOwnershipTransfer()",
-  "function executeTakerAsk(tuple(address,uint16,uint256,uint256[],uint256[],bytes),tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes),bytes,bytes32,bytes32[],address)",
-  "function executeTakerBid(tuple(address,uint16,uint256,uint256[],uint256[],bytes),tuple(uint112,uint112,uint16,uint8,uint112,uint16,address,address,address,address,uint256,uint256,uint256,uint256[],uint256[],bytes),bytes,bytes32,bytes32[],address) payable",
-  "function incrementBidAskNonces(bool,bool)",
-  "function information() view returns (bytes32, uint256, bytes32, uint256)",
-  "function initiateOwnershipTransfer(address)",
-  "function isCurrencyWhitelisted(address) view returns (bool)",
-  "function owner() view returns (address)",
-  "function potentialOwner() view returns (address)",
-  "function referralController() view returns (address)",
-  "function registerReferrer(address,uint16)",
-  "function removeCurrency(address)",
-  "function setProtocolFeeRecipient(address)",
-  "function unregisterReferrer(address)",
-  "function updateDomainSeparator()",
-  "function updateReferralController(address)",
-  "function updateStrategy(uint16,bool,uint16,bool)",
-  "function viewCollectionDiscountFactor(address) view returns (uint256)",
-  "function viewStrategy(uint16) view returns (tuple(bool,bool,uint16,uint16,address))",
-  "function viewUserBidAskNonces(address) view returns (tuple(uint112,uint112))",
-  "function viewUserOrderNonce(address,uint112) view returns (bool)",
-  "function viewUserSubsetNonce(address,uint112) view returns (bool)"
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "transferManager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltyFeeManager",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "BadSignatureS",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      }
+    ],
+    "name": "BadSignatureV",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollectionDiscountFactorTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyAlreadyWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyNotContract",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyNotWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSignatureEOA",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSignatureERC1271",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoNonceToIncrement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoPotentialOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "assetType",
+        "type": "uint16"
+      }
+    ],
+    "name": "NoTransferManagerForAssetType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotController",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotReferrer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NullSignerAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OrderInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OutsideOfTimeRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PercentageTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SameDomainSeparator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageAsk",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageBid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotAvailable",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyProtocolFeeTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferERC20Fail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferFail",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "assetType",
+        "type": "uint8"
+      }
+    ],
+    "name": "WrongAssetType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongCaller",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongCurrency",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongLengths",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongMerkleProof",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongNonces",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongPotentialOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "WrongSignatureLength",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyWhitelisted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "potentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "InitiateOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "NewBidAskNonces",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "discountFactor",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewCollectionDiscountFactor",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "NewDomainSeparator",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "protocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "NewProtocolFeeRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referralController",
+        "type": "address"
+      }
+    ],
+    "name": "NewReferralController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "percentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "NewReferrer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "NewStrategy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "OrderNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "ReferrerRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "SubsetNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "orderNonce",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidRecipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "askUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "askRecipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "strategyId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "feeRecipients",
+        "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "feeAmounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TakerAsk",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "orderNonce",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidRecipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "askUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "strategyId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "feeRecipients",
+        "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "feeAmounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TakerBid",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "addCurrency",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "addStrategy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "assetType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "address",
+        "name": "transferManager",
+        "type": "address"
+      }
+    ],
+    "name": "addTransferManagerForAssetType",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "discountFactor",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustDiscountFactorCollection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "cancelOrderNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cancelOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "cancelSubsetNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "minNetRatio",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "itemIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "additionalParameters",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct OrderStructs.TakerAsk",
+        "name": "takerAsk",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint112",
+            "name": "bidNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint112",
+            "name": "subsetNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint16",
+            "name": "strategyId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint8",
+            "name": "assetType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint112",
+            "name": "orderNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint16",
+            "name": "minNetRatio",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "collection",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "currency",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "itemIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "additionalParameters",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct OrderStructs.MakerBid",
+        "name": "makerBid",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "makerSignature",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "merkleRoot",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "merkleProof",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "executeTakerAsk",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "minNetRatio",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "itemIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "additionalParameters",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct OrderStructs.TakerBid",
+        "name": "takerBid",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint112",
+            "name": "askNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint112",
+            "name": "subsetNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint16",
+            "name": "strategyId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint8",
+            "name": "assetType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint112",
+            "name": "orderNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint16",
+            "name": "minNetRatio",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "collection",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "currency",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "itemIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "additionalParameters",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct OrderStructs.MakerAsk",
+        "name": "makerAsk",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "makerSignature",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "merkleRoot",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "merkleProof",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "executeTakerBid",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "bid",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "ask",
+        "type": "bool"
+      }
+    ],
+    "name": "incrementBidAskNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "information",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "initialDomainSeparator",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialChainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "currentDomainSeparator",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentChainId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "initiateOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "isCurrencyWhitelisted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "potentialOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralController",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "percentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "registerReferrer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "removeCurrency",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newProtocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "setProtocolFeeRecipient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "unregisterReferrer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "updateDomainSeparator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newReferralController",
+        "type": "address"
+      }
+    ],
+    "name": "updateReferralController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateStrategy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      }
+    ],
+    "name": "viewCollectionDiscountFactor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "collectionDiscountFactor",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "viewStrategy",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasRoyalties",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "protocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxProtocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IExecutionManager.Strategy",
+        "name": "strategy",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "viewUserBidAskNonces",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint112",
+            "name": "bidNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint112",
+            "name": "askNonce",
+            "type": "uint112"
+          }
+        ],
+        "internalType": "struct INonceManager.UserBidAskNonces",
+        "name": "bidAskNonces",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "nonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "viewUserOrderNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isNonceExecutedOrCancelled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "nonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "viewUserSubsetNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isNonceExecutedOrCancelled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

@@ -1,8 +1,62 @@
 [
-  "error NotController()",
-  "error NotReferrer()",
-  "error PercentageTooHigh()",
-  "event NewReferralController(address)",
-  "event NewReferrer(address,uint16)",
-  "event ReferrerRemoved(address)"
+  {
+    "inputs": [],
+    "name": "NotController",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotReferrer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PercentageTooHigh",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referralController",
+        "type": "address"
+      }
+    ],
+    "name": "NewReferralController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "percentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "NewReferrer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "ReferrerRemoved",
+    "type": "event"
+  }
 ]

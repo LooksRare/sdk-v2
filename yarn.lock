@@ -805,6 +805,13 @@
   dependencies:
     "@openzeppelin/contracts" "4.4.2"
 
+"@looksrare/contracts-exchange-v1@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@looksrare/contracts-exchange-v1/-/contracts-exchange-v1-1.2.0.tgz#e23daee853f9f101bea782c4110374ecf10eab2d"
+  integrity sha512-8Rr19/dVbBNPwALgS8RFi0HpHPDSXFX73bC+IrMlp2e889U9K+X1mhnbuF0NREs1FKeFehpKgyU2vm15wolUXg==
+  dependencies:
+    "@openzeppelin/contracts" "4.4.2"
+
 "@looksrare/contracts-libs@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@looksrare/contracts-libs/-/contracts-libs-1.1.0.tgz#4407752163a092c6ca355a140c02e7b3eff641e8"
@@ -869,11 +876,6 @@
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.4.2.tgz#4e889c9c66e736f7de189a53f8ba5b8d789425c2"
   integrity sha512-NyJV7sJgoGYqbtNUWgzzOGW4T6rR19FmX1IJgXGdapGPWsuMelGJn9h03nos0iqfforCbCB0iYIR0MtIuIFLLw==
-
-"@rari-capital/solmate@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@rari-capital/solmate/-/solmate-6.4.0.tgz#c6ee4110c8075f14b415e420b13bd8bdbbc93d9e"
-  integrity sha512-BXWIHHbG5Zbgrxi0qVYe0Zs+bfx+XgOciVUACjuIApV0KzC0kY8XdO1higusIei/ZKCC+GUKdcdQZflxYPUTKQ==
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"
@@ -8788,6 +8790,11 @@ solidity-comments-extractor@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/solidity-comments-extractor/-/solidity-comments-extractor-0.0.7.tgz#99d8f1361438f84019795d928b931f4e5c39ca19"
   integrity sha512-wciNMLg/Irp8OKGrh3S2tfvZiZ0NEyILfcRCXCD4mp7SgK/i9gzLfhY2hY7VMCQJ3kH9UB9BzNdibIVMchzyYw==
+
+solmate@^6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/solmate/-/solmate-6.6.1.tgz#f0907e1cdada6dd5fbfe11811ab545162b713197"
+  integrity sha512-WHvRXQvGtgR6R9nmkDTz/d+oULMqf/D33rlzQyadTX2SbuTmaW7ToEjGjGtWUVCQwZsZ/JP3vbOEVv7fB50btg==
 
 source-map-resolve@^0.5.0:
   version "0.5.3"
