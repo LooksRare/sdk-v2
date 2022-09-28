@@ -1,13 +1,180 @@
 [
-  "error NoNonceToIncrement()",
-  "error WrongLengths()",
-  "event NewBidAskNonces(uint112,uint112)",
-  "event OrderNoncesCancelled(uint112[])",
-  "event SubsetNoncesCancelled(uint112[])",
-  "function cancelOrderNonces(uint112[])",
-  "function cancelSubsetNonces(uint112[])",
-  "function incrementBidAskNonces(bool,bool)",
-  "function viewUserBidAskNonces(address) view returns (tuple(uint112,uint112))",
-  "function viewUserOrderNonce(address,uint112) view returns (bool)",
-  "function viewUserSubsetNonce(address,uint112) view returns (bool)"
+  {
+    "inputs": [],
+    "name": "NoNonceToIncrement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongLengths",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "NewBidAskNonces",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "OrderNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "SubsetNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "cancelOrderNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "cancelSubsetNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "bid",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "ask",
+        "type": "bool"
+      }
+    ],
+    "name": "incrementBidAskNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "viewUserBidAskNonces",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint112",
+            "name": "bidNonce",
+            "type": "uint112"
+          },
+          {
+            "internalType": "uint112",
+            "name": "askNonce",
+            "type": "uint112"
+          }
+        ],
+        "internalType": "struct INonceManager.UserBidAskNonces",
+        "name": "bidAskNonces",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "nonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "viewUserOrderNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isNonceExecutedOrCancelled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "nonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "viewUserSubsetNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isNonceExecutedOrCancelled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

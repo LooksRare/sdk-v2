@@ -1,7 +1,61 @@
 [
-  "error CurrencyAlreadyWhitelisted(address)",
-  "error CurrencyNotContract(address)",
-  "error CurrencyNotWhitelisted(address)",
-  "event CurrencyRemoved(address)",
-  "event CurrencyWhitelisted(address)"
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyAlreadyWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyNotContract",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyNotWhitelisted",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "CurrencyWhitelisted",
+    "type": "event"
+  }
 ]

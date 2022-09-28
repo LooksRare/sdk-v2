@@ -1,3 +1,7 @@
 [
-  "error TransferERC20Fail()"
+  {
+    "inputs": [],
+    "name": "TransferERC20Fail",
+    "type": "error"
+  }
 ]

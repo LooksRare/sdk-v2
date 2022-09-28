@@ -1,32 +1,391 @@
 [
-  "error AlreadyApproved()",
-  "error AlreadyWhitelisted()",
-  "error NoPotentialOwner()",
-  "error NotApproved()",
-  "error NotOwner()",
-  "error NotWhitelisted()",
-  "error TransferAlreadyInProgress()",
-  "error TransferCallerInvalid()",
-  "error WrongAssetType(uint8)",
-  "error WrongLengths()",
-  "error WrongPotentialOwner()",
-  "event ApprovalsGranted(address,address[])",
-  "event ApprovalsRemoved(address,address[])",
-  "event CancelOwnershipTransfer(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewOwner(address)",
-  "event OperatorRemoved(address)",
-  "event OperatorWhitelisted(address)",
-  "function cancelOwnershipTransfer()",
-  "function confirmOwnershipTransfer()",
-  "function grantApprovals(address[])",
-  "function initiateOwnershipTransfer(address)",
-  "function owner() view returns (address)",
-  "function potentialOwner() view returns (address)",
-  "function removeOperator(address)",
-  "function revokeApprovals(address[])",
-  "function transferBatchItems(address,uint8,address,address,uint256[],uint256[])",
-  "function transferBatchItemsAcrossCollections(address[],uint8[],address,address,uint256[][],uint256[][])",
-  "function transferSingleItem(address,uint8,address,address,uint256,uint256)",
-  "function whitelistOperator(address)"
+  {
+    "inputs": [],
+    "name": "AlreadyApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoPotentialOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotApproved",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferCallerInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "assetType",
+        "type": "uint8"
+      }
+    ],
+    "name": "WrongAssetType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongLengths",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongPotentialOwner",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "operators",
+        "type": "address[]"
+      }
+    ],
+    "name": "ApprovalsGranted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "operators",
+        "type": "address[]"
+      }
+    ],
+    "name": "ApprovalsRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "potentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "InitiateOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "OperatorRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "OperatorWhitelisted",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "cancelOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "operators",
+        "type": "address[]"
+      }
+    ],
+    "name": "grantApprovals",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "initiateOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "potentialOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "removeOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "operators",
+        "type": "address[]"
+      }
+    ],
+    "name": "revokeApprovals",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "assetType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "transferBatchItems",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "collections",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "assetTypes",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[][]",
+        "name": "itemIds",
+        "type": "uint256[][]"
+      },
+      {
+        "internalType": "uint256[][]",
+        "name": "amounts",
+        "type": "uint256[][]"
+      }
+    ],
+    "name": "transferBatchItemsAcrossCollections",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "assetType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "itemId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferSingleItem",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "whitelistOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ]

@@ -1,15 +1,125 @@
 [
-  "constructor()",
-  "error NoPotentialOwner()",
-  "error NotOwner()",
-  "error TransferAlreadyInProgress()",
-  "error WrongPotentialOwner()",
-  "event CancelOwnershipTransfer(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewOwner(address)",
-  "function cancelOwnershipTransfer()",
-  "function confirmOwnershipTransfer()",
-  "function initiateOwnershipTransfer(address)",
-  "function owner() view returns (address)",
-  "function potentialOwner() view returns (address)"
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "NoPotentialOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongPotentialOwner",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "potentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "InitiateOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "cancelOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "initiateOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "potentialOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

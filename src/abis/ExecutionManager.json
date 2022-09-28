@@ -1,34 +1,439 @@
 [
-  "constructor(address)",
-  "error CollectionDiscountFactorTooHigh()",
-  "error NoPotentialOwner()",
-  "error NotOwner()",
-  "error OrderInvalid()",
-  "error OutsideOfTimeRange()",
-  "error SlippageAsk()",
-  "error SlippageBid()",
-  "error StrategyNotAvailable(uint16)",
-  "error StrategyNotUsed(uint16)",
-  "error StrategyProtocolFeeTooHigh(uint16)",
-  "error StrategyUsed(uint16)",
-  "error TransferAlreadyInProgress()",
-  "error WrongPotentialOwner()",
-  "event CancelOwnershipTransfer(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewCollectionDiscountFactor(address,uint256)",
-  "event NewOwner(address)",
-  "event NewProtocolFeeRecipient(address)",
-  "event NewStrategy(uint16,address)",
-  "event StrategyUpdated(uint16,bool,bool,uint16)",
-  "function addStrategy(uint16,bool,uint16,uint16,address)",
-  "function adjustDiscountFactorCollection(address,uint256)",
-  "function cancelOwnershipTransfer()",
-  "function confirmOwnershipTransfer()",
-  "function initiateOwnershipTransfer(address)",
-  "function owner() view returns (address)",
-  "function potentialOwner() view returns (address)",
-  "function setProtocolFeeRecipient(address)",
-  "function updateStrategy(uint16,bool,uint16,bool)",
-  "function viewCollectionDiscountFactor(address) view returns (uint256)",
-  "function viewStrategy(uint16) view returns (tuple(bool,bool,uint16,uint16,address))"
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "royaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "CollectionDiscountFactorTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoPotentialOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OrderInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OutsideOfTimeRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageAsk",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageBid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotAvailable",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyProtocolFeeTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongPotentialOwner",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "potentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "InitiateOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "discountFactor",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewCollectionDiscountFactor",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "protocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "NewProtocolFeeRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "NewStrategy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "addStrategy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "discountFactor",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustDiscountFactorCollection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cancelOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newPotentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "initiateOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "potentialOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newProtocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "setProtocolFeeRecipient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateStrategy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      }
+    ],
+    "name": "viewCollectionDiscountFactor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "collectionDiscountFactor",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "viewStrategy",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasRoyalties",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "protocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxProtocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IExecutionManager.Strategy",
+        "name": "strategy",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

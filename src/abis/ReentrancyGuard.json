@@ -1,3 +1,7 @@
 [
-  "error ReentrancyFail()"
+  {
+    "inputs": [],
+    "name": "ReentrancyFail",
+    "type": "error"
+  }
 ]

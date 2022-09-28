@@ -1,15 +1,153 @@
 [
-  "error CollectionDiscountFactorTooHigh()",
-  "error OrderInvalid()",
-  "error OutsideOfTimeRange()",
-  "error SlippageAsk()",
-  "error SlippageBid()",
-  "error StrategyNotAvailable(uint16)",
-  "error StrategyNotUsed(uint16)",
-  "error StrategyProtocolFeeTooHigh(uint16)",
-  "error StrategyUsed(uint16)",
-  "event NewCollectionDiscountFactor(address,uint256)",
-  "event NewProtocolFeeRecipient(address)",
-  "event NewStrategy(uint16,address)",
-  "event StrategyUpdated(uint16,bool,bool,uint16)"
+  {
+    "inputs": [],
+    "name": "CollectionDiscountFactorTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OrderInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OutsideOfTimeRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageAsk",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageBid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotAvailable",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyNotUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyProtocolFeeTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUsed",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "discountFactor",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewCollectionDiscountFactor",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "protocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "NewProtocolFeeRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "NewStrategy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUpdated",
+    "type": "event"
+  }
 ]

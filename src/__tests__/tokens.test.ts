@@ -40,21 +40,21 @@ describe("Tokens", () => {
   });
   it("approve ERC1155", async () => {
     const provider = ethers.provider;
-    const { collection3 } = contracts;
+    const { collection2 } = contracts;
 
     let isApproved = await isApprovedForAll(
       provider,
-      collection3.address,
+      collection2.address,
       signers.user1.address,
       signers.operator.address
     );
     expect(isApproved).to.be.false;
 
-    const transaction = await setApprovalForAll(signers.user1, collection3.address, signers.operator.address);
+    const transaction = await setApprovalForAll(signers.user1, collection2.address, signers.operator.address);
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
-    isApproved = await isApprovedForAll(provider, collection3.address, signers.user1.address, signers.operator.address);
+    isApproved = await isApprovedForAll(provider, collection2.address, signers.user1.address, signers.operator.address);
     expect(isApproved).to.be.true;
   });
 });
