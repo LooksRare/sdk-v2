@@ -1,7 +1,31 @@
 import { TypedDataField } from "@ethersproject/abstract-signer";
+import { SolidityType } from "../types";
 
 export const contractName = "LooksRareProtocol";
 export const version = 2;
+
+export const MAKER_ASK_HASH = "0x85fa30b2b848c94bd5f5b88383658126eb3a69201d0b539f4bf956996bdb6af1";
+export const MAKER_BID_HASH = "0xaac47bd6046bbe5acd60a92f52dde1bb26209688be10f8a6e723fb405c70721b";
+
+export const hashingMakerTypes: SolidityType[] = [
+  "bytes32",
+  "uint112",
+  "uint112",
+  "uint16",
+  "uint8",
+  "uint112",
+  "uint16",
+  "address",
+  "address",
+  "address",
+  "address",
+  "uint256",
+  "uint256",
+  "uint256",
+  "bytes32",
+  "bytes32",
+  "bytes32",
+];
 
 export const makerAskTypes: Record<string, Array<TypedDataField>> = {
   MakerAsk: [
