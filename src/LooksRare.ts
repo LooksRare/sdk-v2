@@ -112,7 +112,7 @@ export class LooksRare {
     }
 
     const signerAddress = await this.signer.getAddress();
-    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+    const spenderAddress = this.addresses.EXCHANGE;
 
     const [currentAllowance, userBidAskNonce] = await Promise.all([
       allowance(this.provider, currency, signerAddress, spenderAddress),

@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { Contract, constants, ContractTransaction } from "ethers";
+import { Contract, constants, ContractTransaction, utils } from "ethers";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
@@ -51,6 +51,7 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 };
 
 export const setUpContracts = async (): Promise<Mocks> => {
+  const signers = await getSigners();
   let tx: ContractTransaction;
 
   // Deploy contracts
@@ -70,11 +71,10 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await tx.wait();
 
   // Setup balances
-  const signers = await getSigners();
   for (let i = 0; i < NB_NFT_PER_USER; i++) {
     tx = await collection1.mint(signers.user1.address, i);
     await tx.wait();
-    tx = await collection2.mint(signers.user3.address, i, 10);
+    tx = await collection2.mint(signers.user2.address, i, 10);
     await tx.wait();
   }
 
