@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "@0xsequence/multicall": "^0.41.0",
-    "contracts-exchange-v2": "LooksRare/contracts-exchange-v2"
+    "contracts-exchange-v2": "LooksRare/contracts-exchange-v2",
+    "merkletreejs": "^0.2.32"
   }
 }

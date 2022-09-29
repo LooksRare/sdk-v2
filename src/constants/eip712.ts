@@ -68,3 +68,7 @@ export const makerBidTypes: Record<string, Array<TypedDataField>> = {
     { name: "additionalParameters", type: "bytes" },
   ],
 };
+
+export const merkleRootTypes: Record<string, Array<TypedDataField>> = {
+  MerkleRoot: [{ name: "root", type: "bytes32" }],
+};
