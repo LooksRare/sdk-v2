@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { getMakerParamsTypes, getTakerParamsTypes, encodeParams } from "../utils/encodeOrderParams";
 import { StrategyType } from "../types";
 
-describe("getStrategyParamsTypes", () => {
+describe("getMakerParamsTypes", () => {
   it("standard", () => {
     const paramsTypes = getMakerParamsTypes(StrategyType.standard);
     expect(paramsTypes).to.eql([]);
@@ -13,7 +13,7 @@ describe("getStrategyParamsTypes", () => {
   });
 });
 
-describe("getStrategyParamsTypes", () => {
+describe("getTakerParamsTypes", () => {
   it("standard", () => {
     const paramsTypes = getTakerParamsTypes(StrategyType.standard);
     expect(paramsTypes).to.eql([]);

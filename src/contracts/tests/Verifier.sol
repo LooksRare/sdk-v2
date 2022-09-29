@@ -12,8 +12,12 @@ contract Verifier is LooksRareProtocolHelpers {
 
     constructor(address _looksRareProtocol) LooksRareProtocolHelpers(_looksRareProtocol) {}
 
-    function getMakerOrderHash(OrderStructs.MakerAsk memory makerAsk) public pure returns (bytes32 orderHash) {
+    function getMakerAskHash(OrderStructs.MakerAsk memory makerAsk) public pure returns (bytes32 orderHash) {
         return makerAsk.hash();
+    }
+
+    function getMakerBidHash(OrderStructs.MakerBid memory makerBid) public pure returns (bytes32 orderHash) {
+        return makerBid.hash();
     }
 
     function getDomainSeparator() public view returns (bytes32) {

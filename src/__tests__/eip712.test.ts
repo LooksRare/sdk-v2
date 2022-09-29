@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
-import { computeDigestMakerAsk, getDomainSeparator, getMakerOrderHash } from "./helpers/eip712";
+import { computeDigestMakerAsk, getDomainSeparator } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
 import { SupportedChainId, MakerAsk, AssetType } from "../types";
 
@@ -41,12 +41,6 @@ describe("EIP-712", () => {
       amounts: [1],
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
-  });
-  it("validate maker order hash", async () => {
-    const { verifier } = contracts;
-    const orderHashSc = await verifier.getMakerOrderHash(makerOrder);
-    const orderHashHs = getMakerOrderHash(makerOrder);
-    expect(orderHashSc === orderHashHs);
   });
   it("validate domain data", async () => {
     const { verifier } = contracts;
