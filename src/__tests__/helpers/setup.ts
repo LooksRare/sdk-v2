@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { Contract, constants, ContractTransaction, utils } from "ethers";
+import { Contract, constants, ContractTransaction } from "ethers";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
@@ -18,6 +18,7 @@ export interface Mocks {
   transferManager: TransferManager;
   collection1: MockERC721;
   collection2: MockERC1155;
+  collection3: MockERC721;
   weth: MockERC20;
   verifier: Verifier;
 }
@@ -60,6 +61,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const looksRareProtocol = await deploy("LooksRareProtocol", transferManager.address, royaltyFeeRegistry.address);
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
   const collection2 = (await deploy("MockERC1155")) as MockERC1155;
+  const collection3 = (await deploy("MockERC721", "Collection3", "COL3")) as MockERC721;
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
   const verifier = (await deploy("Verifier", looksRareProtocol.address)) as Verifier;
 
@@ -83,6 +85,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
     transferManager: transferManager as TransferManager,
     collection1: collection1 as MockERC721,
     collection2: collection2 as MockERC1155,
+    collection3: collection3 as MockERC721,
     weth: weth as MockERC20,
     verifier: verifier as Verifier,
   };

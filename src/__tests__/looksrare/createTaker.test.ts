@@ -14,7 +14,7 @@ import {
   TakerAsk,
 } from "../../types";
 
-describe("Create taker", () => {
+describe("Create takers", () => {
   let contracts: Mocks;
   let signers: Signers;
   let addresses: Addresses;
