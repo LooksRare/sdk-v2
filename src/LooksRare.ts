@@ -1,7 +1,9 @@
 import { BigNumber, ContractReceipt, providers, constants } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
-import { signMakerAsk, signMakerBid } from "./utils/signMakerOrders";
+import { MerkleTree } from "merkletreejs";
+import { keccak256 } from "js-sha3";
+import { signMakerAsk, signMakerBid, signMerkleRoot } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -14,6 +16,7 @@ import { minNetPriceRatio } from "./constants";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
+import { getMakerAskHash, getMakerBidHash } from "./utils/hashOrder";
 import {
   MakerAsk,
   MakerBid,
@@ -25,6 +28,7 @@ import {
   MakerBidInputs,
   MakerAskOutputs,
   MakerBidOutputs,
+  MerkleRoot,
 } from "./types";
 
 export class LooksRare {
@@ -187,13 +191,16 @@ export class LooksRare {
     return await signMakerBid(this.signer, this.getTypedDataDomain(), makerBid);
   }
 
-  /**
-   * TODO
-   * signMultipleMaker
-      1. Array of order hashes (bytes32)
-      2. Alphabetical sort 
-      3. Compute merkleroot
-   */
+  public async signMultipleMakers(makerOrders: (MakerAsk | MakerBid)[]) {
+    const leaves = makerOrders.map((order) => {
+      const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
+      return Buffer.from(hash.slice(2), "hex");
+    });
+    const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
+    const merkleRoot: MerkleRoot = { root: tree.getHexRoot() };
+    const signature = await signMerkleRoot(this.signer, this.getTypedDataDomain(), merkleRoot);
+    return { tree, leaves, root: merkleRoot.root, signature };
+  }
 
   public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
     const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);

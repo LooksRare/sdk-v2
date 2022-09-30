@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import { hashingMakerTypes, MAKER_ASK_HASH } from "../constants/eip712";
+import { hashingMakerTypes, MAKER_ASK_HASH, MAKER_BID_HASH } from "../constants/eip712";
 import { MakerAsk, MakerBid } from "../types";
 
 /**
@@ -39,7 +39,7 @@ export const getMakerAskHash = (makerAsk: MakerAsk): string => {
  */
 export const getMakerBidHash = (makerBid: MakerBid): string => {
   const values = [
-    MAKER_ASK_HASH,
+    MAKER_BID_HASH,
     makerBid.bidNonce,
     makerBid.subsetNonce,
     makerBid.strategyId,

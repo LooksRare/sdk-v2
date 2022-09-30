@@ -137,3 +137,7 @@ export interface TakerBid {
   amounts: BigNumberish[];
   additionalParameters: BytesLike;
 }
+
+export interface MerkleRoot {
+  root: string;
+}
