@@ -1,4 +1,4 @@
-import { BigNumber, ContractReceipt, providers, constants } from "ethers";
+import { BigNumber, ContractReceipt, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { MerkleTree } from "merkletreejs";
@@ -11,6 +11,12 @@ import {
   viewUserBidAskNonces,
 } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
+import {
+  transferBatchItems,
+  transferBatchItemsAcrossCollections,
+  grantApprovals,
+  revokeApprovals,
+} from "./utils/calls/transferManager";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { minNetPriceRatio } from "./constants";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
@@ -18,6 +24,7 @@ import { contractName, version } from "./constants/eip712";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import { getMakerAskHash, getMakerBidHash } from "./utils/hashOrder";
 import {
+  AssetType,
   MakerAsk,
   MakerBid,
   TakerAsk,
@@ -43,6 +50,17 @@ export class LooksRare {
     this.signer = signer;
     this.provider = new multicall.providers.MulticallProvider(provider);
   }
+
+  public getTypedDataDomain(): TypedDataDomain {
+    return {
+      name: contractName,
+      version: version.toString(),
+      chainId: this.chainId,
+      verifyingContract: this.addresses.EXCHANGE,
+    };
+  }
+
+  // Create orders
 
   public async createMakerAsk({
     collection,
@@ -77,7 +95,7 @@ export class LooksRare {
       strategyId: strategyId,
       assetType: assetType,
       orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      minNetRatio: minNetPriceRatio,
       collection: collection,
       currency: currency,
       recipient: recipient ?? signerAddress,
@@ -129,7 +147,7 @@ export class LooksRare {
       strategyId: strategyId,
       assetType: assetType,
       orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio, // @TODO update with protocol fees and royalties data
+      minNetRatio: minNetPriceRatio,
       collection: collection,
       currency: currency,
       recipient: recipient ?? signerAddress,
@@ -174,14 +192,7 @@ export class LooksRare {
     return order;
   }
 
-  public getTypedDataDomain(): TypedDataDomain {
-    return {
-      name: contractName,
-      version: version.toString(),
-      chainId: this.chainId,
-      verifyingContract: this.addresses.EXCHANGE,
-    };
-  }
+  // Signer orders
 
   public async signMakerAsk(makerAsk: MakerAsk): Promise<string> {
     return await signMakerAsk(this.signer, this.getTypedDataDomain(), makerAsk);
@@ -202,6 +213,8 @@ export class LooksRare {
     return { tree, leaves, root: merkleRoot.root, signature };
   }
 
+  // Execute orders
+
   public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
     const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
     return tx.wait();
@@ -211,6 +224,8 @@ export class LooksRare {
     const tx = await executeTakerBid(this.signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
     return tx.wait();
   }
+
+  // Cancel orders
 
   public async cancelAllOrders(bid: boolean, ask: boolean): Promise<ContractReceipt> {
     const tx = await incrementBidAskNonces(this.signer, this.addresses.EXCHANGE, bid, ask);
@@ -224,6 +239,60 @@ export class LooksRare {
 
   public async cancelSubsetOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
     const tx = await cancelSubsetNonces(this.signer, this.addresses.EXCHANGE, nonces);
+    return tx.wait();
+  }
+
+  // Transfer manager
+
+  public async grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
+    const tx = await grantApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
+    return tx.wait();
+  }
+
+  public async revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
+    const tx = await revokeApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
+    return tx.wait();
+  }
+
+  public async transferItemsFromSameCollection(
+    collection: string,
+    assetType: AssetType,
+    from: string,
+    to: string,
+    itemIds: BigNumberish[],
+    amounts: BigNumberish[]
+  ) {
+    const tx = await transferBatchItems(
+      this.signer,
+      this.addresses.TRANSFER_MANAGER,
+      collection,
+      assetType,
+      from,
+      to,
+      itemIds,
+      amounts
+    );
+    return tx.wait();
+  }
+
+  public async transferItemsAcrossCollection(
+    collections: string[],
+    assetTypes: AssetType[],
+    from: string,
+    to: string,
+    itemIds: BigNumberish[][],
+    amounts: BigNumberish[][]
+  ) {
+    const tx = await transferBatchItemsAcrossCollections(
+      this.signer,
+      this.addresses.TRANSFER_MANAGER,
+      collections,
+      assetTypes,
+      from,
+      to,
+      itemIds,
+      amounts
+    );
     return tx.wait();
   }
 }

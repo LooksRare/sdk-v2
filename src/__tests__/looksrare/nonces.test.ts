@@ -7,7 +7,7 @@ import { LooksRare } from "../../LooksRare";
 import { Addresses } from "../../constants/addresses";
 import { SupportedChainId } from "../../types";
 
-describe("Nonces", () => {
+describe("Nonces and order cancellation", () => {
   let contracts: Mocks;
   let signers: Signers;
   let addresses: Addresses;
