@@ -4,6 +4,7 @@ node_modules
 # testing
 coverage
 coverage.json
+.nyc_output
 
 # build
 lib
