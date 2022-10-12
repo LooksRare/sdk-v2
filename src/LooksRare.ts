@@ -39,11 +39,28 @@ import {
 } from "./types";
 
 export class LooksRare {
+  /** Current app chain ID */
   public readonly chainId: SupportedChainId;
+  /** Mapping of LooksRare protocol addresses for the current chain */
   public readonly addresses: Addresses;
+  /**
+   * Ethers signer
+   * @see https://docs.ethers.io/v5/api/signer/
+   */
   public readonly signer: Signer;
+  /**
+   * Ethers provider
+   * @see https://docs.ethers.io/v5/api/providers/
+   */
   public readonly provider: providers.Provider;
 
+  /**
+   * LooksRare protocol main class
+   * @param signer Ethers signer
+   * @param provider Ethers provider
+   * @param chainId Current app chain id
+   * @param override Overrides contract addresses for hardhat setup
+   */
   constructor(signer: Signer, provider: providers.Provider, chainId: SupportedChainId, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
@@ -51,6 +68,10 @@ export class LooksRare {
     this.provider = new multicall.providers.MulticallProvider(provider);
   }
 
+  /**
+   * Retrieve EIP-712 domain
+   * @returns TypedDataDomain
+   */
   public getTypedDataDomain(): TypedDataDomain {
     return {
       name: contractName,
@@ -60,8 +81,10 @@ export class LooksRare {
     };
   }
 
-  // Create orders
-
+  /**
+   * Create a maker ask object ready to be signed
+   * @param makerAskInputs
+   */
   public async createMakerAsk({
     collection,
     strategyId,
@@ -114,6 +137,10 @@ export class LooksRare {
     };
   }
 
+  /**
+   * Create a maker bid object ready to be signed
+   * @param makerBidOutputs
+   */
   public async createMakerBid({
     collection,
     strategyId,
@@ -168,6 +195,12 @@ export class LooksRare {
     };
   }
 
+  /**
+   * Create a taker ask ready to be executed against a maker bid
+   * @param makerBid Maker bid that will be used as counterparty for the taker ask
+   * @param recipient Recipient address of the taker
+   * @param additionalParameters Additional parameters used to support complex orders
+   */
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
     const order: TakerAsk = {
       recipient: recipient,
@@ -180,6 +213,12 @@ export class LooksRare {
     return order;
   }
 
+  /**
+   * Create a taker bid ready to be executed against a maker ask
+   * @param makerAsk Maker ask that will be used as counterparty for the taker bid
+   * @param recipient Recipient address of the taker
+   * @param additionalParameters Additional parameters used to support complex orders
+   */
   public createTakerBid(makerAsk: MakerAsk, recipient: string, additionalParameters: any[] = []): TakerBid {
     const order: TakerBid = {
       recipient: recipient,
@@ -192,16 +231,29 @@ export class LooksRare {
     return order;
   }
 
-  // Signer orders
-
+  /**
+   * Sign a maker ask using the signer provided in the constructor
+   * @param makerAsk Order to be signed by the user
+   * @returns Signature
+   */
   public async signMakerAsk(makerAsk: MakerAsk): Promise<string> {
     return await signMakerAsk(this.signer, this.getTypedDataDomain(), makerAsk);
   }
 
+  /**
+   * Sign a maker bid using the signer provided in the constructor
+   * @param makerBid Order to be signed by the user
+   * @returns Signature
+   */
   public async signMakerBid(makerBid: MakerBid): Promise<string> {
     return await signMakerBid(this.signer, this.getTypedDataDomain(), makerBid);
   }
 
+  /**
+   * Sign multiple maker orders (bids or asks) with a single signature
+   * @param makerOrders List of maker order to be signed
+   * @returns Merkle tree and the signature
+   */
   public async signMultipleMakers(makerOrders: (MakerAsk | MakerBid)[]) {
     const leaves = makerOrders.map((order) => {
       const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
@@ -213,42 +265,71 @@ export class LooksRare {
     return { tree, leaves, root: merkleRoot.root, signature };
   }
 
-  // Execute orders
-
+  /**
+   * Execute a trade with a taker ask and a maker bid
+   * @param makerBid Maker bid
+   * @param takerAsk Taker ask
+   * @param signature Signature of the maker order
+   */
   public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
     const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
     return tx.wait();
   }
 
+  /**
+   * Execute a trade with a taker bid and a maker ask
+   * @param makerAsk Maker ask
+   * @param takerBid Taker bid
+   * @param signature Signature of the maker order
+   */
   public async executeTakerBid(makerAsk: MakerAsk, takerBid: TakerBid, signature: string): Promise<ContractReceipt> {
     const tx = await executeTakerBid(this.signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
     return tx.wait();
   }
 
-  // Cancel orders
-
+  /**
+   * Cancell all maker bid and/or ask orders for the current user
+   * @param bid Cancel all bids
+   * @param ask Cancel all asks
+   */
   public async cancelAllOrders(bid: boolean, ask: boolean): Promise<ContractReceipt> {
     const tx = await incrementBidAskNonces(this.signer, this.addresses.EXCHANGE, bid, ask);
     return tx.wait();
   }
 
+  /**
+   * Cancel a list of specific orders
+   * @param nonces List of nonces to be cancelled
+   */
   public async cancelOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
     const tx = await cancelOrderNonces(this.signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 
+  /**
+   * Cancel a list of specific subset orders
+   * @param nonces List of nonces to be cancelled
+   */
   public async cancelSubsetOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
     const tx = await cancelSubsetNonces(this.signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 
-  // Transfer manager
-
+  /**
+   * Grant a list of operators the rights to transfer user's assets using the transfer manager
+   * @param operators List of operators
+   * @defaultValue Exchange address
+   */
   public async grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
     const tx = await grantApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
     return tx.wait();
   }
 
+  /**
+   * Revoke a list of operators the rights to transfer user's assets using the transfer manager
+   * @param operators List of operators
+   * @defaultValue Exchange address
+   */
   public async revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
     const tx = await revokeApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
     return tx.wait();
