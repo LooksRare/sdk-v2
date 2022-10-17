@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["./src/LooksRare.ts", "./src/types.ts"],
+  "out": "./doc",
+  "githubPages": false,
+  "readme": "none",
+  "gitRemote": "https://github.com/LooksRare/sdk-v2",
+  "disableSources": true,
+
+  // typedoc-plugin-markdown
+  "hideBreadcrumbs": true,
+  "hideInPageTOC": true
+}

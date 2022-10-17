@@ -1,5 +1,5 @@
 {
-  "name": "sdk-v2",
+  "name": "@looksrare/sdk-v2",
   "version": "0.0.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -9,15 +9,17 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prebuild": "rm -rf ./dist && rm -rf artifacts && rm -rf typechain",
+    "prebuild": "rm -rf typechain dist artifacts cache",
+    "dev": "rollup -c -w",
     "build:ts": "rollup -c && tsc -d",
     "build:sc": "hardhat compile",
     "build": "yarn build:sc && yarn build:ts",
     "test": "nyc hardhat test",
-    "clean": "rm -rf node_modules typechain dist artifacts cache",
+    "doc": "typedoc --plugin typedoc-plugin-markdown",
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
-    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'"
+    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
+    "release": "release-it --only-version --set-upstream"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,yaml,yml}": "yarn format:write"
@@ -64,6 +66,8 @@
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.1",
     "typechain": "^8.0.0",
+    "typedoc": "^0.23.16",
+    "typedoc-plugin-markdown": "^3.13.6",
     "typescript": "^4.7.3"
   },
   "dependencies": {
