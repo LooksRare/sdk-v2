@@ -11,7 +11,22 @@
   },
   {
     "inputs": [],
-    "name": "NoPotentialOwner",
+    "name": "ERC1155SafeBatchTransferFrom",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155SafeTransferFromFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC721TransferFromFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoOngoingTransferInProgress",
     "type": "error"
   },
   {
@@ -31,12 +46,27 @@
   },
   {
     "inputs": [],
+    "name": "RenouncementNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementTooEarly",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "TransferAlreadyInProgress",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "TransferCallerInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferNotInProgress",
     "type": "error"
   },
   {
@@ -100,15 +130,21 @@
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "previousPotentialOwner",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "earliestOwnershipRenouncementTime",
+        "type": "uint256"
       }
     ],
-    "name": "CancelOwnershipTransfer",
+    "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },
   {
@@ -178,9 +214,42 @@
   },
   {
     "inputs": [],
+    "name": "confirmOwnershipRenouncement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "confirmOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delay",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earliestOwnershipRenouncementTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -200,6 +269,37 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "hasUserApprovedOperator",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initiateOwnershipRenouncement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "newPotentialOwner",
         "type": "address"
       }
@@ -210,6 +310,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isOperatorWhitelisted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -217,6 +336,19 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ownershipStatus",
+    "outputs": [
+      {
+        "internalType": "enum IOwnableTwoSteps.Status",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -257,44 +389,6 @@
       }
     ],
     "name": "revokeApprovals",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "assetType",
-        "type": "uint8"
-      },
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "itemIds",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "amounts",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "transferBatchItems",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -345,9 +439,37 @@
         "type": "address"
       },
       {
-        "internalType": "uint8",
-        "name": "assetType",
-        "type": "uint8"
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "transferItemsERC1155",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
       },
       {
         "internalType": "address",
@@ -360,17 +482,17 @@
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "itemId",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
       }
     ],
-    "name": "transferSingleItem",
+    "name": "transferItemsERC721",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

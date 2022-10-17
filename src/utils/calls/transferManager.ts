@@ -3,21 +3,6 @@ import { TransferManager } from "../../../typechain/contracts-exchange-v2/contra
 import abi from "../../abis/TransferManager.json";
 import { AssetType, Signer } from "../../types";
 
-export const transferBatchItems = (
-  signer: Signer,
-  address: string,
-  collection: string,
-  assetType: AssetType,
-  from: string,
-  to: string,
-  itemIds: BigNumberish[],
-  amounts: BigNumberish[],
-  overrides?: Overrides
-) => {
-  const contract = new Contract(address, abi, signer) as TransferManager;
-  return contract.transferBatchItems(collection, assetType, from, to, itemIds, amounts, { ...overrides });
-};
-
 export const transferBatchItemsAcrossCollections = (
   signer: Signer,
   address: string,

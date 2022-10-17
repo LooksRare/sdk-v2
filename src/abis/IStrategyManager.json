@@ -1,17 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "NotReferralController",
+    "name": "StrategyNotUsed",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotReferrer",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "PercentageTooHigh",
+    "name": "StrategyProtocolFeeTooHigh",
     "type": "error"
   },
   {
@@ -19,44 +14,49 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "referralController",
+        "name": "implementation",
         "type": "address"
       }
     ],
-    "name": "NewReferralController",
+    "name": "NewStrategy",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
       {
         "indexed": false,
         "internalType": "bool",
         "name": "isActive",
         "type": "bool"
-      }
-    ],
-    "name": "NewReferralProgramStatus",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
+      },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "rate",
+        "name": "protocolFee",
         "type": "uint16"
       }
     ],
-    "name": "NewReferrerRate",
+    "name": "StrategyUpdated",
     "type": "event"
   }
 ]

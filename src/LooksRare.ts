@@ -11,12 +11,7 @@ import {
   viewUserBidAskNonces,
 } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
-import {
-  transferBatchItems,
-  transferBatchItemsAcrossCollections,
-  grantApprovals,
-  revokeApprovals,
-} from "./utils/calls/transferManager";
+import { transferBatchItemsAcrossCollections, grantApprovals, revokeApprovals } from "./utils/calls/transferManager";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { minNetPriceRatio } from "./constants";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
@@ -271,8 +266,24 @@ export class LooksRare {
    * @param takerAsk Taker ask
    * @param signature Signature of the maker order
    */
-  public async executeTakerAsk(makerBid: MakerBid, takerAsk: TakerAsk, signature: string): Promise<ContractReceipt> {
-    const tx = await executeTakerAsk(this.signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature);
+  public async executeTakerAsk(
+    makerBid: MakerBid,
+    takerAsk: TakerAsk,
+    signature: string,
+    merkleRoot: MerkleRoot = { root: constants.HashZero },
+    merkleProof: string[] = [],
+    referrer: string = constants.AddressZero
+  ): Promise<ContractReceipt> {
+    const tx = await executeTakerAsk(
+      this.signer,
+      this.addresses.EXCHANGE,
+      takerAsk,
+      makerBid,
+      signature,
+      merkleRoot,
+      merkleProof,
+      referrer
+    );
     return tx.wait();
   }
 
@@ -282,8 +293,24 @@ export class LooksRare {
    * @param takerBid Taker bid
    * @param signature Signature of the maker order
    */
-  public async executeTakerBid(makerAsk: MakerAsk, takerBid: TakerBid, signature: string): Promise<ContractReceipt> {
-    const tx = await executeTakerBid(this.signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature);
+  public async executeTakerBid(
+    makerAsk: MakerAsk,
+    takerBid: TakerBid,
+    signature: string,
+    merkleRoot: MerkleRoot = { root: constants.HashZero },
+    merkleProof: string[] = [],
+    referrer: string = constants.AddressZero
+  ): Promise<ContractReceipt> {
+    const tx = await executeTakerBid(
+      this.signer,
+      this.addresses.EXCHANGE,
+      takerBid,
+      makerAsk,
+      signature,
+      merkleRoot,
+      merkleProof,
+      referrer
+    );
     return tx.wait();
   }
 
@@ -332,27 +359,6 @@ export class LooksRare {
    */
   public async revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
     const tx = await revokeApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
-    return tx.wait();
-  }
-
-  public async transferItemsFromSameCollection(
-    collection: string,
-    assetType: AssetType,
-    from: string,
-    to: string,
-    itemIds: BigNumberish[],
-    amounts: BigNumberish[]
-  ) {
-    const tx = await transferBatchItems(
-      this.signer,
-      this.addresses.TRANSFER_MANAGER,
-      collection,
-      assetType,
-      from,
-      to,
-      itemIds,
-      amounts
-    );
     return tx.wait();
   }
 

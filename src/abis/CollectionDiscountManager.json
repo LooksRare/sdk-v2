@@ -1,40 +1,17 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyAlreadyWhitelisted",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotContract",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotWhitelisted",
+    "inputs": [],
+    "name": "CollectionDiscountFactorTooHigh",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "NoOngoingTransferInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotCollectionDiscountController",
     "type": "error"
   },
   {
@@ -78,32 +55,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyWhitelisted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "earliestOwnershipRenouncementTime",
         "type": "uint256"
@@ -137,6 +88,38 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "collectionDiscountController",
+        "type": "address"
+      }
+    ],
+    "name": "NewCollectionDiscountController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "discountFactor",
+        "type": "uint16"
+      }
+    ],
+    "name": "NewCollectionDiscountFactor",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       }
@@ -145,23 +128,42 @@
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "addCurrency",
+    "inputs": [],
+    "name": "cancelOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "cancelOwnershipTransfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "collectionDiscountController",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "collectionDiscountFactor",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -225,25 +227,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isCurrencyWhitelisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -286,11 +269,29 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "currency",
+        "name": "newCollectionDiscountController",
         "type": "address"
       }
     ],
-    "name": "removeCurrency",
+    "name": "updateCollectionDiscountController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "discountFactor",
+        "type": "uint16"
+      }
+    ],
+    "name": "updateCollectionDiscountFactor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

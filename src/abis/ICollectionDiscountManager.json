@@ -1,17 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "NotReferralController",
+    "name": "CollectionDiscountFactorTooHigh",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotReferrer",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "PercentageTooHigh",
+    "name": "NotCollectionDiscountController",
     "type": "error"
   },
   {
@@ -20,24 +15,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "referralController",
+        "name": "collectionDiscountController",
         "type": "address"
       }
     ],
-    "name": "NewReferralController",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
-      }
-    ],
-    "name": "NewReferralProgramStatus",
+    "name": "NewCollectionDiscountController",
     "type": "event"
   },
   {
@@ -46,17 +28,17 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "referrer",
+        "name": "collection",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "rate",
+        "name": "discountFactor",
         "type": "uint16"
       }
     ],
-    "name": "NewReferrerRate",
+    "name": "NewCollectionDiscountFactor",
     "type": "event"
   }
 ]

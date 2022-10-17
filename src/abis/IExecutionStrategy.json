@@ -1,5 +1,15 @@
 [
   {
+    "inputs": [],
+    "name": "OrderInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongCaller",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -142,6 +152,11 @@
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "isNonceInvalidated",
+        "type": "bool"
       }
     ],
     "stateMutability": "nonpayable",
@@ -290,6 +305,11 @@
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "isNonceInvalidated",
+        "type": "bool"
       }
     ],
     "stateMutability": "nonpayable",
