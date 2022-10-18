@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "looksRareProtocolAddress",
+        "name": "_looksRareProtocol",
         "type": "address"
       }
     ],
@@ -24,6 +24,22 @@
       }
     ],
     "name": "BadSignatureV",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "BundleEIP2981NotAllowed",
     "type": "error"
   },
   {
@@ -51,6 +67,65 @@
     ],
     "name": "WrongSignatureLength",
     "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      }
+    ],
+    "name": "calculateProtocolFeeAndCollectionDiscountFactorAndRoyaltyInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "protocolFeeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "collectionDiscountFactor",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyFeeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltyRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "netPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "enum LooksRareProtocolHelpers.RoyaltyType",
+        "name": "royaltyType",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -255,11 +330,50 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "root",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct OrderStructs.MerkleRoot",
+        "name": "merkleRoot",
+        "type": "tuple"
+      }
+    ],
+    "name": "computeDigestMerkleRoot",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "digest",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "looksRareProtocol",
     "outputs": [
       {
         "internalType": "contract LooksRareProtocol",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "royaltyFeeRegistry",
+    "outputs": [
+      {
+        "internalType": "contract IRoyaltyFeeRegistry",
         "name": "",
         "type": "address"
       }
@@ -479,6 +593,42 @@
       }
     ],
     "name": "verifyMakerBidOrder",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "root",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct OrderStructs.MerkleRoot",
+        "name": "merkleRoot",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "makerSignature",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address",
+        "name": "signer",
+        "type": "address"
+      }
+    ],
+    "name": "verifyMerkleRoot",
     "outputs": [
       {
         "internalType": "bool",

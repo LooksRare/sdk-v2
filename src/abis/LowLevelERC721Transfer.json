@@ -1,7 +1,7 @@
 [
   {
     "inputs": [],
-    "name": "TransferERC20Fail",
+    "name": "ERC721TransferFromFail",
     "type": "error"
   }
 ]

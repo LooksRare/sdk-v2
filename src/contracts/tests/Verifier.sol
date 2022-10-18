@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.14;
+pragma solidity ^0.8.17;
 
 import "contracts-exchange-v2/contracts/LooksRareProtocol.sol";
-import "contracts-exchange-v2/contracts/LooksRareProtocolHelpers.sol";
+import "contracts-exchange-v2/contracts/helpers/LooksRareProtocolHelpers.sol";
 import "hardhat/console.sol";
 
 contract Verifier is LooksRareProtocolHelpers {

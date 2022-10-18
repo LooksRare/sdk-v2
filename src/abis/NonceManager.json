@@ -102,6 +102,54 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "",
+        "type": "uint112"
+      }
+    ],
+    "name": "userOrderNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "",
+        "type": "uint112"
+      }
+    ],
+    "name": "userSubsetNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "user",
         "type": "address"
       }
@@ -124,54 +172,6 @@
         "internalType": "struct INonceManager.UserBidAskNonces",
         "name": "bidAskNonces",
         "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint112",
-        "name": "nonce",
-        "type": "uint112"
-      }
-    ],
-    "name": "viewUserOrderNonce",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isNonceExecutedOrCancelled",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint112",
-        "name": "nonce",
-        "type": "uint112"
-      }
-    ],
-    "name": "viewUserSubsetNonce",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isNonceExecutedOrCancelled",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",

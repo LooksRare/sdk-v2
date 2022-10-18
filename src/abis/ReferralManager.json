@@ -1,17 +1,17 @@
 [
   {
     "inputs": [],
-    "name": "NoPotentialOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotController",
+    "name": "NoOngoingTransferInProgress",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotReferralController",
     "type": "error"
   },
   {
@@ -26,7 +26,22 @@
   },
   {
     "inputs": [],
+    "name": "RenouncementNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementTooEarly",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferNotInProgress",
     "type": "error"
   },
   {
@@ -36,15 +51,21 @@
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "previousPotentialOwner",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "earliestOwnershipRenouncementTime",
+        "type": "uint256"
       }
     ],
-    "name": "CancelOwnershipTransfer",
+    "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },
   {
@@ -97,18 +118,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint16",
-        "name": "percentage",
-        "type": "uint16"
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
       }
     ],
-    "name": "NewReferrer",
+    "name": "NewReferralProgramStatus",
     "type": "event"
   },
   {
@@ -119,9 +134,15 @@
         "internalType": "address",
         "name": "referrer",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "rate",
+        "type": "uint16"
       }
     ],
-    "name": "ReferrerRemoved",
+    "name": "NewReferrerRate",
     "type": "event"
   },
   {
@@ -133,7 +154,47 @@
   },
   {
     "inputs": [],
+    "name": "confirmOwnershipRenouncement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delay",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earliestOwnershipRenouncementTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initiateOwnershipRenouncement",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -153,12 +214,38 @@
   },
   {
     "inputs": [],
+    "name": "isReferralProgramActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ownershipStatus",
+    "outputs": [
+      {
+        "internalType": "enum IOwnableTwoSteps.Status",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -194,31 +281,19 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "referrer",
+        "name": "",
         "type": "address"
-      },
+      }
+    ],
+    "name": "referrerRates",
+    "outputs": [
       {
         "internalType": "uint16",
-        "name": "percentage",
+        "name": "",
         "type": "uint16"
       }
     ],
-    "name": "registerReferrer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      }
-    ],
-    "name": "unregisterReferrer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -230,6 +305,37 @@
       }
     ],
     "name": "updateReferralController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateReferralProgramStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "rate",
+        "type": "uint16"
+      }
+    ],
+    "name": "updateReferrerRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

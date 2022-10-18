@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "ERC20TransferFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC20TransferFromFail",
+    "type": "error"
+  }
+]

@@ -3,12 +3,28 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "royaltyFeeRegistry",
+        "name": "_royaltyFeeRegistry",
         "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "BundleEIP2981NotAllowed",
+    "type": "error"
   },
   {
     "inputs": [],
@@ -17,7 +33,17 @@
   },
   {
     "inputs": [],
-    "name": "NoPotentialOwner",
+    "name": "NoNonceToIncrement",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoOngoingTransferInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotCollectionDiscountController",
     "type": "error"
   },
   {
@@ -32,7 +58,22 @@
   },
   {
     "inputs": [],
+    "name": "OrderMerkleProofInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "OutsideOfTimeRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementTooEarly",
     "type": "error"
   },
   {
@@ -57,36 +98,13 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
-      }
-    ],
+    "inputs": [],
     "name": "StrategyNotUsed",
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
-      }
-    ],
+    "inputs": [],
     "name": "StrategyProtocolFeeTooHigh",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
-      }
-    ],
-    "name": "StrategyUsed",
     "type": "error"
   },
   {
@@ -96,20 +114,36 @@
   },
   {
     "inputs": [],
+    "name": "TransferNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongLengths",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "WrongPotentialOwner",
     "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "previousPotentialOwner",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "earliestOwnershipRenouncementTime",
+        "type": "uint256"
       }
     ],
-    "name": "CancelOwnershipTransfer",
+    "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },
   {
@@ -136,15 +170,47 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "name": "NewBidAskNonces",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collectionDiscountController",
+        "type": "address"
+      }
+    ],
+    "name": "NewCollectionDiscountController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "collection",
         "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "discountFactor",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "name": "NewCollectionDiscountFactor",
@@ -181,6 +247,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "royaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "NewRoyaltyFeeRegistry",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint16",
         "name": "strategyId",
         "type": "uint16"
@@ -193,6 +272,19 @@
       }
     ],
     "name": "NewStrategy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "OrderNoncesCancelled",
     "type": "event"
   },
   {
@@ -227,12 +319,20 @@
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
-      },
+        "indexed": false,
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "SubsetNoncesCancelled",
+    "type": "event"
+  },
+  {
+    "inputs": [
       {
         "internalType": "bool",
         "name": "hasRoyalties",
@@ -262,17 +362,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "discountFactor",
-        "type": "uint256"
+        "internalType": "uint112[]",
+        "name": "orderNonces",
+        "type": "uint112[]"
       }
     ],
-    "name": "adjustDiscountFactorCollection",
+    "name": "cancelOrderNonces",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -285,8 +380,124 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint112[]",
+        "name": "subsetNonces",
+        "type": "uint112[]"
+      }
+    ],
+    "name": "cancelSubsetNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "collectionDiscountController",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "collectionDiscountFactor",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmOwnershipRenouncement",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "confirmOwnershipTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "countStrategies",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delay",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earliestOwnershipRenouncementTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "bid",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "ask",
+        "type": "bool"
+      }
+    ],
+    "name": "incrementBidAskNonces",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initiateOwnershipRenouncement",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -319,10 +530,49 @@
   },
   {
     "inputs": [],
+    "name": "ownershipStatus",
+    "outputs": [
+      {
+        "internalType": "enum IOwnableTwoSteps.Status",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "potentialOwner",
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "protocolFeeRecipient",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "royaltyFeeRegistry",
+    "outputs": [
+      {
+        "internalType": "contract IRoyaltyFeeRegistry",
         "name": "",
         "type": "address"
       }
@@ -339,6 +589,96 @@
       }
     ],
     "name": "setProtocolFeeRecipient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newRoyaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "setRoyaltyFeeRegistry",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      }
+    ],
+    "name": "strategyInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasRoyalties",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "protocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxProtocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IStrategyManager.Strategy",
+        "name": "strategy",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newCollectionDiscountController",
+        "type": "address"
+      }
+    ],
+    "name": "updateCollectionDiscountController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "discountFactor",
+        "type": "uint16"
+      }
+    ],
+    "name": "updateCollectionDiscountFactor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -375,16 +715,21 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "collection",
+        "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "",
+        "type": "uint112"
       }
     ],
-    "name": "viewCollectionDiscountFactor",
+    "name": "userOrderNonce",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "collectionDiscountFactor",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -393,43 +738,52 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint112",
+        "name": "",
+        "type": "uint112"
       }
     ],
-    "name": "viewStrategy",
+    "name": "userSubsetNonce",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "viewUserBidAskNonces",
     "outputs": [
       {
         "components": [
           {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
+            "internalType": "uint112",
+            "name": "bidNonce",
+            "type": "uint112"
           },
           {
-            "internalType": "bool",
-            "name": "hasRoyalties",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint16",
-            "name": "protocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "maxProtocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "address",
-            "name": "implementation",
-            "type": "address"
+            "internalType": "uint112",
+            "name": "askNonce",
+            "type": "uint112"
           }
         ],
-        "internalType": "struct IExecutionManager.Strategy",
-        "name": "strategy",
+        "internalType": "struct INonceManager.UserBidAskNonces",
+        "name": "bidAskNonces",
         "type": "tuple"
       }
     ],

@@ -3,33 +3,27 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "currency",
+        "name": "_royaltyFeeRegistry",
         "type": "address"
       }
     ],
-    "name": "CurrencyAlreadyWhitelisted",
-    "type": "error"
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "currency",
+        "name": "collection",
         "type": "address"
-      }
-    ],
-    "name": "CurrencyNotContract",
-    "type": "error"
-  },
-  {
-    "inputs": [
+      },
       {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
       }
     ],
-    "name": "CurrencyNotWhitelisted",
+    "name": "BundleEIP2981NotAllowed",
     "type": "error"
   },
   {
@@ -78,32 +72,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyWhitelisted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "earliestOwnershipRenouncementTime",
         "type": "uint256"
@@ -145,17 +113,30 @@
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
         "internalType": "address",
-        "name": "currency",
+        "name": "protocolFeeRecipient",
         "type": "address"
       }
     ],
-    "name": "addCurrency",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "NewProtocolFeeRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "royaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "NewRoyaltyFeeRegistry",
+    "type": "event"
   },
   {
     "inputs": [],
@@ -225,25 +206,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isCurrencyWhitelisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -283,14 +245,53 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "protocolFeeRecipient",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "currency",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "removeCurrency",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "royaltyFeeRegistry",
+    "outputs": [
+      {
+        "internalType": "contract IRoyaltyFeeRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newProtocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "setProtocolFeeRecipient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newRoyaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "setRoyaltyFeeRegistry",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

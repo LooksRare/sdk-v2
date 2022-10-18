@@ -1,0 +1,88 @@
+[
+  {
+    "inputs": [],
+    "name": "NoOngoingTransferInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RenouncementTooEarly",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferAlreadyInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongPotentialOwner",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "CancelOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "earliestOwnershipRenouncementTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "InitiateOwnershipRenouncement",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "potentialOwner",
+        "type": "address"
+      }
+    ],
+    "name": "InitiateOwnershipTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  }
+]

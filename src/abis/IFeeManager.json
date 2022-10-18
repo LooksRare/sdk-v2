@@ -1,0 +1,44 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "BundleEIP2981NotAllowed",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "protocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "NewProtocolFeeRecipient",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "royaltyFeeRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "NewRoyaltyFeeRegistry",
+    "type": "event"
+  }
+]

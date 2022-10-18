@@ -1,36 +1,8 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyAlreadyWhitelisted",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotContract",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotWhitelisted",
-    "type": "error"
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
     "inputs": [],
@@ -54,6 +26,16 @@
   },
   {
     "inputs": [],
+    "name": "StrategyNotUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StrategyProtocolFeeTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "TransferAlreadyInProgress",
     "type": "error"
   },
@@ -71,32 +53,6 @@
     "anonymous": false,
     "inputs": [],
     "name": "CancelOwnershipTransfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyWhitelisted",
     "type": "event"
   },
   {
@@ -145,14 +101,79 @@
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "currency",
+        "name": "implementation",
         "type": "address"
       }
     ],
-    "name": "addCurrency",
+    "name": "NewStrategy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      }
+    ],
+    "name": "StrategyUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "addStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -176,6 +197,19 @@
     "name": "confirmOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "countStrategies",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -225,25 +259,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isCurrencyWhitelisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -285,12 +300,73 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
       }
     ],
-    "name": "removeCurrency",
+    "name": "strategyInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasRoyalties",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "protocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxProtocolFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IStrategyManager.Strategy",
+        "name": "strategy",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "strategyId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasRoyalties",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "protocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
