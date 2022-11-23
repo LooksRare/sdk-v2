@@ -10,7 +10,7 @@ export const viewUserBidAskNonces = async (
   overrides?: Overrides
 ): Promise<{ bidNonce: BigNumberish; askNonce: BigNumberish }> => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
-  const nonces = await contract.viewUserBidAskNonces(account, { ...overrides });
+  const nonces = await contract.userBidAskNonces(account, { ...overrides });
   return { bidNonce: nonces[0], askNonce: nonces[1] };
 };
 

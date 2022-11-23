@@ -5,11 +5,6 @@
         "internalType": "address",
         "name": "transferManager",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "royaltyFeeRegistry",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -34,27 +29,6 @@
       }
     ],
     "name": "BadSignatureV",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "itemIds",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "BundleEIP2981NotAllowed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "CollectionDiscountFactorTooHigh",
     "type": "error"
   },
   {
@@ -142,6 +116,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "NoSelectorForTakerAsk",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoSelectorForTakerBid",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint8",
@@ -154,22 +138,17 @@
   },
   {
     "inputs": [],
-    "name": "NotCollectionDiscountController",
+    "name": "NotAffiliate",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAffiliateController",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "NotOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotReferralController",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotReferrer",
     "type": "error"
   },
   {
@@ -225,6 +204,11 @@
   {
     "inputs": [],
     "name": "SlippageBid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StrategyHasNoSelector",
     "type": "error"
   },
   {
@@ -312,6 +296,25 @@
   },
   {
     "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "affiliateFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "AffiliatePayment",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [],
     "name": "CancelOwnershipTransfer",
     "type": "event"
@@ -379,6 +382,51 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "affiliateController",
+        "type": "address"
+      }
+    ],
+    "name": "NewAffiliateController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "NewAffiliateProgramStatus",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewAffiliateRate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint8",
         "name": "assetType",
         "type": "uint8"
@@ -424,30 +472,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "collectionDiscountController",
+        "name": "creatorFeeManager",
         "type": "address"
       }
     ],
-    "name": "NewCollectionDiscountController",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint16",
-        "name": "discountFactor",
-        "type": "uint16"
-      }
-    ],
-    "name": "NewCollectionDiscountFactor",
+    "name": "NewCreatorFeeManager",
     "type": "event"
   },
   {
@@ -487,64 +516,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "referralController",
-        "type": "address"
-      }
-    ],
-    "name": "NewReferralController",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
-      }
-    ],
-    "name": "NewReferralProgramStatus",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint16",
-        "name": "rate",
-        "type": "uint16"
-      }
-    ],
-    "name": "NewReferrerRate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "royaltyFeeRegistry",
-        "type": "address"
-      }
-    ],
-    "name": "NewRoyaltyFeeRegistry",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "uint16",
         "name": "strategyId",
         "type": "uint16"
@@ -577,56 +548,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "protocolFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "ProtocolPayment",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "protocolFee",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "referralFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "ProtocolPaymentWithReferrer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "uint16",
         "name": "strategyId",
         "type": "uint16"
@@ -639,14 +560,14 @@
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "minTotalFee",
         "type": "uint16"
       }
     ],
@@ -671,6 +592,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "bytes32",
+        "name": "orderHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
         "internalType": "uint128",
         "name": "orderNonce",
         "type": "uint128"
@@ -691,12 +618,6 @@
         "indexed": false,
         "internalType": "address",
         "name": "askUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "askRecipient",
         "type": "address"
       },
       {
@@ -748,6 +669,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "orderHash",
+        "type": "bytes32"
+      },
       {
         "indexed": false,
         "internalType": "uint128",
@@ -834,19 +761,29 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "minTotalFee",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
         "name": "maxProtocolFee",
         "type": "uint16"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerAsk",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerBid",
+        "type": "bytes4"
       },
       {
         "internalType": "address",
@@ -880,6 +817,38 @@
     "name": "addTransferManagerForAssetType",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "affiliateController",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "affiliateRates",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -917,31 +886,12 @@
   },
   {
     "inputs": [],
-    "name": "collectionDiscountController",
+    "name": "chainId",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "collectionDiscountFactor",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -976,12 +926,38 @@
   },
   {
     "inputs": [],
+    "name": "creatorFeeManager",
+    "outputs": [
+      {
+        "internalType": "contract ICreatorFeeManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "delay",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "domainSeparator",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -1008,11 +984,6 @@
             "internalType": "address",
             "name": "recipient",
             "type": "address"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "uint256",
@@ -1065,11 +1036,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -1150,7 +1116,7 @@
       },
       {
         "internalType": "address",
-        "name": "referrer",
+        "name": "affiliate",
         "type": "address"
       },
       {
@@ -1172,11 +1138,6 @@
             "internalType": "address",
             "name": "recipient",
             "type": "address"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "uint256",
@@ -1229,11 +1190,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -1314,7 +1270,7 @@
       },
       {
         "internalType": "address",
-        "name": "referrer",
+        "name": "affiliate",
         "type": "address"
       }
     ],
@@ -1331,11 +1287,6 @@
             "internalType": "address",
             "name": "recipient",
             "type": "address"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "uint256",
@@ -1388,11 +1339,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -1473,7 +1419,7 @@
       },
       {
         "internalType": "address",
-        "name": "referrer",
+        "name": "affiliate",
         "type": "address"
       }
     ],
@@ -1502,34 +1448,6 @@
   },
   {
     "inputs": [],
-    "name": "information",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "initialDomainSeparator",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "initialChainId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "currentDomainSeparator",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "currentChainId",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "initiateOwnershipRenouncement",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1549,14 +1467,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isCurrencyWhitelisted",
+    "inputs": [],
+    "name": "isAffiliateProgramActive",
     "outputs": [
       {
         "internalType": "bool",
@@ -1568,8 +1480,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "isReferralProgramActive",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isCurrencyWhitelisted",
     "outputs": [
       {
         "internalType": "bool",
@@ -1657,38 +1575,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "referralController",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "referrerRates",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -1709,11 +1595,6 @@
             "internalType": "address",
             "name": "recipient",
             "type": "address"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "uint256",
@@ -1766,11 +1647,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -1831,13 +1707,18 @@
         "internalType": "address",
         "name": "sender",
         "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "orderHash",
+        "type": "bytes32"
       }
     ],
     "name": "restrictedExecuteTakerBid",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "protocolFeeAmount",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -1845,16 +1726,16 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "royaltyFeeRegistry",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "contract IRoyaltyFeeRegistry",
-        "name": "",
+        "internalType": "address",
+        "name": "newCreatorFeeManager",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "setCreatorFeeManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1873,57 +1754,47 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newRoyaltyFeeRegistry",
-        "type": "address"
-      }
-    ],
-    "name": "setRoyaltyFeeRegistry",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint16",
-        "name": "strategyId",
+        "name": "",
         "type": "uint16"
       }
     ],
     "name": "strategyInfo",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "hasRoyalties",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint16",
-            "name": "protocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "maxProtocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "address",
-            "name": "implementation",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct IStrategyManager.Strategy",
-        "name": "strategy",
-        "type": "tuple"
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "minTotalFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerAsk",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerBid",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -1933,11 +1804,24 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "newCollectionDiscountController",
+        "name": "newAffiliateController",
         "type": "address"
       }
     ],
-    "name": "updateCollectionDiscountController",
+    "name": "updateAffiliateController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateAffiliateProgramStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1946,16 +1830,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "collection",
+        "name": "affiliate",
         "type": "address"
       },
       {
-        "internalType": "uint16",
-        "name": "discountFactor",
-        "type": "uint16"
+        "internalType": "uint256",
+        "name": "bp",
+        "type": "uint256"
       }
     ],
-    "name": "updateCollectionDiscountFactor",
+    "name": "updateAffiliateRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1970,62 +1854,18 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newReferralController",
-        "type": "address"
-      }
-    ],
-    "name": "updateReferralController",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
-      }
-    ],
-    "name": "updateReferralProgramStatus",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "internalType": "uint16",
-        "name": "rate",
-        "type": "uint16"
-      }
-    ],
-    "name": "updateReferrerRate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint16",
         "name": "strategyId",
         "type": "uint16"
       },
       {
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "newStandardProtocolFee",
+        "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "newMinTotalFee",
         "type": "uint16"
       },
       {
@@ -2037,6 +1877,30 @@
     "name": "updateStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userBidAskNonces",
+    "outputs": [
+      {
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -2082,37 +1946,6 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "viewUserBidAskNonces",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint112",
-            "name": "bidNonce",
-            "type": "uint112"
-          },
-          {
-            "internalType": "uint112",
-            "name": "askNonce",
-            "type": "uint112"
-          }
-        ],
-        "internalType": "struct INonceManager.UserBidAskNonces",
-        "name": "bidAskNonces",
-        "type": "tuple"
       }
     ],
     "stateMutability": "view",

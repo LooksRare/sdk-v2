@@ -21,7 +21,7 @@ contract Verifier is LooksRareProtocolHelpers {
     }
 
     function getDomainSeparator() public view returns (bytes32) {
-        (, , bytes32 domainSeparator, ) = looksRareProtocol.information();
+        bytes32 domainSeparator = looksRareProtocol.domainSeparator();
         return domainSeparator;
     }
 

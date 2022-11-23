@@ -27,22 +27,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "itemIds",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "BundleEIP2981NotAllowed",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "InvalidSignatureEOA",
     "type": "error"
@@ -67,65 +51,6 @@
     ],
     "name": "WrongSignatureLength",
     "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "strategyId",
-        "type": "uint16"
-      },
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "itemIds",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
-    ],
-    "name": "calculateProtocolFeeAndCollectionDiscountFactorAndRoyaltyInfo",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "protocolFeeAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "collectionDiscountFactor",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint256",
-        "name": "royaltyFeeAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "royaltyRecipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "netPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "enum LooksRareProtocolHelpers.RoyaltyType",
-        "name": "royaltyType",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
   },
   {
     "inputs": [
@@ -155,11 +80,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -256,11 +176,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -369,19 +284,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "royaltyFeeRegistry",
-    "outputs": [
-      {
-        "internalType": "contract IRoyaltyFeeRegistry",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -409,11 +311,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",
@@ -520,11 +417,6 @@
             "internalType": "uint112",
             "name": "orderNonce",
             "type": "uint112"
-          },
-          {
-            "internalType": "uint16",
-            "name": "minNetRatio",
-            "type": "uint16"
           },
           {
             "internalType": "address",

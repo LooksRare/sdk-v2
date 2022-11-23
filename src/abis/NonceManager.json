@@ -104,6 +104,30 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "name": "userBidAskNonces",
+    "outputs": [
+      {
+        "internalType": "uint112",
+        "name": "bidNonce",
+        "type": "uint112"
+      },
+      {
+        "internalType": "uint112",
+        "name": "askNonce",
+        "type": "uint112"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
         "internalType": "uint112",
@@ -141,37 +165,6 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "viewUserBidAskNonces",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint112",
-            "name": "bidNonce",
-            "type": "uint112"
-          },
-          {
-            "internalType": "uint112",
-            "name": "askNonce",
-            "type": "uint112"
-          }
-        ],
-        "internalType": "struct INonceManager.UserBidAskNonces",
-        "name": "bidAskNonces",
-        "type": "tuple"
       }
     ],
     "stateMutability": "view",

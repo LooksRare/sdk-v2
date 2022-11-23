@@ -1,39 +1,27 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_royaltyFeeRegistry",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "itemIds",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "BundleEIP2981NotAllowed",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "NoOngoingTransferInProgress",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "NotAffiliate",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAffiliateController",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PercentageTooHigh",
     "type": "error"
   },
   {
@@ -105,6 +93,51 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "affiliateController",
+        "type": "address"
+      }
+    ],
+    "name": "NewAffiliateController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "NewAffiliateProgramStatus",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewAffiliateRate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       }
@@ -113,30 +146,36 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
+    "inputs": [],
+    "name": "affiliateController",
+    "outputs": [
       {
-        "indexed": false,
         "internalType": "address",
-        "name": "protocolFeeRecipient",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "NewProtocolFeeRecipient",
-    "type": "event"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
         "internalType": "address",
-        "name": "royaltyFeeRegistry",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "NewRoyaltyFeeRegistry",
-    "type": "event"
+    "name": "affiliateRates",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -207,6 +246,19 @@
   },
   {
     "inputs": [],
+    "name": "isAffiliateProgramActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -245,40 +297,27 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "protocolFeeRecipient",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "newAffiliateController",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "royaltyFeeRegistry",
-    "outputs": [
-      {
-        "internalType": "contract IRoyaltyFeeRegistry",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "updateAffiliateController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newProtocolFeeRecipient",
-        "type": "address"
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
       }
     ],
-    "name": "setProtocolFeeRecipient",
+    "name": "updateAffiliateProgramStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -287,11 +326,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "newRoyaltyFeeRegistry",
+        "name": "affiliate",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bp",
+        "type": "uint256"
       }
     ],
-    "name": "setRoyaltyFeeRegistry",
+    "name": "updateAffiliateRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
