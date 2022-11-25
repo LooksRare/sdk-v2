@@ -158,7 +158,6 @@ export interface MakerAsk {
   assetType: AssetType;
   /** Nonce for this specific order */
   orderNonce: BigNumberish;
-  minNetRatio: number;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
@@ -193,7 +192,6 @@ export interface MakerBid {
   assetType: AssetType;
   /** Nonce for this specific order */
   orderNonce: BigNumberish;
-  minNetRatio: number;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
@@ -220,7 +218,6 @@ export interface MakerBid {
 export interface TakerAsk {
   /** Recipient of the transaction */
   recipient: string;
-  minNetRatio: number;
   /** Minimum price to receive for the trade */
   minPrice: BigNumberish;
   /** List of items IDs */
@@ -235,7 +232,6 @@ export interface TakerAsk {
 export interface TakerBid {
   /** Recipient of the transaction */
   recipient: string;
-  minNetRatio: number;
   /** Maximum price to be paid for the trade */
   maxPrice: BigNumberish;
   /** List of items IDs */

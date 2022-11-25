@@ -13,7 +13,6 @@ import {
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
 import { transferBatchItemsAcrossCollections, grantApprovals, revokeApprovals } from "./utils/calls/transferManager";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
-import { minNetPriceRatio } from "./constants";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
@@ -113,7 +112,6 @@ export class LooksRare {
       strategyId: strategyId,
       assetType: assetType,
       orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio,
       collection: collection,
       currency: currency,
       recipient: recipient ?? signerAddress,
@@ -169,7 +167,6 @@ export class LooksRare {
       strategyId: strategyId,
       assetType: assetType,
       orderNonce: orderNonce,
-      minNetRatio: minNetPriceRatio,
       collection: collection,
       currency: currency,
       recipient: recipient ?? signerAddress,
@@ -199,7 +196,6 @@ export class LooksRare {
   public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
     const order: TakerAsk = {
       recipient: recipient,
-      minNetRatio: makerBid.minNetRatio,
       minPrice: makerBid.maxPrice,
       itemIds: makerBid.itemIds,
       amounts: makerBid.amounts,
@@ -217,7 +213,6 @@ export class LooksRare {
   public createTakerBid(makerAsk: MakerAsk, recipient: string, additionalParameters: any[] = []): TakerBid {
     const order: TakerBid = {
       recipient: recipient,
-      minNetRatio: makerAsk.minNetRatio,
       maxPrice: makerAsk.minPrice,
       itemIds: makerAsk.itemIds,
       amounts: makerAsk.amounts,

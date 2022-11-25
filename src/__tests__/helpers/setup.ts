@@ -57,8 +57,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
 
   // Deploy contracts
   const transferManager = (await deploy("TransferManager")) as TransferManager;
-  const royaltyFeeRegistry = { address: ethers.constants.AddressZero }; // TMP: Breaks execute tests, waiting for the V2 rework
-  const looksRareProtocol = await deploy("LooksRareProtocol", transferManager.address, royaltyFeeRegistry.address);
+  const looksRareProtocol = await deploy("LooksRareProtocol", transferManager.address);
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
   const collection2 = (await deploy("MockERC1155")) as MockERC1155;
   const collection3 = (await deploy("MockERC721", "Collection3", "COL3")) as MockERC721;

@@ -29,7 +29,6 @@ describe("EIP-712", () => {
       strategyId: 1,
       assetType: AssetType.ERC721,
       orderNonce: 1,
-      minNetRatio: 8500,
       collection: contracts.collection1.address,
       currency: contracts.weth.address,
       recipient: signers.user1.address,

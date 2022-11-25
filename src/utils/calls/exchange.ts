@@ -35,7 +35,7 @@ export const executeTakerAsk = (
   overrides?: PayableOverrides
 ) => {
   const internalOverrides: PayableOverrides =
-    makerBid.currency === constants.AddressZero ? { value: takerAsk.minNetRatio } : {};
+    makerBid.currency === constants.AddressZero ? { value: takerAsk.minPrice } : {};
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
   return contract.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleRoot, merkleProof, referrer, {
     ...overrides,
