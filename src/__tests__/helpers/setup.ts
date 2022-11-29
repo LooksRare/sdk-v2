@@ -6,6 +6,7 @@ import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
+import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
@@ -57,6 +58,11 @@ export const setUpContracts = async (): Promise<Mocks> => {
 
   // Deploy contracts
   const transferManager = (await deploy("TransferManager")) as TransferManager;
+  const royaltyFeeRegistry = await deploy("MockRoyaltyFeeRegistry", 9500);
+  const feeManager = (await deploy(
+    "CreatorFeeManagerWithRoyalties",
+    royaltyFeeRegistry.address
+  )) as CreatorFeeManagerWithRoyalties;
   const looksRareProtocol = await deploy("LooksRareProtocol", transferManager.address);
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
   const collection2 = (await deploy("MockERC1155")) as MockERC1155;
@@ -64,6 +70,8 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
   const verifier = (await deploy("Verifier", looksRareProtocol.address)) as Verifier;
 
+  tx = await looksRareProtocol.setCreatorFeeManager(feeManager.address);
+  await tx.wait();
   tx = await looksRareProtocol.addCurrency(constants.AddressZero);
   await tx.wait();
   tx = await looksRareProtocol.addCurrency(weth.address);
