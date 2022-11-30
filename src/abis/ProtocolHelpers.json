@@ -93,11 +93,6 @@
           },
           {
             "internalType": "address",
-            "name": "recipient",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
             "name": "signer",
             "type": "address"
           },
@@ -185,11 +180,6 @@
           {
             "internalType": "address",
             "name": "currency",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "recipient",
             "type": "address"
           },
           {
@@ -324,11 +314,6 @@
           },
           {
             "internalType": "address",
-            "name": "recipient",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
             "name": "signer",
             "type": "address"
           },
@@ -426,11 +411,6 @@
           {
             "internalType": "address",
             "name": "currency",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "recipient",
             "type": "address"
           },
           {

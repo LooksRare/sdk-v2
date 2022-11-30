@@ -16,11 +16,6 @@
   },
   {
     "inputs": [],
-    "name": "RenouncementTooEarly",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "TransferAlreadyInProgress",
     "type": "error"
   },
@@ -42,14 +37,7 @@
   },
   {
     "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "earliestOwnershipRenouncementTime",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },

@@ -77,11 +77,6 @@ export interface MakerAskInputs {
    */
   currency?: string;
   /**
-   * Trade recipient
-   * @defaultValue Signer
-   */
-  recipient?: string;
-  /**
    * Order validity start time
    * @defaultValue now
    */
@@ -130,11 +125,6 @@ export interface MakerBidInputs {
    */
   currency?: string;
   /**
-   * Trade recipient
-   * @defaultValue Signer
-   */
-  recipient?: string;
-  /**
    * Order validity start time
    * @defaultValue now
    */
@@ -162,8 +152,6 @@ export interface MakerAsk {
   collection: string;
   /** Currency address (zero address for ETH) */
   currency: string;
-  /** Recipient for the trade */
-  recipient: string;
   /** Signer address */
   signer: string;
   /** Timestamp in second of the time when the order starts to be valid */
@@ -196,8 +184,6 @@ export interface MakerBid {
   collection: string;
   /** Currency address (zero address for ETH) */
   currency: string;
-  /** Recipient for the trade */
-  recipient: string;
   /** Signer address */
   signer: string;
   /** Timestamp in second of the time when the order starts to be valid */

@@ -55,6 +55,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "MAGIC_VALUE_NONCE_EXECUTED",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint112[]",
@@ -138,9 +151,9 @@
     "name": "userOrderNonce",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "bytes32",
         "name": "",
-        "type": "bool"
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",

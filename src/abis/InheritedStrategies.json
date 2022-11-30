@@ -3,10 +3,5 @@
     "inputs": [],
     "name": "OrderInvalid",
     "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OrderMerkleProofInvalid",
-    "type": "error"
   }
 ]

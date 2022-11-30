@@ -91,7 +91,6 @@ export class LooksRare {
     amounts = [1],
     currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
-    recipient = undefined,
     additionalParameters = [],
   }: MakerAskInputs): Promise<MakerAskOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -114,7 +113,6 @@ export class LooksRare {
       orderNonce: orderNonce,
       collection: collection,
       currency: currency,
-      recipient: recipient ?? signerAddress,
       signer: signerAddress,
       startTime: startTime,
       endTime: endTime,
@@ -146,7 +144,6 @@ export class LooksRare {
     amounts = [1],
     currency = this.addresses.WETH,
     startTime = Math.floor(Date.now() / 1000),
-    recipient = undefined,
     additionalParameters = [],
   }: MakerBidInputs): Promise<MakerBidOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -169,7 +166,6 @@ export class LooksRare {
       orderNonce: orderNonce,
       collection: collection,
       currency: currency,
-      recipient: recipient ?? signerAddress,
       signer: signerAddress,
       startTime: startTime,
       endTime: endTime,

@@ -53,28 +53,32 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "orderHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint128",
+            "name": "orderNonce",
+            "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isNonceInvalidated",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          }
+        ],
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "orderHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint128",
-        "name": "orderNonce",
-        "type": "uint128"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidRecipient",
-        "type": "address"
+        "internalType": "struct ILooksRareProtocol.SignatureParameters",
+        "name": "signatureParameters",
+        "type": "tuple"
       },
       {
         "indexed": false,
@@ -132,33 +136,37 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "orderHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint128",
+            "name": "orderNonce",
+            "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isNonceInvalidated",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          }
+        ],
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "orderHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint128",
-        "name": "orderNonce",
-        "type": "uint128"
+        "internalType": "struct ILooksRareProtocol.SignatureParameters",
+        "name": "signatureParameters",
+        "type": "tuple"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "bidUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidRecipient",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "askUser",
         "type": "address"
       },
       {

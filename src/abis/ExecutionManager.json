@@ -31,22 +31,12 @@
   },
   {
     "inputs": [],
-    "name": "OrderMerkleProofInvalid",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "OutsideOfTimeRange",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "RenouncementNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "RenouncementTooEarly",
     "type": "error"
   },
   {
@@ -113,14 +103,7 @@
   },
   {
     "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "earliestOwnershipRenouncementTime",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },
@@ -278,6 +261,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "MAGIC_VALUE_NONCE_EXECUTED",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint16",
@@ -383,32 +379,6 @@
         "internalType": "contract ICreatorFeeManager",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "delay",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "earliestOwnershipRenouncementTime",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -647,9 +617,9 @@
     "name": "userOrderNonce",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "bytes32",
         "name": "",
-        "type": "bool"
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",

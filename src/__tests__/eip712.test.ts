@@ -31,7 +31,6 @@ describe("EIP-712", () => {
       orderNonce: 1,
       collection: contracts.collection1.address,
       currency: contracts.weth.address,
-      recipient: signers.user1.address,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
