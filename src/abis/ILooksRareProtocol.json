@@ -26,6 +26,25 @@
   },
   {
     "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "affiliateFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "AffiliatePayment",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [],
     "name": "NewDomainSeparator",
     "type": "event"
@@ -34,83 +53,37 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "orderHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint128",
+            "name": "orderNonce",
+            "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isNonceInvalidated",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          }
+        ],
         "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "protocolFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "ProtocolPayment",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "protocolFee",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "referralFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "ProtocolPaymentWithReferrer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint128",
-        "name": "orderNonce",
-        "type": "uint128"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidRecipient",
-        "type": "address"
+        "internalType": "struct ILooksRareProtocol.SignatureParameters",
+        "name": "signatureParameters",
+        "type": "tuple"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "askUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "askRecipient",
         "type": "address"
       },
       {
@@ -163,27 +136,37 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "orderHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint128",
+            "name": "orderNonce",
+            "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isNonceInvalidated",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          }
+        ],
         "indexed": false,
-        "internalType": "uint128",
-        "name": "orderNonce",
-        "type": "uint128"
+        "internalType": "struct ILooksRareProtocol.SignatureParameters",
+        "name": "signatureParameters",
+        "type": "tuple"
       },
       {
         "indexed": false,
         "internalType": "address",
         "name": "bidUser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "bidRecipient",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "askUser",
         "type": "address"
       },
       {

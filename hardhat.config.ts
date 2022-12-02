@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: true,
     pretty: false,
-    except: ["contracts/tests/*", "@rari-capital"],
+    except: ["src/contracts/tests/*", "@rari-capital"],
   },
   typechain: {
     outDir: "typechain",

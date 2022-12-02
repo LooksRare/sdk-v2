@@ -1,7 +1,6 @@
 export { addressesByNetwork } from "./constants/addresses";
 export { chainInfo } from "./constants/chains";
 export * as eip712 from "./constants/eip712";
-export * from "./constants";
 
 export * from "./types";
 

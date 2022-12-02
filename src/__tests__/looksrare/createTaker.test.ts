@@ -48,7 +48,6 @@ describe("Create takers", () => {
       itemIds: order.itemIds,
       amounts: order.amounts,
       maxPrice: order.minPrice,
-      minNetRatio: order.minNetRatio,
       additionalParameters: "0x",
     };
     await expect(takerBid).to.be.eql(expectedTakerBid);
@@ -73,7 +72,6 @@ describe("Create takers", () => {
       itemIds: order.itemIds,
       amounts: order.amounts,
       minPrice: order.maxPrice,
-      minNetRatio: order.minNetRatio,
       additionalParameters: "0x",
     };
     await expect(takerAsk).to.be.eql(expectedTakerAsk);

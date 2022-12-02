@@ -77,11 +77,6 @@ export interface MakerAskInputs {
    */
   currency?: string;
   /**
-   * Trade recipient
-   * @defaultValue Signer
-   */
-  recipient?: string;
-  /**
    * Order validity start time
    * @defaultValue now
    */
@@ -130,11 +125,6 @@ export interface MakerBidInputs {
    */
   currency?: string;
   /**
-   * Trade recipient
-   * @defaultValue Signer
-   */
-  recipient?: string;
-  /**
    * Order validity start time
    * @defaultValue now
    */
@@ -158,13 +148,10 @@ export interface MakerAsk {
   assetType: AssetType;
   /** Nonce for this specific order */
   orderNonce: BigNumberish;
-  minNetRatio: number;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
   currency: string;
-  /** Recipient for the trade */
-  recipient: string;
   /** Signer address */
   signer: string;
   /** Timestamp in second of the time when the order starts to be valid */
@@ -193,13 +180,10 @@ export interface MakerBid {
   assetType: AssetType;
   /** Nonce for this specific order */
   orderNonce: BigNumberish;
-  minNetRatio: number;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
   currency: string;
-  /** Recipient for the trade */
-  recipient: string;
   /** Signer address */
   signer: string;
   /** Timestamp in second of the time when the order starts to be valid */
@@ -220,7 +204,6 @@ export interface MakerBid {
 export interface TakerAsk {
   /** Recipient of the transaction */
   recipient: string;
-  minNetRatio: number;
   /** Minimum price to receive for the trade */
   minPrice: BigNumberish;
   /** List of items IDs */
@@ -235,7 +218,6 @@ export interface TakerAsk {
 export interface TakerBid {
   /** Recipient of the transaction */
   recipient: string;
-  minNetRatio: number;
   /** Maximum price to be paid for the trade */
   maxPrice: BigNumberish;
   /** List of items IDs */

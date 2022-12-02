@@ -21,7 +21,7 @@
   },
   {
     "inputs": [],
-    "name": "RenouncementTooEarly",
+    "name": "StrategyHasNoSelector",
     "type": "error"
   },
   {
@@ -57,14 +57,7 @@
   },
   {
     "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "earliestOwnershipRenouncementTime",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "InitiateOwnershipRenouncement",
     "type": "event"
   },
@@ -136,14 +129,14 @@
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "minTotalFee",
         "type": "uint16"
       }
     ],
@@ -153,19 +146,29 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "minTotalFee",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
         "name": "maxProtocolFee",
         "type": "uint16"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerAsk",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerBid",
+        "type": "bytes4"
       },
       {
         "internalType": "address",
@@ -207,32 +210,6 @@
         "internalType": "uint16",
         "name": "",
         "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "delay",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "earliestOwnershipRenouncementTime",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -301,43 +278,46 @@
     "inputs": [
       {
         "internalType": "uint16",
-        "name": "strategyId",
+        "name": "",
         "type": "uint16"
       }
     ],
     "name": "strategyInfo",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "hasRoyalties",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint16",
-            "name": "protocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "maxProtocolFee",
-            "type": "uint16"
-          },
-          {
-            "internalType": "address",
-            "name": "implementation",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct IStrategyManager.Strategy",
-        "name": "strategy",
-        "type": "tuple"
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "minTotalFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxProtocolFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerAsk",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "bytes4",
+        "name": "selectorTakerBid",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -351,13 +331,13 @@
         "type": "uint16"
       },
       {
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "newStandardProtocolFee",
+        "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "newMinTotalFee",
         "type": "uint16"
       },
       {

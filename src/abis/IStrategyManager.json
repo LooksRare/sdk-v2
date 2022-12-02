@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "StrategyHasNoSelector",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "StrategyNotUsed",
     "type": "error"
   },
@@ -45,14 +50,14 @@
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "hasRoyalties",
-        "type": "bool"
+        "internalType": "uint16",
+        "name": "standardProtocolFee",
+        "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "protocolFee",
+        "name": "minTotalFee",
         "type": "uint16"
       }
     ],

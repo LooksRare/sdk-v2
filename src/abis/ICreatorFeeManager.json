@@ -5,23 +5,39 @@
         "internalType": "address",
         "name": "collection",
         "type": "address"
+      }
+    ],
+    "name": "BundleEIP2981NotAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
       },
       {
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "itemIds",
+        "type": "uint256[]"
       }
     ],
-    "name": "royaltyInfo",
+    "name": "viewCreatorFee",
     "outputs": [
       {
         "internalType": "address",
-        "name": "receiver",
+        "name": "recipient",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "royaltyFee",
+        "name": "creatorFee",
         "type": "uint256"
       }
     ],

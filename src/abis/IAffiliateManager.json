@@ -1,12 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "NotReferralController",
+    "name": "NotAffiliate",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotReferrer",
+    "name": "NotAffiliateController",
     "type": "error"
   },
   {
@@ -20,11 +20,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "referralController",
+        "name": "affiliateController",
         "type": "address"
       }
     ],
-    "name": "NewReferralController",
+    "name": "NewAffiliateController",
     "type": "event"
   },
   {
@@ -37,7 +37,7 @@
         "type": "bool"
       }
     ],
-    "name": "NewReferralProgramStatus",
+    "name": "NewAffiliateProgramStatus",
     "type": "event"
   },
   {
@@ -46,17 +46,17 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "referrer",
+        "name": "affiliate",
         "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "rate",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
-    "name": "NewReferrerRate",
+    "name": "NewAffiliateRate",
     "type": "event"
   }
 ]

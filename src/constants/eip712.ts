@@ -4,8 +4,8 @@ import { SolidityType } from "../types";
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 
-export const MAKER_ASK_HASH = "0x85fa30b2b848c94bd5f5b88383658126eb3a69201d0b539f4bf956996bdb6af1";
-export const MAKER_BID_HASH = "0xaac47bd6046bbe5acd60a92f52dde1bb26209688be10f8a6e723fb405c70721b";
+export const MAKER_ASK_HASH = "0x53f94ec71943e0d4668607b00d3be3b36a84a2d7cbe7c56ece7bb71013b788cf";
+export const MAKER_BID_HASH = "0x0bc6f8c7cbcae50dce9a802ad4a3ee8dc62c394cf460eafaffefce4f43d114e2";
 
 export const hashingMakerTypes: SolidityType[] = [
   "bytes32",
@@ -14,8 +14,6 @@ export const hashingMakerTypes: SolidityType[] = [
   "uint16",
   "uint8",
   "uint112",
-  "uint16",
-  "address",
   "address",
   "address",
   "address",
@@ -34,10 +32,8 @@ export const makerAskTypes: Record<string, Array<TypedDataField>> = {
     { name: "strategyId", type: "uint16" },
     { name: "assetType", type: "uint8" },
     { name: "orderNonce", type: "uint112" },
-    { name: "minNetRatio", type: "uint16" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
-    { name: "recipient", type: "address" },
     { name: "signer", type: "address" },
     { name: "startTime", type: "uint256" },
     { name: "endTime", type: "uint256" },
@@ -55,10 +51,8 @@ export const makerBidTypes: Record<string, Array<TypedDataField>> = {
     { name: "strategyId", type: "uint16" },
     { name: "assetType", type: "uint8" },
     { name: "orderNonce", type: "uint112" },
-    { name: "minNetRatio", type: "uint16" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
-    { name: "recipient", type: "address" },
     { name: "signer", type: "address" },
     { name: "startTime", type: "uint256" },
     { name: "endTime", type: "uint256" },
