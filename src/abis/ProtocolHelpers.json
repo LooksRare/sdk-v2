@@ -77,9 +77,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -168,9 +168,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -242,14 +242,19 @@
             "internalType": "bytes32",
             "name": "root",
             "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "proof",
+            "type": "bytes32[]"
           }
         ],
-        "internalType": "struct OrderStructs.MerkleRoot",
-        "name": "merkleRoot",
+        "internalType": "struct OrderStructs.MerkleTree",
+        "name": "merkleTree",
         "type": "tuple"
       }
     ],
-    "name": "computeDigestMerkleRoot",
+    "name": "computeDigestMerkleTree",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -298,9 +303,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -399,9 +404,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -483,10 +488,15 @@
             "internalType": "bytes32",
             "name": "root",
             "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "proof",
+            "type": "bytes32[]"
           }
         ],
-        "internalType": "struct OrderStructs.MerkleRoot",
-        "name": "merkleRoot",
+        "internalType": "struct OrderStructs.MerkleTree",
+        "name": "merkleTree",
         "type": "tuple"
       },
       {
@@ -500,7 +510,7 @@
         "type": "address"
       }
     ],
-    "name": "verifyMerkleRoot",
+    "name": "verifyMerkleTree",
     "outputs": [
       {
         "internalType": "bool",

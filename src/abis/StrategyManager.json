@@ -98,9 +98,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -117,9 +117,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -207,9 +207,9 @@
     "name": "countStrategies",
     "outputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -277,9 +277,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "name": "strategyInfo",
@@ -326,9 +326,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "internalType": "uint16",

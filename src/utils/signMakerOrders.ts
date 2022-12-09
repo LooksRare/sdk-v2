@@ -1,6 +1,6 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { MakerAsk, MakerBid, MerkleRoot } from "../types";
-import { makerAskTypes, makerBidTypes, merkleRootTypes } from "../constants/eip712";
+import { MakerAsk, MakerBid, MerkleTree } from "../types";
+import { makerAskTypes, makerBidTypes, merkleTreeTypes } from "../constants/eip712";
 
 export const signMakerAsk = async (
   signer: TypedDataSigner,
@@ -21,7 +21,8 @@ export const signMakerBid = async (
 export const signMerkleRoot = async (
   signer: TypedDataSigner,
   domain: TypedDataDomain,
-  merkleRoot: MerkleRoot
+  merkleRoot: MerkleTree["root"]
 ): Promise<string> => {
-  return signer._signTypedData(domain, merkleRootTypes, merkleRoot);
+  const root: Omit<MerkleTree, "proof"> = { root: merkleRoot };
+  return signer._signTypedData(domain, merkleTreeTypes, root);
 };

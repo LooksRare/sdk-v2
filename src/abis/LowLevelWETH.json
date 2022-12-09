@@ -1,0 +1,12 @@
+[
+  {
+    "inputs": [],
+    "name": "WETHDepositFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WETHTransferFail",
+    "type": "error"
+  }
+]

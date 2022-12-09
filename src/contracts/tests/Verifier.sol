@@ -26,12 +26,10 @@ contract Verifier is ProtocolHelpers {
     }
 
     function verifyAskOrders(OrderStructs.MakerAsk calldata makerAsk, bytes calldata signature) external view {
-        bytes32 digest = computeDigestMakerAsk(makerAsk);
-        _verify(digest, makerAsk.signer, signature);
+        verifyMakerAskOrder(makerAsk, signature, makerAsk.signer);
     }
 
     function verifyBidOrders(OrderStructs.MakerBid calldata makerBid, bytes calldata signature) external view {
-        bytes32 digest = computeDigestMakerBid(makerBid);
-        _verify(digest, makerBid.signer, signature);
+        verifyMakerBidOrder(makerBid, signature, makerBid.signer);
     }
 }

@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "CreatorFeeBpTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NoNonceToIncrement",
     "type": "error"
   },
@@ -163,6 +168,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "maximumCreatorFeeBp",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewMaximumCreatorFeeBp",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -189,9 +207,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -208,9 +226,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "OrderNoncesCancelled",
@@ -221,9 +239,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -314,9 +332,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "cancelOrderNonces",
@@ -363,9 +381,9 @@
     "name": "countStrategies",
     "outputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -420,6 +438,19 @@
     "name": "initiateOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maximumCreatorFeeBp",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -490,6 +521,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint16",
+        "name": "newMaximumCreatorFeeBp",
+        "type": "uint16"
+      }
+    ],
+    "name": "setMaximumCreatorFeeBp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "newProtocolFeeRecipient",
         "type": "address"
@@ -503,9 +547,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "name": "strategyInfo",
@@ -552,9 +596,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "internalType": "uint16",
@@ -609,9 +653,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "userOrderNonce",

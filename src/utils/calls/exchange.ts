@@ -1,7 +1,7 @@
 import { Contract, PayableOverrides, constants } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
-import { MakerAsk, MakerBid, MerkleRoot, TakerAsk, TakerBid, Signer } from "../../types";
+import { MakerAsk, MakerBid, MerkleTree, TakerAsk, TakerBid, Signer } from "../../types";
 
 export const executeTakerBid = (
   signer: Signer,
@@ -9,15 +9,14 @@ export const executeTakerBid = (
   takerBid: TakerBid,
   makerAsk: MakerAsk,
   makerSignature: string,
-  merkleRoot: MerkleRoot,
-  merkleProof: string[],
+  merkleTree: MerkleTree,
   referrer: string,
   overrides?: PayableOverrides
 ) => {
   const internalOverrides: PayableOverrides =
     makerAsk.currency === constants.AddressZero ? { value: takerBid.maxPrice } : {};
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
-  return contract.executeTakerBid(takerBid, makerAsk, makerSignature, merkleRoot, merkleProof, referrer, {
+  return contract.executeTakerBid(takerBid, makerAsk, makerSignature, merkleTree, referrer, {
     ...overrides,
     ...internalOverrides,
   });
@@ -29,15 +28,14 @@ export const executeTakerAsk = (
   takerAsk: TakerAsk,
   makerBid: MakerBid,
   makerSignature: string,
-  merkleRoot: MerkleRoot,
-  merkleProof: string[],
+  merkleTree: MerkleTree,
   referrer: string,
   overrides?: PayableOverrides
 ) => {
   const internalOverrides: PayableOverrides =
     makerBid.currency === constants.AddressZero ? { value: takerAsk.minPrice } : {};
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
-  return contract.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleRoot, merkleProof, referrer, {
+  return contract.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
     ...overrides,
     ...internalOverrides,
   });

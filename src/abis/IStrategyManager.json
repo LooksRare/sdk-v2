@@ -19,9 +19,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -38,9 +38,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
