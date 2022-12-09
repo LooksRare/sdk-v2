@@ -34,11 +34,6 @@
   },
   {
     "inputs": [],
-    "name": "MaximumCreatorFeeBpTooHigh",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NoOngoingTransferInProgress",
     "type": "error"
   },
@@ -103,19 +98,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "maximumCreatorFeeBp",
-        "type": "uint256"
-      }
-    ],
-    "name": "NewMaximumCreatorFeeBp",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -163,19 +145,6 @@
     "name": "initiateOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maximumCreatorFeeBp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -228,19 +197,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newMaximumCreatorFeeBp",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateMaximumCreatorFeeBp",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

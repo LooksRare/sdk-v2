@@ -33,9 +33,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "OrderNoncesCancelled",

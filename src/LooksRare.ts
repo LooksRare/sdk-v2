@@ -1,7 +1,7 @@
 import { BigNumber, ContractReceipt, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
-import { MerkleTree } from "merkletreejs";
+import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
 import { signMakerAsk, signMakerBid, signMerkleRoot } from "./utils/signMakerOrders";
 import {
@@ -29,7 +29,7 @@ import {
   MakerBidInputs,
   MakerAskOutputs,
   MakerBidOutputs,
-  MerkleRoot,
+  MerkleTree,
 } from "./types";
 
 export class LooksRare {
@@ -245,10 +245,10 @@ export class LooksRare {
       const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
       return Buffer.from(hash.slice(2), "hex");
     });
-    const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
-    const merkleRoot: MerkleRoot = { root: tree.getHexRoot() };
+    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
+    const merkleRoot = tree.getHexRoot();
     const signature = await signMerkleRoot(this.signer, this.getTypedDataDomain(), merkleRoot);
-    return { tree, leaves, root: merkleRoot.root, signature };
+    return { tree, leaves, root: merkleRoot, signature };
   }
 
   /**
@@ -261,8 +261,7 @@ export class LooksRare {
     makerBid: MakerBid,
     takerAsk: TakerAsk,
     signature: string,
-    merkleRoot: MerkleRoot = { root: constants.HashZero },
-    merkleProof: string[] = [],
+    merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): Promise<ContractReceipt> {
     const tx = await executeTakerAsk(
@@ -271,8 +270,7 @@ export class LooksRare {
       takerAsk,
       makerBid,
       signature,
-      merkleRoot,
-      merkleProof,
+      merkleTree,
       referrer
     );
     return tx.wait();
@@ -288,8 +286,7 @@ export class LooksRare {
     makerAsk: MakerAsk,
     takerBid: TakerBid,
     signature: string,
-    merkleRoot: MerkleRoot = { root: constants.HashZero },
-    merkleProof: string[] = [],
+    merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): Promise<ContractReceipt> {
     const tx = await executeTakerBid(
@@ -298,8 +295,7 @@ export class LooksRare {
       takerBid,
       makerAsk,
       signature,
-      merkleRoot,
-      merkleProof,
+      merkleTree,
       referrer
     );
     return tx.wait();

@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "transferManager",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "weth",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -29,6 +34,11 @@
       }
     ],
     "name": "BadSignatureV",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CreatorFeeBpTooHigh",
     "type": "error"
   },
   {
@@ -235,6 +245,16 @@
   {
     "inputs": [],
     "name": "TransferNotInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WETHDepositFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WETHTransferFail",
     "type": "error"
   },
   {
@@ -478,6 +498,32 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "gasLimitETHTransfer",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewGasLimitETHTransfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maximumCreatorFeeBp",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewMaximumCreatorFeeBp",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -504,9 +550,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -523,9 +569,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "OrderNoncesCancelled",
@@ -536,9 +582,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -586,9 +632,9 @@
             "type": "bytes32"
           },
           {
-            "internalType": "uint128",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint128"
+            "type": "uint256"
           },
           {
             "internalType": "bool",
@@ -644,15 +690,15 @@
       },
       {
         "indexed": false,
-        "internalType": "address[]",
+        "internalType": "address[3]",
         "name": "feeRecipients",
-        "type": "address[]"
+        "type": "address[3]"
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
+        "internalType": "uint256[3]",
         "name": "feeAmounts",
-        "type": "uint256[]"
+        "type": "uint256[3]"
       }
     ],
     "name": "TakerAsk",
@@ -669,9 +715,9 @@
             "type": "bytes32"
           },
           {
-            "internalType": "uint128",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint128"
+            "type": "uint256"
           },
           {
             "internalType": "bool",
@@ -727,15 +773,15 @@
       },
       {
         "indexed": false,
-        "internalType": "address[]",
+        "internalType": "address[3]",
         "name": "feeRecipients",
-        "type": "address[]"
+        "type": "address[3]"
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
+        "internalType": "uint256[3]",
         "name": "feeAmounts",
-        "type": "uint256[]"
+        "type": "uint256[3]"
       }
     ],
     "name": "TakerBid",
@@ -749,6 +795,19 @@
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WETH",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -829,6 +888,19 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newGasLimitETHTransfer",
+        "type": "uint256"
+      }
+    ],
+    "name": "adjustETHGasLimitForTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "affiliateController",
     "outputs": [
@@ -863,9 +935,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "cancelOrderNonces",
@@ -925,9 +997,9 @@
     "name": "countStrategies",
     "outputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1016,9 +1088,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -1081,16 +1153,16 @@
             "internalType": "bytes32",
             "name": "root",
             "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "proof",
+            "type": "bytes32[]"
           }
         ],
-        "internalType": "struct OrderStructs.MerkleRoot[]",
-        "name": "merkleRoots",
+        "internalType": "struct OrderStructs.MerkleTree[]",
+        "name": "merkleTrees",
         "type": "tuple[]"
-      },
-      {
-        "internalType": "bytes32[][]",
-        "name": "merkleProofs",
-        "type": "bytes32[][]"
       },
       {
         "internalType": "address",
@@ -1165,9 +1237,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -1230,16 +1302,16 @@
             "internalType": "bytes32",
             "name": "root",
             "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "proof",
+            "type": "bytes32[]"
           }
         ],
-        "internalType": "struct OrderStructs.MerkleRoot",
-        "name": "merkleRoot",
+        "internalType": "struct OrderStructs.MerkleTree",
+        "name": "merkleTree",
         "type": "tuple"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "merkleProof",
-        "type": "bytes32[]"
       },
       {
         "internalType": "address",
@@ -1309,9 +1381,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -1374,16 +1446,16 @@
             "internalType": "bytes32",
             "name": "root",
             "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32[]",
+            "name": "proof",
+            "type": "bytes32[]"
           }
         ],
-        "internalType": "struct OrderStructs.MerkleRoot",
-        "name": "merkleRoot",
+        "internalType": "struct OrderStructs.MerkleTree",
+        "name": "merkleTree",
         "type": "tuple"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "merkleProof",
-        "type": "bytes32[]"
       },
       {
         "internalType": "address",
@@ -1394,6 +1466,19 @@
     "name": "executeTakerBid",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gasLimitETHTransfer",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1485,6 +1570,19 @@
         "internalType": "bytes4",
         "name": "selector",
         "type": "bytes4"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maximumCreatorFeeBp",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -1612,9 +1710,9 @@
             "type": "uint8"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "orderNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -1704,6 +1802,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint16",
+        "name": "newMaximumCreatorFeeBp",
+        "type": "uint16"
+      }
+    ],
+    "name": "setMaximumCreatorFeeBp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "newProtocolFeeRecipient",
         "type": "address"
@@ -1717,9 +1828,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "name": "strategyInfo",
@@ -1817,9 +1928,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "internalType": "uint16",
@@ -1874,9 +1985,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "userOrderNonce",

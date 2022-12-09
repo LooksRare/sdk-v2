@@ -4,8 +4,8 @@ import { SolidityType } from "../types";
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 
-export const MAKER_ASK_HASH = "0x53f94ec71943e0d4668607b00d3be3b36a84a2d7cbe7c56ece7bb71013b788cf";
-export const MAKER_BID_HASH = "0x0bc6f8c7cbcae50dce9a802ad4a3ee8dc62c394cf460eafaffefce4f43d114e2";
+export const MAKER_ASK_HASH = "0xd68183dbe86d11ceada61f851ee998c9608c049d79f6c9d65bfba7d4b5db5e3e";
+export const MAKER_BID_HASH = "0x0408e64fdd103ecf799bbabbd0370ad7c35a5711332d9d966e79c70ff3cb2aa3";
 
 export const hashingMakerTypes: SolidityType[] = [
   "bytes32",
@@ -13,7 +13,7 @@ export const hashingMakerTypes: SolidityType[] = [
   "uint112",
   "uint16",
   "uint8",
-  "uint112",
+  "uint256",
   "address",
   "address",
   "address",
@@ -31,7 +31,7 @@ export const makerAskTypes: Record<string, Array<TypedDataField>> = {
     { name: "subsetNonce", type: "uint112" },
     { name: "strategyId", type: "uint16" },
     { name: "assetType", type: "uint8" },
-    { name: "orderNonce", type: "uint112" },
+    { name: "orderNonce", type: "uint256" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
     { name: "signer", type: "address" },
@@ -50,7 +50,7 @@ export const makerBidTypes: Record<string, Array<TypedDataField>> = {
     { name: "subsetNonce", type: "uint112" },
     { name: "strategyId", type: "uint16" },
     { name: "assetType", type: "uint8" },
-    { name: "orderNonce", type: "uint112" },
+    { name: "orderNonce", type: "uint256" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
     { name: "signer", type: "address" },
@@ -63,6 +63,6 @@ export const makerBidTypes: Record<string, Array<TypedDataField>> = {
   ],
 };
 
-export const merkleRootTypes: Record<string, Array<TypedDataField>> = {
-  MerkleRoot: [{ name: "root", type: "bytes32" }],
+export const merkleTreeTypes: Record<string, Array<TypedDataField>> = {
+  MerkleTree: [{ name: "root", type: "bytes32" }],
 };

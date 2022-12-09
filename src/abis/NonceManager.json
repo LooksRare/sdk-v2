@@ -33,9 +33,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "OrderNoncesCancelled",
@@ -70,9 +70,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "orderNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "cancelOrderNonces",
@@ -143,9 +143,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "userOrderNonce",

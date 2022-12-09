@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "CreatorFeeBpTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NoSelectorForTakerAsk",
     "type": "error"
   },
@@ -46,6 +51,19 @@
       }
     ],
     "name": "NewCreatorFeeManager",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maximumCreatorFeeBp",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewMaximumCreatorFeeBp",
     "type": "event"
   },
   {

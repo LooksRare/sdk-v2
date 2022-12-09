@@ -229,7 +229,8 @@ export interface TakerBid {
 }
 
 /** Merkle root object to be used in the execute function for a multi listing */
-export interface MerkleRoot {
+export interface MerkleTree {
   /** Root of the merkle tree */
   root: string;
+  proof: string[];
 }
