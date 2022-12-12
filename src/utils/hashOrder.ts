@@ -1,6 +1,12 @@
 import { utils } from "ethers";
-import { hashingMakerTypes, MAKER_ASK_HASH, MAKER_BID_HASH } from "../constants/eip712";
-import { MakerAsk, MakerBid } from "../types";
+import {
+  hashingMakerTypes,
+  hashingMerkleTreeTypes,
+  MAKER_ASK_HASH,
+  MAKER_BID_HASH,
+  MERKLE_TREE_HASH,
+} from "../constants/eip712";
+import { MakerAsk, MakerBid, MerkleTree } from "../types";
 
 /**
  * Hash maker ask order
@@ -54,4 +60,9 @@ export const getMakerBidHash = (makerBid: MakerBid): string => {
     utils.keccak256(makerBid.additionalParameters),
   ];
   return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
+};
+
+export const getMerkleTreeHash = (merkleRoot: MerkleTree["root"]): string => {
+  const values = [MERKLE_TREE_HASH, merkleRoot];
+  return utils.keccak256(utils.defaultAbiCoder.encode(hashingMerkleTreeTypes, values));
 };

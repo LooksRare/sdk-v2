@@ -8,9 +8,15 @@ import "hardhat/console.sol";
 contract Verifier is ProtocolHelpers {
     using OrderStructs for OrderStructs.MakerAsk;
     using OrderStructs for OrderStructs.MakerBid;
+    using OrderStructs for OrderStructs.MerkleTree;
     using OrderStructs for bytes32;
 
     constructor(address _looksRareProtocol) ProtocolHelpers(_looksRareProtocol) {}
+
+    function getDomainSeparator() public view returns (bytes32) {
+        bytes32 domainSeparator = looksRareProtocol.domainSeparator();
+        return domainSeparator;
+    }
 
     function getMakerAskHash(OrderStructs.MakerAsk memory makerAsk) public pure returns (bytes32 orderHash) {
         return makerAsk.hash();
@@ -20,9 +26,8 @@ contract Verifier is ProtocolHelpers {
         return makerBid.hash();
     }
 
-    function getDomainSeparator() public view returns (bytes32) {
-        bytes32 domainSeparator = looksRareProtocol.domainSeparator();
-        return domainSeparator;
+    function getMerkleTreeHash(OrderStructs.MerkleTree memory merkleTree) public pure returns (bytes32 orderHash) {
+        return merkleTree.hash();
     }
 
     function verifyAskOrders(OrderStructs.MakerAsk calldata makerAsk, bytes calldata signature) external view {
