@@ -183,6 +183,19 @@ export class LooksRare {
     };
   }
 
+  public createMakerMerkleTree(makerOrders: (MakerAsk | MakerBid)[]): MerkleTree {
+    const leaves = makerOrders.map((order) => {
+      const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
+      return Buffer.from(hash.slice(2), "hex");
+    });
+    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
+
+    return {
+      root: tree.getHexRoot(),
+      proof: leaves.map((leaf) => tree.getHexProof(leaf).join(",")),
+    };
+  }
+
   /**
    * Create a taker ask ready to be executed against a maker bid
    * @param makerBid Maker bid that will be used as counterparty for the taker ask
@@ -240,15 +253,8 @@ export class LooksRare {
    * @param makerOrders List of maker order to be signed
    * @returns Merkle tree and the signature
    */
-  public async signMultipleMakers(makerOrders: (MakerAsk | MakerBid)[]) {
-    const leaves = makerOrders.map((order) => {
-      const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
-      return Buffer.from(hash.slice(2), "hex");
-    });
-    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
-    const merkleRoot = tree.getHexRoot();
-    const signature = await signMerkleRoot(this.signer, this.getTypedDataDomain(), merkleRoot);
-    return { tree, leaves, root: merkleRoot, signature };
+  public async signMultipleMakers(tree: MerkleTreeJS) {
+    return await signMerkleRoot(this.signer, this.getTypedDataDomain(), tree.getHexRoot());
   }
 
   /**
