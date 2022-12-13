@@ -47,8 +47,8 @@ describe("execute taker ask", () => {
     };
   });
   it("execute maker bid and taker ask", async () => {
-    const lrUser1 = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
-    const lrUser2 = new LooksRare(signers.user2, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, addresses);
     const { order, action } = await lrUser2.createMakerBid(baseMakerAskInput);
     await action!();
     const signature = await lrUser2.signMakerBid(order);

@@ -41,14 +41,18 @@ export class LooksRare {
    * Ethers signer
    * @see https://docs.ethers.io/v5/api/signer/
    */
-  public readonly signer: Signer;
+  public readonly signer?: Signer;
   /**
    * Ethers provider
    * @see https://docs.ethers.io/v5/api/providers/
    */
   public readonly provider: providers.Provider;
 
+  /** Custom error invalid timestamp */
   private readonly ERROR_TIMESTAMP = new Error("Timestamps should be in seconds");
+
+  /** Custom error undefined signer */
+  private readonly ERROR_SIGNER = new Error("Signer is undefined");
 
   /**
    * LooksRare protocol main class
@@ -57,11 +61,22 @@ export class LooksRare {
    * @param chainId Current app chain id
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(signer: Signer, provider: providers.Provider, chainId: SupportedChainId, override?: Addresses) {
+  constructor(provider: providers.Provider, chainId: SupportedChainId, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
     this.provider = new multicall.providers.MulticallProvider(provider);
+  }
+
+  /**
+   * Return the signer it it's set, throw an exception otherwise
+   * @returns Signer
+   */
+  private getSigner(): Signer {
+    if (!this.signer) {
+      throw this.ERROR_SIGNER;
+    }
+    return this.signer;
   }
 
   /**
@@ -95,11 +110,13 @@ export class LooksRare {
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
   }: MakerAskInputs): Promise<MakerAskOutputs> {
+    const signer = this.getSigner();
+
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
       throw this.ERROR_TIMESTAMP;
     }
 
-    const signerAddress = await this.signer.getAddress();
+    const signerAddress = await signer.getAddress();
     const spenderAddress = this.addresses.TRANSFER_MANAGER;
 
     const [isCollectionApproved, userBidAskNonce] = await Promise.all([
@@ -126,7 +143,7 @@ export class LooksRare {
 
     return {
       order,
-      action: isCollectionApproved ? undefined : () => setApprovalForAll(this.signer, collection, spenderAddress),
+      action: isCollectionApproved ? undefined : () => setApprovalForAll(signer, collection, spenderAddress),
     };
   }
 
@@ -148,11 +165,13 @@ export class LooksRare {
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
   }: MakerBidInputs): Promise<MakerBidOutputs> {
+    const signer = this.getSigner();
+
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
       throw this.ERROR_TIMESTAMP;
     }
 
-    const signerAddress = await this.signer.getAddress();
+    const signerAddress = await signer.getAddress();
     const spenderAddress = this.addresses.EXCHANGE;
 
     const [currentAllowance, userBidAskNonce] = await Promise.all([
@@ -179,12 +198,15 @@ export class LooksRare {
 
     return {
       order,
-      action: BigNumber.from(currentAllowance).lt(price)
-        ? () => approve(this.signer, currency, spenderAddress)
-        : undefined,
+      action: BigNumber.from(currentAllowance).lt(price) ? () => approve(signer, currency, spenderAddress) : undefined,
     };
   }
 
+  /**
+   * Create multiple listing using a merkle tree
+   * @param makerOrders list order masker orders (bid or ask)
+   * @returns MerkleTree
+   */
   public createMakerMerkleTree(makerOrders: (MakerAsk | MakerBid)[]): MerkleTree {
     const leaves = makerOrders.map((order) => {
       const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
@@ -238,7 +260,8 @@ export class LooksRare {
    * @returns Signature
    */
   public async signMakerAsk(makerAsk: MakerAsk): Promise<string> {
-    return await signMakerAsk(this.signer, this.getTypedDataDomain(), makerAsk);
+    const signer = this.getSigner();
+    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
   }
 
   /**
@@ -247,7 +270,8 @@ export class LooksRare {
    * @returns Signature
    */
   public async signMakerBid(makerBid: MakerBid): Promise<string> {
-    return await signMakerBid(this.signer, this.getTypedDataDomain(), makerBid);
+    const signer = this.getSigner();
+    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
   }
 
   /**
@@ -256,7 +280,8 @@ export class LooksRare {
    * @returns Merkle tree and the signature
    */
   public async signMultipleMakers(tree: MerkleTreeJS) {
-    return await signMerkleRoot(this.signer, this.getTypedDataDomain(), tree.getHexRoot());
+    const signer = this.getSigner();
+    return await signMerkleRoot(signer, this.getTypedDataDomain(), tree.getHexRoot());
   }
 
   /**
@@ -272,8 +297,9 @@ export class LooksRare {
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): Promise<ContractReceipt> {
+    const signer = this.getSigner();
     const tx = await executeTakerAsk(
-      this.signer,
+      signer,
       this.addresses.EXCHANGE,
       takerAsk,
       makerBid,
@@ -297,8 +323,9 @@ export class LooksRare {
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): Promise<ContractReceipt> {
+    const signer = this.getSigner();
     const tx = await executeTakerBid(
-      this.signer,
+      signer,
       this.addresses.EXCHANGE,
       takerBid,
       makerAsk,
@@ -315,7 +342,8 @@ export class LooksRare {
    * @param ask Cancel all asks
    */
   public async cancelAllOrders(bid: boolean, ask: boolean): Promise<ContractReceipt> {
-    const tx = await incrementBidAskNonces(this.signer, this.addresses.EXCHANGE, bid, ask);
+    const signer = this.getSigner();
+    const tx = await incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
     return tx.wait();
   }
 
@@ -324,7 +352,8 @@ export class LooksRare {
    * @param nonces List of nonces to be cancelled
    */
   public async cancelOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
-    const tx = await cancelOrderNonces(this.signer, this.addresses.EXCHANGE, nonces);
+    const signer = this.getSigner();
+    const tx = await cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 
@@ -333,7 +362,8 @@ export class LooksRare {
    * @param nonces List of nonces to be cancelled
    */
   public async cancelSubsetOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
-    const tx = await cancelSubsetNonces(this.signer, this.addresses.EXCHANGE, nonces);
+    const signer = this.getSigner();
+    const tx = await cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
     return tx.wait();
   }
 
@@ -343,7 +373,8 @@ export class LooksRare {
    * @defaultValue Exchange address
    */
   public async grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
-    const tx = await grantApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
+    const signer = this.getSigner();
+    const tx = await grantApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
     return tx.wait();
   }
 
@@ -353,10 +384,20 @@ export class LooksRare {
    * @defaultValue Exchange address
    */
   public async revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
-    const tx = await revokeApprovals(this.signer, this.addresses.TRANSFER_MANAGER, operators);
+    const signer = this.getSigner();
+    const tx = await revokeApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
     return tx.wait();
   }
 
+  /**
+   * Transfer a list of items across different collections
+   * @param collections
+   * @param assetTypes
+   * @param from
+   * @param to
+   * @param itemIds
+   * @param amounts
+   */
   public async transferItemsAcrossCollection(
     collections: string[],
     assetTypes: AssetType[],
@@ -365,8 +406,9 @@ export class LooksRare {
     itemIds: BigNumberish[][],
     amounts: BigNumberish[][]
   ) {
+    const signer = this.getSigner();
     const tx = await transferBatchItemsAcrossCollections(
-      this.signer,
+      signer,
       this.addresses.TRANSFER_MANAGER,
       collections,
       assetTypes,

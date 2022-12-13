@@ -13,9 +13,9 @@ describe("LooksRare class", () => {
     contracts = await setUpContracts();
     signers = await getSigners();
   });
-  it("instanciate LooksRare object", () => {
-    expect(new LooksRare(signers.user1, ethers.provider, 1).chainId).to.equal(1);
-    expect(new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT).chainId).to.equal(
+  it("instanciate LooksRare object with a signer", () => {
+    expect(new LooksRare(ethers.provider, 1, signers.user1).chainId).to.equal(1);
+    expect(new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1).chainId).to.equal(
       SupportedChainId.HARDHAT
     );
     const addresses: Addresses = {
@@ -24,8 +24,13 @@ describe("LooksRare class", () => {
       TRANSFER_MANAGER: contracts.transferManager.address,
       WETH: contracts.weth.address,
     };
-    expect(new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses).addresses).to.be.eql(
+    expect(new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses).addresses).to.be.eql(
       addresses
     );
+  });
+  it("instanciate LooksRare object without a signer", async () => {
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT);
+    expect(lr.getTypedDataDomain().chainId).to.be.eql(SupportedChainId.HARDHAT);
+    await expect(lr.cancelAllOrders(true, true)).to.eventually.be.rejected;
   });
 });
