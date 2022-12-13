@@ -48,6 +48,8 @@ export class LooksRare {
    */
   public readonly provider: providers.Provider;
 
+  private readonly ERROR_TIMESTAMP = new Error("Timestamps should be in seconds");
+
   /**
    * LooksRare protocol main class
    * @param signer Ethers signer
@@ -94,7 +96,7 @@ export class LooksRare {
     additionalParameters = [],
   }: MakerAskInputs): Promise<MakerAskOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw new Error("Timestamps should be in seconds");
+      throw this.ERROR_TIMESTAMP;
     }
 
     const signerAddress = await this.signer.getAddress();
@@ -147,7 +149,7 @@ export class LooksRare {
     additionalParameters = [],
   }: MakerBidInputs): Promise<MakerBidOutputs> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw new Error("Timestamps should be in seconds");
+      throw this.ERROR_TIMESTAMP;
     }
 
     const signerAddress = await this.signer.getAddress();
