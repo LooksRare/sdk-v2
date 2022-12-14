@@ -40,7 +40,7 @@ describe("Create takers", () => {
       price: utils.parseEther("1"),
       itemIds: [1],
     };
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const { order } = await looksrare.createMakerAsk(baseMakerAskInput);
     const takerBid = looksrare.createTakerBid(order, signers.user2.address);
     const expectedTakerBid: TakerBid = {
@@ -64,7 +64,7 @@ describe("Create takers", () => {
       price: utils.parseEther("1"),
       itemIds: [1],
     };
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const { order } = await looksrare.createMakerBid(baseMakerAskInput);
     const takerAsk = looksrare.createTakerAsk(order, signers.user2.address);
     const expectedTakerAsk: TakerAsk = {

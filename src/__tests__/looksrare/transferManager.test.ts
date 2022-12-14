@@ -21,7 +21,7 @@ describe("Transfer manager", () => {
     };
   });
   it("grant and revoke operator approvals", async () => {
-    const lr = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
 
     let receipt = await lr.grantTransferManagerApproval();
     expect(receipt.status).to.equal(1);

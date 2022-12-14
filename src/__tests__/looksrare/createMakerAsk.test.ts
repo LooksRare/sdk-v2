@@ -34,12 +34,12 @@ describe("Create maker ask", () => {
     };
   });
   it("create maker ask with wrong time format", async () => {
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, startTime: Date.now() })).to.eventually.be.rejected;
     await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, endTime: Date.now() })).to.eventually.be.rejected;
   });
   it("returns action function if no approval was made", async () => {
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const { action } = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(action).to.not.be.undefined;
 
@@ -54,12 +54,12 @@ describe("Create maker ask", () => {
   });
   it("returns undefined action function if approval was made", async () => {
     await setApprovalForAll(signers.user1, baseMakerAskInput.collection, contracts.transferManager.address);
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(output.action).to.be.undefined;
   });
   it("create a simple maker ask with default values", async () => {
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     const makerOrder: MakerAsk = {
       askNonce: constants.Zero,
@@ -80,7 +80,7 @@ describe("Create maker ask", () => {
     expect(output.order).to.eql(makerOrder);
   });
   it("create a simple maker ask with ", async () => {
-    const looksrare = new LooksRare(signers.user1, ethers.provider, SupportedChainId.HARDHAT, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const input = {
       ...baseMakerAskInput,
       amounts: [1],
