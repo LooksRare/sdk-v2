@@ -11,6 +11,13 @@ describe("getMakerParamsTypes", () => {
     const paramsTypes = getMakerParamsTypes(StrategyType.collection);
     expect(paramsTypes).to.eql([]);
   });
+  it("invalid param", () => {
+    // Enforce a check with no params just for code coverage
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const paramsTypes = getMakerParamsTypes();
+    expect(paramsTypes).to.eql([]);
+  });
 });
 
 describe("getTakerParamsTypes", () => {
@@ -20,6 +27,13 @@ describe("getTakerParamsTypes", () => {
   });
   it("collection", () => {
     const paramsTypes = getTakerParamsTypes(StrategyType.collection);
+    expect(paramsTypes).to.eql([]);
+  });
+  it("invalid param", () => {
+    // Enforce a check with no params just for code coverage
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const paramsTypes = getTakerParamsTypes();
     expect(paramsTypes).to.eql([]);
   });
 });

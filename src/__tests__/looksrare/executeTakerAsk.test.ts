@@ -52,9 +52,12 @@ describe("execute taker ask", () => {
     const { order, action } = await lrUser2.createMakerBid(baseMakerAskInput);
     await action!();
     const signature = await lrUser2.signMakerBid(order);
-
     await setApprovalForAll(signers.user1, order.collection, lrUser1.addresses.TRANSFER_MANAGER);
     const takerBid = lrUser1.createTakerAsk(order, signers.user2.address);
+
+    const estimatedGas = await lrUser1.executeTakerAsk(order, takerBid, signature).estimateGas();
+    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+
     const tx = await lrUser1.executeTakerAsk(order, takerBid, signature).call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
