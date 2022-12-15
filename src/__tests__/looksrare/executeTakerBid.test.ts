@@ -46,7 +46,8 @@ describe("execute taker bid", () => {
     const signature = await lrUser1.signMakerAsk(order);
 
     const takerBid = lrUser2.createTakerBid(order, signers.user2.address);
-    const receipt = await lrUser2.executeTakerBid(order, takerBid, signature);
+    const tx = await lrUser2.executeTakerBid(order, takerBid, signature).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
 });

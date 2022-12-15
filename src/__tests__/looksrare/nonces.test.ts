@@ -24,27 +24,32 @@ describe("Nonces and order cancellation", () => {
   });
   it("cancel a nonce", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelOrders([BigNumber.from(0)]);
+    const tx = await lr.cancelOrders([BigNumber.from(0)]).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
   it("cancel several nonces", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelOrders([BigNumber.from(0), BigNumber.from(1)]);
+    const tx = await lr.cancelOrders([BigNumber.from(0), BigNumber.from(1)]).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
   it("cancel a subset nonce", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelSubsetOrders([BigNumber.from(0)]);
+    const tx = await lr.cancelSubsetOrders([BigNumber.from(0)]).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
   it("cancel several subset nonces", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]);
+    const tx = await lr.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
   it("increment bid nonce", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelAllOrders(true, false);
+    const tx = await lr.cancelAllOrders(true, false).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
 
     const userNonces = await viewUserBidAskNonces(
@@ -57,7 +62,8 @@ describe("Nonces and order cancellation", () => {
   });
   it("increment ask nonce", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelAllOrders(false, true);
+    const tx = await lr.cancelAllOrders(false, true).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
 
     const userNonces = await viewUserBidAskNonces(
@@ -70,7 +76,8 @@ describe("Nonces and order cancellation", () => {
   });
   it("increment bid/ask nonces", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const receipt = await lr.cancelAllOrders(true, true);
+    const tx = await lr.cancelAllOrders(true, true).call();
+    const receipt = await tx.wait();
 
     expect(receipt.status).to.equal(1);
     const userNonces = await viewUserBidAskNonces(

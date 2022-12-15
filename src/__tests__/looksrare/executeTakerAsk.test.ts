@@ -55,7 +55,8 @@ describe("execute taker ask", () => {
 
     await setApprovalForAll(signers.user1, order.collection, lrUser1.addresses.TRANSFER_MANAGER);
     const takerBid = lrUser1.createTakerAsk(order, signers.user2.address);
-    const receipt = await lrUser1.executeTakerAsk(order, takerBid, signature);
+    const tx = await lrUser1.executeTakerAsk(order, takerBid, signature).call();
+    const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
 });

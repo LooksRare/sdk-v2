@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike, ContractTransaction } from "ethers";
+import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from "ethers";
 import { TypedDataSigner } from "@ethersproject/abstract-signer";
 
 /** List of supported chains */
@@ -39,6 +39,11 @@ export type SolidityType =
  * @see https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53
  */
 export type Signer = ethers.Signer & TypedDataSigner;
+
+export interface ContractMethods {
+  call: () => Promise<ContractTransaction>;
+  estimateGas: () => Promise<BigNumber>;
+}
 
 /** Output of the createMakerAsk function */
 export interface MakerAskOutputs {

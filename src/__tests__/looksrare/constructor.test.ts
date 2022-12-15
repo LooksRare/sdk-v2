@@ -18,6 +18,8 @@ describe("LooksRare class", () => {
     expect(new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1).chainId).to.equal(
       SupportedChainId.HARDHAT
     );
+  });
+  it("instanciate LooksRare object with a signer and override addresses", () => {
     const addresses: Addresses = {
       EXCHANGE: contracts.looksRareProtocol.address,
       LOOKS: constants.AddressZero,
@@ -28,9 +30,9 @@ describe("LooksRare class", () => {
       addresses
     );
   });
-  it("instanciate LooksRare object without a signer", async () => {
+  it("instanciate LooksRare object without a signer and reject a contract call", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT);
     expect(lr.getTypedDataDomain().chainId).to.be.eql(SupportedChainId.HARDHAT);
-    await expect(lr.cancelAllOrders(true, true)).to.eventually.be.rejected;
+    expect(() => lr.cancelAllOrders(true, true)).to.throw(lr.ERROR_SIGNER);
   });
 });
