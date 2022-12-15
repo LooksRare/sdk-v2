@@ -1,4 +1,4 @@
-import { BigNumber, ContractReceipt, providers, constants, BigNumberish } from "ethers";
+import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
@@ -30,6 +30,7 @@ import {
   MakerAskOutputs,
   MakerBidOutputs,
   MerkleTree,
+  ContractMethods,
 } from "./types";
 
 export class LooksRare {
@@ -49,10 +50,10 @@ export class LooksRare {
   public readonly provider: providers.Provider;
 
   /** Custom error invalid timestamp */
-  private readonly ERROR_TIMESTAMP = new Error("Timestamps should be in seconds");
+  public readonly ERROR_TIMESTAMP = new Error("Timestamps should be in seconds");
 
   /** Custom error undefined signer */
-  private readonly ERROR_SIGNER = new Error("Signer is undefined");
+  public readonly ERROR_SIGNER = new Error("Signer is undefined");
 
   /**
    * LooksRare protocol main class
@@ -290,24 +291,15 @@ export class LooksRare {
    * @param takerAsk Taker ask
    * @param signature Signature of the maker order
    */
-  public async executeTakerAsk(
+  public executeTakerAsk(
     makerBid: MakerBid,
     takerAsk: TakerAsk,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
-  ): Promise<ContractReceipt> {
+  ): ContractMethods {
     const signer = this.getSigner();
-    const tx = await executeTakerAsk(
-      signer,
-      this.addresses.EXCHANGE,
-      takerAsk,
-      makerBid,
-      signature,
-      merkleTree,
-      referrer
-    );
-    return tx.wait();
+    return executeTakerAsk(signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature, merkleTree, referrer);
   }
 
   /**
@@ -316,24 +308,15 @@ export class LooksRare {
    * @param takerBid Taker bid
    * @param signature Signature of the maker order
    */
-  public async executeTakerBid(
+  public executeTakerBid(
     makerAsk: MakerAsk,
     takerBid: TakerBid,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
-  ): Promise<ContractReceipt> {
+  ): ContractMethods {
     const signer = this.getSigner();
-    const tx = await executeTakerBid(
-      signer,
-      this.addresses.EXCHANGE,
-      takerBid,
-      makerAsk,
-      signature,
-      merkleTree,
-      referrer
-    );
-    return tx.wait();
+    return executeTakerBid(signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature, merkleTree, referrer);
   }
 
   /**
@@ -341,30 +324,27 @@ export class LooksRare {
    * @param bid Cancel all bids
    * @param ask Cancel all asks
    */
-  public async cancelAllOrders(bid: boolean, ask: boolean): Promise<ContractReceipt> {
+  public cancelAllOrders(bid: boolean, ask: boolean): ContractMethods {
     const signer = this.getSigner();
-    const tx = await incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
-    return tx.wait();
+    return incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
   }
 
   /**
    * Cancel a list of specific orders
    * @param nonces List of nonces to be cancelled
    */
-  public async cancelOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
+  public cancelOrders(nonces: BigNumber[]): ContractMethods {
     const signer = this.getSigner();
-    const tx = await cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
-    return tx.wait();
+    return cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
   }
 
   /**
    * Cancel a list of specific subset orders
    * @param nonces List of nonces to be cancelled
    */
-  public async cancelSubsetOrders(nonces: BigNumber[]): Promise<ContractReceipt> {
+  public cancelSubsetOrders(nonces: BigNumber[]): ContractMethods {
     const signer = this.getSigner();
-    const tx = await cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
-    return tx.wait();
+    return cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
   }
 
   /**
@@ -372,10 +352,9 @@ export class LooksRare {
    * @param operators List of operators
    * @defaultValue Exchange address
    */
-  public async grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
+  public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]): ContractMethods {
     const signer = this.getSigner();
-    const tx = await grantApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
-    return tx.wait();
+    return grantApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
   }
 
   /**
@@ -383,10 +362,9 @@ export class LooksRare {
    * @param operators List of operators
    * @defaultValue Exchange address
    */
-  public async revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]) {
+  public revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]): ContractMethods {
     const signer = this.getSigner();
-    const tx = await revokeApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
-    return tx.wait();
+    return revokeApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
   }
 
   /**
@@ -398,16 +376,16 @@ export class LooksRare {
    * @param itemIds
    * @param amounts
    */
-  public async transferItemsAcrossCollection(
+  public transferItemsAcrossCollection(
     collections: string[],
     assetTypes: AssetType[],
     from: string,
     to: string,
     itemIds: BigNumberish[][],
     amounts: BigNumberish[][]
-  ) {
+  ): ContractMethods {
     const signer = this.getSigner();
-    const tx = await transferBatchItemsAcrossCollections(
+    return transferBatchItemsAcrossCollections(
       signer,
       this.addresses.TRANSFER_MANAGER,
       collections,
@@ -417,6 +395,5 @@ export class LooksRare {
       itemIds,
       amounts
     );
-    return tx.wait();
   }
 }

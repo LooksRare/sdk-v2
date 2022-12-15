@@ -1,7 +1,7 @@
 import { Contract, BigNumber, Overrides, providers, BigNumberish } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
-import { Signer } from "../../types";
+import { Signer, ContractMethods } from "../../types";
 
 export const viewUserBidAskNonces = async (
   signerOrProvider: providers.Provider | Signer,
@@ -14,14 +14,30 @@ export const viewUserBidAskNonces = async (
   return { bidNonce: nonces[0], askNonce: nonces[1] };
 };
 
-export const cancelOrderNonces = (signer: Signer, address: string, nonces: BigNumber[], overrides?: Overrides) => {
+export const cancelOrderNonces = (
+  signer: Signer,
+  address: string,
+  nonces: BigNumber[],
+  overrides?: Overrides
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
-  return contract.cancelOrderNonces(nonces, { ...overrides });
+  return {
+    call: () => contract.cancelOrderNonces(nonces, { ...overrides }),
+    estimateGas: () => contract.estimateGas.cancelOrderNonces(nonces, { ...overrides }),
+  };
 };
 
-export const cancelSubsetNonces = (signer: Signer, address: string, nonces: BigNumber[], overrides?: Overrides) => {
+export const cancelSubsetNonces = (
+  signer: Signer,
+  address: string,
+  nonces: BigNumber[],
+  overrides?: Overrides
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
-  return contract.cancelSubsetNonces(nonces, { ...overrides });
+  return {
+    call: () => contract.cancelSubsetNonces(nonces, { ...overrides }),
+    estimateGas: () => contract.estimateGas.cancelSubsetNonces(nonces, { ...overrides }),
+  };
 };
 
 export const incrementBidAskNonces = (
@@ -30,7 +46,10 @@ export const incrementBidAskNonces = (
   bid: boolean,
   ask: boolean,
   overrides?: Overrides
-) => {
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
-  return contract.incrementBidAskNonces(bid, ask, { ...overrides });
+  return {
+    call: () => contract.incrementBidAskNonces(bid, ask, { ...overrides }),
+    estimateGas: () => contract.estimateGas.incrementBidAskNonces(bid, ask, { ...overrides }),
+  };
 };

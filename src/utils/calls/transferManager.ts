@@ -1,7 +1,7 @@
 import { Contract, BigNumberish, Overrides } from "ethers";
 import { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import abi from "../../abis/TransferManager.json";
-import { AssetType, Signer } from "../../types";
+import { AssetType, Signer, ContractMethods } from "../../types";
 
 export const transferBatchItemsAcrossCollections = (
   signer: Signer,
@@ -13,19 +13,42 @@ export const transferBatchItemsAcrossCollections = (
   itemIds: BigNumberish[][],
   amounts: BigNumberish[][],
   overrides?: Overrides
-) => {
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
-  return contract.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
-    ...overrides,
-  });
+  return {
+    call: () =>
+      contract.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+        ...overrides,
+      }),
+    estimateGas: () =>
+      contract.estimateGas.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+        ...overrides,
+      }),
+  };
 };
 
-export const grantApprovals = (signer: Signer, address: string, operators: string[], overrides?: Overrides) => {
+export const grantApprovals = (
+  signer: Signer,
+  address: string,
+  operators: string[],
+  overrides?: Overrides
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
-  return contract.grantApprovals(operators, { ...overrides });
+  return {
+    call: () => contract.grantApprovals(operators, { ...overrides }),
+    estimateGas: () => contract.estimateGas.grantApprovals(operators, { ...overrides }),
+  };
 };
 
-export const revokeApprovals = (signer: Signer, address: string, operators: string[], overrides?: Overrides) => {
+export const revokeApprovals = (
+  signer: Signer,
+  address: string,
+  operators: string[],
+  overrides?: Overrides
+): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
-  return contract.revokeApprovals(operators, { ...overrides });
+  return {
+    call: () => contract.revokeApprovals(operators, { ...overrides }),
+    estimateGas: () => contract.estimateGas.revokeApprovals(operators, { ...overrides }),
+  };
 };
