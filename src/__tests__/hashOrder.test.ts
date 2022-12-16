@@ -6,7 +6,7 @@ import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
 import { getMakerAskHash, getMakerBidHash, getMerkleTreeHash } from "../utils/hashOrder";
 import { MakerAsk, MakerBid, AssetType } from "../types";
 
-describe("hash orders", () => {
+describe("Hash orders", () => {
   let contracts: Mocks;
   let signers: Signers;
 
