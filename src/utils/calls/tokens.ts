@@ -1,4 +1,4 @@
-import { Contract, providers, Overrides, CallOverrides, constants } from "ethers";
+import { Contract, providers, Overrides, CallOverrides, constants, BigNumber } from "ethers";
 import { ERC721 } from "../../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
 import { ERC20 } from "../../../typechain/solmate/src/tokens/ERC20";
 import abiIERC721 from "../../abis/IERC721.json";
@@ -42,7 +42,13 @@ export const allowance = (
   return contract.allowance(account, operator, { ...overrides });
 };
 
-export const approve = (signer: Signer, currency: string, operator: string, overrides?: Overrides) => {
+export const approve = (
+  signer: Signer,
+  currency: string,
+  operator: string,
+  amount: BigNumber = constants.MaxUint256,
+  overrides?: Overrides
+) => {
   const contract = new Contract(currency, abiIERC20, signer) as ERC20;
-  return contract.approve(operator, constants.MaxUint256, { ...overrides });
+  return contract.approve(operator, amount, { ...overrides });
 };
