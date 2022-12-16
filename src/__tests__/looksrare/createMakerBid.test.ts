@@ -4,13 +4,13 @@ import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { Addresses } from "../../constants/addresses";
-import { isApprovedForAll, setApprovalForAll } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType, StrategyType, MakerAskInputs, MakerAsk } from "../../types";
+import { allowance, approve } from "../../utils/calls/tokens";
+import { SupportedChainId, AssetType, StrategyType, MakerBidInputs, MakerBid } from "../../types";
 
-describe("Create maker ask", () => {
+describe("Create maker bid", () => {
   let contracts: Mocks;
   let signers: Signers;
-  let baseMakerAskInput: MakerAskInputs;
+  let baseMakerInput: MakerBidInputs;
   let addresses: Addresses;
   beforeEach(async () => {
     contracts = await setUpContracts();
@@ -21,7 +21,7 @@ describe("Create maker ask", () => {
       TRANSFER_MANAGER: contracts.transferManager.address,
       WETH: contracts.weth.address,
     };
-    baseMakerAskInput = {
+    baseMakerInput = {
       collection: contracts.collection1.address,
       assetType: AssetType.ERC721,
       strategyId: StrategyType.standard,
@@ -33,65 +33,65 @@ describe("Create maker ask", () => {
       itemIds: [1],
     };
   });
-  it("create maker ask with wrong time format", async () => {
+  it("create maker bid with wrong time format", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, startTime: Date.now() })).to.eventually.be.rejected;
-    await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, endTime: Date.now() })).to.eventually.be.rejected;
+    await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejected;
+    await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejected;
   });
   it("returns action function if no approval was made", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const { action } = await looksrare.createMakerAsk(baseMakerAskInput);
+    const { action } = await looksrare.createMakerBid(baseMakerInput);
     expect(action).to.not.be.undefined;
 
     await action!();
-    const isApproved = await isApprovedForAll(
+    const valueApproved = await allowance(
       ethers.provider,
-      baseMakerAskInput.collection,
+      contracts.weth.address,
       signers.user1.address,
-      contracts.transferManager.address
+      contracts.looksRareProtocol.address
     );
-    expect(isApproved).to.be.true;
+    expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
   it("returns undefined action function if approval was made", async () => {
-    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, contracts.transferManager.address);
+    await approve(signers.user1, contracts.weth.address, contracts.looksRareProtocol.address);
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const output = await looksrare.createMakerAsk(baseMakerAskInput);
+    const output = await looksrare.createMakerBid(baseMakerInput);
     expect(output.action).to.be.undefined;
   });
-  it("create a simple maker ask with default values", async () => {
+  it("create a simple maker bid with default values", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const output = await looksrare.createMakerAsk(baseMakerAskInput);
-    const makerOrder: MakerAsk = {
-      askNonce: constants.Zero,
-      subsetNonce: baseMakerAskInput.subsetNonce,
-      strategyId: baseMakerAskInput.strategyId,
-      assetType: baseMakerAskInput.assetType,
-      orderNonce: baseMakerAskInput.orderNonce,
-      collection: baseMakerAskInput.collection,
-      currency: constants.AddressZero,
+    const output = await looksrare.createMakerBid(baseMakerInput);
+    const makerOrder: MakerBid = {
+      bidNonce: constants.Zero,
+      subsetNonce: baseMakerInput.subsetNonce,
+      strategyId: baseMakerInput.strategyId,
+      assetType: baseMakerInput.assetType,
+      orderNonce: baseMakerInput.orderNonce,
+      collection: baseMakerInput.collection,
+      currency: contracts.weth.address,
       signer: signers.user1.address,
-      startTime: baseMakerAskInput.startTime!,
-      endTime: baseMakerAskInput.endTime,
-      minPrice: baseMakerAskInput.price,
-      itemIds: baseMakerAskInput.itemIds,
+      startTime: baseMakerInput.startTime!,
+      endTime: baseMakerInput.endTime,
+      maxPrice: baseMakerInput.price,
+      itemIds: baseMakerInput.itemIds,
       amounts: [1],
       additionalParameters: "0x",
     };
     expect(output.order).to.eql(makerOrder);
   });
-  it("create a simple maker ask with non default values", async () => {
+  it("create a simple maker bid with non default values", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     const input = {
-      ...baseMakerAskInput,
+      ...baseMakerInput,
       amounts: [1],
-      currency: addresses.WETH,
+      currency: contracts.weth.address,
       startTime: Math.floor(Date.now() / 1000),
       recipient: signers.user2.address,
       additionalParameters: [],
     };
-    const output = await looksrare.createMakerAsk(input);
-    const makerOrder: MakerAsk = {
-      askNonce: constants.Zero,
+    const output = await looksrare.createMakerBid(input);
+    const makerOrder: MakerBid = {
+      bidNonce: constants.Zero,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       assetType: input.assetType,
@@ -101,7 +101,7 @@ describe("Create maker ask", () => {
       signer: signers.user1.address,
       startTime: input.startTime!,
       endTime: input.endTime,
-      minPrice: input.price,
+      maxPrice: input.price,
       itemIds: input.itemIds,
       amounts: input.amounts!,
       additionalParameters: "0x",
