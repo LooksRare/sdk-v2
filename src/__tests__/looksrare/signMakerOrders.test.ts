@@ -5,7 +5,7 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { LooksRare } from "../../LooksRare";
 import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
 import { Addresses } from "../../constants/addresses";
-import { contractName, version, makerAskTypes, makerBidTypes } from "../../constants/eip712";
+import { contractName, version, makerAskTypes, makerBidTypes, merkleTreeTypes } from "../../constants/eip712";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { SupportedChainId, MakerAsk, MakerBid, AssetType, StrategyType } from "../../types";
 
@@ -91,5 +91,52 @@ describe("Sign maker orders", () => {
     await expect(verifier.verifyBidOrders(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
       "call revert exception"
     );
+  });
+  it("sign multiple maker bid order (merkle tree)", async () => {
+    const { collection1, weth, verifier } = contracts;
+    const makerOrders: MakerBid[] = [
+      {
+        bidNonce: 1,
+        subsetNonce: 1,
+        strategyId: 1,
+        assetType: AssetType.ERC721,
+        orderNonce: 1,
+        collection: collection1.address,
+        currency: weth.address,
+        signer: signers.user1.address,
+        startTime: Math.floor(Date.now() / 1000),
+        endTime: Math.floor(Date.now() / 1000 + 3600),
+        maxPrice: utils.parseEther("1").toString(),
+        itemIds: [1],
+        amounts: [1],
+        additionalParameters: utils.defaultAbiCoder.encode([], []),
+      },
+      {
+        bidNonce: 1,
+        subsetNonce: 1,
+        strategyId: 1,
+        assetType: AssetType.ERC721,
+        orderNonce: 1,
+        collection: collection1.address,
+        currency: weth.address,
+        signer: signers.user1.address,
+        startTime: Math.floor(Date.now() / 1000),
+        endTime: Math.floor(Date.now() / 1000 + 3600),
+        maxPrice: utils.parseEther("1").toString(),
+        itemIds: [1],
+        amounts: [1],
+        additionalParameters: utils.defaultAbiCoder.encode([], []),
+      },
+    ];
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const tree = lr.createMakerMerkleTree(makerOrders);
+
+    const signature = await lr.signMultipleMakers(tree.root);
+
+    expect(utils.verifyTypedData(domain, merkleTreeTypes, tree, signature)).to.equal(signers.user1.address);
+    await expect(verifier.verifyMerkleTreeOrders(tree, signature, signers.user1.address)).to.eventually.be.fulfilled;
+    await expect(
+      verifier.verifyMerkleTreeOrders(tree, faultySignature, signers.user1.address)
+    ).to.eventually.be.rejectedWith("call revert exception");
   });
 });
