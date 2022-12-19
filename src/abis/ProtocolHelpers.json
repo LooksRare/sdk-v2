@@ -57,24 +57,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "askNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -148,24 +148,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "bidNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -283,24 +283,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "askNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -384,24 +384,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "bidNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",

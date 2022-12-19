@@ -72,9 +72,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "WrongAssetType",
@@ -368,9 +368,9 @@
         "type": "address[]"
       },
       {
-        "internalType": "uint8[]",
+        "internalType": "uint256[]",
         "name": "assetTypes",
-        "type": "uint8[]"
+        "type": "uint256[]"
       },
       {
         "internalType": "address",

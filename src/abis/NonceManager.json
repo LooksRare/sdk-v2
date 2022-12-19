@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "NoNonceToIncrement",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "WrongLengths",
     "type": "error"
   },
@@ -14,15 +9,15 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "bidNonce",
-        "type": "uint112"
+        "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "askNonce",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "NewBidAskNonces",
@@ -46,9 +41,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "subsetNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "SubsetNoncesCancelled",
@@ -83,9 +78,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "subsetNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "cancelSubsetNonces",
@@ -122,14 +117,14 @@
     "name": "userBidAskNonces",
     "outputs": [
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "bidNonce",
-        "type": "uint112"
+        "type": "uint256"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "askNonce",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -167,9 +162,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "userSubsetNonce",

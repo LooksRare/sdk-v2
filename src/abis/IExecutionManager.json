@@ -6,12 +6,12 @@
   },
   {
     "inputs": [],
-    "name": "NoSelectorForTakerAsk",
+    "name": "NoSelectorForMakerAsk",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NoSelectorForTakerBid",
+    "name": "NoSelectorForMakerBid",
     "type": "error"
   },
   {
@@ -32,9 +32,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "name": "StrategyNotAvailable",

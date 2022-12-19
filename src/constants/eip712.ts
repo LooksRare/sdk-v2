@@ -4,16 +4,16 @@ import { SolidityType } from "../types";
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 
-export const MAKER_ASK_HASH = "0xd68183dbe86d11ceada61f851ee998c9608c049d79f6c9d65bfba7d4b5db5e3e";
-export const MAKER_BID_HASH = "0x0408e64fdd103ecf799bbabbd0370ad7c35a5711332d9d966e79c70ff3cb2aa3";
+export const MAKER_ASK_HASH = "0x88210d05352c99907588dddb658b9abce78f141d1415d7be787f6120b718fe02";
+export const MAKER_BID_HASH = "0xc69763700afbfcdc70a0b138ea120a08fc78dfc5532f1e7232fa8d8cfb26f96a";
 export const MERKLE_TREE_HASH = "0x4339702fd09d392db18a2a980b04a717d48085f206207a9fe4472d7ba0ccbf0b";
 
 export const hashingMakerTypes: SolidityType[] = [
   "bytes32",
-  "uint112",
-  "uint112",
-  "uint16",
-  "uint8",
+  "uint256",
+  "uint256",
+  "uint256",
+  "uint256",
   "uint256",
   "address",
   "address",
@@ -30,10 +30,10 @@ export const hashingMerkleTreeTypes: SolidityType[] = ["bytes32", "bytes32"];
 
 export const makerAskTypes: Record<string, Array<TypedDataField>> = {
   MakerAsk: [
-    { name: "askNonce", type: "uint112" },
-    { name: "subsetNonce", type: "uint112" },
-    { name: "strategyId", type: "uint16" },
-    { name: "assetType", type: "uint8" },
+    { name: "askNonce", type: "uint256" },
+    { name: "subsetNonce", type: "uint256" },
+    { name: "strategyId", type: "uint256" },
+    { name: "assetType", type: "uint256" },
     { name: "orderNonce", type: "uint256" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
@@ -49,10 +49,10 @@ export const makerAskTypes: Record<string, Array<TypedDataField>> = {
 
 export const makerBidTypes: Record<string, Array<TypedDataField>> = {
   MakerBid: [
-    { name: "bidNonce", type: "uint112" },
-    { name: "subsetNonce", type: "uint112" },
-    { name: "strategyId", type: "uint16" },
-    { name: "assetType", type: "uint8" },
+    { name: "bidNonce", type: "uint256" },
+    { name: "subsetNonce", type: "uint256" },
+    { name: "strategyId", type: "uint256" },
+    { name: "assetType", type: "uint256" },
     { name: "orderNonce", type: "uint256" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
