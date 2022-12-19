@@ -280,9 +280,9 @@ export class LooksRare {
    * @param makerOrders List of maker order to be signed
    * @returns Merkle tree and the signature
    */
-  public async signMultipleMakers(tree: MerkleTreeJS) {
+  public async signMultipleMakers(hexRoot: MerkleTree["root"]) {
     const signer = this.getSigner();
-    return await signMerkleRoot(signer, this.getTypedDataDomain(), tree.getHexRoot());
+    return await signMerkleRoot(signer, this.getTypedDataDomain(), hexRoot);
   }
 
   /**

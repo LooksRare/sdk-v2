@@ -37,4 +37,12 @@ contract Verifier is ProtocolHelpers {
     function verifyBidOrders(OrderStructs.MakerBid calldata makerBid, bytes calldata signature) external view {
         verifyMakerBidOrder(makerBid, signature, makerBid.signer);
     }
+
+    function verifyMerkleTreeOrders(
+        OrderStructs.MerkleTree calldata merkleTree,
+        bytes calldata signature,
+        address signer
+    ) external view {
+        verifyMerkleTree(merkleTree, signature, signer);
+    }
 }
