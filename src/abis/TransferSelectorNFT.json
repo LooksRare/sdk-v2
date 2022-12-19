@@ -23,9 +23,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "NFTTransferFail",
@@ -39,9 +39,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "NoTransferManagerForAssetType",
@@ -70,9 +70,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "WrongAssetType",
@@ -119,9 +119,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -155,9 +155,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "internalType": "address",
@@ -219,9 +219,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "managerSelectorOfAssetType",

@@ -27,17 +27,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "WrongAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongLengths",
     "type": "error"
   },
   {

@@ -42,39 +42,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyAlreadyWhitelisted",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotContract",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "CurrencyNotWhitelisted",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "ERC20TransferFail",
     "type": "error"
@@ -107,17 +74,12 @@
         "type": "address"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "NFTTransferFail",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NoNonceToIncrement",
     "type": "error"
   },
   {
@@ -127,20 +89,20 @@
   },
   {
     "inputs": [],
-    "name": "NoSelectorForTakerAsk",
+    "name": "NoSelectorForMakerAsk",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NoSelectorForTakerBid",
+    "name": "NoSelectorForMakerBid",
     "type": "error"
   },
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "NoTransferManagerForAssetType",
@@ -219,9 +181,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "strategyId",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "name": "StrategyNotAvailable",
@@ -248,21 +210,11 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "WETHDepositFail",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WETHTransferFail",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "WrongAssetType",
@@ -342,22 +294,15 @@
         "internalType": "address",
         "name": "currency",
         "type": "address"
-      }
-    ],
-    "name": "CurrencyRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
+      },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
       }
     ],
-    "name": "CurrencyWhitelisted",
+    "name": "CurrencyWhitelistStatusUpdated",
     "type": "event"
   },
   {
@@ -435,9 +380,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -460,15 +405,15 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "bidNonce",
-        "type": "uint112"
+        "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "askNonce",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "NewBidAskNonces",
@@ -613,9 +558,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "subsetNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "SubsetNoncesCancelled",
@@ -816,19 +761,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "addCurrency",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint16",
         "name": "standardProtocolFee",
         "type": "uint16"
@@ -845,13 +777,13 @@
       },
       {
         "internalType": "bytes4",
-        "name": "selectorTakerAsk",
+        "name": "selector",
         "type": "bytes4"
       },
       {
-        "internalType": "bytes4",
-        "name": "selectorTakerBid",
-        "type": "bytes4"
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
       },
       {
         "internalType": "address",
@@ -867,9 +799,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "assetType",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "internalType": "address",
@@ -955,9 +887,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint112[]",
+        "internalType": "uint256[]",
         "name": "subsetNonces",
-        "type": "uint112[]"
+        "type": "uint256[]"
       }
     ],
     "name": "cancelSubsetNonces",
@@ -1068,24 +1000,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "askNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -1217,24 +1149,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "bidNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -1361,24 +1293,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "askNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -1469,19 +1401,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "gasLimitETHTransfer",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bool",
@@ -1554,9 +1473,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "managerSelectorOfAssetType",
@@ -1643,19 +1562,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "removeCurrency",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "components": [
           {
             "internalType": "address",
@@ -1690,24 +1596,24 @@
       {
         "components": [
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "askNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint112",
+            "internalType": "uint256",
             "name": "subsetNonce",
-            "type": "uint112"
+            "type": "uint256"
           },
           {
-            "internalType": "uint16",
+            "internalType": "uint256",
             "name": "strategyId",
-            "type": "uint16"
+            "type": "uint256"
           },
           {
-            "internalType": "uint8",
+            "internalType": "uint256",
             "name": "assetType",
-            "type": "uint8"
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -1857,13 +1763,13 @@
       },
       {
         "internalType": "bytes4",
-        "name": "selectorTakerAsk",
+        "name": "selector",
         "type": "bytes4"
       },
       {
-        "internalType": "bytes4",
-        "name": "selectorTakerBid",
-        "type": "bytes4"
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
       },
       {
         "internalType": "address",
@@ -1919,6 +1825,24 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      }
+    ],
+    "name": "updateCurrencyWhitelistStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "updateDomainSeparator",
     "outputs": [],
@@ -1964,14 +1888,14 @@
     "name": "userBidAskNonces",
     "outputs": [
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "bidNonce",
-        "type": "uint112"
+        "type": "uint256"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "askNonce",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -2009,9 +1933,9 @@
         "type": "address"
       },
       {
-        "internalType": "uint112",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint112"
+        "type": "uint256"
       }
     ],
     "name": "userSubsetNonce",

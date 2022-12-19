@@ -162,13 +162,13 @@
       },
       {
         "internalType": "bytes4",
-        "name": "selectorTakerAsk",
+        "name": "selector",
         "type": "bytes4"
       },
       {
-        "internalType": "bytes4",
-        "name": "selectorTakerBid",
-        "type": "bytes4"
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
       },
       {
         "internalType": "address",
@@ -306,13 +306,13 @@
       },
       {
         "internalType": "bytes4",
-        "name": "selectorTakerAsk",
+        "name": "selector",
         "type": "bytes4"
       },
       {
-        "internalType": "bytes4",
-        "name": "selectorTakerBid",
-        "type": "bytes4"
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
       },
       {
         "internalType": "address",

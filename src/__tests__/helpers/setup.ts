@@ -72,9 +72,9 @@ export const setUpContracts = async (): Promise<Mocks> => {
 
   tx = await looksRareProtocol.setCreatorFeeManager(feeManager.address);
   await tx.wait();
-  tx = await looksRareProtocol.addCurrency(constants.AddressZero);
+  tx = await looksRareProtocol.updateCurrencyWhitelistStatus(constants.AddressZero, true);
   await tx.wait();
-  tx = await looksRareProtocol.addCurrency(weth.address);
+  tx = await looksRareProtocol.updateCurrencyWhitelistStatus(weth.address, true);
   await tx.wait();
   tx = await transferManager.whitelistOperator(looksRareProtocol.address);
   await tx.wait();
