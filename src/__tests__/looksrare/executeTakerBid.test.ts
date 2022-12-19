@@ -53,4 +53,24 @@ describe("execute taker bid", () => {
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
+  it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
+    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, addresses);
+    const maker1 = await lrUser1.createMakerAsk(baseMakerAskInput);
+    const maker2 = await lrUser1.createMakerAsk(baseMakerAskInput);
+    const tree = await lrUser2.createMakerMerkleTree([maker1.order, maker2.order]);
+    const signature = await lrUser2.signMultipleMakers(tree.root);
+
+    await maker1.action!();
+    await maker2.action!();
+
+    const takerBid = lrUser2.createTakerBid(maker1.order, signers.user2.address);
+
+    const estimatedGas = await lrUser2.executeTakerBid(maker1.order, takerBid, signature, tree).estimateGas();
+    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+
+    const tx = await lrUser2.executeTakerBid(maker1.order, takerBid, signature, tree).call();
+    const receipt = await tx.wait();
+    expect(receipt.status).to.be.equal(1);
+  });
 });
