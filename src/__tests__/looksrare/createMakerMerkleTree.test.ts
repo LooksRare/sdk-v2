@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { Addresses } from "../../constants/addresses";
-import { SupportedChainId, AssetType, MakerBid } from "../../types";
+import { SupportedChainId, AssetType, MakerBid, MakerAsk } from "../../types";
 
 describe("Create maker merkle tree", () => {
   let contracts: Mocks;
@@ -21,9 +21,9 @@ describe("Create maker merkle tree", () => {
     };
   });
   it("create a merkle tree with 2 listings", async () => {
-    const makerOrders: MakerBid[] = [
+    const makerOrders: (MakerBid | MakerAsk)[] = [
       {
-        bidNonce: 1,
+        askNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
         assetType: AssetType.ERC721,
@@ -33,7 +33,7 @@ describe("Create maker merkle tree", () => {
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        maxPrice: utils.parseEther("1").toString(),
+        minPrice: utils.parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
         additionalParameters: utils.defaultAbiCoder.encode([], []),
