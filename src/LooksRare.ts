@@ -376,15 +376,15 @@ export class LooksRare {
    * @param itemIds
    * @param amounts
    */
-  public transferItemsAcrossCollection(
+  public async transferItemsAcrossCollection(
     collections: string[],
     assetTypes: AssetType[],
-    from: string,
     to: string,
     itemIds: BigNumberish[][],
     amounts: BigNumberish[][]
-  ): ContractMethods {
+  ): Promise<ContractMethods> {
     const signer = this.getSigner();
+    const from = await signer.getAddress();
     return transferBatchItemsAcrossCollections(
       signer,
       this.addresses.TRANSFER_MANAGER,
