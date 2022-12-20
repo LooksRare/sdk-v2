@@ -27,7 +27,6 @@ describe("Create maker bid", () => {
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
-      startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
       price: utils.parseEther("1"),
       itemIds: [1],
@@ -70,7 +69,7 @@ describe("Create maker bid", () => {
       collection: baseMakerInput.collection,
       currency: contracts.weth.address,
       signer: signers.user1.address,
-      startTime: baseMakerInput.startTime!,
+      startTime: output.order.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerInput.endTime,
       maxPrice: baseMakerInput.price,
       itemIds: baseMakerInput.itemIds,
