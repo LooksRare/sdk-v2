@@ -86,6 +86,8 @@ export const setUpContracts = async (): Promise<Mocks> => {
     tx = await collection2.mint(signers.user2.address, i, 10);
     await tx.wait();
   }
+  tx = await collection2.mint(signers.user1.address, 0, 10);
+  await tx.wait();
 
   return {
     looksRareProtocol: looksRareProtocol as LooksRareProtocol,
