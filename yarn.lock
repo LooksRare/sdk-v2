@@ -1623,9 +1623,9 @@
     "@types/node" "*"
 
 "@types/prettier@^2.1.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.7.1.tgz#dfd20e2dc35f027cdd6c1908e80a5ddc7499670e"
-  integrity sha512-ri0UmynRRvZiiUJdiz38MmIblKK+oH30MztdBVR95dv/Ubw6neWSb8u1XpRb72L4qsZOhz+L+z9JD40SJmfWow==
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.7.2.tgz#6c2324641cc4ba050a8c710b2b251b377581fbf0"
+  integrity sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==
 
 "@types/resolve@^0.0.8":
   version "0.0.8"
@@ -2773,9 +2773,9 @@ bech32@1.1.4:
   integrity sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==
 
 bigint-crypto-utils@^3.0.23:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/bigint-crypto-utils/-/bigint-crypto-utils-3.1.7.tgz#c4c1b537c7c1ab7aadfaecf3edfd45416bf2c651"
-  integrity sha512-zpCQpIE2Oy5WIQpjC9iYZf8Uh9QqoS51ZCooAcNvzv1AQ3VWdT52D0ksr1+/faeK8HVIej1bxXcP75YcqH3KPA==
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/bigint-crypto-utils/-/bigint-crypto-utils-3.1.8.tgz#e2e0f40cf45488f9d7f0e32ff84152aa73819d5d"
+  integrity sha512-+VMV9Laq8pXLBKKKK49nOoq9bfR3j7NNQAtbA617a4nw9bVLo8rsqkKMBgM2AJWlNX9fEIyYaYX+d0laqYV4tw==
   dependencies:
     bigint-mod-arith "^3.1.0"
 
@@ -3593,7 +3593,7 @@ content-type@~1.0.4:
 
 contracts-exchange-v2@LooksRare/contracts-exchange-v2:
   version "1.0.0"
-  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#cd56af3660b5b319c37586fc68272d3d0ad5c3e7"
+  resolved "git+ssh://git@github.com/LooksRare/contracts-exchange-v2.git#3c9cb27f55ae5ada378f51c2cf867fd90264731f"
   dependencies:
     "@chainlink/contracts" "^0.5.1"
     "@looksrare/contracts-libs" "^2.4.4"
@@ -7663,9 +7663,9 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
     brace-expansion "^1.1.7"
 
 minimatch@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.1.tgz#6c9dffcf9927ff2a31e74b5af11adf8b9604b022"
-  integrity sha512-362NP+zlprccbEt/SkxKfRMHnNY85V74mVnpUpNyr3F35covl09Kec7/sEFLt3RA4oXmewtoaanoIf67SE5Y5g==
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.2.tgz#0939d7d6f0898acbd1508abe534d1929368a8fff"
+  integrity sha512-bNH9mmM9qsJ2X4r2Nat1B//1dJVcn3+iBLa3IgqJ7EbGaDNepL9QSHOxN4ng33s52VMMhhIfgCYDk3C4ZmlDAg==
   dependencies:
     brace-expansion "^2.0.1"
 

@@ -27,7 +27,6 @@ describe("Create maker ask", () => {
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
-      // startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
       price: utils.parseEther("1"),
       itemIds: [1],
