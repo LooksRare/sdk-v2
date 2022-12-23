@@ -5,7 +5,7 @@ interface ChainInfo {
   appUrl: string;
   rpcUrl: string;
   explorer: string;
-  apiUrl: string;
+  baseApiUrl: string;
   osApiUrl: string;
   cdnUrl: string;
   rewardsSubgraphUrl: string;
@@ -18,7 +18,7 @@ export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
     appUrl: "https://looksrare.org",
     explorer: "https://etherscan.io",
     rpcUrl: "https://eth-mainnet.g.alchemy.com/v2",
-    apiUrl: "https://graphql.looksrare.org/graphql",
+    baseApiUrl: "https://graphql.looksrare.org",
     osApiUrl: "https://api.opensea.io",
     cdnUrl: "https://static.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/looksrare/looks-distribution",
@@ -29,7 +29,7 @@ export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
     appUrl: "https://goerli.looksrare.org",
     explorer: "https://goerli.etherscan.io",
     rpcUrl: "https://eth-goerli.g.alchemy.com/v2",
-    apiUrl: "https://graphql-goerli.looksrare.org/graphql",
+    baseApiUrl: "https://graphql-goerli.looksrare.org",
     osApiUrl: "https://testnets-api.opensea.io",
     cdnUrl: "https://static-goerli.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
@@ -40,7 +40,7 @@ export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
     appUrl: "http://localhost:3000",
     explorer: "https://etherscan.io",
     rpcUrl: "http://127.0.0.1:8545",
-    apiUrl: "http://localhost:4000/graphql",
+    baseApiUrl: "http://localhost:4000",
     osApiUrl: "https://testnets-api.opensea.io",
     cdnUrl: "https://via.placeholder.com",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
