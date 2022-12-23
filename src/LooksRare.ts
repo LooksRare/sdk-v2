@@ -145,8 +145,8 @@ export class LooksRare {
     };
 
     return {
-      order,
-      action: isCollectionApproved ? undefined : () => setApprovalForAll(signer, collection, spenderAddress),
+      makerAsk: order,
+      approval: isCollectionApproved ? undefined : () => setApprovalForAll(signer, collection, spenderAddress),
     };
   }
 
@@ -200,8 +200,10 @@ export class LooksRare {
     };
 
     return {
-      order,
-      action: BigNumber.from(currentAllowance).lt(price) ? () => approve(signer, currency, spenderAddress) : undefined,
+      makerBid: order,
+      approval: BigNumber.from(currentAllowance).lt(price)
+        ? () => approve(signer, currency, spenderAddress)
+        : undefined,
     };
   }
 
