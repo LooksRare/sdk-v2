@@ -64,7 +64,7 @@ export class LooksRare {
    * @param chainId Current app chain id
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(provider: providers.Provider, chainId: SupportedChainId, signer?: Signer, override?: Addresses) {
+  constructor(chainId: SupportedChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;

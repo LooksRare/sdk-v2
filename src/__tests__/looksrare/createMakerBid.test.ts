@@ -25,12 +25,12 @@ describe("Create maker bid", () => {
     };
   });
   it("create maker bid with wrong time format", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejected;
     await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejected;
   });
   it("returns approval function if no approval was made", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { approval } = await looksrare.createMakerBid(baseMakerInput);
     expect(approval).to.not.be.undefined;
 
@@ -45,12 +45,12 @@ describe("Create maker bid", () => {
   });
   it("returns undefined approval function if approval was made", async () => {
     await approve(signers.user1, mocks.addresses.WETH, mocks.addresses.EXCHANGE);
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerBid(baseMakerInput);
     expect(output.approval).to.be.undefined;
   });
   it("create a simple maker bid with default values", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerBid(baseMakerInput);
     const makerOrder: MakerBid = {
       bidNonce: constants.Zero,
@@ -71,7 +71,7 @@ describe("Create maker bid", () => {
     expect(output.makerBid).to.eql(makerOrder);
   });
   it("create a simple maker bid with non default values", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const input = {
       ...baseMakerInput,
       amounts: [1],

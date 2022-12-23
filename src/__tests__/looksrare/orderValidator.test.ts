@@ -36,7 +36,7 @@ describe("Order validation", () => {
       price: utils.parseEther("1"),
       itemIds: [1],
     };
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { makerAsk, approval } = await lr.createMakerAsk(baseMakerAskInput);
     const signature = await lr.signMakerAsk(makerAsk);
 
@@ -60,7 +60,7 @@ describe("Order validation", () => {
       itemIds: [1],
     };
 
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { makerBid, approval } = await lr.createMakerBid(baseMakerBidInput);
     const signature = await lr.signMakerBid(makerBid);
 

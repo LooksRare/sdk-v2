@@ -18,7 +18,7 @@ describe("Transfer manager", () => {
     signers = await getSigners();
   });
   it("grant operator approvals", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const methods = lr.grantTransferManagerApproval();
 
     const estimatedGas = await methods.estimateGas();
@@ -29,7 +29,7 @@ describe("Transfer manager", () => {
     expect(receipt.status).to.equal(1);
   });
   it("revoke operator approvals", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     (await lr.grantTransferManagerApproval().call()).wait();
     const methods = lr.revokeTransferManagerApproval();
 
@@ -42,7 +42,7 @@ describe("Transfer manager", () => {
   });
   it("transfer items from a single collection", async () => {
     const { addresses, contracts } = mocks;
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
     await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
     (await lr.grantTransferManagerApproval().call()).wait();
     const collection1 = new Contract(contracts.collection1.address, abiIERC721, ethers.provider) as ERC721;
@@ -76,7 +76,7 @@ describe("Transfer manager", () => {
   });
   it("transfer items from multiple collections", async () => {
     const { addresses, contracts } = mocks;
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
     await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
     await setApprovalForAll(signers.user1, contracts.collection2.address, addresses.TRANSFER_MANAGER);
     (await lr.grantTransferManagerApproval().call()).wait();

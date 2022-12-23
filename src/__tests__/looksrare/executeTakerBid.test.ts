@@ -29,8 +29,8 @@ describe("execute taker bid", () => {
     };
   });
   it("execute maker ask and taker bid", async () => {
-    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
-    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, mocks.addresses);
+    const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const { makerAsk, approval } = await lrUser1.createMakerAsk(baseMakerAskInput);
     await approval!();
     const signature = await lrUser1.signMakerAsk(makerAsk);
@@ -44,8 +44,8 @@ describe("execute taker bid", () => {
     expect(receipt.status).to.be.equal(1);
   });
   it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
-    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
-    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, mocks.addresses);
+    const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const order1 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const tree = await lrUser2.createMakerMerkleTree([order1.makerAsk, order2.makerAsk]);
