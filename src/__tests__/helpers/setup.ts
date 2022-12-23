@@ -118,6 +118,8 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
       TRANSFER_MANAGER: transferManager.address,
       WETH: weth.address,
       ORDER_VALIDATOR: orderValidator.address,
+      REVERSE_RECORDS: constants.AddressZero,
+      LOOKS_LP_V3: constants.AddressZero,
     },
   };
 };
