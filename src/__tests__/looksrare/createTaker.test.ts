@@ -33,13 +33,13 @@ describe("Create takers", () => {
       itemIds: [1],
     };
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
-    const { order } = await looksrare.createMakerAsk(baseMakerAskInput);
-    const takerBid = looksrare.createTakerBid(order, signers.user2.address);
+    const { makerAsk } = await looksrare.createMakerAsk(baseMakerAskInput);
+    const takerBid = looksrare.createTakerBid(makerAsk, signers.user2.address);
     const expectedTakerBid: TakerBid = {
       recipient: signers.user2.address,
-      itemIds: order.itemIds,
-      amounts: order.amounts,
-      maxPrice: order.minPrice,
+      itemIds: makerAsk.itemIds,
+      amounts: makerAsk.amounts,
+      maxPrice: makerAsk.minPrice,
       additionalParameters: "0x",
     };
     await expect(takerBid).to.be.eql(expectedTakerBid);
@@ -57,13 +57,13 @@ describe("Create takers", () => {
       itemIds: [1],
     };
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
-    const { order } = await looksrare.createMakerBid(baseMakerAskInput);
-    const takerAsk = looksrare.createTakerAsk(order, signers.user2.address);
+    const { makerBid } = await looksrare.createMakerBid(baseMakerAskInput);
+    const takerAsk = looksrare.createTakerAsk(makerBid, signers.user2.address);
     const expectedTakerAsk: TakerAsk = {
       recipient: signers.user2.address,
-      itemIds: order.itemIds,
-      amounts: order.amounts,
-      minPrice: order.maxPrice,
+      itemIds: makerBid.itemIds,
+      amounts: makerBid.amounts,
+      minPrice: makerBid.maxPrice,
       additionalParameters: "0x",
     };
     await expect(takerAsk).to.be.eql(expectedTakerAsk);

@@ -48,9 +48,9 @@ export interface ContractMethods {
 /** Output of the createMakerAsk function */
 export interface MakerAskOutputs {
   /** Maker order ready to be signed */
-  order: MakerAsk;
+  makerAsk: MakerAsk;
   /** Function to be called before signing the order */
-  action?: () => Promise<ContractTransaction>;
+  approval?: () => Promise<ContractTransaction>;
 }
 
 /** Input of the createMakerAsk function */
@@ -96,9 +96,9 @@ export interface MakerAskInputs {
 /** Output of the createMakerBid function */
 export interface MakerBidOutputs {
   /** Maker order ready to be signed */
-  order: MakerBid;
+  makerBid: MakerBid;
   /** Function to be called before signing the order */
-  action?: () => Promise<ContractTransaction>;
+  approval?: () => Promise<ContractTransaction>;
 }
 
 /** Input of the createMakerBid function */

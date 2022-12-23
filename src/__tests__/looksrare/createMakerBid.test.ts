@@ -29,12 +29,12 @@ describe("Create maker bid", () => {
     await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejected;
     await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejected;
   });
-  it("returns action function if no approval was made", async () => {
+  it("returns approval function if no approval was made", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
-    const { action } = await looksrare.createMakerBid(baseMakerInput);
-    expect(action).to.not.be.undefined;
+    const { approval } = await looksrare.createMakerBid(baseMakerInput);
+    expect(approval).to.not.be.undefined;
 
-    await action!();
+    await approval!();
     const valueApproved = await allowance(
       ethers.provider,
       mocks.addresses.WETH,
@@ -43,11 +43,11 @@ describe("Create maker bid", () => {
     );
     expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
-  it("returns undefined action function if approval was made", async () => {
+  it("returns undefined approval function if approval was made", async () => {
     await approve(signers.user1, mocks.addresses.WETH, mocks.addresses.EXCHANGE);
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerBid(baseMakerInput);
-    expect(output.action).to.be.undefined;
+    expect(output.approval).to.be.undefined;
   });
   it("create a simple maker bid with default values", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
@@ -61,14 +61,14 @@ describe("Create maker bid", () => {
       collection: baseMakerInput.collection,
       currency: mocks.addresses.WETH,
       signer: signers.user1.address,
-      startTime: output.order.startTime, // Can't really test the Date.now( executed inside the function)
+      startTime: output.makerBid.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerInput.endTime,
       maxPrice: baseMakerInput.price,
       itemIds: baseMakerInput.itemIds,
       amounts: [1],
       additionalParameters: "0x",
     };
-    expect(output.order).to.eql(makerOrder);
+    expect(output.makerBid).to.eql(makerOrder);
   });
   it("create a simple maker bid with non default values", async () => {
     const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
@@ -97,6 +97,6 @@ describe("Create maker bid", () => {
       amounts: input.amounts!,
       additionalParameters: "0x",
     };
-    expect(output.order).to.eql(makerOrder);
+    expect(output.makerBid).to.eql(makerOrder);
   });
 });
