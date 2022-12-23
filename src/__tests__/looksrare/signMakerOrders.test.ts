@@ -1,10 +1,9 @@
 import { expect } from "chai";
-import { utils, constants } from "ethers";
+import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { LooksRare } from "../../LooksRare";
-import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
-import { Addresses } from "../../constants/addresses";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { contractName, version, makerAskTypes, makerBidTypes, merkleTreeTypes } from "../../constants/eip712";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { SupportedChainId, MakerAsk, MakerBid, AssetType, StrategyType } from "../../types";
@@ -13,30 +12,23 @@ const faultySignature =
   "0xcafe829116da9a4b31a958aa790682228b85e5d03b1ae7bb15f8ce4c8432a20813934991833da8e913894c9f35f1f018948c58d68fb61bbca0e07bd43c4492fa2b";
 
 describe("Sign maker orders", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
-  let addresses: Addresses;
   let domain: TypedDataDomain;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
 
-    addresses = {
-      EXCHANGE: contracts.looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER: contracts.transferManager.address,
-      WETH: contracts.weth.address,
-    };
     domain = {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: contracts.looksRareProtocol.address,
+      verifyingContract: mocks.addresses.EXCHANGE,
     };
   });
   it("sign maker ask order", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const { collection1, weth, verifier } = contracts;
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const { collection1, verifier } = mocks.contracts;
 
     const makerOrder: MakerAsk = {
       askNonce: 1,
@@ -45,7 +37,7 @@ describe("Sign maker orders", () => {
       assetType: AssetType.ERC721,
       orderNonce: 1,
       collection: collection1.address,
-      currency: weth.address,
+      currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -64,8 +56,8 @@ describe("Sign maker orders", () => {
     );
   });
   it("sign maker bid order", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const { collection1, weth, verifier } = contracts;
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const { collection1, verifier } = mocks.contracts;
 
     const makerOrder: MakerBid = {
       bidNonce: 1,
@@ -74,7 +66,7 @@ describe("Sign maker orders", () => {
       assetType: AssetType.ERC721,
       orderNonce: 1,
       collection: collection1.address,
-      currency: weth.address,
+      currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -93,7 +85,7 @@ describe("Sign maker orders", () => {
     );
   });
   it("sign multiple maker bid order (merkle tree)", async () => {
-    const { collection1, weth, verifier } = contracts;
+    const { collection1, verifier } = mocks.contracts;
     const makerOrders: MakerBid[] = [
       {
         bidNonce: 1,
@@ -102,7 +94,7 @@ describe("Sign maker orders", () => {
         assetType: AssetType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
-        currency: weth.address,
+        currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -118,7 +110,7 @@ describe("Sign maker orders", () => {
         assetType: AssetType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
-        currency: weth.address,
+        currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -128,7 +120,7 @@ describe("Sign maker orders", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       },
     ];
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const tree = lr.createMakerMerkleTree(makerOrders);
 
     const signature = await lr.signMultipleMakers(tree.root);

@@ -1,18 +1,18 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { isApprovedForAll, setApprovalForAll } from "../utils/calls/tokens";
 
 describe("Tokens", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
   });
   it("approve ERC721", async () => {
     const provider = ethers.provider;
-    const { collection1 } = contracts;
+    const { collection1 } = mocks.contracts;
 
     let isApproved = await isApprovedForAll(
       provider,
@@ -40,7 +40,7 @@ describe("Tokens", () => {
   });
   it("approve ERC1155", async () => {
     const provider = ethers.provider;
-    const { collection2 } = contracts;
+    const { collection2 } = mocks.contracts;
 
     let isApproved = await isApprovedForAll(
       provider,

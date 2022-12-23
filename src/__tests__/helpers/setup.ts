@@ -4,6 +4,7 @@ import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Addresses } from "../../constants/addresses";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
@@ -14,14 +15,17 @@ import type { Verifier } from "../../../typechain/src/contracts/tests/Verifier";
 
 chai.use(chaiAsPromised);
 
-export interface Mocks {
-  looksRareProtocol: LooksRareProtocol;
-  transferManager: TransferManager;
-  collection1: MockERC721;
-  collection2: MockERC1155;
-  collection3: MockERC721;
-  weth: MockERC20;
-  verifier: Verifier;
+export interface SetupMocks {
+  contracts: {
+    looksRareProtocol: LooksRareProtocol;
+    transferManager: TransferManager;
+    collection1: MockERC721;
+    collection2: MockERC1155;
+    collection3: MockERC721;
+    weth: MockERC20;
+    verifier: Verifier;
+  };
+  addresses: Addresses;
 }
 
 export interface Signers {
@@ -52,7 +56,7 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
   return contract;
 };
 
-export const setUpContracts = async (): Promise<Mocks> => {
+export const setUpContracts = async (): Promise<SetupMocks> => {
   const signers = await getSigners();
   let tx: ContractTransaction;
 
@@ -90,12 +94,21 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await tx.wait();
 
   return {
-    looksRareProtocol: looksRareProtocol as LooksRareProtocol,
-    transferManager: transferManager as TransferManager,
-    collection1: collection1 as MockERC721,
-    collection2: collection2 as MockERC1155,
-    collection3: collection3 as MockERC721,
-    weth: weth as MockERC20,
-    verifier: verifier as Verifier,
+    contracts: {
+      looksRareProtocol: looksRareProtocol as LooksRareProtocol,
+      transferManager: transferManager as TransferManager,
+      collection1: collection1 as MockERC721,
+      collection2: collection2 as MockERC1155,
+      collection3: collection3 as MockERC721,
+      weth: weth as MockERC20,
+      verifier: verifier as Verifier,
+    },
+    addresses: {
+      EXCHANGE: looksRareProtocol.address,
+      LOOKS: constants.AddressZero,
+      TRANSFER_MANAGER: transferManager.address,
+      WETH: weth.address,
+      ORDER_VALIDATOR: constants.AddressZero,
+    },
   };
 };

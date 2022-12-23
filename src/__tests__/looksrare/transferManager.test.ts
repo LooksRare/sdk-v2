@@ -1,32 +1,24 @@
 import { expect } from "chai";
-import { Contract, constants } from "ethers";
+import { Contract } from "ethers";
 import { ethers } from "hardhat";
 import { ERC721 } from "../../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
 import { ERC1155 } from "../../../typechain/solmate/src/tokens/ERC1155.sol/ERC1155";
 import abiIERC721 from "../../abis/IERC721.json";
 import abiIERC1155 from "../../abis/IERC1155.json";
-import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { Addresses } from "../../constants/addresses";
 import { setApprovalForAll } from "../../utils/calls/tokens";
 import { SupportedChainId, AssetType } from "../../types";
 
 describe("Transfer manager", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
-  let addresses: Addresses;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
-    addresses = {
-      EXCHANGE: contracts.looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER: contracts.transferManager.address,
-      WETH: contracts.weth.address,
-    };
   });
   it("grant operator approvals", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const methods = lr.grantTransferManagerApproval();
 
     const estimatedGas = await methods.estimateGas();
@@ -37,7 +29,7 @@ describe("Transfer manager", () => {
     expect(receipt.status).to.equal(1);
   });
   it("revoke operator approvals", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     (await lr.grantTransferManagerApproval().call()).wait();
     const methods = lr.revokeTransferManagerApproval();
 
@@ -49,6 +41,7 @@ describe("Transfer manager", () => {
     expect(receipt.status).to.equal(1);
   });
   it("transfer items from a single collection", async () => {
+    const { addresses, contracts } = mocks;
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
     (await lr.grantTransferManagerApproval().call()).wait();
@@ -82,6 +75,7 @@ describe("Transfer manager", () => {
     expect(newOwner).to.be.equal(receipient);
   });
   it("transfer items from multiple collections", async () => {
+    const { addresses, contracts } = mocks;
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
     await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
     await setApprovalForAll(signers.user1, contracts.collection2.address, addresses.TRANSFER_MANAGER);

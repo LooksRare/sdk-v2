@@ -1,28 +1,21 @@
 import { expect } from "chai";
 import { constants, utils } from "ethers";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { Addresses } from "../../constants/addresses";
 import { isApprovedForAll, setApprovalForAll } from "../../utils/calls/tokens";
 import { SupportedChainId, AssetType, StrategyType, MakerAskInputs, MakerAsk } from "../../types";
 
 describe("Create maker ask", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
   let baseMakerAskInput: MakerAskInputs;
-  let addresses: Addresses;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
-    addresses = {
-      EXCHANGE: contracts.looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER: contracts.transferManager.address,
-      WETH: contracts.weth.address,
-    };
+
     baseMakerAskInput = {
-      collection: contracts.collection1.address,
+      collection: mocks.contracts.collection1.address,
       assetType: AssetType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -33,12 +26,12 @@ describe("Create maker ask", () => {
     };
   });
   it("create maker ask with wrong time format", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, startTime: Date.now() })).to.eventually.be.rejected;
     await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, endTime: Date.now() })).to.eventually.be.rejected;
   });
   it("returns action function if no approval was made", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const { action } = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(action).to.not.be.undefined;
 
@@ -47,18 +40,18 @@ describe("Create maker ask", () => {
       ethers.provider,
       baseMakerAskInput.collection,
       signers.user1.address,
-      contracts.transferManager.address
+      mocks.addresses.TRANSFER_MANAGER
     );
     expect(isApproved).to.be.true;
   });
   it("returns undefined action function if approval was made", async () => {
-    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, contracts.transferManager.address);
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, mocks.addresses.TRANSFER_MANAGER);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(output.action).to.be.undefined;
   });
   it("create a simple maker ask with default values", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     const makerOrder: MakerAsk = {
       askNonce: constants.Zero,
@@ -79,11 +72,11 @@ describe("Create maker ask", () => {
     expect(output.order).to.eql(makerOrder);
   });
   it("create a simple maker ask with non default values", async () => {
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
     const input = {
       ...baseMakerAskInput,
       amounts: [1],
-      currency: addresses.WETH,
+      currency: mocks.addresses.WETH,
       startTime: Math.floor(Date.now() / 1000),
       recipient: signers.user2.address,
       additionalParameters: [],
