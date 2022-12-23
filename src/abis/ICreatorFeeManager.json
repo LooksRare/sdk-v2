@@ -11,6 +11,19 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "royaltyFeeRegistry",
+    "outputs": [
+      {
+        "internalType": "contract IRoyaltyFeeRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -28,16 +41,16 @@
         "type": "uint256[]"
       }
     ],
-    "name": "viewCreatorFee",
+    "name": "viewCreatorFeeInfo",
     "outputs": [
       {
         "internalType": "address",
-        "name": "recipient",
+        "name": "creator",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "creatorFee",
+        "name": "creatorFeeBp",
         "type": "uint256"
       }
     ],

@@ -1,33 +1,23 @@
 import { expect } from "chai";
-import { constants, utils } from "ethers";
+import { utils } from "ethers";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { Addresses } from "../../constants/addresses";
 import { SupportedChainId, AssetType, StrategyType, MakerAskInputs } from "../../types";
 
 describe("execute taker bid", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
   let baseMakerAskInput: MakerAskInputs;
-  let addresses: Addresses;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
 
-    const tx = await contracts.transferManager
-      .connect(signers.user1)
-      .grantApprovals([contracts.looksRareProtocol.address]);
+    const tx = await mocks.contracts.transferManager.connect(signers.user1).grantApprovals([mocks.addresses.EXCHANGE]);
     await tx.wait();
 
-    addresses = {
-      EXCHANGE: contracts.looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER: contracts.transferManager.address,
-      WETH: contracts.weth.address,
-    };
     baseMakerAskInput = {
-      collection: contracts.collection1.address,
+      collection: mocks.contracts.collection1.address,
       assetType: AssetType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -39,8 +29,8 @@ describe("execute taker bid", () => {
     };
   });
   it("execute maker ask and taker bid", async () => {
-    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, addresses);
+    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, mocks.addresses);
     const { order, action } = await lrUser1.createMakerAsk(baseMakerAskInput);
     await action!();
     const signature = await lrUser1.signMakerAsk(order);
@@ -54,8 +44,8 @@ describe("execute taker bid", () => {
     expect(receipt.status).to.be.equal(1);
   });
   it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
-    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
-    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, addresses);
+    const lrUser1 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lrUser2 = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user2, mocks.addresses);
     const maker1 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const maker2 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const tree = await lrUser2.createMakerMerkleTree([maker1.order, maker2.order]);

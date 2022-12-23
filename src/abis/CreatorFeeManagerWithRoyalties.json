@@ -34,160 +34,6 @@
   },
   {
     "inputs": [],
-    "name": "NoOngoingTransferInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "RenouncementNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TransferAlreadyInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TransferNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongPotentialOwner",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "CancelOwnershipTransfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "InitiateOwnershipRenouncement",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "potentialOwner",
-        "type": "address"
-      }
-    ],
-    "name": "InitiateOwnershipTransfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "NewOwner",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "cancelOwnershipTransfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "confirmOwnershipRenouncement",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "confirmOwnershipTransfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "initiateOwnershipRenouncement",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newPotentialOwner",
-        "type": "address"
-      }
-    ],
-    "name": "initiateOwnershipTransfer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "ownershipStatus",
-    "outputs": [
-      {
-        "internalType": "enum IOwnableTwoSteps.Status",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "potentialOwner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "royaltyFeeRegistry",
     "outputs": [
       {
@@ -217,16 +63,16 @@
         "type": "uint256[]"
       }
     ],
-    "name": "viewCreatorFee",
+    "name": "viewCreatorFeeInfo",
     "outputs": [
       {
         "internalType": "address",
-        "name": "receiver",
+        "name": "creator",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "creatorFee",
+        "name": "creatorFeeBp",
         "type": "uint256"
       }
     ],

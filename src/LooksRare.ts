@@ -3,6 +3,8 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
+import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { contractName, version } from "./constants/eip712";
 import { signMakerAsk, signMakerBid, signMerkleRoot } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
@@ -12,9 +14,8 @@ import {
 } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
 import { transferBatchItemsAcrossCollections, grantApprovals, revokeApprovals } from "./utils/calls/transferManager";
+import { verifyMakerAskOrders, verifyMakerBidOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
-import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, version } from "./constants/eip712";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import { getMakerAskHash, getMakerBidHash } from "./utils/hashOrder";
 import {
@@ -31,6 +32,7 @@ import {
   MakerBidOutputs,
   MerkleTree,
   ContractMethods,
+  OrderValidatorCode,
 } from "./types";
 
 export class LooksRare {
@@ -395,5 +397,23 @@ export class LooksRare {
       itemIds,
       amounts
     );
+  }
+
+  public async verifyMakerAskOrders(
+    makerAskOrders: MakerAsk[],
+    signatures: string[],
+    merkleTrees: MerkleTree[]
+  ): Promise<OrderValidatorCode[][]> {
+    const signer = this.getSigner();
+    return verifyMakerAskOrders(signer, this.addresses.ORDER_VALIDATOR, makerAskOrders, signatures, merkleTrees);
+  }
+
+  public async verifyMakerBidOrders(
+    makerBidOrders: MakerBid[],
+    signatures: string[],
+    merkleTrees: MerkleTree[]
+  ): Promise<OrderValidatorCode[][]> {
+    const signer = this.getSigner();
+    return verifyMakerBidOrders(signer, this.addresses.ORDER_VALIDATOR, makerBidOrders, signatures, merkleTrees);
   }
 }

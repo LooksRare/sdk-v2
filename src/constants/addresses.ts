@@ -5,6 +5,7 @@ export interface Addresses {
   EXCHANGE: string;
   TRANSFER_MANAGER: string;
   WETH: string;
+  ORDER_VALIDATOR: string;
 }
 
 const mainnetAddresses: Addresses = {
@@ -12,6 +13,7 @@ const mainnetAddresses: Addresses = {
   EXCHANGE: "",
   TRANSFER_MANAGER: "",
   WETH: "",
+  ORDER_VALIDATOR: "",
 };
 
 const goerliAddresses: Addresses = {
@@ -19,6 +21,7 @@ const goerliAddresses: Addresses = {
   EXCHANGE: "",
   TRANSFER_MANAGER: "",
   WETH: "",
+  ORDER_VALIDATOR: "",
 };
 
 export const addressesByNetwork: { [chainId in SupportedChainId]: Addresses } = {

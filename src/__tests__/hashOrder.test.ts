@@ -2,16 +2,16 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { LooksRare } from "../LooksRare";
-import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { getMakerAskHash, getMakerBidHash, getMerkleTreeHash } from "../utils/hashOrder";
 import { MakerAsk, MakerBid, AssetType } from "../types";
 
 describe("Hash orders", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
 
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
   });
   it("validate maker ask order hash", async () => {
@@ -21,8 +21,8 @@ describe("Hash orders", () => {
       strategyId: 1,
       assetType: AssetType.ERC721,
       orderNonce: 1,
-      collection: contracts.collection1.address,
-      currency: contracts.weth.address,
+      collection: mocks.contracts.collection1.address,
+      currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -32,7 +32,7 @@ describe("Hash orders", () => {
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
-    const { verifier } = contracts;
+    const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerAskHash(makerAsk);
     const orderHashHs = getMakerAskHash(makerAsk);
     expect(orderHashSc === orderHashHs);
@@ -44,8 +44,8 @@ describe("Hash orders", () => {
       strategyId: 1,
       assetType: AssetType.ERC721,
       orderNonce: 1,
-      collection: contracts.collection1.address,
-      currency: contracts.weth.address,
+      collection: mocks.contracts.collection1.address,
+      currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -55,7 +55,7 @@ describe("Hash orders", () => {
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
-    const { verifier } = contracts;
+    const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerBidHash(makerBid);
     const orderHashHs = getMakerBidHash(makerBid);
     expect(orderHashSc === orderHashHs);
@@ -68,8 +68,8 @@ describe("Hash orders", () => {
         strategyId: 1,
         assetType: AssetType.ERC721,
         orderNonce: 1,
-        collection: contracts.collection1.address,
-        currency: contracts.weth.address,
+        collection: mocks.contracts.collection1.address,
+        currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -84,8 +84,8 @@ describe("Hash orders", () => {
         strategyId: 1,
         assetType: AssetType.ERC721,
         orderNonce: 1,
-        collection: contracts.collection1.address,
-        currency: contracts.weth.address,
+        collection: mocks.contracts.collection1.address,
+        currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -99,7 +99,7 @@ describe("Hash orders", () => {
     const lr = new LooksRare(ethers.provider, 1, signers.user1);
     const merkleTree = lr.createMakerMerkleTree(makerOrders);
 
-    const { verifier } = contracts;
+    const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMerkleTreeHash(merkleTree);
     const orderHashHs = getMerkleTreeHash(merkleTree.root);
     expect(orderHashSc === orderHashHs);

@@ -1,26 +1,26 @@
 import { expect } from "chai";
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import { setUpContracts, Mocks, getSigners, Signers } from "./helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { computeDigestMakerAsk, getDomainSeparator } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
 import { SupportedChainId, MakerAsk, AssetType } from "../types";
 
 describe("EIP-712", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
   let domain: TypedDataDomain;
   let makerOrder: MakerAsk;
 
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
 
     domain = {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: contracts.looksRareProtocol.address,
+      verifyingContract: mocks.addresses.EXCHANGE,
     };
 
     makerOrder = {
@@ -29,8 +29,8 @@ describe("EIP-712", () => {
       strategyId: 1,
       assetType: AssetType.ERC721,
       orderNonce: 1,
-      collection: contracts.collection1.address,
-      currency: contracts.weth.address,
+      collection: mocks.contracts.collection1.address,
+      currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
@@ -41,13 +41,13 @@ describe("EIP-712", () => {
     };
   });
   it("validate domain data", async () => {
-    const { verifier } = contracts;
+    const { verifier } = mocks.contracts;
     const domainSc = await verifier.getDomainSeparator();
     const domainJs = getDomainSeparator(domain);
     expect(domainSc === domainJs);
   });
   it("validate maker order digest", async () => {
-    const { verifier } = contracts;
+    const { verifier } = mocks.contracts;
     const digestSc = await verifier.computeDigestMakerAsk(makerOrder);
     const digestJs = computeDigestMakerAsk(domain, makerOrder);
     expect(digestSc === digestJs);

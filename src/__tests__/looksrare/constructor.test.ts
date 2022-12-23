@@ -1,16 +1,14 @@
 import { expect } from "chai";
-import { constants } from "ethers";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners, Signers } from "../helpers/setup";
+import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { Addresses } from "../../constants/addresses";
 import { SupportedChainId } from "../../types";
 
 describe("LooksRare class", () => {
-  let contracts: Mocks;
+  let mocks: SetupMocks;
   let signers: Signers;
   beforeEach(async () => {
-    contracts = await setUpContracts();
+    mocks = await setUpContracts();
     signers = await getSigners();
   });
   it("instanciate LooksRare object with a signer", () => {
@@ -20,15 +18,9 @@ describe("LooksRare class", () => {
     );
   });
   it("instanciate LooksRare object with a signer and override addresses", () => {
-    const addresses: Addresses = {
-      EXCHANGE: contracts.looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER: contracts.transferManager.address,
-      WETH: contracts.weth.address,
-    };
-    expect(new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses).addresses).to.be.eql(
-      addresses
-    );
+    const { addresses } = mocks;
+    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, addresses);
+    expect(lr.addresses).to.be.eql(addresses);
   });
   it("instanciate LooksRare object without a signer and reject a contract call", async () => {
     const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT);
