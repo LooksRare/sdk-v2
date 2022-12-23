@@ -27,7 +27,7 @@ describe("Sign maker orders", () => {
     };
   });
   it("sign maker ask order", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { collection1, verifier } = mocks.contracts;
 
     const makerOrder: MakerAsk = {
@@ -56,7 +56,7 @@ describe("Sign maker orders", () => {
     );
   });
   it("sign maker bid order", async () => {
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { collection1, verifier } = mocks.contracts;
 
     const makerOrder: MakerBid = {
@@ -120,7 +120,7 @@ describe("Sign maker orders", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       },
     ];
-    const lr = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const tree = lr.createMakerMerkleTree(makerOrders);
 
     const signature = await lr.signMultipleMakers(tree.root);

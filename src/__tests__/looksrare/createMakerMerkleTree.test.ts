@@ -47,7 +47,7 @@ describe("Create maker merkle tree", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       },
     ];
-    const looksrare = new LooksRare(ethers.provider, SupportedChainId.HARDHAT, signers.user1, mocks.addresses);
+    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const tree = looksrare.createMakerMerkleTree(makerOrders);
     expect(tree.proof.length).to.be.equal(makerOrders.length);
   });

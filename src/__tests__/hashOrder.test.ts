@@ -96,7 +96,7 @@ describe("Hash orders", () => {
       },
     ];
 
-    const lr = new LooksRare(ethers.provider, 1, signers.user1);
+    const lr = new LooksRare(1, ethers.provider, signers.user1);
     const merkleTree = lr.createMakerMerkleTree(makerOrders);
 
     const { verifier } = mocks.contracts;
