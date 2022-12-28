@@ -2,6 +2,11 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "_royaltyFeeLimit",
         "type": "uint256"

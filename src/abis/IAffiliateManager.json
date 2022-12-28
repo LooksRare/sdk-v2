@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "NotAffiliate",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NotAffiliateController",
     "type": "error"
   },

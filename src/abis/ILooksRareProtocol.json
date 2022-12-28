@@ -1,17 +1,12 @@
 [
   {
     "inputs": [],
+    "name": "NewGasLimitETHTransferTooLow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SameDomainSeparator",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongCaller",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongMerkleProof",
     "type": "error"
   },
   {
@@ -26,6 +21,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
         "type": "address"
       },
       {
@@ -76,11 +77,6 @@
             "internalType": "bool",
             "name": "isNonceInvalidated",
             "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
           }
         ],
         "indexed": false,
@@ -92,6 +88,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "askUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidUser",
         "type": "address"
       },
       {
@@ -159,11 +161,6 @@
             "internalType": "bool",
             "name": "isNonceInvalidated",
             "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
           }
         ],
         "indexed": false,
@@ -175,6 +172,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "bidUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidRecipient",
         "type": "address"
       },
       {

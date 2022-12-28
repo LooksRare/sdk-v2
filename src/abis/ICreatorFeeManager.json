@@ -50,7 +50,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "creatorFeeBp",
+        "name": "creatorFee",
         "type": "uint256"
       }
     ],

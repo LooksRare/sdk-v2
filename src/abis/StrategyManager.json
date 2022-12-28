@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -11,7 +17,17 @@
   },
   {
     "inputs": [],
+    "name": "NotAffiliateController",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PercentageTooHigh",
     "type": "error"
   },
   {
@@ -57,6 +73,25 @@
   },
   {
     "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      }
+    ],
+    "name": "CurrencyWhitelistStatusUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [],
     "name": "InitiateOwnershipRenouncement",
     "type": "event"
@@ -86,6 +121,51 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "affiliateController",
+        "type": "address"
+      }
+    ],
+    "name": "NewAffiliateController",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "NewAffiliateProgramStatus",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewAffiliateRate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       }
@@ -101,6 +181,36 @@
         "internalType": "uint256",
         "name": "strategyId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "standardProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "minTotalFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "maxProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes4",
+        "name": "selector",
+        "type": "bytes4"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
       },
       {
         "indexed": false,
@@ -130,13 +240,13 @@
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       }
     ],
@@ -147,17 +257,17 @@
     "inputs": [
       {
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "maxProtocolFee",
+        "name": "maxProtocolFeeBp",
         "type": "uint16"
       },
       {
@@ -179,6 +289,38 @@
     "name": "addStrategy",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "affiliateController",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "affiliateRates",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -237,6 +379,38 @@
   },
   {
     "inputs": [],
+    "name": "isAffiliateProgramActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isCurrencyWhitelisted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -291,17 +465,17 @@
       },
       {
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "maxProtocolFee",
+        "name": "maxProtocolFeeBp",
         "type": "uint16"
       },
       {
@@ -321,6 +495,68 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAffiliateController",
+        "type": "address"
+      }
+    ],
+    "name": "updateAffiliateController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "updateAffiliateProgramStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bp",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateAffiliateRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      }
+    ],
+    "name": "updateCurrencyWhitelistStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

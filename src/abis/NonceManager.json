@@ -9,6 +9,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "bidNonce",
         "type": "uint256"
@@ -28,6 +34,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256[]",
         "name": "orderNonces",
         "type": "uint256[]"
@@ -41,6 +53,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256[]",
         "name": "subsetNonces",
         "type": "uint256[]"
@@ -51,7 +69,7 @@
   },
   {
     "inputs": [],
-    "name": "MAGIC_VALUE_NONCE_EXECUTED",
+    "name": "MAGIC_VALUE_ORDER_NONCE_EXECUTED",
     "outputs": [
       {
         "internalType": "bytes32",
