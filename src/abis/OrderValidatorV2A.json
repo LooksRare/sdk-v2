@@ -64,7 +64,7 @@
   },
   {
     "inputs": [],
-    "name": "MAGIC_VALUE_NONCE_EXECUTED",
+    "name": "MAGIC_VALUE_ORDER_NONCE_EXECUTED",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -349,7 +349,7 @@
   },
   {
     "inputs": [],
-    "name": "maximumCreatorFeeBp",
+    "name": "maxCreatorFeeBp",
     "outputs": [
       {
         "internalType": "uint256",

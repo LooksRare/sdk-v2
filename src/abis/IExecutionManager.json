@@ -6,6 +6,11 @@
   },
   {
     "inputs": [],
+    "name": "NewProtocolFeeRecipientCannotBeNullAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NoSelectorForMakerAsk",
     "type": "error"
   },
@@ -17,16 +22,6 @@
   {
     "inputs": [],
     "name": "OutsideOfTimeRange",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SlippageAsk",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SlippageBid",
     "type": "error"
   },
   {
@@ -59,11 +54,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maximumCreatorFeeBp",
+        "name": "maxCreatorFeeBp",
         "type": "uint256"
       }
     ],
-    "name": "NewMaximumCreatorFeeBp",
+    "name": "NewMaxCreatorFeeBp",
     "type": "event"
   },
   {

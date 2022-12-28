@@ -3,22 +3,22 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "transferManager",
+        "name": "_owner",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "weth",
+        "name": "_transferManager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_weth",
         "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "AlreadySet",
-    "type": "error"
   },
   {
     "inputs": [],
@@ -67,6 +67,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ManagerSelectorAlreadySetForAssetType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ManagerSelectorEmpty",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -80,6 +90,16 @@
       }
     ],
     "name": "NFTTransferFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NewGasLimitETHTransferTooLow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NewProtocolFeeRecipientCannotBeNullAddress",
     "type": "error"
   },
   {
@@ -111,11 +131,6 @@
   {
     "inputs": [],
     "name": "NotAContract",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotAffiliate",
     "type": "error"
   },
   {
@@ -165,16 +180,6 @@
   },
   {
     "inputs": [],
-    "name": "SlippageAsk",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SlippageBid",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "StrategyHasNoSelector",
     "type": "error"
   },
@@ -207,17 +212,6 @@
   {
     "inputs": [],
     "name": "TransferNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "WrongAssetType",
     "type": "error"
   },
   {
@@ -268,6 +262,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "affiliate",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "currency",
         "type": "address"
       },
       {
@@ -405,6 +405,12 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "bidNonce",
         "type": "uint256"
@@ -457,11 +463,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maximumCreatorFeeBp",
+        "name": "maxCreatorFeeBp",
         "type": "uint256"
       }
     ],
-    "name": "NewMaximumCreatorFeeBp",
+    "name": "NewMaxCreatorFeeBp",
     "type": "event"
   },
   {
@@ -501,6 +507,36 @@
       },
       {
         "indexed": false,
+        "internalType": "uint16",
+        "name": "standardProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "minTotalFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "maxProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes4",
+        "name": "selector",
+        "type": "bytes4"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "implementation",
         "type": "address"
@@ -512,6 +548,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
       {
         "indexed": false,
         "internalType": "uint256[]",
@@ -540,13 +582,13 @@
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       }
     ],
@@ -556,6 +598,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
       {
         "indexed": false,
         "internalType": "uint256[]",
@@ -585,11 +633,6 @@
             "internalType": "bool",
             "name": "isNonceInvalidated",
             "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
           }
         ],
         "indexed": false,
@@ -601,6 +644,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "askUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidUser",
         "type": "address"
       },
       {
@@ -668,11 +717,6 @@
             "internalType": "bool",
             "name": "isNonceInvalidated",
             "type": "bool"
-          },
-          {
-            "internalType": "address",
-            "name": "signer",
-            "type": "address"
           }
         ],
         "indexed": false,
@@ -684,6 +728,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "bidUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidRecipient",
         "type": "address"
       },
       {
@@ -734,7 +784,7 @@
   },
   {
     "inputs": [],
-    "name": "MAGIC_VALUE_NONCE_EXECUTED",
+    "name": "MAGIC_VALUE_ORDER_NONCE_EXECUTED",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -762,17 +812,17 @@
     "inputs": [
       {
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "maxProtocolFee",
+        "name": "maxProtocolFeeBp",
         "type": "uint16"
       },
       {
@@ -815,19 +865,6 @@
       }
     ],
     "name": "addTransferManagerForAssetType",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newGasLimitETHTransfer",
-        "type": "uint256"
-      }
-    ],
-    "name": "adjustETHGasLimitForTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1496,7 +1533,7 @@
   },
   {
     "inputs": [],
-    "name": "maximumCreatorFeeBp",
+    "name": "maxCreatorFeeBp",
     "outputs": [
       {
         "internalType": "uint16",
@@ -1695,45 +1732,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newCreatorFeeManager",
-        "type": "address"
-      }
-    ],
-    "name": "setCreatorFeeManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "newMaximumCreatorFeeBp",
-        "type": "uint16"
-      }
-    ],
-    "name": "setMaximumCreatorFeeBp",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newProtocolFeeRecipient",
-        "type": "address"
-      }
-    ],
-    "name": "setProtocolFeeRecipient",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -1748,17 +1746,17 @@
       },
       {
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       },
       {
         "internalType": "uint16",
-        "name": "maxProtocolFee",
+        "name": "maxProtocolFeeBp",
         "type": "uint16"
       },
       {
@@ -1828,6 +1826,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "newCreatorFeeManager",
+        "type": "address"
+      }
+    ],
+    "name": "updateCreatorFeeManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "currency",
         "type": "address"
       },
@@ -1845,6 +1856,45 @@
   {
     "inputs": [],
     "name": "updateDomainSeparator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newGasLimitETHTransfer",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateETHGasLimitForTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "newMaxCreatorFeeBp",
+        "type": "uint16"
+      }
+    ],
+    "name": "updateMaxCreatorFeeBp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newProtocolFeeRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "updateProtocolFeeRecipient",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

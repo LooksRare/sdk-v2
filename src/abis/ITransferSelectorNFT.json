@@ -1,7 +1,12 @@
 [
   {
     "inputs": [],
-    "name": "AlreadySet",
+    "name": "ManagerSelectorAlreadySetForAssetType",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ManagerSelectorEmpty",
     "type": "error"
   },
   {
@@ -29,17 +34,6 @@
       }
     ],
     "name": "NoTransferManagerForAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "WrongAssetType",
     "type": "error"
   },
   {

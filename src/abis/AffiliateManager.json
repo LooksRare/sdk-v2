@@ -1,12 +1,18 @@
 [
   {
-    "inputs": [],
-    "name": "NoOngoingTransferInProgress",
-    "type": "error"
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
     "inputs": [],
-    "name": "NotAffiliate",
+    "name": "NoOngoingTransferInProgress",
     "type": "error"
   },
   {

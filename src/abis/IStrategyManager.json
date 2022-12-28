@@ -25,6 +25,36 @@
       },
       {
         "indexed": false,
+        "internalType": "uint16",
+        "name": "standardProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "minTotalFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "maxProtocolFeeBp",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes4",
+        "name": "selector",
+        "type": "bytes4"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isMakerBid",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "implementation",
         "type": "address"
@@ -51,13 +81,13 @@
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "standardProtocolFee",
+        "name": "standardProtocolFeeBp",
         "type": "uint16"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "minTotalFee",
+        "name": "minTotalFeeBp",
         "type": "uint16"
       }
     ],

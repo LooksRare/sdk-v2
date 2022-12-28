@@ -63,8 +63,8 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
   let tx: ContractTransaction;
 
   // Deploy contracts
-  const transferManager = (await deploy("TransferManager")) as TransferManager;
-  const royaltyFeeRegistry = await deploy("MockRoyaltyFeeRegistry", 9500);
+  const transferManager = (await deploy("TransferManager", signers.owner.address)) as TransferManager;
+  const royaltyFeeRegistry = await deploy("MockRoyaltyFeeRegistry", signers.owner.address, 9500);
   const feeManager = (await deploy(
     "CreatorFeeManagerWithRoyalties",
     royaltyFeeRegistry.address
@@ -72,11 +72,12 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
   const looksRareProtocol = (await deploy(
     "LooksRareProtocol",
+    signers.owner.address,
     transferManager.address,
     weth.address
   )) as LooksRareProtocol;
 
-  tx = await looksRareProtocol.setCreatorFeeManager(feeManager.address);
+  tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
   await tx.wait();
   tx = await looksRareProtocol.updateCurrencyWhitelistStatus(constants.AddressZero, true);
   await tx.wait();
