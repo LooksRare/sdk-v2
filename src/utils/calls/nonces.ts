@@ -22,8 +22,10 @@ export const cancelOrderNonces = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
   return {
-    call: () => contract.cancelOrderNonces(nonces, { ...overrides }),
-    estimateGas: () => contract.estimateGas.cancelOrderNonces(nonces, { ...overrides }),
+    call: (additionalOverrides?: Overrides) =>
+      contract.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
+    estimateGas: (additionalOverrides?: Overrides) =>
+      contract.estimateGas.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -35,8 +37,10 @@ export const cancelSubsetNonces = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
   return {
-    call: () => contract.cancelSubsetNonces(nonces, { ...overrides }),
-    estimateGas: () => contract.estimateGas.cancelSubsetNonces(nonces, { ...overrides }),
+    call: (additionalOverrides?: Overrides) =>
+      contract.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
+    estimateGas: (additionalOverrides?: Overrides) =>
+      contract.estimateGas.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -49,7 +53,9 @@ export const incrementBidAskNonces = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as LooksRareProtocol;
   return {
-    call: () => contract.incrementBidAskNonces(bid, ask, { ...overrides }),
-    estimateGas: () => contract.estimateGas.incrementBidAskNonces(bid, ask, { ...overrides }),
+    call: (additionalOverrides?: Overrides) =>
+      contract.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
+    estimateGas: (additionalOverrides?: Overrides) =>
+      contract.estimateGas.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
   };
 };
