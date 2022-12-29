@@ -17,8 +17,18 @@ describe("Transfer manager", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
   });
+  it("has user approved", async () => {
+    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    expect(await lr.isTransferManagerApproved()).to.be.false;
+
+    const methods = lr.grantTransferManagerApproval();
+    const tx = await methods.call();
+    await tx.wait();
+    expect(await lr.isTransferManagerApproved()).to.be.true;
+  });
   it("grant operator approvals", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+
     const methods = lr.grantTransferManagerApproval();
 
     const estimatedGas = await methods.estimateGas();

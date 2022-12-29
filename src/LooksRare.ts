@@ -13,7 +13,12 @@ import {
   viewUserBidAskNonces,
 } from "./utils/calls/nonces";
 import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
-import { transferBatchItemsAcrossCollections, grantApprovals, revokeApprovals } from "./utils/calls/transferManager";
+import {
+  transferBatchItemsAcrossCollections,
+  grantApprovals,
+  revokeApprovals,
+  hasUserApprovedOperator,
+} from "./utils/calls/transferManager";
 import { verifyMakerAskOrders, verifyMakerBidOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
@@ -349,6 +354,12 @@ export class LooksRare {
   public cancelSubsetOrders(nonces: BigNumber[]): ContractMethods {
     const signer = this.getSigner();
     return cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
+  }
+
+  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE) {
+    const signer = this.getSigner();
+    const signerAddress = await signer.getAddress();
+    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER, signerAddress, operators);
   }
 
   /**
