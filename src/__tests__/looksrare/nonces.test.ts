@@ -26,10 +26,13 @@ describe("Nonces and order cancellation", () => {
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
-    it("estimate gas", async () => {
+    it("method analysis", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const estimatedGas = await lr.cancelOrders([BigNumber.from(0), BigNumber.from(1)]).estimateGas();
+      const contractMethods = await lr.cancelOrders([BigNumber.from(0), BigNumber.from(1)]);
+
+      const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
     });
   });
   describe("cancelSubsetOrders", () => {
@@ -45,10 +48,13 @@ describe("Nonces and order cancellation", () => {
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
-    it("estimate gas", async () => {
+    it("method analysis", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const estimatedGas = await lr.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]).estimateGas();
+      const contractMethods = await lr.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]);
+
+      const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
     });
   });
   describe("cancelAllOrders", () => {
@@ -82,10 +88,13 @@ describe("Nonces and order cancellation", () => {
       expect(userNonces.bidNonce).to.be.equal(1);
       expect(userNonces.askNonce).to.be.equal(1);
     });
-    it("estimate gas", async () => {
+    it("method analysis", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+      const contractMethods = await lr.cancelAllOrders(true, true);
+
       const estimatedGas = await lr.cancelAllOrders(true, true).estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
     });
   });
 });

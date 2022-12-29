@@ -36,10 +36,14 @@ describe("execute taker bid", () => {
     const signature = await lrUser1.signMakerAsk(makerAsk);
     const takerBid = lrUser2.createTakerBid(makerAsk, signers.user2.address);
 
-    const estimatedGas = await lrUser2.executeTakerBid(makerAsk, takerBid, signature).estimateGas();
+    const contractMethods = await lrUser2.executeTakerBid(makerAsk, takerBid, signature);
+
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await lrUser2.executeTakerBid(makerAsk, takerBid, signature).call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });

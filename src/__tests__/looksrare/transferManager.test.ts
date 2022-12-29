@@ -29,24 +29,28 @@ describe("Transfer manager", () => {
   it("grant operator approvals", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-    const methods = lr.grantTransferManagerApproval();
+    const contractMethods = lr.grantTransferManagerApproval();
 
-    const estimatedGas = await methods.estimateGas();
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await methods.call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
   it("revoke operator approvals", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     (await lr.grantTransferManagerApproval().call()).wait();
-    const methods = lr.revokeTransferManagerApproval();
+    const contractMethods = lr.revokeTransferManagerApproval();
 
-    const estimatedGas = await methods.estimateGas();
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await methods.call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
@@ -65,7 +69,7 @@ describe("Transfer manager", () => {
     expect(initialOwner).to.be.equal(signers.user1.address);
 
     // Execute the transfer
-    const methods = await lr.transferItemsAcrossCollection(
+    const contractMethods = await lr.transferItemsAcrossCollection(
       [contracts.collection1.address],
       [AssetType.ERC721],
       receipient,
@@ -73,10 +77,12 @@ describe("Transfer manager", () => {
       [[1]]
     );
 
-    const estimatedGas = await methods.estimateGas();
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await methods.call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
 
@@ -96,7 +102,7 @@ describe("Transfer manager", () => {
     const receipient = signers.user3.address;
 
     // Execute the transfer
-    const methods = await lr.transferItemsAcrossCollection(
+    const contractMethods = await lr.transferItemsAcrossCollection(
       [contracts.collection1.address, contracts.collection2.address],
       [AssetType.ERC721, AssetType.ERC1155],
       receipient,
@@ -104,10 +110,12 @@ describe("Transfer manager", () => {
       [[1], [10]]
     );
 
-    const estimatedGas = await methods.estimateGas();
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await methods.call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
 

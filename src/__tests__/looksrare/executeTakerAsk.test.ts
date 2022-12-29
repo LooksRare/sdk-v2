@@ -47,10 +47,14 @@ describe("execute taker ask", () => {
     await setApprovalForAll(signers.user1, makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER);
     const takerAsk = lrUser1.createTakerAsk(makerBid, signers.user2.address);
 
-    const estimatedGas = await lrUser1.executeTakerAsk(makerBid, takerAsk, signature).estimateGas();
+    const contractMethods = await lrUser1.executeTakerAsk(makerBid, takerAsk, signature);
+
+    const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await lrUser1.executeTakerAsk(makerBid, takerAsk, signature).call();
+    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+
+    const tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
