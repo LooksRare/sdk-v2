@@ -23,8 +23,10 @@ export const grantApprovals = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
   return {
-    call: () => contract.grantApprovals(operators, { ...overrides }),
-    estimateGas: () => contract.estimateGas.grantApprovals(operators, { ...overrides }),
+    call: (additionalOverrides?: Overrides) =>
+      contract.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+    estimateGas: (additionalOverrides?: Overrides) =>
+      contract.estimateGas.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -36,8 +38,10 @@ export const revokeApprovals = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
   return {
-    call: () => contract.revokeApprovals(operators, { ...overrides }),
-    estimateGas: () => contract.estimateGas.revokeApprovals(operators, { ...overrides }),
+    call: (additionalOverrides?: Overrides) =>
+      contract.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+    estimateGas: (additionalOverrides?: Overrides) =>
+      contract.estimateGas.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -54,13 +58,15 @@ export const transferBatchItemsAcrossCollections = (
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
   return {
-    call: () =>
+    call: (additionalOverrides?: Overrides) =>
       contract.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
         ...overrides,
+        ...additionalOverrides,
       }),
-    estimateGas: () =>
+    estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
         ...overrides,
+        ...additionalOverrides,
       }),
   };
 };
