@@ -26,6 +26,8 @@ export const cancelOrderNonces = (
       contract.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -41,6 +43,8 @@ export const cancelSubsetNonces = (
       contract.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -57,5 +61,7 @@ export const incrementBidAskNonces = (
       contract.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
   };
 };

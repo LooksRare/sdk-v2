@@ -27,6 +27,8 @@ export const grantApprovals = (
       contract.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -42,6 +44,8 @@ export const revokeApprovals = (
       contract.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -65,6 +69,11 @@ export const transferBatchItemsAcrossCollections = (
       }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.estimateGas.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+        ...overrides,
+        ...additionalOverrides,
+      }),
+    callStatic: (additionalOverrides?: Overrides) =>
+      contract.callStatic.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
         ...overrides,
         ...additionalOverrides,
       }),

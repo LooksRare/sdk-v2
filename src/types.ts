@@ -43,6 +43,7 @@ export type Signer = ethers.Signer & TypedDataSigner;
 export interface ContractMethods {
   call: () => Promise<ContractTransaction>;
   estimateGas: () => Promise<BigNumber>;
+  callStatic: () => Promise<any>;
 }
 
 /** Output of the createMakerAsk function */

@@ -29,6 +29,11 @@ export const executeTakerBid = (
         ...overridesWithValue,
         ...additionalOverrides,
       }),
+    callStatic: (additionalOverrides?: PayableOverrides) =>
+      contract.callStatic.executeTakerBid(takerBid, makerAsk, makerSignature, merkleTree, referrer, {
+        ...overridesWithValue,
+        ...additionalOverrides,
+      }),
   };
 };
 
@@ -55,6 +60,11 @@ export const executeTakerAsk = (
       }),
     estimateGas: (additionalOverrides?: PayableOverrides) =>
       contract.estimateGas.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
+        ...overridesWithValue,
+        ...additionalOverrides,
+      }),
+    callStatic: (additionalOverrides?: PayableOverrides) =>
+      contract.callStatic.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
