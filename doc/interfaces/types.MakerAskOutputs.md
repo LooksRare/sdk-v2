@@ -6,9 +6,9 @@ Output of the createMakerAsk function
 
 ## Properties
 
-### action
+### approval
 
-• `Optional` **action**: () => `Promise`<`ContractTransaction`\>
+• `Optional` **approval**: () => `Promise`<`ContractTransaction`\>
 
 #### Type declaration
 
@@ -22,8 +22,8 @@ Function to be called before signing the order
 
 ___
 
-### order
+### makerAsk
 
-• **order**: [`MakerAsk`](types.MakerAsk.md)
+• **makerAsk**: [`MakerAsk`](types.MakerAsk.md)
 
 Maker order ready to be signed

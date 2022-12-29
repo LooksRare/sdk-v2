@@ -70,12 +70,6 @@ List of item IDS
 
 ___
 
-### minNetRatio
-
-• **minNetRatio**: `number`
-
-___
-
 ### minPrice
 
 • **minPrice**: `BigNumberish`
@@ -89,14 +83,6 @@ ___
 • **orderNonce**: `BigNumberish`
 
 Nonce for this specific order
-
-___
-
-### recipient
-
-• **recipient**: `string`
-
-Recipient for the trade
 
 ___
 

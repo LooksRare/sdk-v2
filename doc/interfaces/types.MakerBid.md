@@ -78,25 +78,11 @@ Maximum price to be paid for the trade
 
 ___
 
-### minNetRatio
-
-• **minNetRatio**: `number`
-
-___
-
 ### orderNonce
 
 • **orderNonce**: `BigNumberish`
 
 Nonce for this specific order
-
-___
-
-### recipient
-
-• **recipient**: `string`
-
-Recipient for the trade
 
 ___
 

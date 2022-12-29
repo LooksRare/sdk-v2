@@ -90,18 +90,6 @@ Asset price in wei
 
 ___
 
-### recipient
-
-• `Optional` **recipient**: `string`
-
-Trade recipient
-
-**`Default Value`**
-
-Signer
-
-___
-
 ### startTime
 
 • `Optional` **startTime**: `BigNumberish`

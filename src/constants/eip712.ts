@@ -1,6 +1,9 @@
 import { TypedDataField } from "@ethersproject/abstract-signer";
 import { SolidityType } from "../types";
 
+// EIP 712 (Typed structured data hashing and signing) related data
+// https://eips.ethereum.org/EIPS/eip-712
+
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 

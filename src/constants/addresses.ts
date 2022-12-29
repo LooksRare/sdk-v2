@@ -30,6 +30,9 @@ const goerliAddresses: Addresses = {
   LOOKS_LP_V3: "",
 };
 
+/**
+ * List of useful contract addresses
+ */
 export const addressesByNetwork: { [chainId in SupportedChainId]: Addresses } = {
   [SupportedChainId.MAINNET]: mainnetAddresses,
   [SupportedChainId.GOERLI]: goerliAddresses,

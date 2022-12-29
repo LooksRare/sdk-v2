@@ -1,10 +1,16 @@
-# Interface: MerkleRoot
+# Interface: MerkleTree
 
-[types](../modules/types.md).MerkleRoot
+[types](../modules/types.md).MerkleTree
 
 Merkle root object to be used in the execute function for a multi listing
 
 ## Properties
+
+### proof
+
+• **proof**: `string`[]
+
+___
 
 ### root
 

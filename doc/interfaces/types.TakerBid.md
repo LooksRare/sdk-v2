@@ -38,12 +38,6 @@ Maximum price to be paid for the trade
 
 ___
 
-### minNetRatio
-
-• **minNetRatio**: `number`
-
-___
-
 ### recipient
 
 • **recipient**: `string`
