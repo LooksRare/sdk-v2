@@ -6,9 +6,9 @@ Output of the createMakerBid function
 
 ## Properties
 
-### action
+### approval
 
-• `Optional` **action**: () => `Promise`<`ContractTransaction`\>
+• `Optional` **approval**: () => `Promise`<`ContractTransaction`\>
 
 #### Type declaration
 
@@ -22,8 +22,8 @@ Function to be called before signing the order
 
 ___
 
-### order
+### makerBid
 
-• **order**: [`MakerBid`](types.MakerBid.md)
+• **makerBid**: [`MakerBid`](types.MakerBid.md)
 
 Maker order ready to be signed

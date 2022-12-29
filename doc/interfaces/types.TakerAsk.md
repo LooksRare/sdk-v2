@@ -30,12 +30,6 @@ List of items IDs
 
 ___
 
-### minNetRatio
-
-• **minNetRatio**: `number`
-
-___
-
 ### minPrice
 
 • **minPrice**: `BigNumberish`

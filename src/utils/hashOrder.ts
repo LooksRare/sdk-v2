@@ -62,6 +62,12 @@ export const getMakerBidHash = (makerBid: MakerBid): string => {
   return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
 };
 
+/**
+ * Hash merkle tree order
+ * @external OrderStruct hash function
+ * @param merkleRoot string
+ * @returns string (bytes32)
+ */
 export const getMerkleTreeHash = (merkleRoot: MerkleTree["root"]): string => {
   const values = [MERKLE_TREE_HASH, merkleRoot];
   return utils.keccak256(utils.defaultAbiCoder.encode(hashingMerkleTreeTypes, values));

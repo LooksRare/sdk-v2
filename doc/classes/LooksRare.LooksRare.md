@@ -6,7 +6,7 @@
 
 ### constructor
 
-• **new LooksRare**(`signer`, `provider`, `chainId`, `override?`)
+• **new LooksRare**(`chainId`, `provider`, `signer?`, `override?`)
 
 LooksRare protocol main class
 
@@ -14,12 +14,28 @@ LooksRare protocol main class
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `signer` | [`Signer`](../modules/types.md#signer) | Ethers signer |
-| `provider` | `Provider` | Ethers provider |
 | `chainId` | [`SupportedChainId`](../enums/types.SupportedChainId.md) | Current app chain id |
+| `provider` | `Provider` | Ethers provider |
+| `signer?` | [`Signer`](../modules/types.md#signer) | Ethers signer |
 | `override?` | `Addresses` | Overrides contract addresses for hardhat setup |
 
 ## Properties
+
+### ERROR\_SIGNER
+
+• `Readonly` **ERROR\_SIGNER**: `Error`
+
+Custom error undefined signer
+
+___
+
+### ERROR\_TIMESTAMP
+
+• `Readonly` **ERROR\_TIMESTAMP**: `Error`
+
+Custom error invalid timestamp
+
+___
 
 ### addresses
 
@@ -41,17 +57,18 @@ ___
 
 • `Readonly` **provider**: `Provider`
 
-Ethers provider
+Ethers multicall provider
 
 **`See`**
 
-https://docs.ethers.io/v5/api/providers/
+ - https://docs.ethers.io/v5/api/providers/
+ - https://github.com/0xsequence/sequence.js/tree/master/packages/multicall
 
 ___
 
 ### signer
 
-• `Readonly` **signer**: [`Signer`](../modules/types.md#signer)
+• `Optional` `Readonly` **signer**: [`Signer`](../modules/types.md#signer)
 
 Ethers signer
 
@@ -63,7 +80,7 @@ https://docs.ethers.io/v5/api/signer/
 
 ### cancelAllOrders
 
-▸ **cancelAllOrders**(`bid`, `ask`): `Promise`<`ContractReceipt`\>
+▸ **cancelAllOrders**(`bid`, `ask`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancell all maker bid and/or ask orders for the current user
 
@@ -76,13 +93,13 @@ Cancell all maker bid and/or ask orders for the current user
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 ___
 
 ### cancelOrders
 
-▸ **cancelOrders**(`nonces`): `Promise`<`ContractReceipt`\>
+▸ **cancelOrders**(`nonces`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancel a list of specific orders
 
@@ -94,13 +111,13 @@ Cancel a list of specific orders
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 ___
 
 ### cancelSubsetOrders
 
-▸ **cancelSubsetOrders**(`nonces`): `Promise`<`ContractReceipt`\>
+▸ **cancelSubsetOrders**(`nonces`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancel a list of specific subset orders
 
@@ -112,7 +129,7 @@ Cancel a list of specific subset orders
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 ___
 
@@ -132,6 +149,8 @@ Create a maker ask object ready to be signed
 
 `Promise`<[`MakerAskOutputs`](../interfaces/types.MakerAskOutputs.md)\>
 
+MakerAskOutputs
+
 ___
 
 ### createMakerBid
@@ -149,6 +168,28 @@ Create a maker bid object ready to be signed
 #### Returns
 
 `Promise`<[`MakerBidOutputs`](../interfaces/types.MakerBidOutputs.md)\>
+
+MakerBidOutputs
+
+___
+
+### createMakerMerkleTree
+
+▸ **createMakerMerkleTree**(`makerOrders`): [`MerkleTree`](../interfaces/types.MerkleTree.md)
+
+Create multiple listing using a merkle tree
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `makerOrders` | ([`MakerAsk`](../interfaces/types.MakerAsk.md) \| [`MakerBid`](../interfaces/types.MakerBid.md))[] | List of maker orders (bid or ask) |
+
+#### Returns
+
+[`MerkleTree`](../interfaces/types.MerkleTree.md)
+
+MerkleTree
 
 ___
 
@@ -194,41 +235,59 @@ ___
 
 ### executeTakerAsk
 
-▸ **executeTakerAsk**(`makerBid`, `takerAsk`, `signature`): `Promise`<`ContractReceipt`\>
+▸ **executeTakerAsk**(`makerBid`, `takerAsk`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Execute a trade with a taker ask and a maker bid
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerBid` | [`MakerBid`](../interfaces/types.MakerBid.md) | Maker bid |
-| `takerAsk` | [`TakerAsk`](../interfaces/types.TakerAsk.md) | Taker ask |
-| `signature` | `string` | Signature of the maker order |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `makerBid` | [`MakerBid`](../interfaces/types.MakerBid.md) | `undefined` | Maker bid |
+| `takerAsk` | [`TakerAsk`](../interfaces/types.TakerAsk.md) | `undefined` | Taker ask |
+| `signature` | `string` | `undefined` | Signature of the maker order |
+| `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
+| `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 ___
 
 ### executeTakerBid
 
-▸ **executeTakerBid**(`makerAsk`, `takerBid`, `signature`): `Promise`<`ContractReceipt`\>
+▸ **executeTakerBid**(`makerAsk`, `takerBid`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Execute a trade with a taker bid and a maker ask
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerAsk` | [`MakerAsk`](../interfaces/types.MakerAsk.md) | Maker ask |
-| `takerBid` | [`TakerBid`](../interfaces/types.TakerBid.md) | Taker bid |
-| `signature` | `string` | Signature of the maker order |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `makerAsk` | [`MakerAsk`](../interfaces/types.MakerAsk.md) | `undefined` | Maker ask |
+| `takerBid` | [`TakerBid`](../interfaces/types.TakerBid.md) | `undefined` | Taker bid |
+| `signature` | `string` | `undefined` | Signature of the maker order |
+| `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
+| `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
+
+___
+
+### getSigner
+
+▸ `Private` **getSigner**(): [`Signer`](../modules/types.md#signer)
+
+Return the signer it it's set, throw an exception otherwise
+
+#### Returns
+
+[`Signer`](../modules/types.md#signer)
+
+Signer
 
 ___
 
@@ -248,7 +307,7 @@ ___
 
 ### grantTransferManagerApproval
 
-▸ **grantTransferManagerApproval**(`operators?`): `Promise`<`ContractReceipt`\>
+▸ **grantTransferManagerApproval**(`operators?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Grant a list of operators the rights to transfer user's assets using the transfer manager
 
@@ -260,17 +319,35 @@ Exchange address
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `operators` | `string`[] | List of operators |
+| `operators` | `string`[] | List of operators (default to the exchange address) |
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
+
+___
+
+### isTransferManagerApproved
+
+▸ **isTransferManagerApproved**(`operators?`): `Promise`<`boolean`\>
+
+Check whether or not an operator has been approved by the user
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `operators` | `string` | List of operators (default to the exchange address) |
+
+#### Returns
+
+`Promise`<`boolean`\>
 
 ___
 
 ### revokeTransferManagerApproval
 
-▸ **revokeTransferManagerApproval**(`operators?`): `Promise`<`ContractReceipt`\>
+▸ **revokeTransferManagerApproval**(`operators?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Revoke a list of operators the rights to transfer user's assets using the transfer manager
 
@@ -286,7 +363,7 @@ Exchange address
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+[`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 ___
 
@@ -332,7 +409,7 @@ ___
 
 ### signMultipleMakers
 
-▸ **signMultipleMakers**(`makerOrders`): `Promise`<{ `leaves`: `Buffer`[] ; `root`: `string` = merkleRoot.root; `signature`: `string` ; `tree`: `MerkleTree`  }\>
+▸ **signMultipleMakers**(`hexRoot`): `Promise`<`string`\>
 
 Sign multiple maker orders (bids or asks) with a single signature
 
@@ -340,19 +417,21 @@ Sign multiple maker orders (bids or asks) with a single signature
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `makerOrders` | ([`MakerAsk`](../interfaces/types.MakerAsk.md) \| [`MakerBid`](../interfaces/types.MakerBid.md))[] | List of maker order to be signed |
+| `hexRoot` | `string` | Merkler tree root |
 
 #### Returns
 
-`Promise`<{ `leaves`: `Buffer`[] ; `root`: `string` = merkleRoot.root; `signature`: `string` ; `tree`: `MerkleTree`  }\>
+`Promise`<`string`\>
 
-Merkle tree and the signature
+Signature
 
 ___
 
 ### transferItemsAcrossCollection
 
-▸ **transferItemsAcrossCollection**(`collections`, `assetTypes`, `from`, `to`, `itemIds`, `amounts`): `Promise`<`ContractReceipt`\>
+▸ **transferItemsAcrossCollection**(`collections`, `assetTypes`, `to`, `itemIds`, `amounts`): `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
+
+Transfer a list of items across different collections
 
 #### Parameters
 
@@ -360,32 +439,50 @@ ___
 | :------ | :------ |
 | `collections` | `string`[] |
 | `assetTypes` | [`AssetType`](../enums/types.AssetType.md)[] |
-| `from` | `string` |
 | `to` | `string` |
 | `itemIds` | `BigNumberish`[][] |
 | `amounts` | `BigNumberish`[][] |
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+`Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
 
 ___
 
-### transferItemsFromSameCollection
+### verifyMakerAskOrders
 
-▸ **transferItemsFromSameCollection**(`collection`, `assetType`, `from`, `to`, `itemIds`, `amounts`): `Promise`<`ContractReceipt`\>
+▸ **verifyMakerAskOrders**(`makerAskOrders`, `signatures`, `merkleTrees`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `collection` | `string` |
-| `assetType` | [`AssetType`](../enums/types.AssetType.md) |
-| `from` | `string` |
-| `to` | `string` |
-| `itemIds` | `BigNumberish`[] |
-| `amounts` | `BigNumberish`[] |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `makerAskOrders` | [`MakerAsk`](../interfaces/types.MakerAsk.md)[] | List of maker ask orders |
+| `signatures` | `string`[] | List of signatures |
+| `merkleTrees` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (if applicable) |
 
 #### Returns
 
-`Promise`<`ContractReceipt`\>
+`Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+
+A list of OrderValidatorCode for each order (code 0 being valid)
+
+___
+
+### verifyMakerBidOrders
+
+▸ **verifyMakerBidOrders**(`makerBidOrders`, `signatures`, `merkleTrees`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `makerBidOrders` | [`MakerBid`](../interfaces/types.MakerBid.md)[] | List of maker bid orders |
+| `signatures` | `string`[] | List of signatures |
+| `merkleTrees` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (if applicable) |
+
+#### Returns
+
+`Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+
+A list of OrderValidatorCode for each order (code 0 being valid)

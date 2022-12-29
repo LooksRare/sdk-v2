@@ -51,8 +51,9 @@ export class LooksRare {
    */
   public readonly signer?: Signer;
   /**
-   * Ethers provider
+   * Ethers multicall provider
    * @see https://docs.ethers.io/v5/api/providers/
+   * @see https://github.com/0xsequence/sequence.js/tree/master/packages/multicall
    */
   public readonly provider: providers.Provider;
 
@@ -64,9 +65,9 @@ export class LooksRare {
 
   /**
    * LooksRare protocol main class
-   * @param signer Ethers signer
-   * @param provider Ethers provider
    * @param chainId Current app chain id
+   * @param provider Ethers provider
+   * @param signer Ethers signer
    * @param override Overrides contract addresses for hardhat setup
    */
   constructor(chainId: SupportedChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
@@ -103,6 +104,7 @@ export class LooksRare {
   /**
    * Create a maker ask object ready to be signed
    * @param makerAskInputs
+   * @returns MakerAskOutputs
    */
   public async createMakerAsk({
     collection,
@@ -158,6 +160,7 @@ export class LooksRare {
   /**
    * Create a maker bid object ready to be signed
    * @param makerBidOutputs
+   * @returns MakerBidOutputs
    */
   public async createMakerBid({
     collection,
@@ -214,7 +217,7 @@ export class LooksRare {
 
   /**
    * Create multiple listing using a merkle tree
-   * @param makerOrders list order masker orders (bid or ask)
+   * @param makerOrders List of maker orders (bid or ask)
    * @returns MerkleTree
    */
   public createMakerMerkleTree(makerOrders: (MakerAsk | MakerBid)[]): MerkleTree {
@@ -286,10 +289,10 @@ export class LooksRare {
 
   /**
    * Sign multiple maker orders (bids or asks) with a single signature
-   * @param makerOrders List of maker order to be signed
-   * @returns Merkle tree and the signature
+   * @param hexRoot Merkler tree root
+   * @returns Signature
    */
-  public async signMultipleMakers(hexRoot: MerkleTree["root"]) {
+  public async signMultipleMakers(hexRoot: MerkleTree["root"]): Promise<string> {
     const signer = this.getSigner();
     return await signMerkleRoot(signer, this.getTypedDataDomain(), hexRoot);
   }
@@ -299,6 +302,8 @@ export class LooksRare {
    * @param makerBid Maker bid
    * @param takerAsk Taker ask
    * @param signature Signature of the maker order
+   * @param merkleTree If the maker has been signed with a merkle tree
+   * @param referrer Referrer address if applicable
    */
   public executeTakerAsk(
     makerBid: MakerBid,
@@ -316,6 +321,8 @@ export class LooksRare {
    * @param makerAsk Maker ask
    * @param takerBid Taker bid
    * @param signature Signature of the maker order
+   * @param merkleTree If the maker has been signed with a merkle tree
+   * @param referrer Referrer address if applicable
    */
   public executeTakerBid(
     makerAsk: MakerAsk,
@@ -356,7 +363,12 @@ export class LooksRare {
     return cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
   }
 
-  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE) {
+  /**
+   * Check whether or not an operator has been approved by the user
+   * @param operators List of operators (default to the exchange address)
+   * @returns
+   */
+  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE): Promise<boolean> {
     const signer = this.getSigner();
     const signerAddress = await signer.getAddress();
     return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER, signerAddress, operators);
@@ -364,7 +376,7 @@ export class LooksRare {
 
   /**
    * Grant a list of operators the rights to transfer user's assets using the transfer manager
-   * @param operators List of operators
+   * @param operators List of operators (default to the exchange address)
    * @defaultValue Exchange address
    */
   public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]): ContractMethods {
@@ -412,6 +424,13 @@ export class LooksRare {
     );
   }
 
+  /**
+   *
+   * @param makerAskOrders List of maker ask orders
+   * @param signatures List of signatures
+   * @param merkleTrees List of merkle tree (if applicable)
+   * @returns A list of OrderValidatorCode for each order (code 0 being valid)
+   */
   public async verifyMakerAskOrders(
     makerAskOrders: MakerAsk[],
     signatures: string[],
@@ -421,6 +440,13 @@ export class LooksRare {
     return verifyMakerAskOrders(signer, this.addresses.ORDER_VALIDATOR, makerAskOrders, signatures, merkleTrees);
   }
 
+  /**
+   *
+   * @param makerBidOrders List of maker bid orders
+   * @param signatures List of signatures
+   * @param merkleTrees List of merkle tree (if applicable)
+   * @returns A list of OrderValidatorCode for each order (code 0 being valid)
+   */
   public async verifyMakerBidOrders(
     makerBidOrders: MakerBid[],
     signatures: string[],

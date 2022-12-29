@@ -3,18 +3,20 @@
 ## Enumerations
 
 - [AssetType](../enums/types.AssetType.md)
+- [OrderValidatorCode](../enums/types.OrderValidatorCode.md)
 - [StrategyType](../enums/types.StrategyType.md)
 - [SupportedChainId](../enums/types.SupportedChainId.md)
 
 ## Interfaces
 
+- [ContractMethods](../interfaces/types.ContractMethods.md)
 - [MakerAsk](../interfaces/types.MakerAsk.md)
 - [MakerAskInputs](../interfaces/types.MakerAskInputs.md)
 - [MakerAskOutputs](../interfaces/types.MakerAskOutputs.md)
 - [MakerBid](../interfaces/types.MakerBid.md)
 - [MakerBidInputs](../interfaces/types.MakerBidInputs.md)
 - [MakerBidOutputs](../interfaces/types.MakerBidOutputs.md)
-- [MerkleRoot](../interfaces/types.MerkleRoot.md)
+- [MerkleTree](../interfaces/types.MerkleTree.md)
 - [TakerAsk](../interfaces/types.TakerAsk.md)
 - [TakerBid](../interfaces/types.TakerBid.md)
 
