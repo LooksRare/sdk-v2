@@ -50,7 +50,11 @@ See [0xsequence doc](https://github.com/0xsequence/sequence.js/tree/master/packa
 
 ### References
 
-Read the [complete documentation](./doc)
+Read the [complete documentation](./doc).
+
+### Guides
+
+Read the [guides](./guides) if you need help with the implementation.
 
 ### FAQ
 
@@ -79,6 +83,10 @@ Use the public api entpoints [/orders](https://looksrare.dev/reference/createord
 #### When should I use merkle tree orders ?
 
 Merkle tree orders are used to create several orders with a single signature. You shouldn't use them when using a bot. Their main purpose is to facilitate orders creation using a web interface.
+
+### Why do I need to call grantTransferManagerApproval ?
+
+When you approve a collection to be traded on LooksRare, you approve the TransferManager instead of the exchange. Calling `grantTransferManagerApproval` gives the exchange contract the right to call the transfer function on the TransferManager. You need to call this function only once, the first time you use the V2.
 
 ## Resources
 

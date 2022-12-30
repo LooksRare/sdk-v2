@@ -30,7 +30,7 @@ ___
 
 • **assetType**: [`AssetType`](../enums/types.AssetType.md)
 
-Asset type
+Asset type, 0: ERC-721, 1:ERC-1155, etc
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **orderNonce**: `BigNumberish`
 
-Order nonce
+Order nonce, get it from the LooksRare api
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **strategyId**: [`StrategyType`](../enums/types.StrategyType.md)
 
-Strategy ID
+Strategy ID, 0: Standard, 1: Collection, etc
 
 ___
 
@@ -114,4 +114,4 @@ ___
 
 • **subsetNonce**: `BigNumberish`
 
-Subset nonce
+Subset nonce used to group an arbitrary number of orders under the same nonce
