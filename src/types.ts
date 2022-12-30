@@ -58,13 +58,13 @@ export interface MakerAskOutputs {
 export interface MakerAskInputs {
   /** Collection address */
   collection: string;
-  /** Strategy ID */
+  /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
-  /** Asset type */
+  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
   assetType: AssetType;
-  /** Subset nonce */
+  /** Subset nonce used to group an arbitrary number of orders under the same nonce */
   subsetNonce: BigNumberish;
-  /** Order nonce */
+  /** Order nonce, get it from the LooksRare api */
   orderNonce: BigNumberish;
   /** Timestamp in seconds when the order becomes invalid */
   endTime: BigNumberish;
@@ -106,13 +106,13 @@ export interface MakerBidOutputs {
 export interface MakerBidInputs {
   /** Collection address */
   collection: string;
-  /** Strategy ID */
+  /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
-  /** Asset type */
+  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
   assetType: AssetType;
-  /** Subset nonce */
+  /** Subset nonce used to group an arbitrary number of orders under the same nonce */
   subsetNonce: BigNumberish;
-  /** Order nonce */
+  /** Order nonce, get it from the LooksRare api */
   orderNonce: BigNumberish;
   /** Timestamp in seconds when the order becomes invalid */
   endTime: BigNumberish;
