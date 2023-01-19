@@ -39,12 +39,12 @@ describe("Create maker bid", () => {
       ethers.provider,
       mocks.addresses.WETH,
       signers.user1.address,
-      mocks.addresses.EXCHANGE
+      mocks.addresses.EXCHANGE_V2
     );
     expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
   it("returns undefined approval function if approval was made", async () => {
-    await approve(signers.user1, mocks.addresses.WETH, mocks.addresses.EXCHANGE);
+    await approve(signers.user1, mocks.addresses.WETH, mocks.addresses.EXCHANGE_V2);
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerBid(baseMakerInput);
     expect(output.approval).to.be.undefined;

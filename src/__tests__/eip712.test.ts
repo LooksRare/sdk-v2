@@ -20,7 +20,7 @@ describe("EIP-712", () => {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: mocks.addresses.EXCHANGE,
+      verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
 
     makerOrder = {

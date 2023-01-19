@@ -57,7 +57,7 @@ describe("Transfer manager", () => {
   it("transfer items from a single collection", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
+    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER_V2);
     (await lr.grantTransferManagerApproval().call()).wait();
     const collection1 = new Contract(contracts.collection1.address, abiIERC721, ethers.provider) as ERC721;
 
@@ -93,8 +93,8 @@ describe("Transfer manager", () => {
   it("transfer items from multiple collections", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER);
-    await setApprovalForAll(signers.user1, contracts.collection2.address, addresses.TRANSFER_MANAGER);
+    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER_V2);
+    await setApprovalForAll(signers.user1, contracts.collection2.address, addresses.TRANSFER_MANAGER_V2);
     (await lr.grantTransferManagerApproval().call()).wait();
     const collection1 = new Contract(contracts.collection1.address, abiIERC721, ethers.provider) as ERC721;
     const collection2 = new Contract(contracts.collection2.address, abiIERC1155, ethers.provider) as ERC1155;

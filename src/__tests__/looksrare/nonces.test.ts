@@ -64,7 +64,7 @@ describe("Nonces and order cancellation", () => {
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
 
-      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE, signers.user1.address);
+      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
       expect(userNonces.bidNonce).to.be.equal(1);
       expect(userNonces.askNonce).to.be.equal(0);
     });
@@ -74,7 +74,7 @@ describe("Nonces and order cancellation", () => {
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
 
-      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE, signers.user1.address);
+      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
       expect(userNonces.bidNonce).to.be.equal(0);
       expect(userNonces.askNonce).to.be.equal(1);
     });
@@ -84,7 +84,7 @@ describe("Nonces and order cancellation", () => {
       const receipt = await tx.wait();
 
       expect(receipt.status).to.equal(1);
-      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE, signers.user1.address);
+      const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
       expect(userNonces.bidNonce).to.be.equal(1);
       expect(userNonces.askNonce).to.be.equal(1);
     });
