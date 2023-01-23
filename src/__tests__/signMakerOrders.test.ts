@@ -21,7 +21,7 @@ describe("SignMakerOrders", () => {
       name: contractName,
       version: version.toString(),
       chainId: SupportedChainId.HARDHAT,
-      verifyingContract: mocks.addresses.EXCHANGE,
+      verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
   });
   it("sign maker ask order", async () => {

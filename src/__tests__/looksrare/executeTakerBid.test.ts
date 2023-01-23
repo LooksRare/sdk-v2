@@ -13,7 +13,9 @@ describe("execute taker bid", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
 
-    const tx = await mocks.contracts.transferManager.connect(signers.user1).grantApprovals([mocks.addresses.EXCHANGE]);
+    const tx = await mocks.contracts.transferManager
+      .connect(signers.user1)
+      .grantApprovals([mocks.addresses.EXCHANGE_V2]);
     await tx.wait();
 
     baseMakerAskInput = {

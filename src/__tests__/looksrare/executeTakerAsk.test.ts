@@ -22,7 +22,7 @@ describe("execute taker ask", () => {
     {
       const tx = await mocks.contracts.transferManager
         .connect(signers.user1)
-        .grantApprovals([mocks.addresses.EXCHANGE]);
+        .grantApprovals([mocks.addresses.EXCHANGE_V2]);
       await tx.wait();
     }
 
@@ -44,7 +44,7 @@ describe("execute taker ask", () => {
     const { makerBid, approval } = await lrUser2.createMakerBid(baseMakerAskInput);
     await approval!();
     const signature = await lrUser2.signMakerBid(makerBid);
-    await setApprovalForAll(signers.user1, makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER);
+    await setApprovalForAll(signers.user1, makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const takerAsk = lrUser1.createTakerAsk(makerBid, signers.user2.address);
 
     const contractMethods = await lrUser1.executeTakerAsk(makerBid, takerAsk, signature);
@@ -68,7 +68,7 @@ describe("execute taker ask", () => {
 
     await order1.approval!();
 
-    await setApprovalForAll(signers.user1, order1.makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER);
+    await setApprovalForAll(signers.user1, order1.makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const takerAsk = lrUser1.createTakerAsk(order1.makerBid, signers.user2.address);
 
     const estimatedGas = await lrUser1.executeTakerAsk(order1.makerBid, takerAsk, signature, tree).estimateGas();

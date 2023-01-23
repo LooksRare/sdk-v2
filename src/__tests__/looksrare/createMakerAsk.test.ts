@@ -40,12 +40,12 @@ describe("Create maker ask", () => {
       ethers.provider,
       baseMakerAskInput.collection,
       signers.user1.address,
-      mocks.addresses.TRANSFER_MANAGER
+      mocks.addresses.TRANSFER_MANAGER_V2
     );
     expect(isApproved).to.be.true;
   });
   it("returns undefined approval function if approval was made", async () => {
-    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, mocks.addresses.TRANSFER_MANAGER);
+    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, mocks.addresses.TRANSFER_MANAGER_V2);
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(output.approval).to.be.undefined;

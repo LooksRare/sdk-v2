@@ -97,7 +97,7 @@ export class LooksRare {
       name: contractName,
       version: version.toString(),
       chainId: this.chainId,
-      verifyingContract: this.addresses.EXCHANGE,
+      verifyingContract: this.addresses.EXCHANGE_V2,
     };
   }
 
@@ -127,11 +127,11 @@ export class LooksRare {
     }
 
     const signerAddress = await signer.getAddress();
-    const spenderAddress = this.addresses.TRANSFER_MANAGER;
+    const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
 
     const [isCollectionApproved, userBidAskNonce] = await Promise.all([
       isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
-      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
     ]);
 
     const order: MakerAsk = {
@@ -183,11 +183,11 @@ export class LooksRare {
     }
 
     const signerAddress = await signer.getAddress();
-    const spenderAddress = this.addresses.EXCHANGE;
+    const spenderAddress = this.addresses.EXCHANGE_V2;
 
     const [currentAllowance, userBidAskNonce] = await Promise.all([
       allowance(this.provider, currency, signerAddress, spenderAddress),
-      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE, signerAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
     ]);
 
     const order: MakerBid = {
@@ -313,7 +313,7 @@ export class LooksRare {
     referrer: string = constants.AddressZero
   ): ContractMethods {
     const signer = this.getSigner();
-    return executeTakerAsk(signer, this.addresses.EXCHANGE, takerAsk, makerBid, signature, merkleTree, referrer);
+    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, takerAsk, makerBid, signature, merkleTree, referrer);
   }
 
   /**
@@ -332,7 +332,7 @@ export class LooksRare {
     referrer: string = constants.AddressZero
   ): ContractMethods {
     const signer = this.getSigner();
-    return executeTakerBid(signer, this.addresses.EXCHANGE, takerBid, makerAsk, signature, merkleTree, referrer);
+    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, takerBid, makerAsk, signature, merkleTree, referrer);
   }
 
   /**
@@ -342,7 +342,7 @@ export class LooksRare {
    */
   public cancelAllOrders(bid: boolean, ask: boolean): ContractMethods {
     const signer = this.getSigner();
-    return incrementBidAskNonces(signer, this.addresses.EXCHANGE, bid, ask);
+    return incrementBidAskNonces(signer, this.addresses.EXCHANGE_V2, bid, ask);
   }
 
   /**
@@ -351,7 +351,7 @@ export class LooksRare {
    */
   public cancelOrders(nonces: BigNumber[]): ContractMethods {
     const signer = this.getSigner();
-    return cancelOrderNonces(signer, this.addresses.EXCHANGE, nonces);
+    return cancelOrderNonces(signer, this.addresses.EXCHANGE_V2, nonces);
   }
 
   /**
@@ -360,7 +360,7 @@ export class LooksRare {
    */
   public cancelSubsetOrders(nonces: BigNumber[]): ContractMethods {
     const signer = this.getSigner();
-    return cancelSubsetNonces(signer, this.addresses.EXCHANGE, nonces);
+    return cancelSubsetNonces(signer, this.addresses.EXCHANGE_V2, nonces);
   }
 
   /**
@@ -368,10 +368,10 @@ export class LooksRare {
    * @param operators List of operators (default to the exchange address)
    * @returns
    */
-  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE): Promise<boolean> {
+  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE_V2): Promise<boolean> {
     const signer = this.getSigner();
     const signerAddress = await signer.getAddress();
-    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER, signerAddress, operators);
+    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER_V2, signerAddress, operators);
   }
 
   /**
@@ -379,9 +379,9 @@ export class LooksRare {
    * @param operators List of operators (default to the exchange address)
    * @defaultValue Exchange address
    */
-  public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]): ContractMethods {
+  public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
     const signer = this.getSigner();
-    return grantApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
+    return grantApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators);
   }
 
   /**
@@ -389,9 +389,9 @@ export class LooksRare {
    * @param operators List of operators
    * @defaultValue Exchange address
    */
-  public revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE]): ContractMethods {
+  public revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
     const signer = this.getSigner();
-    return revokeApprovals(signer, this.addresses.TRANSFER_MANAGER, operators);
+    return revokeApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators);
   }
 
   /**
@@ -414,7 +414,7 @@ export class LooksRare {
     const from = await signer.getAddress();
     return transferBatchItemsAcrossCollections(
       signer,
-      this.addresses.TRANSFER_MANAGER,
+      this.addresses.TRANSFER_MANAGER_V2,
       collections,
       assetTypes,
       from,
@@ -437,7 +437,7 @@ export class LooksRare {
     merkleTrees: MerkleTree[]
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    return verifyMakerAskOrders(signer, this.addresses.ORDER_VALIDATOR, makerAskOrders, signatures, merkleTrees);
+    return verifyMakerAskOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerAskOrders, signatures, merkleTrees);
   }
 
   /**
@@ -453,6 +453,6 @@ export class LooksRare {
     merkleTrees: MerkleTree[]
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    return verifyMakerBidOrders(signer, this.addresses.ORDER_VALIDATOR, makerBidOrders, signatures, merkleTrees);
+    return verifyMakerBidOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerBidOrders, signatures, merkleTrees);
   }
 }
