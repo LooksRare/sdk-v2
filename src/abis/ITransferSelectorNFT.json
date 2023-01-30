@@ -1,15 +1,5 @@
 [
   {
-    "inputs": [],
-    "name": "ManagerSelectorAlreadySetForAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ManagerSelectorEmpty",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -35,30 +25,5 @@
     ],
     "name": "NoTransferManagerForAssetType",
     "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "transferManager",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
-      }
-    ],
-    "name": "NewAssetType",
-    "type": "event"
   }
 ]

@@ -8,7 +8,12 @@
       },
       {
         "internalType": "address",
-        "name": "transferManager",
+        "name": "_protocolFeeRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_transferManager",
         "type": "address"
       }
     ],
@@ -18,16 +23,6 @@
   {
     "inputs": [],
     "name": "CreatorFeeBpTooHigh",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ManagerSelectorAlreadySetForAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ManagerSelectorEmpty",
     "type": "error"
   },
   {
@@ -89,12 +84,22 @@
   },
   {
     "inputs": [],
+    "name": "NotV2Strategy",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "OutsideOfTimeRange",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "PercentageTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyFail",
     "type": "error"
   },
   {
@@ -241,31 +246,6 @@
       }
     ],
     "name": "NewAffiliateRate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "transferManager",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
-      }
-    ],
-    "name": "NewAssetType",
     "type": "event"
   },
   {
@@ -515,29 +495,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "transferManagerForAssetType",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes4",
-        "name": "selectorForAssetType",
-        "type": "bytes4"
-      }
-    ],
-    "name": "addTransferManagerForAssetType",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "affiliateController",
     "outputs": [
@@ -618,19 +575,6 @@
   },
   {
     "inputs": [],
-    "name": "countStrategies",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "creatorFeeManager",
     "outputs": [
       {
@@ -707,30 +651,6 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "managerSelectorOfAssetType",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "transferManager",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
       }
     ],
     "stateMutability": "view",
@@ -851,6 +771,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "transferManager",
+    "outputs": [
+      {
+        "internalType": "contract TransferManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -959,6 +892,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
         "internalType": "uint16",
         "name": "newStandardProtocolFee",
         "type": "uint16"
@@ -967,11 +905,6 @@
         "internalType": "uint16",
         "name": "newMinTotalFee",
         "type": "uint16"
-      },
-      {
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
       }
     ],
     "name": "updateStrategy",

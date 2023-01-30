@@ -8,6 +8,11 @@
       },
       {
         "internalType": "address",
+        "name": "_protocolFeeRecipient",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_transferManager",
         "type": "address"
       },
@@ -64,16 +69,6 @@
   {
     "inputs": [],
     "name": "InvalidSignatureERC1271",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ManagerSelectorAlreadySetForAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ManagerSelectorEmpty",
     "type": "error"
   },
   {
@@ -145,12 +140,12 @@
   },
   {
     "inputs": [],
-    "name": "NullSignerAddress",
+    "name": "NotV2Strategy",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "OrderInvalid",
+    "name": "NullSignerAddress",
     "type": "error"
   },
   {
@@ -215,8 +210,24 @@
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetType",
+        "type": "uint256"
+      }
+    ],
+    "name": "WrongAssetType",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "WrongCaller",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WrongChainId",
     "type": "error"
   },
   {
@@ -373,31 +384,6 @@
       }
     ],
     "name": "NewAffiliateRate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "transferManager",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
-      }
-    ],
-    "name": "NewAssetType",
     "type": "event"
   },
   {
@@ -684,9 +670,9 @@
       },
       {
         "indexed": false,
-        "internalType": "address[3]",
+        "internalType": "address[2]",
         "name": "feeRecipients",
-        "type": "address[3]"
+        "type": "address[2]"
       },
       {
         "indexed": false,
@@ -768,9 +754,9 @@
       },
       {
         "indexed": false,
-        "internalType": "address[3]",
+        "internalType": "address[2]",
         "name": "feeRecipients",
-        "type": "address[3]"
+        "type": "address[2]"
       },
       {
         "indexed": false,
@@ -842,29 +828,6 @@
       }
     ],
     "name": "addStrategy",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "transferManagerForAssetType",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes4",
-        "name": "selectorForAssetType",
-        "type": "bytes4"
-      }
-    ],
-    "name": "addTransferManagerForAssetType",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -959,19 +922,6 @@
     "name": "confirmOwnershipTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "countStrategies",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1508,30 +1458,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "managerSelectorOfAssetType",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "transferManager",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "maxCreatorFeeBp",
     "outputs": [
@@ -1779,6 +1705,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "transferManager",
+    "outputs": [
+      {
+        "internalType": "contract TransferManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1907,6 +1846,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
         "internalType": "uint16",
         "name": "newStandardProtocolFee",
         "type": "uint16"
@@ -1915,11 +1859,6 @@
         "internalType": "uint16",
         "name": "newMinTotalFee",
         "type": "uint16"
-      },
-      {
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
       }
     ],
     "name": "updateStrategy",

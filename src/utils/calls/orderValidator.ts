@@ -1,5 +1,5 @@
 import { Contract, Overrides, providers } from "ethers";
-import { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
+import { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A.sol/OrderValidatorV2A";
 import abi from "../../abis/OrderValidatorV2A.json";
 import { Signer, MakerAsk, MakerBid, MerkleTree, OrderValidatorCode } from "../../types";
 
@@ -12,7 +12,9 @@ export const verifyMakerAskOrders = async (
   overrides?: Overrides
 ): Promise<OrderValidatorCode[][]> => {
   const contract = new Contract(address, abi, signerOrProvider) as OrderValidatorV2A;
-  const orders = await contract.verifyMultipleMakerAskOrders(makerAskOrders, signatures, merkleTrees, { ...overrides });
+  const orders = await contract.checkMultipleMakerAskOrdersValidity(makerAskOrders, signatures, merkleTrees, {
+    ...overrides,
+  });
   return orders.map((order) => order.map((code) => code.toNumber() as OrderValidatorCode));
 };
 
@@ -25,6 +27,8 @@ export const verifyMakerBidOrders = async (
   overrides?: Overrides
 ): Promise<OrderValidatorCode[][]> => {
   const contract = new Contract(address, abi, signerOrProvider) as OrderValidatorV2A;
-  const orders = await contract.verifyMultipleMakerBidOrders(makerBidOrders, signatures, merkleTrees, { ...overrides });
+  const orders = await contract.checkMultipleMakerBidOrdersValidity(makerBidOrders, signatures, merkleTrees, {
+    ...overrides,
+  });
   return orders.map((order) => order.map((code) => code.toNumber() as OrderValidatorCode));
 };

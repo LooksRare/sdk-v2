@@ -65,8 +65,8 @@ describe("Nonces and order cancellation", () => {
       expect(receipt.status).to.equal(1);
 
       const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
-      expect(userNonces.bidNonce).to.be.equal(1);
-      expect(userNonces.askNonce).to.be.equal(0);
+      expect(userNonces.bidNonce.gt(0)).to.be.true;
+      expect(userNonces.askNonce.eq(0)).to.be.true;
     });
     it("increment ask nonce", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
@@ -75,8 +75,8 @@ describe("Nonces and order cancellation", () => {
       expect(receipt.status).to.equal(1);
 
       const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
-      expect(userNonces.bidNonce).to.be.equal(0);
-      expect(userNonces.askNonce).to.be.equal(1);
+      expect(userNonces.bidNonce.eq(0)).to.be.true;
+      expect(userNonces.askNonce.gt(0)).to.be.true;
     });
     it("increment bid/ask nonces", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
@@ -85,8 +85,8 @@ describe("Nonces and order cancellation", () => {
 
       expect(receipt.status).to.equal(1);
       const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
-      expect(userNonces.bidNonce).to.be.equal(1);
-      expect(userNonces.askNonce).to.be.equal(1);
+      expect(userNonces.bidNonce.gt(0)).to.be.true;
+      expect(userNonces.askNonce.gt(0)).to.be.true;
     });
     it("method analysis", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);

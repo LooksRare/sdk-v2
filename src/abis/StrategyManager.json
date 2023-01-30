@@ -27,6 +27,11 @@
   },
   {
     "inputs": [],
+    "name": "NotV2Strategy",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "PercentageTooHigh",
     "type": "error"
   },
@@ -346,19 +351,6 @@
   },
   {
     "inputs": [],
-    "name": "countStrategies",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "initiateOwnershipRenouncement",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -567,6 +559,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
         "internalType": "uint16",
         "name": "newStandardProtocolFee",
         "type": "uint16"
@@ -575,11 +572,6 @@
         "internalType": "uint16",
         "name": "newMinTotalFee",
         "type": "uint16"
-      },
-      {
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
       }
     ],
     "name": "updateStrategy",

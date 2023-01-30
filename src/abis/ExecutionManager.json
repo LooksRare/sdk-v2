@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "_owner",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_protocolFeeRecipient",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -43,6 +48,11 @@
   {
     "inputs": [],
     "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotV2Strategy",
     "type": "error"
   },
   {
@@ -528,19 +538,6 @@
   },
   {
     "inputs": [],
-    "name": "countStrategies",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "creatorFeeManager",
     "outputs": [
       {
@@ -845,6 +842,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
         "internalType": "uint16",
         "name": "newStandardProtocolFee",
         "type": "uint16"
@@ -853,11 +855,6 @@
         "internalType": "uint16",
         "name": "newMinTotalFee",
         "type": "uint16"
-      },
-      {
-        "internalType": "bool",
-        "name": "isActive",
-        "type": "bool"
       }
     ],
     "name": "updateStrategy",

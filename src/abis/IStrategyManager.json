@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "NotV2Strategy",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "StrategyHasNoSelector",
     "type": "error"
   },
