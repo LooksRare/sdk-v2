@@ -349,7 +349,7 @@ export class LooksRare {
    * Cancel a list of specific orders
    * @param nonces List of nonces to be cancelled
    */
-  public cancelOrders(nonces: BigNumber[]): ContractMethods {
+  public cancelOrders(nonces: BigNumberish[]): ContractMethods {
     const signer = this.getSigner();
     return cancelOrderNonces(signer, this.addresses.EXCHANGE_V2, nonces);
   }
@@ -358,7 +358,7 @@ export class LooksRare {
    * Cancel a list of specific subset orders
    * @param nonces List of nonces to be cancelled
    */
-  public cancelSubsetOrders(nonces: BigNumber[]): ContractMethods {
+  public cancelSubsetOrders(nonces: BigNumberish[]): ContractMethods {
     const signer = this.getSigner();
     return cancelSubsetNonces(signer, this.addresses.EXCHANGE_V2, nonces);
   }
