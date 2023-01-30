@@ -8,7 +8,7 @@ import { Addresses } from "../../constants/addresses";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
-import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
+import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A.sol/OrderValidatorV2A";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
@@ -33,6 +33,7 @@ export interface SetupMocks {
 export interface Signers {
   owner: SignerWithAddress;
   operator: SignerWithAddress;
+  protocolFeeRecipient: SignerWithAddress;
   user1: SignerWithAddress;
   user2: SignerWithAddress;
   user3: SignerWithAddress;
@@ -45,9 +46,10 @@ export const getSigners = async (): Promise<Signers> => {
   return {
     owner: signers[0],
     operator: signers[1],
-    user1: signers[2],
-    user2: signers[3],
-    user3: signers[4],
+    protocolFeeRecipient: signers[2],
+    user1: signers[3],
+    user2: signers[4],
+    user3: signers[5],
   };
 };
 
@@ -73,6 +75,7 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
   const looksRareProtocol = (await deploy(
     "LooksRareProtocol",
     signers.owner.address,
+    signers.protocolFeeRecipient.address,
     transferManager.address,
     weth.address
   )) as LooksRareProtocol;

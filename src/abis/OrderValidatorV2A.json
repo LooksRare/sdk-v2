@@ -76,13 +76,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "adjustExternalParameters",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -309,84 +302,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "creatorFeeManager",
-    "outputs": [
-      {
-        "internalType": "contract ICreatorFeeManager",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "domainSeparator",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "looksRareProtocol",
-    "outputs": [
-      {
-        "internalType": "contract LooksRareProtocol",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxCreatorFeeBp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "royaltyFeeRegistry",
-    "outputs": [
-      {
-        "internalType": "contract IRoyaltyFeeRegistry",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "transferManager",
-    "outputs": [
-      {
-        "internalType": "contract TransferManager",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -488,7 +403,7 @@
         "type": "tuple[]"
       }
     ],
-    "name": "verifyMultipleMakerAskOrders",
+    "name": "checkMultipleMakerAskOrdersValidity",
     "outputs": [
       {
         "internalType": "uint256[9][]",
@@ -601,12 +516,97 @@
         "type": "tuple[]"
       }
     ],
-    "name": "verifyMultipleMakerBidOrders",
+    "name": "checkMultipleMakerBidOrdersValidity",
     "outputs": [
       {
         "internalType": "uint256[9][]",
         "name": "validationCodes",
         "type": "uint256[9][]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "creatorFeeManager",
+    "outputs": [
+      {
+        "internalType": "contract ICreatorFeeManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "deriveProtocolParameters",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "domainSeparator",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "looksRareProtocol",
+    "outputs": [
+      {
+        "internalType": "contract LooksRareProtocol",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxCreatorFeeBp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "royaltyFeeRegistry",
+    "outputs": [
+      {
+        "internalType": "contract IRoyaltyFeeRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "transferManager",
+    "outputs": [
+      {
+        "internalType": "contract TransferManager",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

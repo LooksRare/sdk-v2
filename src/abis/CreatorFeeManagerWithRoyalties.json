@@ -22,17 +22,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      }
-    ],
-    "name": "CreatorFeeTooHigh",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "royaltyFeeRegistry",
     "outputs": [

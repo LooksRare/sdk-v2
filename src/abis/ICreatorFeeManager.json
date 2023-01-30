@@ -16,7 +16,7 @@
     "outputs": [
       {
         "internalType": "contract IRoyaltyFeeRegistry",
-        "name": "",
+        "name": "royaltyFeeRegistry",
         "type": "address"
       }
     ],

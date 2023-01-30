@@ -11,6 +11,11 @@
   },
   {
     "inputs": [],
+    "name": "WrongChainId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "WrongNonces",
     "type": "error"
   },
@@ -128,9 +133,9 @@
       },
       {
         "indexed": false,
-        "internalType": "address[3]",
+        "internalType": "address[2]",
         "name": "feeRecipients",
-        "type": "address[3]"
+        "type": "address[2]"
       },
       {
         "indexed": false,
@@ -212,9 +217,9 @@
       },
       {
         "indexed": false,
-        "internalType": "address[3]",
+        "internalType": "address[2]",
         "name": "feeRecipients",
-        "type": "address[3]"
+        "type": "address[2]"
       },
       {
         "indexed": false,
