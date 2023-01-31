@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { utils } from "ethers";
-import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
-import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, AssetType, MakerBid, MakerAsk } from "../../types";
+import { createMakerMerkleTree } from "../../utils/merkleTree";
+import { AssetType, MakerBid, MakerAsk } from "../../types";
 
 describe("Create maker merkle tree", () => {
   let mocks: SetupMocks;
@@ -47,8 +46,7 @@ describe("Create maker merkle tree", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       },
     ];
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const tree = looksrare.createMakerMerkleTree(makerOrders);
-    expect(tree.proof.length).to.be.equal(makerOrders.length);
+    const tree = createMakerMerkleTree(makerOrders);
+    expect(tree.getLeaves().length).to.be.equal(makerOrders.length);
   });
 });

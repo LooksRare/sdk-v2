@@ -17,6 +17,7 @@
 - [MakerBidInputs](../interfaces/types.MakerBidInputs.md)
 - [MakerBidOutputs](../interfaces/types.MakerBidOutputs.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)
+- [MultipleOrdersWithMerkleTree](../interfaces/types.MultipleOrdersWithMerkleTree.md)
 - [TakerAsk](../interfaces/types.TakerAsk.md)
 - [TakerBid](../interfaces/types.TakerBid.md)
 

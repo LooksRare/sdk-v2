@@ -1,10 +1,9 @@
 import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
-import { MerkleTree as MerkleTreeJS } from "merkletreejs";
-import { keccak256 } from "js-sha3";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
+import { MAX_ORDERS_PER_TREE } from "./constants";
 import { signMakerAsk, signMakerBid, signMerkleRoot } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
@@ -22,7 +21,7 @@ import {
 import { verifyMakerAskOrders, verifyMakerBidOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
-import { getMakerAskHash, getMakerBidHash } from "./utils/hashOrder";
+import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
   AssetType,
   MakerAsk,
@@ -36,6 +35,7 @@ import {
   MakerAskOutputs,
   MakerBidOutputs,
   MerkleTree,
+  MultipleOrdersWithMerkleTree,
   ContractMethods,
   OrderValidatorCode,
 } from "./types";
@@ -62,6 +62,9 @@ export class LooksRare {
 
   /** Custom error undefined signer */
   public readonly ERROR_SIGNER = new Error("Signer is undefined");
+
+  /** Custom error too many orders in one merkle tree */
+  public readonly ERROR_MERKLE_TREE_DEPTH = new Error(`Too many orders (limit: ${MAX_ORDERS_PER_TREE})`);
 
   /**
    * LooksRare protocol main class
@@ -216,24 +219,6 @@ export class LooksRare {
   }
 
   /**
-   * Create multiple listing using a merkle tree
-   * @param makerOrders List of maker orders (bid or ask)
-   * @returns MerkleTree
-   */
-  public createMakerMerkleTree(makerOrders: (MakerAsk | MakerBid)[]): MerkleTree {
-    const leaves = makerOrders.map((order) => {
-      const hash = "askNonce" in order ? getMakerAskHash(order as MakerAsk) : getMakerBidHash(order as MakerBid);
-      return Buffer.from(hash.slice(2), "hex");
-    });
-    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
-
-    return {
-      root: tree.getHexRoot(),
-      proof: leaves.map((leaf) => tree.getHexProof(leaf).join(",")),
-    };
-  }
-
-  /**
    * Create a taker ask ready to be executed against a maker bid
    * @param makerBid Maker bid that will be used as counterparty for the taker ask
    * @param recipient Recipient address of the taker
@@ -289,12 +274,33 @@ export class LooksRare {
 
   /**
    * Sign multiple maker orders (bids or asks) with a single signature
-   * @param hexRoot Merkler tree root
-   * @returns Signature
+   * @param makerOrders Array of maker orders
+   * @returns MultipleOrdersWithMerkleTree Orders data with their proof
    */
-  public async signMultipleMakers(hexRoot: MerkleTree["root"]): Promise<string> {
+  public async signMultipleMakers(makerOrders: (MakerAsk | MakerBid)[]): Promise<MultipleOrdersWithMerkleTree> {
+    if (makerOrders.length > MAX_ORDERS_PER_TREE) {
+      throw this.ERROR_MERKLE_TREE_DEPTH;
+    }
+
+    const merkleTreeJs = createMakerMerkleTree(makerOrders);
+    const leaves = merkleTreeJs.getLeaves();
+    const root = merkleTreeJs.getHexRoot();
+
     const signer = this.getSigner();
-    return await signMerkleRoot(signer, this.getTypedDataDomain(), hexRoot);
+    const signature = await signMerkleRoot(signer, this.getTypedDataDomain(), root);
+
+    return {
+      root,
+      signature,
+      orders: makerOrders.map((order, index) => {
+        const leaf = leaves[index];
+        return {
+          order,
+          hash: leaf,
+          proof: [merkleTreeJs.getHexProof(leaf).join(",")],
+        };
+      }),
+    };
   }
 
   /**

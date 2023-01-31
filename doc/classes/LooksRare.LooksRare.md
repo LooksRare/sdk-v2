@@ -21,6 +21,14 @@ LooksRare protocol main class
 
 ## Properties
 
+### ERROR\_MERKLE\_TREE\_DEPTH
+
+• `Readonly` **ERROR\_MERKLE\_TREE\_DEPTH**: `Error`
+
+Custom error too many orders in one merkle tree
+
+___
+
 ### ERROR\_SIGNER
 
 • `Readonly` **ERROR\_SIGNER**: `Error`
@@ -107,7 +115,7 @@ Cancel a list of specific orders
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `nonces` | `BigNumber`[] | List of nonces to be cancelled |
+| `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
 
 #### Returns
 
@@ -125,7 +133,7 @@ Cancel a list of specific subset orders
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `nonces` | `BigNumber`[] | List of nonces to be cancelled |
+| `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
 
 #### Returns
 
@@ -170,26 +178,6 @@ Create a maker bid object ready to be signed
 `Promise`<[`MakerBidOutputs`](../interfaces/types.MakerBidOutputs.md)\>
 
 MakerBidOutputs
-
-___
-
-### createMakerMerkleTree
-
-▸ **createMakerMerkleTree**(`makerOrders`): [`MerkleTree`](../interfaces/types.MerkleTree.md)
-
-Create multiple listing using a merkle tree
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerOrders` | ([`MakerAsk`](../interfaces/types.MakerAsk.md) \| [`MakerBid`](../interfaces/types.MakerBid.md))[] | List of maker orders (bid or ask) |
-
-#### Returns
-
-[`MerkleTree`](../interfaces/types.MerkleTree.md)
-
-MerkleTree
 
 ___
 
@@ -409,7 +397,7 @@ ___
 
 ### signMultipleMakers
 
-▸ **signMultipleMakers**(`hexRoot`): `Promise`<`string`\>
+▸ **signMultipleMakers**(`makerOrders`): `Promise`<[`MultipleOrdersWithMerkleTree`](../interfaces/types.MultipleOrdersWithMerkleTree.md)\>
 
 Sign multiple maker orders (bids or asks) with a single signature
 
@@ -417,13 +405,13 @@ Sign multiple maker orders (bids or asks) with a single signature
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `hexRoot` | `string` | Merkler tree root |
+| `makerOrders` | ([`MakerAsk`](../interfaces/types.MakerAsk.md) \| [`MakerBid`](../interfaces/types.MakerBid.md))[] | Array of maker orders |
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`<[`MultipleOrdersWithMerkleTree`](../interfaces/types.MultipleOrdersWithMerkleTree.md)\>
 
-Signature
+MultipleOrdersWithMerkleTree Orders data with their proof
 
 ___
 
