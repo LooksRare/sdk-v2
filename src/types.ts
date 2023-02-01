@@ -241,6 +241,17 @@ export interface MerkleTree {
   proof: string[];
 }
 
+/** List of orders with their proof and the tree information */
+export interface MultipleOrdersWithMerkleTree {
+  root: string;
+  signature: string;
+  orders: {
+    order: MakerAsk | MakerBid;
+    hash: Buffer;
+    proof: string[];
+  }[];
+}
+
 /** Error codes returned by the order validator contract */
 export enum OrderValidatorCode {
   // 0. No error

@@ -49,22 +49,26 @@ describe("execute taker bid", () => {
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
-  it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
+  it("execute maker ask from a merkle tree signature and taker bid", async () => {
     const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const order1 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
-    const tree = await lrUser2.createMakerMerkleTree([order1.makerAsk, order2.makerAsk]);
-    const signature = await lrUser2.signMultipleMakers(tree.root);
+    const { signature, root, orders } = await lrUser1.signMultipleMakers([order1.makerAsk, order2.makerAsk]);
 
     await order1.approval!();
 
     const takerBid = lrUser2.createTakerBid(order1.makerAsk, signers.user2.address);
 
-    const estimatedGas = await lrUser2.executeTakerBid(order1.makerAsk, takerBid, signature, tree).estimateGas();
+    const { call, estimateGas } = lrUser2.executeTakerBid(order1.makerAsk, takerBid, signature, {
+      root,
+      proof: orders[0].proof,
+    });
+
+    const estimatedGas = await estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await lrUser2.executeTakerBid(order1.makerAsk, takerBid, signature, tree).call();
+    const tx = await call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });

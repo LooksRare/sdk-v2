@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { utils } from "ethers";
-import { ethers } from "hardhat";
-import { LooksRare } from "../LooksRare";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { getMakerAskHash, getMakerBidHash, getMerkleTreeHash } from "../utils/hashOrder";
+import { createMakerMerkleTree } from "../utils/merkleTree";
 import { MakerAsk, MakerBid, AssetType } from "../types";
 
 describe("Hash orders", () => {
@@ -96,12 +95,16 @@ describe("Hash orders", () => {
       },
     ];
 
-    const lr = new LooksRare(1, ethers.provider, signers.user1);
-    const merkleTree = lr.createMakerMerkleTree(makerOrders);
+    const merkleTreeJs = createMakerMerkleTree(makerOrders);
+    const root = merkleTreeJs.getHexRoot();
+    const leaves = merkleTreeJs.getLeaves();
 
     const { verifier } = mocks.contracts;
-    const orderHashSc = await verifier.getMerkleTreeHash(merkleTree);
-    const orderHashHs = getMerkleTreeHash(merkleTree.root);
+    const orderHashSc = await verifier.getMerkleTreeHash({
+      root,
+      proof: [merkleTreeJs.getHexProof(leaves[0]).join(",")],
+    });
+    const orderHashHs = getMerkleTreeHash(root);
     expect(orderHashSc === orderHashHs);
   });
 });
