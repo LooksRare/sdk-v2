@@ -8,7 +8,7 @@ import abiIERC1155 from "../../abis/IERC1155.json";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { setApprovalForAll } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType } from "../../types";
+import { SupportedChainId, AssetType, BatchTransferItem } from "../../types";
 
 describe("Transfer manager", () => {
   let mocks: SetupMocks;
@@ -68,14 +68,10 @@ describe("Transfer manager", () => {
     const initialOwner = await collection1.ownerOf(tokenId);
     expect(initialOwner).to.be.equal(signers.user1.address);
 
-    // Execute the transfer
-    const contractMethods = await lr.transferItemsAcrossCollection(
-      [contracts.collection1.address],
-      [AssetType.ERC721],
-      receipient,
-      [[tokenId]],
-      [[1]]
-    );
+    const items: BatchTransferItem[] = [
+      { collection: contracts.collection1.address, assetType: AssetType.ERC721, itemIds: [tokenId], amounts: [1] },
+    ];
+    const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
@@ -102,13 +98,11 @@ describe("Transfer manager", () => {
     const receipient = signers.user3.address;
 
     // Execute the transfer
-    const contractMethods = await lr.transferItemsAcrossCollection(
-      [contracts.collection1.address, contracts.collection2.address],
-      [AssetType.ERC721, AssetType.ERC1155],
-      receipient,
-      [[0], [0]],
-      [[1], [10]]
-    );
+    const items: BatchTransferItem[] = [
+      { collection: contracts.collection1.address, assetType: AssetType.ERC721, itemIds: [0], amounts: [1] },
+      { collection: contracts.collection2.address, assetType: AssetType.ERC1155, itemIds: [0], amounts: [10] },
+    ];
+    const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);

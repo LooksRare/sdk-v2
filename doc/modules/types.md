@@ -9,6 +9,7 @@
 
 ## Interfaces
 
+- [BatchTransferItem](../interfaces/types.BatchTransferItem.md)
 - [ContractMethods](../interfaces/types.ContractMethods.md)
 - [MakerAsk](../interfaces/types.MakerAsk.md)
 - [MakerAskInputs](../interfaces/types.MakerAskInputs.md)

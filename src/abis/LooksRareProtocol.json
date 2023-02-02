@@ -26,19 +26,24 @@
     "type": "constructor"
   },
   {
-    "inputs": [],
-    "name": "BadSignatureS",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetType",
+        "type": "uint256"
+      }
+    ],
+    "name": "AssetTypeInvalid",
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "v",
-        "type": "uint8"
-      }
-    ],
-    "name": "BadSignatureV",
+    "inputs": [],
+    "name": "CallerInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ChainIdInvalid",
     "type": "error"
   },
   {
@@ -48,7 +53,7 @@
   },
   {
     "inputs": [],
-    "name": "ERC20TransferFail",
+    "name": "CurrencyInvalid",
     "type": "error"
   },
   {
@@ -58,17 +63,23 @@
   },
   {
     "inputs": [],
-    "name": "ETHTransferFail",
+    "name": "LengthsInvalid",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "InvalidSignatureEOA",
+    "name": "MerkleProofInvalid",
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "InvalidSignatureERC1271",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "MerkleProofTooLarge",
     "type": "error"
   },
   {
@@ -125,6 +136,11 @@
   },
   {
     "inputs": [],
+    "name": "NoncesInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotAContract",
     "type": "error"
   },
@@ -175,6 +191,43 @@
   },
   {
     "inputs": [],
+    "name": "SignatureEOAInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SignatureERC1271Invalid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "SignatureLengthInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SignatureParameterSInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      }
+    ],
+    "name": "SignatureParameterVInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "StrategyHasNoSelector",
     "type": "error"
   },
@@ -210,60 +263,8 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "WrongAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongCaller",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongChainId",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongCurrency",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongLengths",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongMerkleProof",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongNonces",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "WrongPotentialOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "length",
-        "type": "uint256"
-      }
-    ],
-    "name": "WrongSignatureLength",
     "type": "error"
   },
   {
@@ -960,27 +961,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "maxPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerBid[]",
+        "internalType": "struct OrderStructs.Taker[]",
         "name": "takerBids",
         "type": "tuple[]"
       },
@@ -1109,27 +1095,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "minPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerAsk",
+        "internalType": "struct OrderStructs.Taker",
         "name": "takerAsk",
         "type": "tuple"
       },
@@ -1253,27 +1224,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "maxPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerBid",
+        "internalType": "struct OrderStructs.Taker",
         "name": "takerBid",
         "type": "tuple"
       },
@@ -1532,27 +1488,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "maxPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerBid",
+        "internalType": "struct OrderStructs.Taker",
         "name": "takerBid",
         "type": "tuple"
       },

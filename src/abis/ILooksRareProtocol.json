@@ -1,22 +1,22 @@
 [
   {
     "inputs": [],
+    "name": "ChainIdInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NewGasLimitETHTransferTooLow",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "NoncesInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SameDomainSeparator",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongChainId",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongNonces",
     "type": "error"
   },
   {
@@ -241,27 +241,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "maxPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerBid[]",
+        "internalType": "struct OrderStructs.Taker[]",
         "name": "takerBids",
         "type": "tuple[]"
       },
@@ -390,27 +375,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "minPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerAsk",
+        "internalType": "struct OrderStructs.Taker",
         "name": "takerAsk",
         "type": "tuple"
       },
@@ -534,27 +504,12 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "maxPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "itemIds",
-            "type": "uint256[]"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "amounts",
-            "type": "uint256[]"
-          },
-          {
             "internalType": "bytes",
             "name": "additionalParameters",
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.TakerBid",
+        "internalType": "struct OrderStructs.Taker",
         "name": "takerBid",
         "type": "tuple"
       },

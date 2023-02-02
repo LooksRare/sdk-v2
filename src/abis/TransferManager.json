@@ -22,7 +22,23 @@
   },
   {
     "inputs": [],
-    "name": "ERC1155SafeBatchTransferFrom",
+    "name": "AmountInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetType",
+        "type": "uint256"
+      }
+    ],
+    "name": "AssetTypeInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155SafeBatchTransferFromFail",
     "type": "error"
   },
   {
@@ -33,6 +49,11 @@
   {
     "inputs": [],
     "name": "ERC721TransferFromFail",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "LengthsInvalid",
     "type": "error"
   },
   {
@@ -78,22 +99,6 @@
   {
     "inputs": [],
     "name": "TransferNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "WrongAssetType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongLengths",
     "type": "error"
   },
   {
@@ -374,14 +379,31 @@
   {
     "inputs": [
       {
-        "internalType": "address[]",
-        "name": "collections",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "assetTypes",
-        "type": "uint256[]"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collection",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "assetType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "itemIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+          }
+        ],
+        "internalType": "struct ITransferManager.BatchTransferItem[]",
+        "name": "items",
+        "type": "tuple[]"
       },
       {
         "internalType": "address",
@@ -392,16 +414,6 @@
         "internalType": "address",
         "name": "to",
         "type": "address"
-      },
-      {
-        "internalType": "uint256[][]",
-        "name": "itemIds",
-        "type": "uint256[][]"
-      },
-      {
-        "internalType": "uint256[][]",
-        "name": "amounts",
-        "type": "uint256[][]"
       }
     ],
     "name": "transferBatchItemsAcrossCollections",
@@ -466,7 +478,7 @@
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "amounts",
         "type": "uint256[]"
       }
     ],

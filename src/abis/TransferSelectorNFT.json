@@ -26,6 +26,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "LengthsInvalid",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -141,11 +146,6 @@
   {
     "inputs": [],
     "name": "TransferNotInProgress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "WrongLengths",
     "type": "error"
   },
   {

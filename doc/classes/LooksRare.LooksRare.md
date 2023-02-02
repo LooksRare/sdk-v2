@@ -417,19 +417,16 @@ ___
 
 ### transferItemsAcrossCollection
 
-▸ **transferItemsAcrossCollection**(`collections`, `assetTypes`, `to`, `itemIds`, `amounts`): `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
+▸ **transferItemsAcrossCollection**(`to`, `collectionItems`): `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
 
 Transfer a list of items across different collections
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `collections` | `string`[] |
-| `assetTypes` | [`AssetType`](../enums/types.AssetType.md)[] |
-| `to` | `string` |
-| `itemIds` | `BigNumberish`[][] |
-| `amounts` | `BigNumberish`[][] |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `to` | `string` |  |
+| `collectionItems` | [`BatchTransferItem`](../interfaces/types.BatchTransferItem.md)[] | Each object in the array represent a list of items for a specific collection |
 
 #### Returns
 
