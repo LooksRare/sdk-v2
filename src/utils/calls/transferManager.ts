@@ -1,7 +1,7 @@
-import { Contract, BigNumberish, Overrides, providers } from "ethers";
+import { Contract, Overrides, providers } from "ethers";
 import { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import abi from "../../abis/TransferManager.json";
-import { AssetType, Signer, ContractMethods } from "../../types";
+import { Signer, ContractMethods, BatchTransferItem } from "../../types";
 
 export const hasUserApprovedOperator = async (
   signerOrProvider: providers.Provider | Signer,
@@ -52,28 +52,25 @@ export const revokeApprovals = (
 export const transferBatchItemsAcrossCollections = (
   signer: Signer,
   address: string,
-  collections: string[],
-  assetTypes: AssetType[],
+  items: BatchTransferItem[],
   from: string,
   to: string,
-  itemIds: BigNumberish[][],
-  amounts: BigNumberish[][],
   overrides?: Overrides
 ): ContractMethods => {
   const contract = new Contract(address, abi, signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+      contract.transferBatchItemsAcrossCollections(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),
     estimateGas: (additionalOverrides?: Overrides) =>
-      contract.estimateGas.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+      contract.estimateGas.transferBatchItemsAcrossCollections(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),
     callStatic: (additionalOverrides?: Overrides) =>
-      contract.callStatic.transferBatchItemsAcrossCollections(collections, assetTypes, from, to, itemIds, amounts, {
+      contract.callStatic.transferBatchItemsAcrossCollections(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),

@@ -23,7 +23,6 @@ import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
-  AssetType,
   MakerAsk,
   MakerBid,
   TakerAsk,
@@ -38,6 +37,7 @@ import {
   MultipleOrdersWithMerkleTree,
   ContractMethods,
   OrderValidatorCode,
+  BatchTransferItem,
 } from "./types";
 
 export class LooksRare {
@@ -402,32 +402,16 @@ export class LooksRare {
 
   /**
    * Transfer a list of items across different collections
-   * @param collections
-   * @param assetTypes
-   * @param from
    * @param to
-   * @param itemIds
-   * @param amounts
+   * @param collectionItems Each object in the array represent a list of items for a specific collection
    */
   public async transferItemsAcrossCollection(
-    collections: string[],
-    assetTypes: AssetType[],
     to: string,
-    itemIds: BigNumberish[][],
-    amounts: BigNumberish[][]
+    collectionItems: BatchTransferItem[]
   ): Promise<ContractMethods> {
     const signer = this.getSigner();
     const from = await signer.getAddress();
-    return transferBatchItemsAcrossCollections(
-      signer,
-      this.addresses.TRANSFER_MANAGER_V2,
-      collections,
-      assetTypes,
-      from,
-      to,
-      itemIds,
-      amounts
-    );
+    return transferBatchItemsAcrossCollections(signer, this.addresses.TRANSFER_MANAGER_V2, collectionItems, from, to);
   }
 
   /**

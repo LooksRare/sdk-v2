@@ -35,6 +35,17 @@ export type SolidityType =
   | "string";
 
 /**
+ * Item structure used for batch transfers
+ * @see https://github.com/LooksRare/contracts-exchange-v2/blob/8de425de2571a57112e9e67cf0c925439a83c9e3/contracts/interfaces/ITransferManager.sol#L16
+ */
+export interface BatchTransferItem {
+  collection: string;
+  assetType: AssetType;
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
+}
+
+/**
  * Temporary type until full of TypedDataSigner in ethers V6
  * @see https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53
  */

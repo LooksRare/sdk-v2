@@ -12,33 +12,17 @@
   },
   {
     "inputs": [],
-    "name": "BadSignatureS",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "v",
-        "type": "uint8"
-      }
-    ],
-    "name": "BadSignatureV",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidSignatureEOA",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidSignatureERC1271",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NullSignerAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SignatureEOAInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SignatureERC1271Invalid",
     "type": "error"
   },
   {
@@ -49,7 +33,23 @@
         "type": "uint256"
       }
     ],
-    "name": "WrongSignatureLength",
+    "name": "SignatureLengthInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SignatureParameterSInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      }
+    ],
+    "name": "SignatureParameterVInvalid",
     "type": "error"
   },
   {
