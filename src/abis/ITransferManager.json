@@ -1,22 +1,22 @@
 [
   {
     "inputs": [],
-    "name": "AlreadyApproved",
+    "name": "OperatorAlreadyAllowed",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "AlreadyWhitelisted",
+    "name": "OperatorAlreadyApprovedByUser",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotApproved",
+    "name": "OperatorNotAllowed",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotWhitelisted",
+    "name": "OperatorNotApprovedByUser",
     "type": "error"
   },
   {
@@ -72,7 +72,7 @@
         "type": "address"
       }
     ],
-    "name": "OperatorRemoved",
+    "name": "OperatorAllowed",
     "type": "event"
   },
   {
@@ -85,7 +85,7 @@
         "type": "address"
       }
     ],
-    "name": "OperatorWhitelisted",
+    "name": "OperatorRemoved",
     "type": "event"
   }
 ]

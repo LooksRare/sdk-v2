@@ -11,11 +11,11 @@
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "isWhitelisted",
+        "name": "isAllowed",
         "type": "bool"
       }
     ],
-    "name": "CurrencyWhitelistStatusUpdated",
+    "name": "CurrencyStatusUpdated",
     "type": "event"
   }
 ]

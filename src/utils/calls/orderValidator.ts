@@ -1,5 +1,5 @@
 import { Contract, Overrides, providers } from "ethers";
-import { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A.sol/OrderValidatorV2A";
+import { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
 import abi from "../../abis/OrderValidatorV2A.json";
 import { Signer, MakerAsk, MakerBid, MerkleTree, OrderValidatorCode } from "../../types";
 
