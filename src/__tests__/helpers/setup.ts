@@ -8,7 +8,7 @@ import { Addresses } from "../../constants/addresses";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
 import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
-import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A.sol/OrderValidatorV2A";
+import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
@@ -82,11 +82,11 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
 
   tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
   await tx.wait();
-  tx = await looksRareProtocol.updateCurrencyWhitelistStatus(constants.AddressZero, true);
+  tx = await looksRareProtocol.updateCurrencyStatus(constants.AddressZero, true);
   await tx.wait();
-  tx = await looksRareProtocol.updateCurrencyWhitelistStatus(weth.address, true);
+  tx = await looksRareProtocol.updateCurrencyStatus(weth.address, true);
   await tx.wait();
-  tx = await transferManager.whitelistOperator(looksRareProtocol.address);
+  tx = await transferManager.allowOperator(looksRareProtocol.address);
   await tx.wait();
 
   const orderValidator = (await deploy("OrderValidatorV2A", looksRareProtocol.address)) as OrderValidatorV2A;

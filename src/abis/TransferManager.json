@@ -12,16 +12,6 @@
   },
   {
     "inputs": [],
-    "name": "AlreadyApproved",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "AlreadyWhitelisted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "AmountInvalid",
     "type": "error"
   },
@@ -68,17 +58,27 @@
   },
   {
     "inputs": [],
-    "name": "NotApproved",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NotOwner",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "NotWhitelisted",
+    "name": "OperatorAlreadyAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OperatorAlreadyApprovedByUser",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OperatorNotAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OperatorNotApprovedByUser",
     "type": "error"
   },
   {
@@ -198,7 +198,7 @@
         "type": "address"
       }
     ],
-    "name": "OperatorRemoved",
+    "name": "OperatorAllowed",
     "type": "event"
   },
   {
@@ -211,8 +211,21 @@
         "type": "address"
       }
     ],
-    "name": "OperatorWhitelisted",
+    "name": "OperatorRemoved",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "allowOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -300,7 +313,7 @@
         "type": "address"
       }
     ],
-    "name": "isOperatorWhitelisted",
+    "name": "isOperatorAllowed",
     "outputs": [
       {
         "internalType": "bool",
@@ -483,19 +496,6 @@
       }
     ],
     "name": "transferItemsERC721",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      }
-    ],
-    "name": "whitelistOperator",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -68,11 +68,11 @@
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "isWhitelisted",
+        "name": "isAllowed",
         "type": "bool"
       }
     ],
-    "name": "CurrencyWhitelistStatusUpdated",
+    "name": "CurrencyStatusUpdated",
     "type": "event"
   },
   {
@@ -252,7 +252,7 @@
         "type": "address"
       }
     ],
-    "name": "isCurrencyWhitelisted",
+    "name": "isCurrencyAllowed",
     "outputs": [
       {
         "internalType": "bool",
@@ -355,11 +355,11 @@
       },
       {
         "internalType": "bool",
-        "name": "isWhitelisted",
+        "name": "isAllowed",
         "type": "bool"
       }
     ],
-    "name": "updateCurrencyWhitelistStatus",
+    "name": "updateCurrencyStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
