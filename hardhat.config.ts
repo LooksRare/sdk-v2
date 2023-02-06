@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: true,
     pretty: false,
-    except: ["src/contracts/tests/*", "@rari-capital"],
+    only: ["LooksRareProtocol", "TransferManager", "OrderValidatorV2A", "IERC721", "IERC1155", "IERC20", "IWETH"],
   },
   typechain: {
     outDir: "typechain",
