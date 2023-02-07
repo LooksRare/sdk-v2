@@ -72,3 +72,9 @@ export const makerBidTypes: Record<string, Array<TypedDataField>> = {
 export const merkleTreeTypes: Record<string, Array<TypedDataField>> = {
   MerkleTree: [{ name: "root", type: "bytes32" }],
 };
+
+export const merkleOrderTypes: Record<string, Array<TypedDataField>> = {
+  // MerkleOrder: [{ name: "tree", type: "MakerAsk[2][2][2][2][2]" }],
+  MerkleOrder: [{ name: "tree", type: "MakerAsk[2]" }],
+  MakerAsk: makerAskTypes.MakerAsk,
+};

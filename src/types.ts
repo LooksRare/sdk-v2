@@ -258,7 +258,7 @@ export interface MultipleOrdersWithMerkleTree {
   signature: string;
   orders: {
     order: MakerAsk | MakerBid;
-    hash: Buffer;
+    hash: Buffer | string;
     proof: string[];
   }[];
 }
