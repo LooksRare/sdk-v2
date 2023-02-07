@@ -2,7 +2,7 @@ import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, version } from "./constants/eip712";
+import { contractName, merkleTreeTypes, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
 import { signMakerOrder, signMerkleRoot } from "./utils/signMakerOrders";
 import {
@@ -36,6 +36,7 @@ import {
   BatchTransferItem,
   QuoteType,
 } from "./types";
+import { getMerkleOrderTree } from "./utils/EIP712MerkleTree";
 
 export class LooksRare {
   /** Current app chain ID */
@@ -100,7 +101,8 @@ export class LooksRare {
       name: contractName,
       version: version.toString(),
       chainId: this.chainId,
-      verifyingContract: this.addresses.EXCHANGE_V2,
+      verifyingContract: "0x2d087d4eb4563e34016c39a3b793edc710b44457",
+      // verifyingContract: this.addresses.EXCHANGE_V2,
     };
   }
 
@@ -284,6 +286,35 @@ export class LooksRare {
           order,
           hash: leaf,
           proof: [merkleTreeJs.getHexProof(leaf).join(",")],
+        };
+      }),
+    };
+  }
+
+  public async signMultipleMakersV2(makerOrders: MakerAsk[]): Promise<MultipleOrdersWithMerkleTree> {
+    if (makerOrders.length > MAX_ORDERS_PER_TREE) {
+      throw this.ERROR_MERKLE_TREE_DEPTH;
+    }
+
+    const merkleTree = getMerkleOrderTree(makerOrders);
+
+    const signer = this.getSigner();
+    const tree = getMerkleOrderTree(makerOrders);
+    const chunks = tree.getDataToSign();
+
+    merkleTree.getMerkleOrderHash();
+
+    const signature = await signer._signTypedData(this.getTypedDataDomain(), tree.types, { tree: chunks });
+
+    return {
+      root: tree.root,
+      signature,
+      orders: makerOrders.map((order, index) => {
+        const { leaf, proof, root } = tree.getProof(index);
+        return {
+          order,
+          hash: leaf,
+          proof: [proof.join(",")],
         };
       }),
     };

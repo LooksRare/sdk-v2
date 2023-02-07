@@ -166,7 +166,7 @@ export interface MultipleOrdersWithMerkleTree {
   signature: string;
   orders: {
     order: Maker;
-    hash: Buffer;
+    hash: Buffer | string;
     proof: string[];
   }[];
 }
