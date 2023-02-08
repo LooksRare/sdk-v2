@@ -19,7 +19,10 @@ export const getMakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
  * @returns Array of solidity types for encoding
  */
 export const getTakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
-  if (strategy === StrategyType.standard || strategy === StrategyType.collection) {
+  if (strategy === StrategyType.collection) {
+    return ["uint256"]; // Item id
+  }
+  if (strategy === StrategyType.standard) {
     return [];
   }
   return [];

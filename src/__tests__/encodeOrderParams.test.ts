@@ -27,7 +27,7 @@ describe("getTakerParamsTypes", () => {
   });
   it("collection", () => {
     const paramsTypes = getTakerParamsTypes(StrategyType.collection);
-    expect(paramsTypes).to.eql([]);
+    expect(paramsTypes).to.eql(["uint256"]);
   });
   it("invalid param", () => {
     // Enforce a check with no params just for code coverage

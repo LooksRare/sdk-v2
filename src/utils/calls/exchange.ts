@@ -1,12 +1,12 @@
 import { Contract, PayableOverrides, constants } from "ethers";
 import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
-import { MakerAsk, MakerBid, MerkleTree, TakerAsk, TakerBid, Signer, ContractMethods } from "../../types";
+import { MakerAsk, MakerBid, MerkleTree, Taker, Signer, ContractMethods } from "../../types";
 
 export const executeTakerBid = (
   signer: Signer,
   address: string,
-  takerBid: TakerBid,
+  taker: Taker,
   makerAsk: MakerAsk,
   makerSignature: string,
   merkleTree: MerkleTree,
@@ -15,22 +15,22 @@ export const executeTakerBid = (
 ): ContractMethods => {
   const overridesWithValue: PayableOverrides = {
     ...overrides,
-    ...(makerAsk.currency === constants.AddressZero && { value: takerBid.maxPrice }),
+    ...(makerAsk.currency === constants.AddressZero && { value: makerAsk.minPrice }),
   };
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
-      contract.executeTakerBid(takerBid, makerAsk, makerSignature, merkleTree, referrer, {
+      contract.executeTakerBid(taker, makerAsk, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
     estimateGas: (additionalOverrides?: PayableOverrides) =>
-      contract.estimateGas.executeTakerBid(takerBid, makerAsk, makerSignature, merkleTree, referrer, {
+      contract.estimateGas.executeTakerBid(taker, makerAsk, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
     callStatic: (additionalOverrides?: PayableOverrides) =>
-      contract.callStatic.executeTakerBid(takerBid, makerAsk, makerSignature, merkleTree, referrer, {
+      contract.callStatic.executeTakerBid(taker, makerAsk, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
@@ -40,7 +40,7 @@ export const executeTakerBid = (
 export const executeTakerAsk = (
   signer: Signer,
   address: string,
-  takerAsk: TakerAsk,
+  taker: Taker,
   makerBid: MakerBid,
   makerSignature: string,
   merkleTree: MerkleTree,
@@ -49,22 +49,22 @@ export const executeTakerAsk = (
 ): ContractMethods => {
   const overridesWithValue: PayableOverrides = {
     ...overrides,
-    ...(makerBid.currency === constants.AddressZero && { value: takerAsk.minPrice }),
+    ...(makerBid.currency === constants.AddressZero && { value: makerBid.maxPrice }),
   };
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
-      contract.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
+      contract.executeTakerAsk(taker, makerBid, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
     estimateGas: (additionalOverrides?: PayableOverrides) =>
-      contract.estimateGas.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
+      contract.estimateGas.executeTakerAsk(taker, makerBid, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
     callStatic: (additionalOverrides?: PayableOverrides) =>
-      contract.callStatic.executeTakerAsk(takerAsk, makerBid, makerSignature, merkleTree, referrer, {
+      contract.callStatic.executeTakerAsk(taker, makerBid, makerSignature, merkleTree, referrer, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
