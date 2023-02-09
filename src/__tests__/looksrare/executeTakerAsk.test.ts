@@ -45,9 +45,9 @@ describe("execute taker ask", () => {
     await approval!();
     const signature = await lrUser2.signMakerBid(makerBid);
     await setApprovalForAll(signers.user1, makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
-    const takerAsk = lrUser1.createTakerAsk(makerBid, signers.user2.address);
+    const taker = lrUser1.createTaker(makerBid, signers.user2.address);
 
-    const contractMethods = await lrUser1.executeTakerAsk(makerBid, takerAsk, signature);
+    const contractMethods = await lrUser1.executeTakerAsk(makerBid, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
@@ -68,9 +68,9 @@ describe("execute taker ask", () => {
     await order1.approval!();
 
     await setApprovalForAll(signers.user1, order1.makerBid.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
-    const takerAsk = lrUser1.createTakerAsk(order1.makerBid, signers.user2.address);
+    const taker = lrUser1.createTaker(order1.makerBid, signers.user2.address);
 
-    const { estimateGas, call } = lrUser1.executeTakerAsk(order1.makerBid, takerAsk, signature, {
+    const { estimateGas, call } = lrUser1.executeTakerAsk(order1.makerBid, taker, signature, {
       root,
       proof: orders[0].proof,
     });

@@ -217,30 +217,10 @@ export interface MakerBid {
   additionalParameters: BytesLike;
 }
 
-/** Taker ask object to be used in execute functions */
-export interface TakerAsk {
+/** Taker order used to execute a maker order */
+export interface Taker {
   /** Recipient of the transaction */
   recipient: string;
-  /** Minimum price to receive for the trade */
-  minPrice: BigNumberish;
-  /** List of items IDs */
-  itemIds: BigNumberish[];
-  /** List of amount for each items ID */
-  amounts: BigNumberish[];
-  /** Additional parameters for complex orders */
-  additionalParameters: BytesLike;
-}
-
-/** Taker bid object to be used in execute functions */
-export interface TakerBid {
-  /** Recipient of the transaction */
-  recipient: string;
-  /** Maximum price to be paid for the trade */
-  maxPrice: BigNumberish;
-  /** List of items IDs */
-  itemIds: BigNumberish[];
-  /** List of amount for each items ID */
-  amounts: BigNumberish[];
   /** Additional parameters for complex orders */
   additionalParameters: BytesLike;
 }

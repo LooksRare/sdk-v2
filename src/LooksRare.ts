@@ -25,8 +25,7 @@ import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
   MakerAsk,
   MakerBid,
-  TakerAsk,
-  TakerBid,
+  Taker,
   SupportedChainId,
   Signer,
   MakerAskInputs,
@@ -220,36 +219,31 @@ export class LooksRare {
 
   /**
    * Create a taker ask ready to be executed against a maker bid
-   * @param makerBid Maker bid that will be used as counterparty for the taker ask
-   * @param recipient Recipient address of the taker
+   * @param maker Maker order that will be used as counterparty for the taker
+   * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @param additionalParameters Additional parameters used to support complex orders
    */
-  public createTakerAsk(makerBid: MakerBid, recipient: string, additionalParameters: any[] = []): TakerAsk {
-    const order: TakerAsk = {
+  public createTaker(
+    maker: MakerBid | MakerAsk,
+    recipient: string = constants.AddressZero,
+    additionalParameters: any[] = []
+  ): Taker {
+    const order: Taker = {
       recipient: recipient,
-      minPrice: makerBid.maxPrice,
-      itemIds: makerBid.itemIds,
-      amounts: makerBid.amounts,
-      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(makerBid.strategyId)),
+      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(maker.strategyId)),
     };
     return order;
   }
 
   /**
-   * Create a taker bid ready to be executed against a maker ask
-   * @param makerAsk Maker ask that will be used as counterparty for the taker bid
-   * @param recipient Recipient address of the taker
-   * @param additionalParameters Additional parameters used to support complex orders
+   * Wrapper of createTaker to facilitate taker creation for collection orders
+   * @see this.createTaker
+   * @param makerBid Maker bid that will be used as counterparty for the taker
+   * @param itemId Token id to use as a counterparty for the collection order
+   * @param recipient Recipient address of the taker (if none, it will use the sender)
    */
-  public createTakerBid(makerAsk: MakerAsk, recipient: string, additionalParameters: any[] = []): TakerBid {
-    const order: TakerBid = {
-      recipient: recipient,
-      maxPrice: makerAsk.minPrice,
-      itemIds: makerAsk.itemIds,
-      amounts: makerAsk.amounts,
-      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(makerAsk.strategyId)),
-    };
-    return order;
+  public createTakerForCollectionOrder(maker: MakerBid, itemId: BigNumberish, recipient?: string): Taker {
+    return this.createTaker(maker, recipient, [itemId]);
   }
 
   /**
@@ -306,39 +300,39 @@ export class LooksRare {
   /**
    * Execute a trade with a taker ask and a maker bid
    * @param makerBid Maker bid
-   * @param takerAsk Taker ask
+   * @param taker Taker order
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
    * @param referrer Referrer address if applicable
    */
   public executeTakerAsk(
     makerBid: MakerBid,
-    takerAsk: TakerAsk,
+    taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): ContractMethods {
     const signer = this.getSigner();
-    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, takerAsk, makerBid, signature, merkleTree, referrer);
+    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, makerBid, signature, merkleTree, referrer);
   }
 
   /**
    * Execute a trade with a taker bid and a maker ask
    * @param makerAsk Maker ask
-   * @param takerBid Taker bid
+   * @param taker Taker order
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
    * @param referrer Referrer address if applicable
    */
   public executeTakerBid(
     makerAsk: MakerAsk,
-    takerBid: TakerBid,
+    taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): ContractMethods {
     const signer = this.getSigner();
-    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, takerBid, makerAsk, signature, merkleTree, referrer);
+    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, makerAsk, signature, merkleTree, referrer);
   }
 
   /**
