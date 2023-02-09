@@ -1,8 +1,3 @@
-// import {
-//   defaultAbiCoder,
-//   hexConcat,
-//   toUtf8Bytes,
-// } from "ethers/lib/utils";
 import { utils } from "ethers";
 import type { BytesLike } from "ethers";
 import { MerkleTree } from "merkletreejs";
@@ -10,19 +5,7 @@ import { TypedDataField } from "@ethersproject/abstract-signer";
 import { MakerAsk } from "../types";
 import { merkleOrderTypes } from "../constants/eip712";
 
-// import { DefaultGetter } from "./defaults";
-// import {
-//   bufferKeccak,
-//   bufferToHex,
-//   chunk,
-//   fillArray,
-//   getRoot,
-//   hexToBuffer,
-// } from "./utils";
-
-type MerkleOrderElements =
-  | [MakerAsk, MakerAsk]
-  | [MerkleOrderElements, MerkleOrderElements];
+type MerkleOrderElements = [MakerAsk, MakerAsk] | [MerkleOrderElements, MerkleOrderElements];
 
 const hexToBuffer = (value: string) => Buffer.from(value.slice(2), "hex");
 
@@ -48,12 +31,12 @@ const baseDefaults: Record<string, any> = {
 };
 
 const makeArray = <T>(len: number, getValue: (i: number) => T) =>
-  Array(len).fill(0).map((_, i) => getValue(i));
+  Array(len)
+    .fill(0)
+    .map((_, i) => getValue(i));
 
 const chunk = <T>(array: T[], size: number) => {
-  return makeArray(Math.ceil(array.length / size), (i) =>
-    array.slice(i * size, (i + 1) * size)
-  );
+  return makeArray(Math.ceil(array.length / size), (i) => array.slice(i * size, (i + 1) * size));
 };
 
 function getDefaultForBaseType(type: string): any {
@@ -106,19 +89,11 @@ class DefaultGetter<Types extends EIP712TypeDefinitions> {
   }
 
   /* eslint-disable no-dupe-class-members */
-  static from<Types extends EIP712TypeDefinitions>(
-    types: Types
-  ): DefaultMap<Types>;
+  static from<Types extends EIP712TypeDefinitions>(types: Types): DefaultMap<Types>;
 
-  static from<Types extends EIP712TypeDefinitions>(
-    types: Types,
-    type: keyof Types
-  ): any;
+  static from<Types extends EIP712TypeDefinitions>(types: Types, type: keyof Types): any;
 
-  static from<Types extends EIP712TypeDefinitions>(
-    types: Types,
-    type?: keyof Types
-  ): DefaultMap<Types> {
+  static from<Types extends EIP712TypeDefinitions>(types: Types, type?: keyof Types): DefaultMap<Types> {
     const { defaultValues } = new DefaultGetter(types);
     if (type) return defaultValues[type];
     return defaultValues;
@@ -215,10 +190,10 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return { leaf, proof, root };
   }
 
-//   getEncodedProofAndSignature(i: number, signature: string) {
-//     const { proof } = this.getProof(i);
-//     return encodeProof(i, proof, signature);
-//   }
+  //   getEncodedProofAndSignature(i: number, signature: string) {
+  //     const { proof } = this.getProof(i);
+  //     return encodeProof(i, proof, signature);
+  //   }
 
   getDataToSign(): MerkleOrderElements {
     let layer = this.getCompleteElements() as any;
@@ -228,9 +203,9 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return layer;
   }
 
-//   add(element: BaseType) {
-//     this.elements.push(element);
-//   }
+  //   add(element: BaseType) {
+  //     this.elements.push(element);
+  //   }
 
   getMerkleOrderHash() {
     const structHash = this.encoder.hashStruct("MerkleOrder", {
@@ -275,9 +250,7 @@ function getMerkleOrderTreeHeight(length: number): number {
 
 function getMerkleOrderTypes(height: number): EIP712TypeDefinitions {
   const types = { ...merkleOrderTypes };
-  types.MerkleOrder = [
-    { name: "tree", type: `MakerAsk${`[2]`.repeat(height)}` },
-  ];
+  types.MerkleOrder = [{ name: "tree", type: `MakerAsk${`[2]`.repeat(height)}` }];
   return types;
 }
 
@@ -291,17 +264,8 @@ export function getMerkleOrderTree(
   let elements = [...makerAsks];
 
   if (startIndex > 0) {
-    elements = [
-      ...fillArray([] as MakerAsk[], startIndex, defaultNode),
-      ...makerAsks,
-    ];
+    elements = [...fillArray([] as MakerAsk[], startIndex, defaultNode), ...makerAsks];
   }
-  const tree = new Eip712MerkleTree(
-    types,
-    "MerkleOrder",
-    "MakerAsk",
-    elements,
-    height
-  );
+  const tree = new Eip712MerkleTree(types, "MerkleOrder", "MakerAsk", elements, height);
   return tree;
 }

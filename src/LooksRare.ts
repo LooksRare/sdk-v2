@@ -2,7 +2,7 @@ import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { contractName, merkleTreeTypes, version } from "./constants/eip712";
+import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
 import { signMakerOrder, signMerkleRoot } from "./utils/signMakerOrders";
 import {
@@ -101,8 +101,7 @@ export class LooksRare {
       name: contractName,
       version: version.toString(),
       chainId: this.chainId,
-      verifyingContract: "0x2d087d4eb4563e34016c39a3b793edc710b44457",
-      // verifyingContract: this.addresses.EXCHANGE_V2,
+      verifyingContract: this.addresses.EXCHANGE_V2,
     };
   }
 
@@ -296,21 +295,17 @@ export class LooksRare {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }
 
-    const merkleTree = getMerkleOrderTree(makerOrders);
-
-    const signer = this.getSigner();
     const tree = getMerkleOrderTree(makerOrders);
     const chunks = tree.getDataToSign();
 
-    merkleTree.getMerkleOrderHash();
-
+    const signer = this.getSigner();
     const signature = await signer._signTypedData(this.getTypedDataDomain(), tree.types, { tree: chunks });
 
     return {
       root: tree.root,
       signature,
       orders: makerOrders.map((order, index) => {
-        const { leaf, proof, root } = tree.getProof(index);
+        const { leaf, proof } = tree.getProof(index);
         return {
           order,
           hash: leaf,
