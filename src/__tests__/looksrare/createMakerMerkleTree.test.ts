@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { createMakerMerkleTree } from "../../utils/merkleTree";
-import { AssetType, MakerBid, MakerAsk } from "../../types";
+import { AssetType, QuoteType, Maker } from "../../types";
 
 describe("Create maker merkle tree", () => {
   let mocks: SetupMocks;
@@ -12,9 +12,10 @@ describe("Create maker merkle tree", () => {
     signers = await getSigners();
   });
   it("create a merkle tree with 2 listings", async () => {
-    const makerOrders: (MakerBid | MakerAsk)[] = [
+    const makerOrders: Maker[] = [
       {
-        askNonce: 1,
+        quoteType: QuoteType.Ask,
+        globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
         assetType: AssetType.ERC721,
@@ -24,13 +25,14 @@ describe("Create maker merkle tree", () => {
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        minPrice: utils.parseEther("1").toString(),
+        price: utils.parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       },
       {
-        bidNonce: 1,
+        quoteType: QuoteType.Bid,
+        globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
         assetType: AssetType.ERC721,
@@ -40,7 +42,7 @@ describe("Create maker merkle tree", () => {
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        maxPrice: utils.parseEther("1").toString(),
+        price: utils.parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
         additionalParameters: utils.defaultAbiCoder.encode([], []),

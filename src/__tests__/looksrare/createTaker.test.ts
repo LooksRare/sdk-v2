@@ -3,7 +3,7 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, AssetType, StrategyType, MakerAskInputs, Taker } from "../../types";
+import { SupportedChainId, AssetType, StrategyType, CreateMakerInput, Taker } from "../../types";
 
 describe("Create takers", () => {
   let mocks: SetupMocks;
@@ -13,7 +13,7 @@ describe("Create takers", () => {
     signers = await getSigners();
   });
   it("create taker", async () => {
-    const baseMakerAskInput: MakerAskInputs = {
+    const baseMakerAskInput: CreateMakerInput = {
       collection: mocks.contracts.collection1.address,
       assetType: AssetType.ERC721,
       strategyId: StrategyType.standard,
@@ -25,8 +25,8 @@ describe("Create takers", () => {
       itemIds: [1],
     };
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { makerAsk } = await looksrare.createMakerAsk(baseMakerAskInput);
-    const taker = looksrare.createTaker(makerAsk, signers.user2.address);
+    const { maker } = await looksrare.createMakerAsk(baseMakerAskInput);
+    const taker = looksrare.createTaker(maker, signers.user2.address);
     const expectedTaker: Taker = {
       recipient: signers.user2.address,
       additionalParameters: "0x",

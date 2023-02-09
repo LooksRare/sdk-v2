@@ -4,12 +4,12 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { isApprovedForAll, setApprovalForAll } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType, StrategyType, MakerAskInputs, MakerAsk } from "../../types";
+import { SupportedChainId, AssetType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("Create maker ask", () => {
   let mocks: SetupMocks;
   let signers: Signers;
-  let baseMakerAskInput: MakerAskInputs;
+  let baseMakerAskInput: CreateMakerInput;
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
@@ -53,8 +53,9 @@ describe("Create maker ask", () => {
   it("create a simple maker ask with default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
-    const makerOrder: MakerAsk = {
-      askNonce: constants.Zero,
+    const makerOrder: Maker = {
+      quoteType: QuoteType.Ask,
+      globalNonce: constants.Zero,
       subsetNonce: baseMakerAskInput.subsetNonce,
       strategyId: baseMakerAskInput.strategyId,
       assetType: baseMakerAskInput.assetType,
@@ -62,14 +63,14 @@ describe("Create maker ask", () => {
       collection: baseMakerAskInput.collection,
       currency: constants.AddressZero,
       signer: signers.user1.address,
-      startTime: output.makerAsk.startTime, // Can't really test the Date.now( executed inside the function)
+      startTime: output.maker.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerAskInput.endTime,
-      minPrice: baseMakerAskInput.price,
+      price: baseMakerAskInput.price,
       itemIds: baseMakerAskInput.itemIds,
       amounts: [1],
       additionalParameters: "0x",
     };
-    expect(output.makerAsk).to.eql(makerOrder);
+    expect(output.maker).to.eql(makerOrder);
   });
   it("create a simple maker ask with non default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
@@ -82,8 +83,9 @@ describe("Create maker ask", () => {
       additionalParameters: [],
     };
     const output = await looksrare.createMakerAsk(input);
-    const makerOrder: MakerAsk = {
-      askNonce: constants.Zero,
+    const makerOrder: Maker = {
+      quoteType: QuoteType.Ask,
+      globalNonce: constants.Zero,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       assetType: input.assetType,
@@ -93,11 +95,11 @@ describe("Create maker ask", () => {
       signer: signers.user1.address,
       startTime: input.startTime!,
       endTime: input.endTime,
-      minPrice: input.price,
+      price: input.price,
       itemIds: input.itemIds,
       amounts: input.amounts!,
       additionalParameters: "0x",
     };
-    expect(output.makerAsk).to.eql(makerOrder);
+    expect(output.maker).to.eql(makerOrder);
   });
 });

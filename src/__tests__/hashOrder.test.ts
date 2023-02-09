@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { utils } from "ethers";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
-import { getMakerAskHash, getMakerBidHash, getMerkleTreeHash } from "../utils/hashOrder";
-import { createMakerMerkleTree } from "../utils/merkleTree";
-import { MakerAsk, MakerBid, AssetType } from "../types";
+import { getMakerHash } from "../utils/hashOrder";
+import { Maker, AssetType, QuoteType } from "../types";
 
 describe("Hash orders", () => {
   let mocks: SetupMocks;
@@ -14,8 +13,9 @@ describe("Hash orders", () => {
     signers = await getSigners();
   });
   it("validate maker ask order hash", async () => {
-    const makerAsk: MakerAsk = {
-      askNonce: 1,
+    const makerAsk: Maker = {
+      quoteType: QuoteType.Ask,
+      globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
       assetType: AssetType.ERC721,
@@ -25,20 +25,21 @@ describe("Hash orders", () => {
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
-      minPrice: utils.parseEther("1").toString(),
+      price: utils.parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
     const { verifier } = mocks.contracts;
-    const orderHashSc = await verifier.getMakerAskHash(makerAsk);
-    const orderHashHs = getMakerAskHash(makerAsk);
+    const orderHashSc = await verifier.getMakerHash(makerAsk);
+    const orderHashHs = getMakerHash(makerAsk);
     expect(orderHashSc === orderHashHs);
   });
   it("validate maker bid order hash", async () => {
-    const makerBid: MakerBid = {
-      bidNonce: 1,
+    const makerBid: Maker = {
+      quoteType: QuoteType.Bid,
+      globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
       assetType: AssetType.ERC721,
@@ -48,63 +49,15 @@ describe("Hash orders", () => {
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
-      maxPrice: utils.parseEther("1").toString(),
+      price: utils.parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
       additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
     const { verifier } = mocks.contracts;
-    const orderHashSc = await verifier.getMakerBidHash(makerBid);
-    const orderHashHs = getMakerBidHash(makerBid);
-    expect(orderHashSc === orderHashHs);
-  });
-  it("validate merkle tree order hash", async () => {
-    const makerOrders: MakerBid[] = [
-      {
-        bidNonce: 1,
-        subsetNonce: 1,
-        strategyId: 1,
-        assetType: AssetType.ERC721,
-        orderNonce: 1,
-        collection: mocks.contracts.collection1.address,
-        currency: mocks.addresses.WETH,
-        signer: signers.user1.address,
-        startTime: Math.floor(Date.now() / 1000),
-        endTime: Math.floor(Date.now() / 1000 + 3600),
-        maxPrice: utils.parseEther("1").toString(),
-        itemIds: [1],
-        amounts: [1],
-        additionalParameters: utils.defaultAbiCoder.encode([], []),
-      },
-      {
-        bidNonce: 1,
-        subsetNonce: 1,
-        strategyId: 1,
-        assetType: AssetType.ERC721,
-        orderNonce: 1,
-        collection: mocks.contracts.collection1.address,
-        currency: mocks.addresses.WETH,
-        signer: signers.user1.address,
-        startTime: Math.floor(Date.now() / 1000),
-        endTime: Math.floor(Date.now() / 1000 + 3600),
-        maxPrice: utils.parseEther("1").toString(),
-        itemIds: [1],
-        amounts: [1],
-        additionalParameters: utils.defaultAbiCoder.encode([], []),
-      },
-    ];
-
-    const merkleTreeJs = createMakerMerkleTree(makerOrders);
-    const root = merkleTreeJs.getHexRoot();
-    const leaves = merkleTreeJs.getLeaves();
-
-    const { verifier } = mocks.contracts;
-    const orderHashSc = await verifier.getMerkleTreeHash({
-      root,
-      proof: [merkleTreeJs.getHexProof(leaves[0]).join(",")],
-    });
-    const orderHashHs = getMerkleTreeHash(root);
+    const orderHashSc = await verifier.getMakerHash(makerBid);
+    const orderHashHs = getMakerHash(makerBid);
     expect(orderHashSc === orderHashHs);
   });
 });

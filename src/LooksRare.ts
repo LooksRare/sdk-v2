@@ -4,7 +4,7 @@ import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
-import { signMakerAsk, signMakerBid, signMerkleRoot } from "./utils/signMakerOrders";
+import { signMaker, signMerkleRoot } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -18,25 +18,23 @@ import {
   revokeApprovals,
   hasUserApprovedOperator,
 } from "./utils/calls/transferManager";
-import { verifyMakerAskOrders, verifyMakerBidOrders } from "./utils/calls/orderValidator";
+import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
-  MakerAsk,
-  MakerBid,
+  Maker,
   Taker,
   SupportedChainId,
   Signer,
-  MakerAskInputs,
-  MakerBidInputs,
-  MakerAskOutputs,
-  MakerBidOutputs,
+  CreateMakerInput,
+  CreateMakerOutput,
   MerkleTree,
   MultipleOrdersWithMerkleTree,
   ContractMethods,
   OrderValidatorCode,
   BatchTransferItem,
+  QuoteType,
 } from "./types";
 
 export class LooksRare {
@@ -64,6 +62,9 @@ export class LooksRare {
 
   /** Custom error too many orders in one merkle tree */
   public readonly ERROR_MERKLE_TREE_DEPTH = new Error(`Too many orders (limit: ${MAX_ORDERS_PER_TREE})`);
+
+  /** Custom error wrong quote type is being used */
+  public readonly ERROR_WRONG_QUOTE_TYPE = new Error("Wrong quote type");
 
   /**
    * LooksRare protocol main class
@@ -105,8 +106,8 @@ export class LooksRare {
 
   /**
    * Create a maker ask object ready to be signed
-   * @param makerAskInputs
-   * @returns MakerAskOutputs
+   * @param CreateMakerInput
+   * @returns CreateMakerOutput
    */
   public async createMakerAsk({
     collection,
@@ -121,7 +122,7 @@ export class LooksRare {
     currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: MakerAskInputs): Promise<MakerAskOutputs> {
+  }: CreateMakerInput): Promise<CreateMakerOutput> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -136,8 +137,9 @@ export class LooksRare {
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
     ]);
 
-    const order: MakerAsk = {
-      askNonce: userBidAskNonce.askNonce,
+    const order: Maker = {
+      quoteType: QuoteType.Ask,
+      globalNonce: userBidAskNonce.askNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
       assetType: assetType,
@@ -147,22 +149,22 @@ export class LooksRare {
       signer: signerAddress,
       startTime: startTime,
       endTime: endTime,
-      minPrice: price,
+      price: price,
       itemIds: itemIds,
       amounts: amounts,
       additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
     };
 
     return {
-      makerAsk: order,
+      maker: order,
       approval: isCollectionApproved ? undefined : () => setApprovalForAll(signer, collection, spenderAddress),
     };
   }
 
   /**
    * Create a maker bid object ready to be signed
-   * @param makerBidOutputs
-   * @returns MakerBidOutputs
+   * @param CreateMakerInput
+   * @returns CreateMakerOutput
    */
   public async createMakerBid({
     collection,
@@ -177,7 +179,7 @@ export class LooksRare {
     currency = this.addresses.WETH,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: MakerBidInputs): Promise<MakerBidOutputs> {
+  }: CreateMakerInput): Promise<CreateMakerOutput> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -192,8 +194,9 @@ export class LooksRare {
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
     ]);
 
-    const order: MakerBid = {
-      bidNonce: userBidAskNonce.bidNonce,
+    const order: Maker = {
+      quoteType: QuoteType.Bid,
+      globalNonce: userBidAskNonce.bidNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
       assetType: assetType,
@@ -203,14 +206,14 @@ export class LooksRare {
       signer: signerAddress,
       startTime: startTime,
       endTime: endTime,
-      maxPrice: price,
+      price: price,
       itemIds: itemIds,
       amounts: amounts,
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
     };
 
     return {
-      makerBid: order,
+      maker: order,
       approval: BigNumber.from(currentAllowance).lt(price)
         ? () => approve(signer, currency, spenderAddress)
         : undefined,
@@ -223,11 +226,7 @@ export class LooksRare {
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @param additionalParameters Additional parameters used to support complex orders
    */
-  public createTaker(
-    maker: MakerBid | MakerAsk,
-    recipient: string = constants.AddressZero,
-    additionalParameters: any[] = []
-  ): Taker {
+  public createTaker(maker: Maker, recipient: string = constants.AddressZero, additionalParameters: any[] = []): Taker {
     const order: Taker = {
       recipient: recipient,
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(maker.strategyId)),
@@ -242,28 +241,21 @@ export class LooksRare {
    * @param itemId Token id to use as a counterparty for the collection order
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    */
-  public createTakerForCollectionOrder(maker: MakerBid, itemId: BigNumberish, recipient?: string): Taker {
+  public createTakerForCollectionOrder(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
+    if (maker.quoteType !== QuoteType.Bid) {
+      throw this.ERROR_WRONG_QUOTE_TYPE;
+    }
     return this.createTaker(maker, recipient, [itemId]);
   }
 
   /**
-   * Sign a maker ask using the signer provided in the constructor
-   * @param makerAsk Order to be signed by the user
+   * Sign a maker order using the signer provided in the constructor
+   * @param maker Order to be signed by the user
    * @returns Signature
    */
-  public async signMakerAsk(makerAsk: MakerAsk): Promise<string> {
+  public async signMaker(maker: Maker): Promise<string> {
     const signer = this.getSigner();
-    return await signMakerAsk(signer, this.getTypedDataDomain(), makerAsk);
-  }
-
-  /**
-   * Sign a maker bid using the signer provided in the constructor
-   * @param makerBid Order to be signed by the user
-   * @returns Signature
-   */
-  public async signMakerBid(makerBid: MakerBid): Promise<string> {
-    const signer = this.getSigner();
-    return await signMakerBid(signer, this.getTypedDataDomain(), makerBid);
+    return await signMaker(signer, this.getTypedDataDomain(), maker);
   }
 
   /**
@@ -271,7 +263,7 @@ export class LooksRare {
    * @param makerOrders Array of maker orders
    * @returns MultipleOrdersWithMerkleTree Orders data with their proof
    */
-  public async signMultipleMakers(makerOrders: (MakerAsk | MakerBid)[]): Promise<MultipleOrdersWithMerkleTree> {
+  public async signMultipleMakers(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }
@@ -306,14 +298,17 @@ export class LooksRare {
    * @param referrer Referrer address if applicable
    */
   public executeTakerAsk(
-    makerBid: MakerBid,
+    maker: Maker,
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): ContractMethods {
+    if (maker.quoteType !== QuoteType.Bid) {
+      throw this.ERROR_WRONG_QUOTE_TYPE;
+    }
     const signer = this.getSigner();
-    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, makerBid, signature, merkleTree, referrer);
+    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
   }
 
   /**
@@ -325,14 +320,17 @@ export class LooksRare {
    * @param referrer Referrer address if applicable
    */
   public executeTakerBid(
-    makerAsk: MakerAsk,
+    maker: Maker,
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
   ): ContractMethods {
+    if (maker.quoteType !== QuoteType.Ask) {
+      throw this.ERROR_WRONG_QUOTE_TYPE;
+    }
     const signer = this.getSigner();
-    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, makerAsk, signature, merkleTree, referrer);
+    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
   }
 
   /**
@@ -415,28 +413,12 @@ export class LooksRare {
    * @param merkleTrees List of merkle tree (if applicable)
    * @returns A list of OrderValidatorCode for each order (code 0 being valid)
    */
-  public async verifyMakerAskOrders(
-    makerAskOrders: MakerAsk[],
+  public async verifyMakerOrders(
+    makerOrders: Maker[],
     signatures: string[],
     merkleTrees: MerkleTree[]
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    return verifyMakerAskOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerAskOrders, signatures, merkleTrees);
-  }
-
-  /**
-   *
-   * @param makerBidOrders List of maker bid orders
-   * @param signatures List of signatures
-   * @param merkleTrees List of merkle tree (if applicable)
-   * @returns A list of OrderValidatorCode for each order (code 0 being valid)
-   */
-  public async verifyMakerBidOrders(
-    makerBidOrders: MakerBid[],
-    signatures: string[],
-    merkleTrees: MerkleTree[]
-  ): Promise<OrderValidatorCode[][]> {
-    const signer = this.getSigner();
-    return verifyMakerBidOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerBidOrders, signatures, merkleTrees);
+    return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, merkleTrees);
   }
 }

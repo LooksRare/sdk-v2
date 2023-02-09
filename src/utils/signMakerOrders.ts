@@ -1,34 +1,20 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { MakerAsk, MakerBid, MerkleTree } from "../types";
-import { makerAskTypes, makerBidTypes, merkleTreeTypes } from "../constants/eip712";
+import { Maker, MerkleTree } from "../types";
+import { makerTypes, merkleTreeTypes } from "../constants/eip712";
 
 /**
- * Sign a maker ask
+ * Sign a maker order
  * @param signer Ethers typed data signer
  * @param domain Typed data domain
- * @param makerOrder Maker ask
+ * @param makerOrder Maker order
  * @returns Signature
  */
-export const signMakerAsk = async (
+export const signMaker = async (
   signer: TypedDataSigner,
   domain: TypedDataDomain,
-  makerOrder: MakerAsk
+  makerOrder: Maker
 ): Promise<string> => {
-  return signer._signTypedData(domain, makerAskTypes, makerOrder);
-};
-/**
- *
- * @param signer Ethers typed data signer
- * @param domain Typed data domain
- * @param makerOrder Maker bid
- * @returns Signature
- */
-export const signMakerBid = async (
-  signer: TypedDataSigner,
-  domain: TypedDataDomain,
-  makerOrder: MakerBid
-): Promise<string> => {
-  return signer._signTypedData(domain, makerBidTypes, makerOrder);
+  return signer._signTypedData(domain, makerTypes, makerOrder);
 };
 
 /**

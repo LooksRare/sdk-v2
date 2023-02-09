@@ -20,6 +20,12 @@ export enum StrategyType {
   collection = 1,
 }
 
+/** Type for maker order */
+export enum QuoteType {
+  Bid = 0,
+  Ask = 1,
+}
+
 /** Solidity types (used for EIP-712 types) */
 export type SolidityType =
   | "bool"
@@ -58,15 +64,15 @@ export interface ContractMethods {
 }
 
 /** Output of the createMakerAsk function */
-export interface MakerAskOutputs {
+export interface CreateMakerOutput {
   /** Maker order ready to be signed */
-  makerAsk: MakerAsk;
+  maker: Maker;
   /** Function to be called before signing the order */
   approval?: () => Promise<ContractTransaction>;
 }
 
 /** Input of the createMakerAsk function */
-export interface MakerAskInputs {
+export interface CreateMakerInput {
   /** Collection address */
   collection: string;
   /** Strategy ID, 0: Standard, 1: Collection, etc*/
@@ -105,66 +111,20 @@ export interface MakerAskInputs {
   additionalParameters?: any[];
 }
 
-/** Output of the createMakerBid function */
-export interface MakerBidOutputs {
-  /** Maker order ready to be signed */
-  makerBid: MakerBid;
-  /** Function to be called before signing the order */
-  approval?: () => Promise<ContractTransaction>;
-}
-
-/** Input of the createMakerBid function */
-export interface MakerBidInputs {
-  /** Collection address */
-  collection: string;
-  /** Strategy ID, 0: Standard, 1: Collection, etc*/
-  strategyId: StrategyType;
-  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
+/** Maker object to be used in execute functions */
+export interface Maker {
+  /** Ask or bid */
+  quoteType: QuoteType;
+  /** User's current bid / ask nonce */
+  globalNonce: BigNumberish;
   /** Subset nonce used to group an arbitrary number of orders under the same nonce */
   subsetNonce: BigNumberish;
-  /** Order nonce, get it from the LooksRare api */
-  orderNonce: BigNumberish;
-  /** Timestamp in seconds when the order becomes invalid */
-  endTime: BigNumberish;
-  /** Asset price in wei */
-  price: BigNumberish;
-  /**
-   * List of items ids to be sold
-   * @defaultValue [1]
-   */
-  itemIds: BigNumberish[];
-  /** Amount for each item ids (needs to have the same length as itemIds array) */
-  amounts?: BigNumberish[];
-  /**
-   * Currency address
-   * @defaultValue ETH
-   */
-  currency?: string;
-  /**
-   * Order validity start time
-   * @defaultValue now
-   */
-  startTime?: BigNumberish;
-  /**
-   * Additional parameters for complex orders
-   * @defaultValue []
-   */
-  additionalParameters?: any[];
-}
-
-/** Maker ask object to be used in execute functions */
-export interface MakerAsk {
-  /** User's current ask nonce */
-  askNonce: BigNumberish;
-  /** Subset nonce used to group an arbitrary number of orders under the same nonce */
-  subsetNonce: BigNumberish;
-  /** Strategy ID, 0: Standard, 1: Collection, etc*/
-  strategyId: StrategyType;
-  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
   /** Nonce for this specific order */
   orderNonce: BigNumberish;
+  /** Strategy ID, 0: Standard, 1: Collection, etc*/
+  strategyId: StrategyType;
+  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
+  assetType: AssetType;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
@@ -176,39 +136,7 @@ export interface MakerAsk {
   /** Timestamp in second of the time when the order becomes invalid */
   endTime: BigNumberish;
   /** Minimum price to be received after the trade */
-  minPrice: BigNumberish;
-  /** List of item IDS */
-  itemIds: BigNumberish[];
-  /** List of amount for each item ID (1 for ERC721) */
-  amounts: BigNumberish[];
-  /** Additional parameters for complex orders */
-  additionalParameters: BytesLike;
-}
-
-/** Maker bid object to be used in execute functions */
-export interface MakerBid {
-  /** User's current bid nonce */
-  bidNonce: BigNumberish;
-  /** Subset nonce used to group an arbitrary number of orders under the same nonce */
-  subsetNonce: BigNumberish;
-  /** Strategy ID, 0: Standard, 1: Collection, etc*/
-  strategyId: StrategyType;
-  /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
-  /** Nonce for this specific order */
-  orderNonce: BigNumberish;
-  /** Collection address */
-  collection: string;
-  /** Currency address (zero address for ETH) */
-  currency: string;
-  /** Signer address */
-  signer: string;
-  /** Timestamp in second of the time when the order starts to be valid */
-  startTime: BigNumberish;
-  /** Timestamp in second of the time when the order becomes invalid */
-  endTime: BigNumberish;
-  /** Maximum price to be paid for the trade */
-  maxPrice: BigNumberish;
+  price: BigNumberish;
   /** List of item IDS */
   itemIds: BigNumberish[];
   /** List of amount for each item ID (1 for ERC721) */
@@ -237,7 +165,7 @@ export interface MultipleOrdersWithMerkleTree {
   root: string;
   signature: string;
   orders: {
-    order: MakerAsk | MakerBid;
+    order: Maker;
     hash: Buffer;
     proof: string[];
   }[];

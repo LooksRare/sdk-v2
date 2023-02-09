@@ -4,12 +4,12 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { allowance, approve } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType, StrategyType, MakerBidInputs, MakerBid } from "../../types";
+import { SupportedChainId, AssetType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("Create maker bid", () => {
   let mocks: SetupMocks;
   let signers: Signers;
-  let baseMakerInput: MakerBidInputs;
+  let baseMakerInput: CreateMakerInput;
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
@@ -52,8 +52,9 @@ describe("Create maker bid", () => {
   it("create a simple maker bid with default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const output = await looksrare.createMakerBid(baseMakerInput);
-    const makerOrder: MakerBid = {
-      bidNonce: constants.Zero,
+    const makerOrder: Maker = {
+      quoteType: QuoteType.Bid,
+      globalNonce: constants.Zero,
       subsetNonce: baseMakerInput.subsetNonce,
       strategyId: baseMakerInput.strategyId,
       assetType: baseMakerInput.assetType,
@@ -61,14 +62,14 @@ describe("Create maker bid", () => {
       collection: baseMakerInput.collection,
       currency: mocks.addresses.WETH,
       signer: signers.user1.address,
-      startTime: output.makerBid.startTime, // Can't really test the Date.now( executed inside the function)
+      startTime: output.maker.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerInput.endTime,
-      maxPrice: baseMakerInput.price,
+      price: baseMakerInput.price,
       itemIds: baseMakerInput.itemIds,
       amounts: [1],
       additionalParameters: "0x",
     };
-    expect(output.makerBid).to.eql(makerOrder);
+    expect(output.maker).to.eql(makerOrder);
   });
   it("create a simple maker bid with non default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
@@ -81,8 +82,9 @@ describe("Create maker bid", () => {
       additionalParameters: [],
     };
     const output = await looksrare.createMakerBid(input);
-    const makerOrder: MakerBid = {
-      bidNonce: constants.Zero,
+    const makerOrder: Maker = {
+      quoteType: QuoteType.Bid,
+      globalNonce: constants.Zero,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       assetType: input.assetType,
@@ -92,11 +94,11 @@ describe("Create maker bid", () => {
       signer: signers.user1.address,
       startTime: input.startTime!,
       endTime: input.endTime,
-      maxPrice: input.price,
+      price: input.price,
       itemIds: input.itemIds,
       amounts: input.amounts!,
       additionalParameters: "0x",
     };
-    expect(output.makerBid).to.eql(makerOrder);
+    expect(output.maker).to.eql(makerOrder);
   });
 });

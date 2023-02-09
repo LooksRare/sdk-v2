@@ -16,17 +16,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "AssetTypeInvalid",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "ERC1155SafeBatchTransferFromFail",
     "type": "error"
@@ -399,9 +388,9 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
+            "internalType": "enum AssetType",
             "name": "assetType",
-            "type": "uint256"
+            "type": "uint8"
           },
           {
             "internalType": "uint256[]",
