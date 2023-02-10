@@ -7,17 +7,18 @@ import { SolidityType } from "../types";
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 
-export const MAKER_ASK_HASH = "0x88210d05352c99907588dddb658b9abce78f141d1415d7be787f6120b718fe02";
-export const MAKER_BID_HASH = "0xc69763700afbfcdc70a0b138ea120a08fc78dfc5532f1e7232fa8d8cfb26f96a";
 export const MERKLE_TREE_HASH = "0x4339702fd09d392db18a2a980b04a717d48085f206207a9fe4472d7ba0ccbf0b";
 
-export const hashingMakerTypes: SolidityType[] = [
+export const MAKER_HASH = "0xa2d1934c802d9cad310647bc0f9df2699b7cccc54bdff789fc494342a5695c73";
+
+export const hashingMakerTypes: string[] = [
   "bytes32",
+  "uint8",
   "uint256",
   "uint256",
   "uint256",
   "uint256",
-  "uint256",
+  "uint8",
   "address",
   "address",
   "address",
@@ -31,38 +32,20 @@ export const hashingMakerTypes: SolidityType[] = [
 
 export const hashingMerkleTreeTypes: SolidityType[] = ["bytes32", "bytes32"];
 
-export const makerAskTypes: Record<string, Array<TypedDataField>> = {
-  MakerAsk: [
-    { name: "askNonce", type: "uint256" },
+export const makerTypes: Record<string, Array<TypedDataField>> = {
+  Maker: [
+    { name: "quoteType", type: "uint8" },
+    { name: "globalNonce", type: "uint256" },
     { name: "subsetNonce", type: "uint256" },
-    { name: "strategyId", type: "uint256" },
-    { name: "assetType", type: "uint256" },
     { name: "orderNonce", type: "uint256" },
+    { name: "strategyId", type: "uint256" },
+    { name: "assetType", type: "uint8" },
     { name: "collection", type: "address" },
     { name: "currency", type: "address" },
     { name: "signer", type: "address" },
     { name: "startTime", type: "uint256" },
     { name: "endTime", type: "uint256" },
-    { name: "minPrice", type: "uint256" },
-    { name: "itemIds", type: "uint256[]" },
-    { name: "amounts", type: "uint256[]" },
-    { name: "additionalParameters", type: "bytes" },
-  ],
-};
-
-export const makerBidTypes: Record<string, Array<TypedDataField>> = {
-  MakerBid: [
-    { name: "bidNonce", type: "uint256" },
-    { name: "subsetNonce", type: "uint256" },
-    { name: "strategyId", type: "uint256" },
-    { name: "assetType", type: "uint256" },
-    { name: "orderNonce", type: "uint256" },
-    { name: "collection", type: "address" },
-    { name: "currency", type: "address" },
-    { name: "signer", type: "address" },
-    { name: "startTime", type: "uint256" },
-    { name: "endTime", type: "uint256" },
-    { name: "maxPrice", type: "uint256" },
+    { name: "price", type: "uint256" },
     { name: "itemIds", type: "uint256[]" },
     { name: "amounts", type: "uint256[]" },
     { name: "additionalParameters", type: "bytes" },

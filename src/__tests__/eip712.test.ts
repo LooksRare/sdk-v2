@@ -2,15 +2,15 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
-import { computeDigestMakerAsk, getDomainSeparator } from "./helpers/eip712";
+import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
-import { SupportedChainId, MakerAsk, AssetType } from "../types";
+import { SupportedChainId, Maker, AssetType, QuoteType } from "../types";
 
 describe("EIP-712", () => {
   let mocks: SetupMocks;
   let signers: Signers;
   let domain: TypedDataDomain;
-  let makerOrder: MakerAsk;
+  let makerOrder: Maker;
 
   beforeEach(async () => {
     mocks = await setUpContracts();
@@ -24,7 +24,8 @@ describe("EIP-712", () => {
     };
 
     makerOrder = {
-      askNonce: 1,
+      quoteType: QuoteType.Ask,
+      globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
       assetType: AssetType.ERC721,
@@ -34,7 +35,7 @@ describe("EIP-712", () => {
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
-      minPrice: utils.parseEther("1").toString(),
+      price: utils.parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
       additionalParameters: utils.defaultAbiCoder.encode([], []),
@@ -48,8 +49,8 @@ describe("EIP-712", () => {
   });
   it("validate maker order digest", async () => {
     const { verifier } = mocks.contracts;
-    const digestSc = await verifier.computeDigestMakerAsk(makerOrder);
-    const digestJs = computeDigestMakerAsk(domain, makerOrder);
+    const digestSc = await verifier.computeMakerDigest(makerOrder);
+    const digestJs = computeDigestMaker(domain, makerOrder);
     expect(digestSc === digestJs);
   });
 });

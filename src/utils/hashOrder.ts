@@ -1,63 +1,31 @@
 import { utils } from "ethers";
-import {
-  hashingMakerTypes,
-  hashingMerkleTreeTypes,
-  MAKER_ASK_HASH,
-  MAKER_BID_HASH,
-  MERKLE_TREE_HASH,
-} from "../constants/eip712";
-import { MakerAsk, MakerBid, MerkleTree } from "../types";
+import { hashingMakerTypes, hashingMerkleTreeTypes, MAKER_HASH, MERKLE_TREE_HASH } from "../constants/eip712";
+import { Maker, MerkleTree } from "../types";
 
 /**
  * Hash maker ask order
  * @external OrderStruct hash function
- * @param makerAsk
+ * @param maker Maker
  * @returns string (bytes32)
  */
-export const getMakerAskHash = (makerAsk: MakerAsk): string => {
+export const getMakerHash = (maker: Maker): string => {
   const values = [
-    MAKER_ASK_HASH,
-    makerAsk.askNonce,
-    makerAsk.subsetNonce,
-    makerAsk.strategyId,
-    makerAsk.assetType,
-    makerAsk.orderNonce,
-    makerAsk.collection,
-    makerAsk.currency,
-    makerAsk.signer,
-    makerAsk.startTime,
-    makerAsk.endTime,
-    makerAsk.minPrice,
-    utils.keccak256(utils.solidityPack(["uint256[]"], [makerAsk.itemIds])),
-    utils.keccak256(utils.solidityPack(["uint256[]"], [makerAsk.amounts])),
-    utils.keccak256(makerAsk.additionalParameters),
-  ];
-  return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
-};
-
-/**
- * Hash maker ask order
- * @external OrderStruct hash function
- * @param makerBid
- * @returns string (bytes32)
- */
-export const getMakerBidHash = (makerBid: MakerBid): string => {
-  const values = [
-    MAKER_BID_HASH,
-    makerBid.bidNonce,
-    makerBid.subsetNonce,
-    makerBid.strategyId,
-    makerBid.assetType,
-    makerBid.orderNonce,
-    makerBid.collection,
-    makerBid.currency,
-    makerBid.signer,
-    makerBid.startTime,
-    makerBid.endTime,
-    makerBid.maxPrice,
-    utils.keccak256(utils.solidityPack(["uint256[]"], [makerBid.itemIds])),
-    utils.keccak256(utils.solidityPack(["uint256[]"], [makerBid.amounts])),
-    utils.keccak256(makerBid.additionalParameters),
+    MAKER_HASH,
+    maker.quoteType,
+    maker.globalNonce,
+    maker.subsetNonce,
+    maker.strategyId,
+    maker.assetType,
+    maker.orderNonce,
+    maker.collection,
+    maker.currency,
+    maker.signer,
+    maker.startTime,
+    maker.endTime,
+    maker.price,
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.itemIds])),
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.amounts])),
+    utils.keccak256(maker.additionalParameters),
   ];
   return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
 };

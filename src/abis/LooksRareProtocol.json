@@ -26,17 +26,6 @@
     "type": "constructor"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "AssetTypeInvalid",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "CallerInvalid",
     "type": "error"
@@ -83,22 +72,6 @@
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "collection",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "NFTTransferFail",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "NewGasLimitETHTransferTooLow",
     "type": "error"
@@ -115,23 +88,7 @@
   },
   {
     "inputs": [],
-    "name": "NoSelectorForMakerAsk",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NoSelectorForMakerBid",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetType",
-        "type": "uint256"
-      }
-    ],
-    "name": "NoTransferManagerForAssetType",
+    "name": "NoSelectorForStrategy",
     "type": "error"
   },
   {
@@ -172,6 +129,11 @@
   {
     "inputs": [],
     "name": "PercentageTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "QuoteTypeInvalid",
     "type": "error"
   },
   {
@@ -973,8 +935,13 @@
       {
         "components": [
           {
+            "internalType": "enum QuoteType",
+            "name": "quoteType",
+            "type": "uint8"
+          },
+          {
             "internalType": "uint256",
-            "name": "askNonce",
+            "name": "globalNonce",
             "type": "uint256"
           },
           {
@@ -984,18 +951,18 @@
           },
           {
             "internalType": "uint256",
+            "name": "orderNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "strategyId",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
+            "internalType": "enum AssetType",
             "name": "assetType",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "orderNonce",
-            "type": "uint256"
+            "type": "uint8"
           },
           {
             "internalType": "address",
@@ -1024,7 +991,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "minPrice",
+            "name": "price",
             "type": "uint256"
           },
           {
@@ -1043,7 +1010,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.MakerAsk[]",
+        "internalType": "struct OrderStructs.Maker[]",
         "name": "makerAsks",
         "type": "tuple[]"
       },
@@ -1107,8 +1074,13 @@
       {
         "components": [
           {
+            "internalType": "enum QuoteType",
+            "name": "quoteType",
+            "type": "uint8"
+          },
+          {
             "internalType": "uint256",
-            "name": "bidNonce",
+            "name": "globalNonce",
             "type": "uint256"
           },
           {
@@ -1118,18 +1090,18 @@
           },
           {
             "internalType": "uint256",
+            "name": "orderNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "strategyId",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
+            "internalType": "enum AssetType",
             "name": "assetType",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "orderNonce",
-            "type": "uint256"
+            "type": "uint8"
           },
           {
             "internalType": "address",
@@ -1158,7 +1130,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "maxPrice",
+            "name": "price",
             "type": "uint256"
           },
           {
@@ -1177,7 +1149,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.MakerBid",
+        "internalType": "struct OrderStructs.Maker",
         "name": "makerBid",
         "type": "tuple"
       },
@@ -1236,8 +1208,13 @@
       {
         "components": [
           {
+            "internalType": "enum QuoteType",
+            "name": "quoteType",
+            "type": "uint8"
+          },
+          {
             "internalType": "uint256",
-            "name": "askNonce",
+            "name": "globalNonce",
             "type": "uint256"
           },
           {
@@ -1247,18 +1224,18 @@
           },
           {
             "internalType": "uint256",
+            "name": "orderNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "strategyId",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
+            "internalType": "enum AssetType",
             "name": "assetType",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "orderNonce",
-            "type": "uint256"
+            "type": "uint8"
           },
           {
             "internalType": "address",
@@ -1287,7 +1264,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "minPrice",
+            "name": "price",
             "type": "uint256"
           },
           {
@@ -1306,7 +1283,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.MakerAsk",
+        "internalType": "struct OrderStructs.Maker",
         "name": "makerAsk",
         "type": "tuple"
       },
@@ -1341,6 +1318,30 @@
     "name": "executeTakerBid",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "root",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "proofLength",
+        "type": "uint256"
+      }
+    ],
+    "name": "hashBatchOrder",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "batchOrderTypehash",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -1500,8 +1501,13 @@
       {
         "components": [
           {
+            "internalType": "enum QuoteType",
+            "name": "quoteType",
+            "type": "uint8"
+          },
+          {
             "internalType": "uint256",
-            "name": "askNonce",
+            "name": "globalNonce",
             "type": "uint256"
           },
           {
@@ -1511,18 +1517,18 @@
           },
           {
             "internalType": "uint256",
+            "name": "orderNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "strategyId",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
+            "internalType": "enum AssetType",
             "name": "assetType",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "orderNonce",
-            "type": "uint256"
+            "type": "uint8"
           },
           {
             "internalType": "address",
@@ -1551,7 +1557,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "minPrice",
+            "name": "price",
             "type": "uint256"
           },
           {
@@ -1570,7 +1576,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct OrderStructs.MakerAsk",
+        "internalType": "struct OrderStructs.Maker",
         "name": "makerAsk",
         "type": "tuple"
       },
