@@ -50,7 +50,7 @@ describe("Sign maker orders", () => {
         additionalParameters: encodeParams([], getMakerParamsTypes(StrategyType.standard)),
       };
 
-      const signature = await lr.signMaker(makerOrder);
+      const signature = await lr.signMakerOrder(makerOrder);
 
       expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
@@ -80,7 +80,7 @@ describe("Sign maker orders", () => {
         additionalParameters: encodeParams([], getTakerParamsTypes(StrategyType.standard)),
       };
 
-      const signature = await lr.signMaker(makerOrder);
+      const signature = await lr.signMakerOrder(makerOrder);
 
       expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
@@ -130,7 +130,7 @@ describe("Sign maker orders", () => {
       ];
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-      const { signature, root, orders } = await lr.signMultipleMakers(makerOrders);
+      const { signature, root, orders } = await lr.signMultipleMakerOrders(makerOrders);
       const merkleTree: MerkleTree = { root, proof: orders[0].proof };
 
       expect(utils.verifyTypedData(domain, merkleTreeTypes, merkleTree, signature)).to.equal(signers.user1.address);
@@ -156,7 +156,7 @@ describe("Sign maker orders", () => {
       }));
 
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      await expect(lr.signMultipleMakers(makerOrders)).to.eventually.be.fulfilled;
+      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
     });
     it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
       const { collection1 } = mocks.contracts;
@@ -179,7 +179,7 @@ describe("Sign maker orders", () => {
       }));
 
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      await expect(lr.signMultipleMakers(makerOrders)).to.eventually.be.rejectedWith(lr.ERROR_MERKLE_TREE_DEPTH);
+      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(lr.ERROR_MERKLE_TREE_DEPTH);
     });
   });
 });

@@ -4,7 +4,7 @@ import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
-import { signMaker, signMerkleRoot } from "./utils/signMakerOrders";
+import { signMakerOrder, signMerkleRoot } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -253,9 +253,9 @@ export class LooksRare {
    * @param maker Order to be signed by the user
    * @returns Signature
    */
-  public async signMaker(maker: Maker): Promise<string> {
+  public async signMakerOrder(maker: Maker): Promise<string> {
     const signer = this.getSigner();
-    return await signMaker(signer, this.getTypedDataDomain(), maker);
+    return await signMakerOrder(signer, this.getTypedDataDomain(), maker);
   }
 
   /**
@@ -263,7 +263,7 @@ export class LooksRare {
    * @param makerOrders Array of maker orders
    * @returns MultipleOrdersWithMerkleTree Orders data with their proof
    */
-  public async signMultipleMakers(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
+  public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }

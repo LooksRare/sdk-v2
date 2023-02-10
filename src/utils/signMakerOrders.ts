@@ -9,7 +9,7 @@ import { makerTypes, merkleTreeTypes } from "../constants/eip712";
  * @param makerOrder Maker order
  * @returns Signature
  */
-export const signMaker = async (
+export const signMakerOrder = async (
   signer: TypedDataSigner,
   domain: TypedDataDomain,
   makerOrder: Maker

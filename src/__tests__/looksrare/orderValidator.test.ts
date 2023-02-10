@@ -33,7 +33,7 @@ describe("Order validation", () => {
     };
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { maker, approval } = await lr.createMakerAsk(baseMakerAskInput);
-    const signature = await lr.signMaker(maker);
+    const signature = await lr.signMakerOrder(maker);
 
     let orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC721_NO_APPROVAL_FOR_ALL_OR_ITEM_ID)).to.be.true;
@@ -57,7 +57,7 @@ describe("Order validation", () => {
 
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const { maker, approval } = await lr.createMakerBid(baseMakerBidInput);
-    const signature = await lr.signMaker(maker);
+    const signature = await lr.signMakerOrder(maker);
 
     let orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_BALANCE_INFERIOR_TO_PRICE)).to.be.true;

@@ -43,7 +43,7 @@ describe("execute taker ask", () => {
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const { maker, approval } = await lrUser2.createMakerBid(baseMakerAskInput);
     await approval!();
-    const signature = await lrUser2.signMaker(maker);
+    const signature = await lrUser2.signMakerOrder(maker);
     await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const taker = lrUser1.createTaker(maker, signers.user2.address);
 
@@ -63,7 +63,7 @@ describe("execute taker ask", () => {
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const order1 = await lrUser2.createMakerBid(baseMakerAskInput);
     const order2 = await lrUser2.createMakerBid(baseMakerAskInput);
-    const { signature, root, orders } = await lrUser2.signMultipleMakers([order1.maker, order2.maker]);
+    const { signature, root, orders } = await lrUser2.signMultipleMakerOrders([order1.maker, order2.maker]);
 
     await order1.approval!();
 

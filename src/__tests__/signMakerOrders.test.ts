@@ -3,7 +3,7 @@ import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { contractName, version, makerTypes } from "../constants/eip712";
-import { signMaker } from "../utils/signMakerOrders";
+import { signMakerOrder } from "../utils/signMakerOrders";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../utils/encodeOrderParams";
 import { SupportedChainId, Maker, AssetType, StrategyType, QuoteType } from "../types";
 
@@ -46,7 +46,7 @@ describe("SignMakerOrders", () => {
       additionalParameters: encodeParams([], getMakerParamsTypes(StrategyType.standard)),
     };
 
-    const signature = await signMaker(user1, domain, makerOrder);
+    const signature = await signMakerOrder(user1, domain, makerOrder);
 
     expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(user1.address);
     await verifier.verifySignature(makerOrder, signature);
@@ -77,7 +77,7 @@ describe("SignMakerOrders", () => {
       additionalParameters: encodeParams([], getTakerParamsTypes(StrategyType.standard)),
     };
 
-    const signature = await signMaker(user1, domain, makerOrder);
+    const signature = await signMakerOrder(user1, domain, makerOrder);
 
     expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(user1.address);
     await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;

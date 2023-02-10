@@ -35,7 +35,7 @@ describe("execute taker bid", () => {
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const { maker, approval } = await lrUser1.createMakerAsk(baseMakerAskInput);
     await approval!();
-    const signature = await lrUser1.signMaker(maker);
+    const signature = await lrUser1.signMakerOrder(maker);
     const taker = lrUser2.createTaker(maker, signers.user2.address);
 
     const contractMethods = await lrUser2.executeTakerBid(maker, taker, signature);
@@ -54,7 +54,7 @@ describe("execute taker bid", () => {
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
     const order1 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
-    const { signature, root, orders } = await lrUser1.signMultipleMakers([order1.maker, order2.maker]);
+    const { signature, root, orders } = await lrUser1.signMultipleMakerOrders([order1.maker, order2.maker]);
 
     await order1.approval!();
 
