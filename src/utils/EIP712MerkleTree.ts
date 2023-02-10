@@ -2,10 +2,10 @@ import { utils } from "ethers";
 import type { BytesLike } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import { TypedDataField } from "@ethersproject/abstract-signer";
-import { MakerAsk } from "../types";
+import { Maker } from "../types";
 import { merkleOrderTypes } from "../constants/eip712";
 
-type MerkleOrderElements = [MakerAsk, MakerAsk] | [MerkleOrderElements, MerkleOrderElements];
+type MerkleOrderElements = [Maker, Maker] | [MerkleOrderElements, MerkleOrderElements];
 
 const hexToBuffer = (value: string) => Buffer.from(value.slice(2), "hex");
 
@@ -250,22 +250,22 @@ function getMerkleOrderTreeHeight(length: number): number {
 
 function getMerkleOrderTypes(height: number): EIP712TypeDefinitions {
   const types = { ...merkleOrderTypes };
-  types.MerkleOrder = [{ name: "tree", type: `MakerAsk${`[2]`.repeat(height)}` }];
+  types.MerkleOrder = [{ name: "tree", type: `Maker${`[2]`.repeat(height)}` }];
   return types;
 }
 
 export function getMerkleOrderTree(
-  makerAsks: MakerAsk[],
+  makers: Maker[],
   startIndex = 0,
-  height = getMerkleOrderTreeHeight(makerAsks.length + startIndex)
+  height = getMerkleOrderTreeHeight(makers.length + startIndex)
 ) {
   const types = getMerkleOrderTypes(height);
-  const defaultNode = DefaultGetter.from(types, "MakerAsk");
-  let elements = [...makerAsks];
+  const defaultNode = DefaultGetter.from(types, "Maker");
+  let elements = [...makers];
 
   if (startIndex > 0) {
-    elements = [...fillArray([] as MakerAsk[], startIndex, defaultNode), ...makerAsks];
+    elements = [...fillArray([] as Maker[], startIndex, defaultNode), ...makers];
   }
-  const tree = new Eip712MerkleTree(types, "MerkleOrder", "MakerAsk", elements, height);
+  const tree = new Eip712MerkleTree(types, "MerkleOrder", "Maker", elements, height);
   return tree;
 }

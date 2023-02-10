@@ -290,7 +290,7 @@ export class LooksRare {
     };
   }
 
-  public async signMultipleMakersV2(makerOrders: MakerAsk[]): Promise<MultipleOrdersWithMerkleTree> {
+  public async signMultipleMakersV2(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }

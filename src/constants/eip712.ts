@@ -57,7 +57,7 @@ export const merkleTreeTypes: Record<string, Array<TypedDataField>> = {
 };
 
 export const merkleOrderTypes: Record<string, Array<TypedDataField>> = {
-  // MerkleOrder: [{ name: "tree", type: "MakerAsk[2][2][2][2][2]" }],
-  MerkleOrder: [{ name: "tree", type: "MakerAsk[2]" }],
-  MakerAsk: makerAskTypes.MakerAsk,
+  // MerkleOrder: [{ name: "tree", type: "Maker[2][2][2][2][2]" }],
+  MerkleOrder: [{ name: "tree", type: "Maker[2]" }],
+  Maker: makerTypes.Maker,
 };
