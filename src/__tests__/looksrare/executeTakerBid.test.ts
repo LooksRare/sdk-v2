@@ -49,27 +49,27 @@ describe("execute taker bid", () => {
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
-  it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
-    const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
-    const order1 = await lrUser1.createMakerAsk(baseMakerAskInput);
-    const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
-    const { signature, root, orders } = await lrUser1.signMultipleMakerOrders([order1.maker, order2.maker]);
+  // it.skip("execute maker ask from a merkle tree signature and taker bid", async () => {
+  //   const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+  //   const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
+  //   const order1 = await lrUser1.createMakerAsk(baseMakerAskInput);
+  //   const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
+  //   const { signature, root, orders } = await lrUser1.signMultipleMakerOrders([order1.maker, order2.maker]);
 
-    await order1.approval!();
+  //   await order1.approval!();
 
-    const taker = lrUser2.createTaker(order1.maker, signers.user2.address);
+  //   const taker = lrUser2.createTaker(order1.maker, signers.user2.address);
 
-    const { call, estimateGas } = lrUser2.executeTakerBid(order1.maker, taker, signature, {
-      root,
-      proof: orders[0].proof,
-    });
+  //   const { call, estimateGas } = lrUser2.executeTakerBid(order1.maker, taker, signature, {
+  //     root,
+  //     proof: orders[0].proof,
+  //   });
 
-    const estimatedGas = await estimateGas();
-    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+  //   const estimatedGas = await estimateGas();
+  //   expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await call();
-    const receipt = await tx.wait();
-    expect(receipt.status).to.be.equal(1);
-  });
+  //   const tx = await call();
+  //   const receipt = await tx.wait();
+  //   expect(receipt.status).to.be.equal(1);
+  // });
 });

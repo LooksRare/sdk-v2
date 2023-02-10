@@ -50,7 +50,7 @@ describe("SignMakerOrders", () => {
 
     expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(user1.address);
     await verifier.verifySignature(makerOrder, signature);
-    // await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
+    await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
     await expect(verifier.verifySignature(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
       "call revert exception"
     );

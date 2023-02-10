@@ -1,4 +1,4 @@
-import { BigNumber, providers, constants, BigNumberish } from "ethers";
+import { BigNumber, providers, constants, BigNumberish, utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
@@ -36,6 +36,7 @@ import {
   BatchTransferItem,
   QuoteType,
 } from "./types";
+import { getBulkOrderTree } from "./utils/eip712/bulk-orders";
 
 export class LooksRare {
   /** Current app chain ID */
@@ -263,30 +264,52 @@ export class LooksRare {
    * @param makerOrders Array of maker orders
    * @returns MultipleOrdersWithMerkleTree Orders data with their proof
    */
-  public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
-    if (makerOrders.length > MAX_ORDERS_PER_TREE) {
-      throw this.ERROR_MERKLE_TREE_DEPTH;
-    }
+  // public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
+  //   if (makerOrders.length > MAX_ORDERS_PER_TREE) {
+  //     throw this.ERROR_MERKLE_TREE_DEPTH;
+  //   }
 
-    const merkleTreeJs = createMakerMerkleTree(makerOrders);
-    const leaves = merkleTreeJs.getLeaves();
-    const root = merkleTreeJs.getHexRoot();
+  //   const merkleTreeJs = createMakerMerkleTree(makerOrders);
+  //   const leaves = merkleTreeJs.getLeaves();
+  //   const root = merkleTreeJs.getHexRoot();
 
+  //   const signer = this.getSigner();
+  //   const signature = await signMerkleRoot(signer, this.getTypedDataDomain(), root);
+
+  //   return {
+  //     root,
+  //     signature,
+  //     orders: makerOrders.map((order, index) => {
+  //       const leaf = leaves[index];
+  //       return {
+  //         order,
+  //         hash: leaf,
+  //         proof: [merkleTreeJs.getHexProof(leaf).join(",")],
+  //       };
+  //     }),
+  //   };
+  // }
+
+  public async signMultipleMakerOrders(orderComponents: Maker[]) {
     const signer = this.getSigner();
-    const signature = await signMerkleRoot(signer, this.getTypedDataDomain(), root);
 
-    return {
-      root,
-      signature,
-      orders: makerOrders.map((order, index) => {
-        const leaf = leaves[index];
-        return {
-          order,
-          hash: leaf,
-          proof: [merkleTreeJs.getHexProof(leaf).join(",")],
-        };
-      }),
-    };
+    const domainData = await this.getTypedDataDomain();
+    const tree = getBulkOrderTree(orderComponents);
+    const bulkOrderType = tree.types;
+    const chunks = tree.getDataToSign();
+    const value = { tree: chunks };
+
+    let signature = await signer._signTypedData(domainData, bulkOrderType, value);
+
+    // Use EIP-2098 compact signatures to save gas.
+    signature = utils.splitSignature(signature).compact;
+
+    const orders = orderComponents.map((parameters, i) => ({
+      parameters,
+      signature: tree.getEncodedProofAndSignature(i, signature),
+    }));
+
+    return { tree, orders };
   }
 
   /**
