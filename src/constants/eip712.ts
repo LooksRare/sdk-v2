@@ -51,27 +51,25 @@ export const makerTypes: EIP712TypedData = {
   ],
 };
 
-export const merkleTreeTypes: EIP712TypedData = {
-  MerkleTree: [{ name: "root", type: "bytes32" }],
-};
-
-export const EIP_712_BULK_ORDER_TYPE: EIP712TypedData = {
-  BatchOrder: [{ name: "tree", type: "Maker[2][2][2][2][2][2][2]" }],
-  Maker: [
-    { name: "quoteType", type: "uint8" },
-    { name: "globalNonce", type: "uint256" },
-    { name: "subsetNonce", type: "uint256" },
-    { name: "orderNonce", type: "uint256" },
-    { name: "strategyId", type: "uint256" },
-    { name: "assetType", type: "uint8" },
-    { name: "collection", type: "address" },
-    { name: "currency", type: "address" },
-    { name: "signer", type: "address" },
-    { name: "startTime", type: "uint256" },
-    { name: "endTime", type: "uint256" },
-    { name: "price", type: "uint256" },
-    { name: "itemIds", type: "uint256[]" },
-    { name: "amounts", type: "uint256[]" },
-    { name: "additionalParameters", type: "bytes" },
-  ],
+export const getBatchOrderTypes = (height: number): EIP712TypedData => {
+  return {
+    BatchOrder: [{ name: "tree", type: `Maker${`[2]`.repeat(height)}` }],
+    Maker: [
+      { name: "quoteType", type: "uint8" },
+      { name: "globalNonce", type: "uint256" },
+      { name: "subsetNonce", type: "uint256" },
+      { name: "orderNonce", type: "uint256" },
+      { name: "strategyId", type: "uint256" },
+      { name: "assetType", type: "uint8" },
+      { name: "collection", type: "address" },
+      { name: "currency", type: "address" },
+      { name: "signer", type: "address" },
+      { name: "startTime", type: "uint256" },
+      { name: "endTime", type: "uint256" },
+      { name: "price", type: "uint256" },
+      { name: "itemIds", type: "uint256[]" },
+      { name: "amounts", type: "uint256[]" },
+      { name: "additionalParameters", type: "bytes" },
+    ],
+  };
 };

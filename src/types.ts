@@ -40,6 +40,7 @@ export type SolidityType =
   | "bytes32[]"
   | "string";
 
+/** EIP712 type data */
 export type EIP712TypedData = Record<string, Array<TypedDataField>>;
 
 /**

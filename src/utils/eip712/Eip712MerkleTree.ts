@@ -1,30 +1,10 @@
 import { _TypedDataEncoder as TypedDataEncoder } from "@ethersproject/hash";
-import { defaultAbiCoder, hexConcat, keccak256, toUtf8Bytes } from "ethers/lib/utils";
 import { MerkleTree } from "merkletreejs";
-
-import { bufferKeccak, bufferToHex, chunk, fillArray, getRoot, hexToBuffer } from "./utils";
-
-import type { Maker, EIP712TypedData } from "../../types";
-
+import { bufferKeccak, chunk, fillArray, hexToBuffer } from "./utils";
 import { defaultMaker } from "./defaultMaker";
+import { Maker, EIP712TypedData } from "../../types";
 
 type BulkOrderElements = [Maker, Maker] | [BulkOrderElements, BulkOrderElements];
-
-const getTree = (leaves: string[], defaultLeafHash: string) =>
-  new MerkleTree(leaves.map(hexToBuffer), bufferKeccak, {
-    // complete: true,
-    sort: false,
-    hashLeaves: false,
-    fillDefaultHash: hexToBuffer(defaultLeafHash),
-  });
-
-const encodeProof = (key: number, proof: string[], signature = `0x${"ff".repeat(64)}`) => {
-  return hexConcat([
-    signature,
-    `0x${key.toString(16).padStart(6, "0")}`,
-    defaultAbiCoder.encode([`uint256[${proof.length}]`], [proof]),
-  ]);
-};
 
 export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   tree: MerkleTree;
@@ -32,6 +12,26 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   defaultNode: any;
   defaultLeaf: string;
   encoder: TypedDataEncoder;
+
+  constructor(
+    public types: EIP712TypedData,
+    public rootType: string,
+    public leafType: string,
+    public elements: BaseType[],
+    public depth: number
+  ) {
+    const encoder = TypedDataEncoder.from(types);
+    this.encoder = encoder;
+    this.leafHasher = (leaf: BaseType) => encoder.hashStruct(leafType, leaf);
+    this.defaultNode = defaultMaker;
+    this.defaultLeaf = this.leafHasher(this.defaultNode);
+    this.tree = new MerkleTree(this.getCompleteLeaves().map(hexToBuffer), bufferKeccak, {
+      // complete: true,
+      sort: false,
+      hashLeaves: false,
+      fillDefaultHash: hexToBuffer(this.defaultLeaf),
+    });
+  }
 
   get completedSize() {
     return Math.pow(2, this.depth);
@@ -49,10 +49,6 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return fillArray([...leaves], this.completedSize, this.defaultLeaf);
   }
 
-  get root() {
-    return this.tree.getHexRoot();
-  }
-
   getProof(i: number) {
     const leaves = this.getCompleteLeaves();
     const leaf = leaves[i];
@@ -61,51 +57,11 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return { leaf, proof, root };
   }
 
-  // getEncodedProofAndSignature(i: number, signature: string) {
-  //   const { proof } = this.getProof(i);
-  //   return encodeProof(i, proof, signature);
-  // }
-
   getDataToSign(): BulkOrderElements {
     let layer = this.getCompleteElements() as any;
     while (layer.length > 2) {
       layer = chunk(layer, 2);
     }
     return layer;
-  }
-
-  add(element: BaseType) {
-    this.elements.push(element);
-  }
-
-  getBulkOrderHash() {
-    const structHash = this.encoder.hashStruct("BatchOrder", {
-      tree: this.getDataToSign(),
-    });
-    const leaves = this.getCompleteLeaves().map(hexToBuffer);
-    const rootHash = bufferToHex(getRoot(leaves, false));
-    const typeHash = keccak256(toUtf8Bytes(this.encoder._types.BatchOrder));
-    const bulkOrderHash = keccak256(hexConcat([typeHash, rootHash]));
-
-    if (bulkOrderHash !== structHash) {
-      throw new Error("expected derived bulk order hash to match");
-    }
-
-    return structHash;
-  }
-
-  constructor(
-    public types: EIP712TypedData,
-    public rootType: string,
-    public leafType: string,
-    public elements: BaseType[],
-    public depth: number
-  ) {
-    const encoder = TypedDataEncoder.from(types);
-    this.encoder = encoder;
-    this.leafHasher = (leaf: BaseType) => encoder.hashStruct(leafType, leaf);
-    this.defaultNode = defaultMaker;
-    this.defaultLeaf = this.leafHasher(this.defaultNode);
-    this.tree = getTree(this.getCompleteLeaves(), this.defaultLeaf);
   }
 }

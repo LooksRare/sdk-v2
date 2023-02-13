@@ -4,7 +4,7 @@ import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
-import { signMakerOrder } from "./utils/signMakerOrders";
+import { signMakerOrder, signMerkleTreeOrders } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -21,7 +21,6 @@ import {
 import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
-import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
   Maker,
   Taker,
@@ -35,7 +34,6 @@ import {
   BatchTransferItem,
   QuoteType,
 } from "./types";
-import { getBulkOrderTree } from "./utils/eip712/bulk-orders";
 
 export class LooksRare {
   /** Current app chain ID */
@@ -267,16 +265,8 @@ export class LooksRare {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }
-
     const signer = this.getSigner();
-
-    const tree = getBulkOrderTree(makerOrders);
-    const bulkOrderType = tree.types;
-    const chunks = tree.getDataToSign();
-    const value = { tree: chunks };
-
-    const signature = await signer._signTypedData(this.getTypedDataDomain(), bulkOrderType, value);
-    return { signature, tree };
+    return signMerkleTreeOrders(signer, this.getTypedDataDomain(), makerOrders);
   }
 
   /**
