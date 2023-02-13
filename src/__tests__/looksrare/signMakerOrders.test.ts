@@ -148,18 +148,17 @@ describe("Sign maker orders", () => {
       ];
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-      const { tree, orders } = await lr.signMultipleMakerOrders(makerOrders);
-      const order = orders[0];
+      const { signature, tree } = await lr.signMultipleMakerOrders(makerOrders);
       const signerAddress = signers.user1.address;
 
       const chunks = tree.getDataToSign();
       const value = { tree: chunks };
-      expect(utils.verifyTypedData(domain, tree.types, value, order.signature)).to.equal(signerAddress);
+      expect(utils.verifyTypedData(domain, tree.types, value, signature)).to.equal(signerAddress);
 
       const { proof, root } = tree.getProof(0);
       const merkleTree: MerkleTree = { root, proof: proof };
 
-      await expect(verifier.verifyMerkleTree(merkleTree, order.signature, signerAddress)).to.eventually.be.fulfilled;
+      await expect(verifier.verifyMerkleTree(merkleTree, signature, signerAddress)).to.eventually.be.fulfilled;
       await expect(verifier.verifyMerkleTree(merkleTree, faultySignature, signerAddress)).to.eventually.be.rejectedWith(
         "call revert exception"
       );

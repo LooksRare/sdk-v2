@@ -1,10 +1,10 @@
-import { BigNumber, providers, constants, BigNumberish, utils } from "ethers";
+import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
-import { signMakerOrder, signMerkleRoot } from "./utils/signMakerOrders";
+import { signMakerOrder } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -30,7 +30,6 @@ import {
   CreateMakerInput,
   CreateMakerOutput,
   MerkleTree,
-  MultipleOrdersWithMerkleTree,
   ContractMethods,
   OrderValidatorCode,
   BatchTransferItem,
@@ -260,36 +259,10 @@ export class LooksRare {
   }
 
   /**
-   * Sign multiple maker orders (bids or asks) with a single signature
+   * Sign multiple maker orders with a single signature
    * @param makerOrders Array of maker orders
-   * @returns MultipleOrdersWithMerkleTree Orders data with their proof
+   * @returns Signature and Merkletree
    */
-  // public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
-  //   if (makerOrders.length > MAX_ORDERS_PER_TREE) {
-  //     throw this.ERROR_MERKLE_TREE_DEPTH;
-  //   }
-
-  //   const merkleTreeJs = createMakerMerkleTree(makerOrders);
-  //   const leaves = merkleTreeJs.getLeaves();
-  //   const root = merkleTreeJs.getHexRoot();
-
-  //   const signer = this.getSigner();
-  //   const signature = await signMerkleRoot(signer, this.getTypedDataDomain(), root);
-
-  //   return {
-  //     root,
-  //     signature,
-  //     orders: makerOrders.map((order, index) => {
-  //       const leaf = leaves[index];
-  //       return {
-  //         order,
-  //         hash: leaf,
-  //         proof: [merkleTreeJs.getHexProof(leaf).join(",")],
-  //       };
-  //     }),
-  //   };
-  // }
-
   public async signMultipleMakerOrders(makerOrders: Maker[]) {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
@@ -297,23 +270,13 @@ export class LooksRare {
 
     const signer = this.getSigner();
 
-    const domainData = this.getTypedDataDomain();
     const tree = getBulkOrderTree(makerOrders);
     const bulkOrderType = tree.types;
     const chunks = tree.getDataToSign();
     const value = { tree: chunks };
 
-    const signature = await signer._signTypedData(domainData, bulkOrderType, value);
-
-    // Use EIP-2098 compact signatures to save gas.
-    // signature = utils.splitSignature(signature).compact;
-
-    const orders = makerOrders.map((parameters, i) => ({
-      parameters,
-      signature,
-    }));
-
-    return { tree, orders };
+    const signature = await signer._signTypedData(this.getTypedDataDomain(), bulkOrderType, value);
+    return { signature, tree };
   }
 
   /**

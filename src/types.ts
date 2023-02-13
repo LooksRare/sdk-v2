@@ -1,5 +1,5 @@
 import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from "ethers";
-import { TypedDataSigner } from "@ethersproject/abstract-signer";
+import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
 
 /** List of supported chains */
 export enum SupportedChainId {
@@ -39,6 +39,8 @@ export type SolidityType =
   | "bytes32"
   | "bytes32[]"
   | "string";
+
+export type EIP712TypedData = Record<string, Array<TypedDataField>>;
 
 /**
  * Item structure used for batch transfers
@@ -158,17 +160,6 @@ export interface MerkleTree {
   /** Root of the merkle tree */
   root: string;
   proof: string[];
-}
-
-/** List of orders with their proof and the tree information */
-export interface MultipleOrdersWithMerkleTree {
-  root: string;
-  signature: string;
-  orders: {
-    order: Maker;
-    hash: Buffer;
-    proof: string[];
-  }[];
 }
 
 /** Error codes returned by the order validator contract */

@@ -1,6 +1,6 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { Maker, MerkleTree } from "../types";
-import { makerTypes, merkleTreeTypes } from "../constants/eip712";
+import { Maker } from "../types";
+import { makerTypes } from "../constants/eip712";
 
 /**
  * Sign a maker order
@@ -15,20 +15,4 @@ export const signMakerOrder = async (
   makerOrder: Maker
 ): Promise<string> => {
   return signer._signTypedData(domain, makerTypes, makerOrder);
-};
-
-/**
- *
- * @param signer Ethers typed data signer
- * @param domain Typed data domain
- * @param merkleRoot string
- * @returns Signature
- */
-export const signMerkleRoot = async (
-  signer: TypedDataSigner,
-  domain: TypedDataDomain,
-  merkleRoot: MerkleTree["root"]
-): Promise<string> => {
-  const root: Omit<MerkleTree, "proof"> = { root: merkleRoot };
-  return signer._signTypedData(domain, merkleTreeTypes, root);
 };

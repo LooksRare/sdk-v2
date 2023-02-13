@@ -1,17 +1,15 @@
 import { _TypedDataEncoder, keccak256, toUtf8Bytes } from "ethers/lib/utils";
 
 import { Eip712MerkleTree } from "./Eip712MerkleTree";
-import { DefaultGetter } from "./defaults";
 import { fillArray } from "./utils";
 
-import type { Maker } from "../../types";
-import type { EIP712TypeDefinitions } from "./defaults";
+import type { Maker, EIP712TypedData } from "../../types";
 
 import { EIP_712_BULK_ORDER_TYPE } from "../../constants/eip712";
 
 import { defaultMaker } from "./defaultMaker";
 
-function getBulkOrderTypes(height: number): EIP712TypeDefinitions {
+function getBulkOrderTypes(height: number): EIP712TypedData {
   const types = { ...EIP_712_BULK_ORDER_TYPE };
   types.BatchOrder = [{ name: "tree", type: `Maker${`[2]`.repeat(height)}` }];
   return types;

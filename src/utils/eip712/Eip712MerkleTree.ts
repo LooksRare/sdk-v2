@@ -2,11 +2,9 @@ import { _TypedDataEncoder as TypedDataEncoder } from "@ethersproject/hash";
 import { defaultAbiCoder, hexConcat, keccak256, toUtf8Bytes } from "ethers/lib/utils";
 import { MerkleTree } from "merkletreejs";
 
-import { DefaultGetter } from "./defaults";
 import { bufferKeccak, bufferToHex, chunk, fillArray, getRoot, hexToBuffer } from "./utils";
 
-import type { Maker } from "../../types";
-import type { EIP712TypeDefinitions } from "./defaults";
+import type { Maker, EIP712TypedData } from "../../types";
 
 import { defaultMaker } from "./defaultMaker";
 
@@ -97,7 +95,7 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   }
 
   constructor(
-    public types: EIP712TypeDefinitions,
+    public types: EIP712TypedData,
     public rootType: string,
     public leafType: string,
     public elements: BaseType[],

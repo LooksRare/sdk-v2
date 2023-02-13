@@ -1,5 +1,4 @@
-import { TypedDataField } from "@ethersproject/abstract-signer";
-import { SolidityType } from "../types";
+import { SolidityType, EIP712TypedData } from "../types";
 
 // EIP 712 (Typed structured data hashing and signing) related data
 // https://eips.ethereum.org/EIPS/eip-712
@@ -32,7 +31,7 @@ export const hashingMakerTypes: string[] = [
 
 export const hashingMerkleTreeTypes: SolidityType[] = ["bytes32", "bytes32"];
 
-export const makerTypes: Record<string, Array<TypedDataField>> = {
+export const makerTypes: EIP712TypedData = {
   Maker: [
     { name: "quoteType", type: "uint8" },
     { name: "globalNonce", type: "uint256" },
@@ -52,11 +51,11 @@ export const makerTypes: Record<string, Array<TypedDataField>> = {
   ],
 };
 
-export const merkleTreeTypes: Record<string, Array<TypedDataField>> = {
+export const merkleTreeTypes: EIP712TypedData = {
   MerkleTree: [{ name: "root", type: "bytes32" }],
 };
 
-export const EIP_712_BULK_ORDER_TYPE = {
+export const EIP_712_BULK_ORDER_TYPE: EIP712TypedData = {
   BatchOrder: [{ name: "tree", type: "Maker[2][2][2][2][2][2][2]" }],
   Maker: [
     { name: "quoteType", type: "uint8" },
