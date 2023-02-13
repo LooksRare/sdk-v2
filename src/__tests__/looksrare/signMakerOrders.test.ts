@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { LooksRare } from "../../LooksRare";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
-import { contractName, version, makerTypes, merkleTreeTypes } from "../../constants/eip712";
+import { contractName, version, makerTypes } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { SupportedChainId, Maker, AssetType, StrategyType, QuoteType, MerkleTree } from "../../types";
@@ -89,104 +89,28 @@ describe("Sign maker orders", () => {
       );
     });
   });
-  // describe("Sign multiple maker orders", () => {
-  //   it("sign multiple maker bid order (merkle tree)", async () => {
-  //     const { collection1 } = mocks.contracts;
-  //     const makerOrders: Maker[] = [
-  //       {
-  //         quoteType: QuoteType.Bid,
-  //         globalNonce: 1,
-  //         subsetNonce: 1,
-  //         strategyId: 1,
-  //         assetType: AssetType.ERC721,
-  //         orderNonce: 1,
-  //         collection: collection1.address,
-  //         currency: mocks.addresses.WETH,
-  //         signer: signers.user1.address,
-  //         startTime: Math.floor(Date.now() / 1000),
-  //         endTime: Math.floor(Date.now() / 1000 + 3600),
-  //         price: utils.parseEther("1").toString(),
-  //         itemIds: [1],
-  //         amounts: [1],
-  //         additionalParameters: utils.defaultAbiCoder.encode([], []),
-  //       },
-  //       {
-  //         quoteType: QuoteType.Bid,
-  //         globalNonce: 1,
-  //         subsetNonce: 1,
-  //         strategyId: 1,
-  //         assetType: AssetType.ERC721,
-  //         orderNonce: 1,
-  //         collection: collection1.address,
-  //         currency: mocks.addresses.WETH,
-  //         signer: signers.user1.address,
-  //         startTime: Math.floor(Date.now() / 1000),
-  //         endTime: Math.floor(Date.now() / 1000 + 3600),
-  //         price: utils.parseEther("1").toString(),
-  //         itemIds: [1],
-  //         amounts: [1],
-  //         additionalParameters: utils.defaultAbiCoder.encode([], []),
-  //       },
-  //     ];
-  //     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-  //     const { signature, root, orders } = await lr.signMultipleMakerOrders(makerOrders);
-  //     const merkleTree: MerkleTree = { root, proof: orders[0].proof };
-
-  //     expect(utils.verifyTypedData(domain, merkleTreeTypes, merkleTree, signature)).to.equal(signers.user1.address);
-  //   });
-  //   it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
-  //     const { collection1 } = mocks.contracts;
-  //     const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
-  //       quoteType: QuoteType.Bid,
-  //       globalNonce: 1,
-  //       subsetNonce: 1,
-  //       strategyId: 1,
-  //       assetType: AssetType.ERC721,
-  //       orderNonce: 1,
-  //       collection: collection1.address,
-  //       currency: mocks.addresses.WETH,
-  //       signer: signers.user1.address,
-  //       startTime: Math.floor(Date.now() / 1000),
-  //       endTime: Math.floor(Date.now() / 1000 + 3600),
-  //       price: utils.parseEther("1").toString(),
-  //       itemIds: [1],
-  //       amounts: [1],
-  //       additionalParameters: utils.defaultAbiCoder.encode([], []),
-  //     }));
-
-  //     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-  //     await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
-  //   });
-  //   it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
-  //     const { collection1 } = mocks.contracts;
-  //     const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
-  //       quoteType: QuoteType.Bid,
-  //       globalNonce: 1,
-  //       subsetNonce: 1,
-  //       strategyId: 1,
-  //       assetType: AssetType.ERC721,
-  //       orderNonce: 1,
-  //       collection: collection1.address,
-  //       currency: mocks.addresses.WETH,
-  //       signer: signers.user1.address,
-  //       startTime: Math.floor(Date.now() / 1000),
-  //       endTime: Math.floor(Date.now() / 1000 + 3600),
-  //       price: utils.parseEther("1").toString(),
-  //       itemIds: [1],
-  //       amounts: [1],
-  //       additionalParameters: utils.defaultAbiCoder.encode([], []),
-  //     }));
-
-  //     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-  //     await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(lr.ERROR_MERKLE_TREE_DEPTH);
-  //   });
-  // });
-
-  describe.only("Sign multiple maker orders", () => {
+  describe("Sign multiple maker orders", () => {
     it("sign multiple maker bid order (merkle tree)", async () => {
-      const { collection1 } = mocks.contracts;
+      const { collection1, verifier } = mocks.contracts;
       const makerOrders: Maker[] = [
+        {
+          quoteType: QuoteType.Bid,
+          globalNonce: 1,
+          subsetNonce: 1,
+          strategyId: 1,
+          assetType: AssetType.ERC721,
+          orderNonce: 1,
+          collection: collection1.address,
+          currency: mocks.addresses.WETH,
+          signer: signers.user1.address,
+          startTime: Math.floor(Date.now() / 1000),
+          endTime: Math.floor(Date.now() / 1000 + 3600),
+          price: utils.parseEther("1").toString(),
+          itemIds: [1],
+          amounts: [1],
+          additionalParameters: utils.defaultAbiCoder.encode([], []),
+        },
         {
           quoteType: QuoteType.Bid,
           globalNonce: 1,
@@ -225,12 +149,67 @@ describe("Sign maker orders", () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
       const { tree, orders } = await lr.signMultipleMakerOrders(makerOrders);
-      const { leaf, proof, root } = tree.getProof(0);
-      const merkleTree: MerkleTree = { root, proof: [proof.join(",")] };
+      const order = orders[0];
+      const signerAddress = signers.user1.address;
 
-      expect(utils.verifyTypedData(domain, tree.types, merkleTree, orders[0].signature)).to.equal(
-        signers.user1.address
+      const chunks = tree.getDataToSign();
+      const value = { tree: chunks };
+      expect(utils.verifyTypedData(domain, tree.types, value, order.signature)).to.equal(signerAddress);
+
+      const { proof, root } = tree.getProof(0);
+      const merkleTree: MerkleTree = { root, proof: proof };
+
+      await expect(verifier.verifyMerkleTree(merkleTree, order.signature, signerAddress)).to.eventually.be.fulfilled;
+      await expect(verifier.verifyMerkleTree(merkleTree, faultySignature, signerAddress)).to.eventually.be.rejectedWith(
+        "call revert exception"
       );
+    });
+
+    it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
+      const { collection1 } = mocks.contracts;
+      const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
+        quoteType: QuoteType.Bid,
+        globalNonce: 1,
+        subsetNonce: 1,
+        strategyId: 1,
+        assetType: AssetType.ERC721,
+        orderNonce: 1,
+        collection: collection1.address,
+        currency: mocks.addresses.WETH,
+        signer: signers.user1.address,
+        startTime: Math.floor(Date.now() / 1000),
+        endTime: Math.floor(Date.now() / 1000 + 3600),
+        price: utils.parseEther("1").toString(),
+        itemIds: [1],
+        amounts: [1],
+        additionalParameters: utils.defaultAbiCoder.encode([], []),
+      }));
+
+      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
+    });
+    it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
+      const { collection1 } = mocks.contracts;
+      const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
+        quoteType: QuoteType.Bid,
+        globalNonce: 1,
+        subsetNonce: 1,
+        strategyId: 1,
+        assetType: AssetType.ERC721,
+        orderNonce: 1,
+        collection: collection1.address,
+        currency: mocks.addresses.WETH,
+        signer: signers.user1.address,
+        startTime: Math.floor(Date.now() / 1000),
+        endTime: Math.floor(Date.now() / 1000 + 3600),
+        price: utils.parseEther("1").toString(),
+        itemIds: [1],
+        amounts: [1],
+        additionalParameters: utils.defaultAbiCoder.encode([], []),
+      }));
+
+      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(lr.ERROR_MERKLE_TREE_DEPTH);
     });
   });
 });

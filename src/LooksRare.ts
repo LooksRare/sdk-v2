@@ -290,23 +290,27 @@ export class LooksRare {
   //   };
   // }
 
-  public async signMultipleMakerOrders(orderComponents: Maker[]) {
+  public async signMultipleMakerOrders(makerOrders: Maker[]) {
+    if (makerOrders.length > MAX_ORDERS_PER_TREE) {
+      throw this.ERROR_MERKLE_TREE_DEPTH;
+    }
+
     const signer = this.getSigner();
 
-    const domainData = await this.getTypedDataDomain();
-    const tree = getBulkOrderTree(orderComponents);
+    const domainData = this.getTypedDataDomain();
+    const tree = getBulkOrderTree(makerOrders);
     const bulkOrderType = tree.types;
     const chunks = tree.getDataToSign();
     const value = { tree: chunks };
 
-    let signature = await signer._signTypedData(domainData, bulkOrderType, value);
+    const signature = await signer._signTypedData(domainData, bulkOrderType, value);
 
     // Use EIP-2098 compact signatures to save gas.
-    signature = utils.splitSignature(signature).compact;
+    // signature = utils.splitSignature(signature).compact;
 
-    const orders = orderComponents.map((parameters, i) => ({
+    const orders = makerOrders.map((parameters, i) => ({
       parameters,
-      signature: tree.getEncodedProofAndSignature(i, signature),
+      signature,
     }));
 
     return { tree, orders };

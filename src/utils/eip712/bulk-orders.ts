@@ -9,6 +9,8 @@ import type { EIP712TypeDefinitions } from "./defaults";
 
 import { EIP_712_BULK_ORDER_TYPE } from "../../constants/eip712";
 
+import { defaultMaker } from "./defaultMaker";
+
 function getBulkOrderTypes(height: number): EIP712TypeDefinitions {
   const types = { ...EIP_712_BULK_ORDER_TYPE };
   types.BatchOrder = [{ name: "tree", type: `Maker${`[2]`.repeat(height)}` }];
@@ -25,7 +27,7 @@ export function getBulkOrderTree(
   height = getBulkOrderTreeHeight(makerOrders.length + startIndex)
 ) {
   const types = getBulkOrderTypes(height);
-  const defaultNode = DefaultGetter.from(types, "Maker");
+  const defaultNode = defaultMaker;
   let elements = [...makerOrders];
 
   if (startIndex > 0) {

@@ -8,11 +8,13 @@ import { bufferKeccak, bufferToHex, chunk, fillArray, getRoot, hexToBuffer } fro
 import type { Maker } from "../../types";
 import type { EIP712TypeDefinitions } from "./defaults";
 
+import { defaultMaker } from "./defaultMaker";
+
 type BulkOrderElements = [Maker, Maker] | [BulkOrderElements, BulkOrderElements];
 
 const getTree = (leaves: string[], defaultLeafHash: string) =>
   new MerkleTree(leaves.map(hexToBuffer), bufferKeccak, {
-    complete: true,
+    // complete: true,
     sort: false,
     hashLeaves: false,
     fillDefaultHash: hexToBuffer(defaultLeafHash),
@@ -29,7 +31,7 @@ const encodeProof = (key: number, proof: string[], signature = `0x${"ff".repeat(
 export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   tree: MerkleTree;
   private leafHasher: (value: any) => string;
-  defaultNode: BaseType;
+  defaultNode: any;
   defaultLeaf: string;
   encoder: TypedDataEncoder;
 
@@ -61,10 +63,10 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return { leaf, proof, root };
   }
 
-  getEncodedProofAndSignature(i: number, signature: string) {
-    const { proof } = this.getProof(i);
-    return encodeProof(i, proof, signature);
-  }
+  // getEncodedProofAndSignature(i: number, signature: string) {
+  //   const { proof } = this.getProof(i);
+  //   return encodeProof(i, proof, signature);
+  // }
 
   getDataToSign(): BulkOrderElements {
     let layer = this.getCompleteElements() as any;
@@ -104,7 +106,7 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     const encoder = TypedDataEncoder.from(types);
     this.encoder = encoder;
     this.leafHasher = (leaf: BaseType) => encoder.hashStruct(leafType, leaf);
-    this.defaultNode = DefaultGetter.from(types, leafType);
+    this.defaultNode = defaultMaker;
     this.defaultLeaf = this.leafHasher(this.defaultNode);
     this.tree = getTree(this.getCompleteLeaves(), this.defaultLeaf);
   }
