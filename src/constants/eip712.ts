@@ -1,4 +1,4 @@
-import { SolidityType, EIP712TypedData } from "../types";
+import { EIP712TypedData } from "../types";
 
 // EIP 712 (Typed structured data hashing and signing) related data
 // https://eips.ethereum.org/EIPS/eip-712
@@ -6,9 +6,7 @@ import { SolidityType, EIP712TypedData } from "../types";
 export const contractName = "LooksRareProtocol";
 export const version = 2;
 
-export const MERKLE_TREE_HASH = "0x4339702fd09d392db18a2a980b04a717d48085f206207a9fe4472d7ba0ccbf0b";
-
-export const MAKER_HASH = "0xa2d1934c802d9cad310647bc0f9df2699b7cccc54bdff789fc494342a5695c73";
+export const MAKER_HASH = "0x003c1bce41a2de73dfe64d6eeb2b3d7f15f1c0c382d9d963c2c6daeb75f0e539";
 
 export const hashingMakerTypes: string[] = [
   "bytes32",
@@ -28,8 +26,6 @@ export const hashingMakerTypes: string[] = [
   "bytes32",
   "bytes32",
 ];
-
-export const hashingMerkleTreeTypes: SolidityType[] = ["bytes32", "bytes32"];
 
 export const makerTypes: EIP712TypedData = {
   Maker: [
