@@ -52,7 +52,7 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   getProof(i: number) {
     const leaves = this.getCompleteLeaves();
     const leaf = leaves[i];
-    const proof = this.tree.getHexProof(leaf, i);
+    const proof = this.tree.getPositionalHexProof(leaf, i);
     const root = this.tree.getHexRoot();
     return { leaf, proof, root };
   }

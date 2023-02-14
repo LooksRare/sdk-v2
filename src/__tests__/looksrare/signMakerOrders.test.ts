@@ -156,7 +156,15 @@ describe("Sign maker orders", () => {
       expect(utils.verifyTypedData(domain, tree.types, { tree: chunks }, signature)).to.equal(signerAddress);
 
       const { proof, root } = tree.getProof(0);
-      const merkleTree: MerkleTree = { root, proof: [{ position: 0, value: getMakerHash(makerOrders[0]) }] };
+      const merkleTree: MerkleTree = {
+        root,
+        proof: proof.map((node) => {
+          return {
+            position: node[0],
+            value: node[1],
+          };
+        }),
+      };
 
       console.log(merkleTree, signature);
 
