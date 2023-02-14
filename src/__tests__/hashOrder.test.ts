@@ -34,7 +34,8 @@ describe("Hash orders", () => {
     const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerHash(makerAsk);
     const orderHashHs = getMakerHash(makerAsk);
-    expect(orderHashSc === orderHashHs);
+
+    expect(orderHashSc).to.equal(orderHashHs);
   });
   it("validate maker bid order hash", async () => {
     const makerBid: Maker = {
@@ -58,6 +59,6 @@ describe("Hash orders", () => {
     const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerHash(makerBid);
     const orderHashHs = getMakerHash(makerBid);
-    expect(orderHashSc === orderHashHs);
+    expect(orderHashSc).to.equal(orderHashHs);
   });
 });
