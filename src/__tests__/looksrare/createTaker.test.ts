@@ -3,7 +3,7 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, AssetType, StrategyType, CreateMakerInput, Taker } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, Taker } from "../../types";
 
 describe("Create takers", () => {
   let mocks: SetupMocks;
@@ -15,7 +15,7 @@ describe("Create takers", () => {
   it("create taker", async () => {
     const baseMakerAskInput: CreateMakerInput = {
       collection: mocks.contracts.collection1.address,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,

@@ -3,7 +3,7 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, AssetType, StrategyType, CreateMakerInput } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
 
 describe("execute taker bid", () => {
   let mocks: SetupMocks;
@@ -20,7 +20,7 @@ describe("execute taker bid", () => {
 
     baseMakerAskInput = {
       collection: mocks.contracts.collection1.address,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,

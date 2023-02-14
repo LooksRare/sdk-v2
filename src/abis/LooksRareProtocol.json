@@ -585,8 +585,8 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct ILooksRareProtocol.SignatureParameters",
-        "name": "signatureParameters",
+        "internalType": "struct ILooksRareProtocol.NonceInvalidationParameters",
+        "name": "nonceInvalidationParameters",
         "type": "tuple"
       },
       {
@@ -669,8 +669,8 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct ILooksRareProtocol.SignatureParameters",
-        "name": "signatureParameters",
+        "internalType": "struct ILooksRareProtocol.NonceInvalidationParameters",
+        "name": "nonceInvalidationParameters",
         "type": "tuple"
       },
       {
@@ -960,8 +960,8 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum AssetType",
-            "name": "assetType",
+            "internalType": "enum CollectionType",
+            "name": "collectionType",
             "type": "uint8"
           },
           {
@@ -1027,9 +1027,21 @@
             "type": "bytes32"
           },
           {
-            "internalType": "bytes32[]",
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "value",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "enum OrderStructs.MerkleTreeNodePosition",
+                "name": "position",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct OrderStructs.MerkleTreeNode[]",
             "name": "proof",
-            "type": "bytes32[]"
+            "type": "tuple[]"
           }
         ],
         "internalType": "struct OrderStructs.MerkleTree[]",
@@ -1099,8 +1111,8 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum AssetType",
-            "name": "assetType",
+            "internalType": "enum CollectionType",
+            "name": "collectionType",
             "type": "uint8"
           },
           {
@@ -1166,9 +1178,21 @@
             "type": "bytes32"
           },
           {
-            "internalType": "bytes32[]",
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "value",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "enum OrderStructs.MerkleTreeNodePosition",
+                "name": "position",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct OrderStructs.MerkleTreeNode[]",
             "name": "proof",
-            "type": "bytes32[]"
+            "type": "tuple[]"
           }
         ],
         "internalType": "struct OrderStructs.MerkleTree",
@@ -1233,8 +1257,8 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum AssetType",
-            "name": "assetType",
+            "internalType": "enum CollectionType",
+            "name": "collectionType",
             "type": "uint8"
           },
           {
@@ -1300,9 +1324,21 @@
             "type": "bytes32"
           },
           {
-            "internalType": "bytes32[]",
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "value",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "enum OrderStructs.MerkleTreeNodePosition",
+                "name": "position",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct OrderStructs.MerkleTreeNode[]",
             "name": "proof",
-            "type": "bytes32[]"
+            "type": "tuple[]"
           }
         ],
         "internalType": "struct OrderStructs.MerkleTree",
@@ -1337,7 +1373,7 @@
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "batchOrderTypehash",
+        "name": "batchOrderHash",
         "type": "bytes32"
       }
     ],
@@ -1526,8 +1562,8 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum AssetType",
-            "name": "assetType",
+            "internalType": "enum CollectionType",
+            "name": "collectionType",
             "type": "uint8"
           },
           {

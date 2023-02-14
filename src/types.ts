@@ -8,8 +8,8 @@ export enum SupportedChainId {
   HARDHAT = 31337,
 }
 
-/** List of asset types supported by the protocol */
-export enum AssetType {
+/** List of collection types supported by the protocol */
+export enum CollectionType {
   ERC721 = 0,
   ERC1155 = 1,
 }
@@ -49,7 +49,7 @@ export type EIP712TypedData = Record<string, Array<TypedDataField>>;
  */
 export interface BatchTransferItem {
   collection: string;
-  assetType: AssetType;
+  collectionType: CollectionType;
   itemIds: BigNumberish[];
   amounts: BigNumberish[];
 }
@@ -81,7 +81,7 @@ export interface CreateMakerInput {
   /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
   /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
+  collectionType: CollectionType;
   /** Subset nonce used to group an arbitrary number of orders under the same nonce */
   subsetNonce: BigNumberish;
   /** Order nonce, get it from the LooksRare api */
@@ -127,7 +127,7 @@ export interface Maker {
   /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
   /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
+  collectionType: CollectionType;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */

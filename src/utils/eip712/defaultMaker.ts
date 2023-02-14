@@ -7,7 +7,7 @@ export const defaultMaker: Maker = {
   subsetNonce: 0,
   orderNonce: 0,
   strategyId: 0,
-  assetType: 0,
+  collectionType: 0,
   collection: constants.AddressZero,
   currency: constants.AddressZero,
   signer: constants.AddressZero,

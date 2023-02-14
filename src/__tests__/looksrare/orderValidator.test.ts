@@ -3,7 +3,7 @@ import { utils, constants } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, AssetType, StrategyType, CreateMakerInput, OrderValidatorCode } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, OrderValidatorCode } from "../../types";
 
 const defaultMerkleRoot = { root: constants.HashZero, proof: [] };
 
@@ -22,7 +22,7 @@ describe("Order validation", () => {
   it("verify maker ask orders", async () => {
     const baseMakerAskInput: CreateMakerInput = {
       collection: mocks.contracts.collection1.address,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
@@ -46,7 +46,7 @@ describe("Order validation", () => {
   it("verify maker bid orders", async () => {
     const baseMakerBidInput: CreateMakerInput = {
       collection: mocks.contracts.collection1.address,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,

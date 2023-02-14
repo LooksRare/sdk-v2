@@ -9,13 +9,11 @@ import * as transferManager from "./utils/calls/transferManager";
 import * as orderValidator from "./utils/calls/orderValidator";
 import * as encode from "./utils/encodeOrderParams";
 import * as hash from "./utils/hashOrder";
-import * as merkleTree from "./utils/merkleTree";
 import * as signMakerOrders from "./utils/signMakerOrders";
 const utils = {
   ...tokens,
   ...encode,
   ...hash,
-  ...merkleTree,
   ...exchange,
   ...nonces,
   ...transferManager,

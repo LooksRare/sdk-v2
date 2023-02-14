@@ -15,7 +15,7 @@ export const getMakerHash = (maker: Maker): string => {
     maker.globalNonce,
     maker.subsetNonce,
     maker.strategyId,
-    maker.assetType,
+    maker.collectionType,
     maker.orderNonce,
     maker.collection,
     maker.currency,

@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { allowance, approve } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("Create maker bid", () => {
   let mocks: SetupMocks;
@@ -15,7 +15,7 @@ describe("Create maker bid", () => {
     signers = await getSigners();
     baseMakerInput = {
       collection: mocks.contracts.collection1.address,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
@@ -57,7 +57,7 @@ describe("Create maker bid", () => {
       globalNonce: constants.Zero,
       subsetNonce: baseMakerInput.subsetNonce,
       strategyId: baseMakerInput.strategyId,
-      assetType: baseMakerInput.assetType,
+      collectionType: baseMakerInput.collectionType,
       orderNonce: baseMakerInput.orderNonce,
       collection: baseMakerInput.collection,
       currency: mocks.addresses.WETH,
@@ -87,7 +87,7 @@ describe("Create maker bid", () => {
       globalNonce: constants.Zero,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
-      assetType: input.assetType,
+      collectionType: input.collectionType,
       orderNonce: input.orderNonce,
       collection: input.collection,
       currency: input.currency!,

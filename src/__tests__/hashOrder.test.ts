@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { getMakerHash } from "../utils/hashOrder";
-import { Maker, AssetType, QuoteType } from "../types";
+import { Maker, CollectionType, QuoteType } from "../types";
 
 describe("Hash orders", () => {
   let mocks: SetupMocks;
@@ -18,7 +18,7 @@ describe("Hash orders", () => {
       globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       orderNonce: 1,
       collection: mocks.contracts.collection1.address,
       currency: mocks.addresses.WETH,
@@ -42,7 +42,7 @@ describe("Hash orders", () => {
       globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       orderNonce: 1,
       collection: mocks.contracts.collection1.address,
       currency: mocks.addresses.WETH,

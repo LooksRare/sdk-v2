@@ -7,7 +7,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setu
 import { contractName, version, makerTypes } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
-import { SupportedChainId, Maker, AssetType, StrategyType, QuoteType, MerkleTree } from "../../types";
+import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType, MerkleTree } from "../../types";
 
 const faultySignature =
   "0xcafe829116da9a4b31a958aa790682228b85e5d03b1ae7bb15f8ce4c8432a20813934991833da8e913894c9f35f1f018948c58d68fb61bbca0e07bd43c4492fa2b";
@@ -37,7 +37,7 @@ describe("Sign maker orders", () => {
         globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
-        assetType: AssetType.ERC721,
+        collectionType: CollectionType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
         currency: mocks.addresses.WETH,
@@ -67,7 +67,7 @@ describe("Sign maker orders", () => {
         globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
-        assetType: AssetType.ERC721,
+        collectionType: CollectionType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
         currency: mocks.addresses.WETH,
@@ -99,7 +99,7 @@ describe("Sign maker orders", () => {
           globalNonce: 1,
           subsetNonce: 1,
           strategyId: 1,
-          assetType: AssetType.ERC721,
+          collectionType: CollectionType.ERC721,
           orderNonce: 1,
           collection: collection1.address,
           currency: mocks.addresses.WETH,
@@ -116,7 +116,7 @@ describe("Sign maker orders", () => {
           globalNonce: 1,
           subsetNonce: 1,
           strategyId: 1,
-          assetType: AssetType.ERC721,
+          collectionType: CollectionType.ERC721,
           orderNonce: 1,
           collection: collection1.address,
           currency: mocks.addresses.WETH,
@@ -133,7 +133,7 @@ describe("Sign maker orders", () => {
           globalNonce: 1,
           subsetNonce: 1,
           strategyId: 1,
-          assetType: AssetType.ERC721,
+          collectionType: CollectionType.ERC721,
           orderNonce: 1,
           collection: collection1.address,
           currency: mocks.addresses.WETH,
@@ -171,7 +171,7 @@ describe("Sign maker orders", () => {
         globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
-        assetType: AssetType.ERC721,
+        collectionType: CollectionType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
         currency: mocks.addresses.WETH,
@@ -194,7 +194,7 @@ describe("Sign maker orders", () => {
         globalNonce: 1,
         subsetNonce: 1,
         strategyId: 1,
-        assetType: AssetType.ERC721,
+        collectionType: CollectionType.ERC721,
         orderNonce: 1,
         collection: collection1.address,
         currency: mocks.addresses.WETH,

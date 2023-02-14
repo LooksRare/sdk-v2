@@ -8,7 +8,7 @@ import abiIERC1155 from "../../abis/IERC1155.json";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { setApprovalForAll } from "../../utils/calls/tokens";
-import { SupportedChainId, AssetType, BatchTransferItem } from "../../types";
+import { SupportedChainId, CollectionType, BatchTransferItem } from "../../types";
 
 describe("Transfer manager", () => {
   let mocks: SetupMocks;
@@ -69,7 +69,12 @@ describe("Transfer manager", () => {
     expect(initialOwner).to.be.equal(signers.user1.address);
 
     const items: BatchTransferItem[] = [
-      { collection: contracts.collection1.address, assetType: AssetType.ERC721, itemIds: [tokenId], amounts: [1] },
+      {
+        collection: contracts.collection1.address,
+        collectionType: CollectionType.ERC721,
+        itemIds: [tokenId],
+        amounts: [1],
+      },
     ];
     const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
 
@@ -99,8 +104,13 @@ describe("Transfer manager", () => {
 
     // Execute the transfer
     const items: BatchTransferItem[] = [
-      { collection: contracts.collection1.address, assetType: AssetType.ERC721, itemIds: [0], amounts: [1] },
-      { collection: contracts.collection2.address, assetType: AssetType.ERC1155, itemIds: [0], amounts: [10] },
+      { collection: contracts.collection1.address, collectionType: CollectionType.ERC721, itemIds: [0], amounts: [1] },
+      {
+        collection: contracts.collection2.address,
+        collectionType: CollectionType.ERC1155,
+        itemIds: [0],
+        amounts: [10],
+      },
     ];
     const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
 
