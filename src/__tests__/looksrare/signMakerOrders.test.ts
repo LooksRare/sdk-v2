@@ -7,8 +7,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setu
 import { contractName, version, makerTypes } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
-import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType, MerkleTree } from "../../types";
-import { getMakerHash } from "../../utils/hashOrder";
+import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType } from "../../types";
 
 const faultySignature =
   "0xcafe829116da9a4b31a958aa790682228b85e5d03b1ae7bb15f8ce4c8432a20813934991833da8e913894c9f35f1f018948c58d68fb61bbca0e07bd43c4492fa2b";
@@ -92,7 +91,7 @@ describe("Sign maker orders", () => {
   });
 
   describe("Sign multiple maker orders", () => {
-    it.only("sign multiple maker bid order (merkle tree)", async () => {
+    it("sign multiple maker bid order (merkle tree)", async () => {
       const { collection1, verifier } = mocks.contracts;
       const makerOrders: Maker[] = [
         {
@@ -149,30 +148,17 @@ describe("Sign maker orders", () => {
       ];
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-      const { signature, tree } = await lr.signMultipleMakerOrders(makerOrders);
+      const { signature, merkleTreeProofs, tree } = await lr.signMultipleMakerOrders(makerOrders);
       const signerAddress = signers.user1.address;
 
-      const chunks = tree.getDataToSign();
-      expect(utils.verifyTypedData(domain, tree.types, { tree: chunks }, signature)).to.equal(signerAddress);
+      expect(utils.verifyTypedData(domain, tree.types, tree.getDataToSign(), signature)).to.equal(signerAddress);
 
-      const { proof, root } = tree.getProof(0);
-      const merkleTree: MerkleTree = {
-        root,
-        proof: proof.map((node) => {
-          return {
-            position: node[0],
-            value: node[1],
-          };
-        }),
-      };
-
-      console.log(merkleTree, signature);
-
-      await verifier.verifyMerkleTree(merkleTree, signature, signerAddress);
-      // await expect(verifier.verifyMerkleTree(merkleTree, signature, signerAddress)).to.eventually.be.fulfilled;
-      // await expect(verifier.verifyMerkleTree(merkleTree, faultySignature, signerAddress)).to.eventually.be.rejectedWith(
-      //   "call revert exception"
-      // );
+      merkleTreeProofs.forEach(async (merkleTreeProof) => {
+        await expect(verifier.verifyMerkleTree(merkleTreeProof, signature, signerAddress)).to.eventually.be.fulfilled;
+        await expect(
+          verifier.verifyMerkleTree(merkleTreeProof, faultySignature, signerAddress)
+        ).to.eventually.be.rejectedWith("call revert exception");
+      });
     });
     it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
       const { collection1 } = mocks.contracts;

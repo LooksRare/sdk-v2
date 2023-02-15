@@ -1,6 +1,6 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { Eip712MerkleTree } from "./eip712/Eip712MerkleTree";
-import { Maker } from "../types";
+import { Eip712MerkleTree } from "./Eip712MerkleTree";
+import { Maker, MerkleTree } from "../types";
 import { makerTypes, getBatchOrderTypes } from "../constants/eip712";
 
 /**
@@ -25,17 +25,26 @@ export const signMakerOrder = async (
  * @param makerOrder Maker order
  * @returns Signature and tree
  */
-export const signMerkleTreeOrders = async (
-  signer: TypedDataSigner,
-  domain: TypedDataDomain,
-  makerOrders: Maker[]
-): Promise<{ signature: string; tree: Eip712MerkleTree<Maker> }> => {
+export const signMerkleTreeOrders = async (signer: TypedDataSigner, domain: TypedDataDomain, makerOrders: Maker[]) => {
   const height = Math.max(Math.ceil(Math.log2(makerOrders.length)), 1);
   const types = getBatchOrderTypes(height);
-
   const tree = new Eip712MerkleTree(types, "BatchOrder", "Maker", makerOrders, height);
-  const chunks = tree.getDataToSign();
 
-  const signature = await signer._signTypedData(domain, types, { tree: chunks });
-  return { signature, tree };
+  const hexRoot = tree.getHexRoot();
+
+  const merkleTreeProofs: MerkleTree[] = makerOrders.map((_, index) => {
+    const { proof } = tree.getPositionalProof(index);
+    return {
+      root: hexRoot,
+      proof: proof.map((node) => {
+        return {
+          position: node[0] as number,
+          value: node[1] as string,
+        };
+      }),
+    };
+  });
+
+  const signature = await signer._signTypedData(domain, types, tree.getDataToSign());
+  return { signature, merkleTreeProofs, tree };
 };

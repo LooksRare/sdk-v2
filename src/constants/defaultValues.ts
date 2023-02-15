@@ -1,5 +1,5 @@
 import { constants } from "ethers";
-import { Maker } from "../../types";
+import { Maker } from "../types";
 
 export const defaultMaker: Maker = {
   quoteType: 0,
