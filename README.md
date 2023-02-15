@@ -78,7 +78,7 @@ Call the public api endpoint [/orders/nonce](https://looksrare.dev/reference/get
 
 #### What to do when the order is created and signed ?
 
-Use the public api entpoints [/orders](https://looksrare.dev/reference/createorder) to push the order to the database. After that, the order will be visible by everyone using the API (looksrare.org, aggregators, etc..).
+Use the public api endpoint [/orders](https://looksrare.dev/reference/createorder) to push the order to the database. After that, the order will be visible by everyone using the API (looksrare.org, aggregators, etc..).
 
 #### When should I use merkle tree orders ?
 
