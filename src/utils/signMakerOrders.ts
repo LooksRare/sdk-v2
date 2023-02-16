@@ -1,7 +1,7 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
 import { Eip712MerkleTree } from "./Eip712MerkleTree";
-import { Maker, MerkleTree } from "../types";
 import { makerTypes, getBatchOrderTypes } from "../constants/eip712";
+import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
 
 /**
  * Sign a maker order
@@ -23,9 +23,13 @@ export const signMakerOrder = async (
  * @param signer Ethers typed data signer
  * @param domain Typed data domain
  * @param makerOrder Maker order
- * @returns Signature and tree
+ * @returns Signature, array of proofs, and tree
  */
-export const signMerkleTreeOrders = async (signer: TypedDataSigner, domain: TypedDataDomain, makerOrders: Maker[]) => {
+export const signMerkleTreeOrders = async (
+  signer: TypedDataSigner,
+  domain: TypedDataDomain,
+  makerOrders: Maker[]
+): Promise<SignMerkleTreeOrdersOutput> => {
   const height = Math.max(Math.ceil(Math.log2(makerOrders.length)), 1);
   const types = getBatchOrderTypes(height);
   const tree = new Eip712MerkleTree(types, "BatchOrder", "Maker", makerOrders, height);

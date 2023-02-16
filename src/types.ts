@@ -1,5 +1,6 @@
 import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from "ethers";
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
+import { Eip712MerkleTree } from "./utils/Eip712MerkleTree";
 
 /** List of supported chains */
 export enum SupportedChainId {
@@ -168,6 +169,12 @@ export interface MerkleTree {
     value: string;
     position: MerkleTreeNodePosition;
   }[];
+}
+
+export interface SignMerkleTreeOrdersOutput {
+  signature: string;
+  merkleTreeProofs: MerkleTree[];
+  tree: Eip712MerkleTree<Maker>;
 }
 
 /** Error codes returned by the order validator contract */

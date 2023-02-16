@@ -33,6 +33,7 @@ import {
   OrderValidatorCode,
   BatchTransferItem,
   QuoteType,
+  SignMerkleTreeOrdersOutput,
 } from "./types";
 
 export class LooksRare {
@@ -261,7 +262,7 @@ export class LooksRare {
    * @param makerOrders Array of maker orders
    * @returns Signature and Merkletree
    */
-  public async signMultipleMakerOrders(makerOrders: Maker[]) {
+  public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<SignMerkleTreeOrdersOutput> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }

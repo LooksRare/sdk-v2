@@ -46,7 +46,6 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
       this.completeLeaves.map(hexToBuffer),
       (value: BytesLike) => hexToBuffer(keccak256(value)),
       {
-        // complete: true,
         sort: false,
         hashLeaves: false,
         fillDefaultHash: hexToBuffer(defaultLeaf),
