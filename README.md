@@ -92,7 +92,7 @@ When you approve a collection to be traded on LooksRare, you approve the Transfe
 
 tl;dr subset nonces allow you to cancel all the orders sharing the same subset nonce.
 Subset nonces allow you to group some orders together according to arbitrary rules (for example all your orders for a specific collection, all your orders above a certain threshold, etc). You can then cancel them all with a single call to `cancelSubsetOrders`.
-:information_source: Unlike order nonces, executing an order with a specific nonce doesn't invalidate other orders sharing the same subset nonce.
+:information_source: Unlike order nonces, executing an order with a specific subset nonce doesn't invalidate other orders sharing the same subset nonce.
 
 ## Resources
 
