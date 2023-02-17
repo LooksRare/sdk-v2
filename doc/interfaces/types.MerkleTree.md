@@ -8,12 +8,10 @@ Merkle root object to be used in the execute function for a multi listing
 
 ### proof
 
-• **proof**: `string`[]
+• **proof**: { `position`: `MerkleTreeNodePosition` ; `value`: `string`  }[]
 
 ___
 
 ### root
 
 • **root**: `string`
-
-Root of the merkle tree

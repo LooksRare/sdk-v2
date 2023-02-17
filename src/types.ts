@@ -2,6 +2,17 @@ import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from 
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
 import { Eip712MerkleTree } from "./utils/Eip712MerkleTree";
 
+/** Addresses used to create a LooksRare instance */
+export interface Addresses {
+  LOOKS: string;
+  EXCHANGE_V2: string;
+  TRANSFER_MANAGER_V2: string;
+  WETH: string;
+  ORDER_VALIDATOR_V2: string;
+  REVERSE_RECORDS: string;
+  LOOKS_LP_V3: string;
+}
+
 /** List of supported chains */
 export enum SupportedChainId {
   MAINNET = 1,
@@ -61,6 +72,7 @@ export interface BatchTransferItem {
  */
 export type Signer = ethers.Signer & TypedDataSigner;
 
+/** Return type for any on chain call */
 export interface ContractMethods {
   call: () => Promise<ContractTransaction>;
   estimateGas: () => Promise<BigNumber>;
@@ -157,6 +169,7 @@ export interface Taker {
   additionalParameters: BytesLike;
 }
 
+/** Merkle tree node position (needed by the SC) */
 enum MerkleTreeNodePosition {
   Left,
   Right,
@@ -171,6 +184,7 @@ export interface MerkleTree {
   }[];
 }
 
+/** Return type of the sign multiple orders function */
 export interface SignMerkleTreeOrdersOutput {
   signature: string;
   merkleTreeProofs: MerkleTree[];

@@ -2,6 +2,8 @@
 
 [types](../modules/types.md).ContractMethods
 
+Return type for any on chain call
+
 ## Properties
 
 ### call

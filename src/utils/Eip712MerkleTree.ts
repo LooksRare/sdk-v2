@@ -24,6 +24,9 @@ const fillArray = <T>(arr: T[], length: number, value: T) => {
   return arr;
 };
 
+/**
+ * Wrapper around MerkleTreeJS to support EIP signing
+ */
 export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   public tree: MerkleTree;
   private defaultNode: any;
