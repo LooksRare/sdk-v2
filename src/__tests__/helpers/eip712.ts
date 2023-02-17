@@ -1,9 +1,36 @@
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import { getMakerHash } from "../../utils/hashOrder";
+import { hashingMakerTypes, MAKER_HASH } from "../../constants/eip712";
 import { Maker, SolidityType } from "../../types";
 
 // Emulate contract cryptographic functions using JS. Used for testing purpose.
+
+/**
+ * Hash maker ask order
+ * @param maker Maker
+ * @returns string (bytes32)
+ */
+export const getMakerHash = (maker: Maker): string => {
+  const values = [
+    MAKER_HASH,
+    maker.quoteType,
+    maker.globalNonce,
+    maker.subsetNonce,
+    maker.orderNonce,
+    maker.strategyId,
+    maker.collectionType,
+    maker.collection,
+    maker.currency,
+    maker.signer,
+    maker.startTime,
+    maker.endTime,
+    maker.price,
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.itemIds])),
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.amounts])),
+    utils.keccak256(maker.additionalParameters),
+  ];
+  return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
+};
 
 /**
  * Emulate the EIP-712 domain separator computation

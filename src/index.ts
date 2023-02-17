@@ -8,12 +8,10 @@ import * as nonces from "./utils/calls/nonces";
 import * as transferManager from "./utils/calls/transferManager";
 import * as orderValidator from "./utils/calls/orderValidator";
 import * as encode from "./utils/encodeOrderParams";
-import * as hash from "./utils/hashOrder";
 import * as signMakerOrders from "./utils/signMakerOrders";
 const utils = {
   ...tokens,
   ...encode,
-  ...hash,
   ...exchange,
   ...nonces,
   ...transferManager,
