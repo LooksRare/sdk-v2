@@ -4,7 +4,7 @@ import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
-import { signMakerOrder, signMerkleRoot } from "./utils/signMakerOrders";
+import { signMakerOrder, signMerkleTreeOrders } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
   cancelOrderNonces,
@@ -21,7 +21,6 @@ import {
 import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
-import { createMakerMerkleTree } from "./utils/merkleTree";
 import {
   Maker,
   Taker,
@@ -30,11 +29,11 @@ import {
   CreateMakerInput,
   CreateMakerOutput,
   MerkleTree,
-  MultipleOrdersWithMerkleTree,
   ContractMethods,
   OrderValidatorCode,
   BatchTransferItem,
   QuoteType,
+  SignMerkleTreeOrdersOutput,
 } from "./types";
 
 export class LooksRare {
@@ -112,7 +111,7 @@ export class LooksRare {
   public async createMakerAsk({
     collection,
     strategyId,
-    assetType,
+    collectionType,
     subsetNonce,
     orderNonce,
     endTime,
@@ -142,7 +141,7 @@ export class LooksRare {
       globalNonce: userBidAskNonce.askNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
-      assetType: assetType,
+      collectionType: collectionType,
       orderNonce: orderNonce,
       collection: collection,
       currency: currency,
@@ -169,7 +168,7 @@ export class LooksRare {
   public async createMakerBid({
     collection,
     strategyId,
-    assetType,
+    collectionType,
     subsetNonce,
     orderNonce,
     endTime,
@@ -199,7 +198,7 @@ export class LooksRare {
       globalNonce: userBidAskNonce.bidNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
-      assetType: assetType,
+      collectionType: collectionType,
       orderNonce: orderNonce,
       collection: collection,
       currency: currency,
@@ -259,34 +258,16 @@ export class LooksRare {
   }
 
   /**
-   * Sign multiple maker orders (bids or asks) with a single signature
+   * Sign multiple maker orders with a single signature
    * @param makerOrders Array of maker orders
-   * @returns MultipleOrdersWithMerkleTree Orders data with their proof
+   * @returns Signature and Merkletree
    */
-  public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<MultipleOrdersWithMerkleTree> {
+  public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<SignMerkleTreeOrdersOutput> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
       throw this.ERROR_MERKLE_TREE_DEPTH;
     }
-
-    const merkleTreeJs = createMakerMerkleTree(makerOrders);
-    const leaves = merkleTreeJs.getLeaves();
-    const root = merkleTreeJs.getHexRoot();
-
     const signer = this.getSigner();
-    const signature = await signMerkleRoot(signer, this.getTypedDataDomain(), root);
-
-    return {
-      root,
-      signature,
-      orders: makerOrders.map((order, index) => {
-        const leaf = leaves[index];
-        return {
-          order,
-          hash: leaf,
-          proof: [merkleTreeJs.getHexProof(leaf).join(",")],
-        };
-      }),
-    };
+    return signMerkleTreeOrders(signer, this.getTypedDataDomain(), makerOrders);
   }
 
   /**

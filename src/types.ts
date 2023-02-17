@@ -1,5 +1,6 @@
 import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from "ethers";
-import { TypedDataSigner } from "@ethersproject/abstract-signer";
+import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
+import { Eip712MerkleTree } from "./utils/Eip712MerkleTree";
 
 /** List of supported chains */
 export enum SupportedChainId {
@@ -8,8 +9,8 @@ export enum SupportedChainId {
   HARDHAT = 31337,
 }
 
-/** List of asset types supported by the protocol */
-export enum AssetType {
+/** List of collection types supported by the protocol */
+export enum CollectionType {
   ERC721 = 0,
   ERC1155 = 1,
 }
@@ -40,13 +41,16 @@ export type SolidityType =
   | "bytes32[]"
   | "string";
 
+/** EIP712 type data */
+export type EIP712TypedData = Record<string, Array<TypedDataField>>;
+
 /**
  * Item structure used for batch transfers
  * @see https://github.com/LooksRare/contracts-exchange-v2/blob/8de425de2571a57112e9e67cf0c925439a83c9e3/contracts/interfaces/ITransferManager.sol#L16
  */
 export interface BatchTransferItem {
   collection: string;
-  assetType: AssetType;
+  collectionType: CollectionType;
   itemIds: BigNumberish[];
   amounts: BigNumberish[];
 }
@@ -78,7 +82,7 @@ export interface CreateMakerInput {
   /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
   /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
+  collectionType: CollectionType;
   /** Subset nonce used to group an arbitrary number of orders under the same nonce */
   subsetNonce: BigNumberish;
   /** Order nonce, get it from the LooksRare api */
@@ -124,7 +128,7 @@ export interface Maker {
   /** Strategy ID, 0: Standard, 1: Collection, etc*/
   strategyId: StrategyType;
   /** Asset type, 0: ERC-721, 1:ERC-1155, etc */
-  assetType: AssetType;
+  collectionType: CollectionType;
   /** Collection address */
   collection: string;
   /** Currency address (zero address for ETH) */
@@ -153,22 +157,24 @@ export interface Taker {
   additionalParameters: BytesLike;
 }
 
-/** Merkle root object to be used in the execute function for a multi listing */
-export interface MerkleTree {
-  /** Root of the merkle tree */
-  root: string;
-  proof: string[];
+enum MerkleTreeNodePosition {
+  Left,
+  Right,
 }
 
-/** List of orders with their proof and the tree information */
-export interface MultipleOrdersWithMerkleTree {
+/** Merkle root object to be used in the execute function for a multi listing */
+export interface MerkleTree {
   root: string;
-  signature: string;
-  orders: {
-    order: Maker;
-    hash: Buffer;
-    proof: string[];
+  proof: {
+    value: string;
+    position: MerkleTreeNodePosition;
   }[];
+}
+
+export interface SignMerkleTreeOrdersOutput {
+  signature: string;
+  merkleTreeProofs: MerkleTree[];
+  tree: Eip712MerkleTree<Maker>;
 }
 
 /** Error codes returned by the order validator contract */

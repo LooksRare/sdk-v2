@@ -4,7 +4,7 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
-import { SupportedChainId, Maker, AssetType, QuoteType } from "../types";
+import { SupportedChainId, Maker, CollectionType, QuoteType } from "../types";
 
 describe("EIP-712", () => {
   let mocks: SetupMocks;
@@ -28,7 +28,7 @@ describe("EIP-712", () => {
       globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       orderNonce: 1,
       collection: mocks.contracts.collection1.address,
       currency: mocks.addresses.WETH,

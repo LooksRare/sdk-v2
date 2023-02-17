@@ -388,8 +388,8 @@
             "type": "address"
           },
           {
-            "internalType": "enum AssetType",
-            "name": "assetType",
+            "internalType": "enum CollectionType",
+            "name": "collectionType",
             "type": "uint8"
           },
           {

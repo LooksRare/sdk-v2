@@ -1,10 +1,9 @@
-import { HardhatUserConfig } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@typechain/hardhat";
 import "hardhat-abi-exporter";
 
-const config: HardhatUserConfig = {
+const config = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {

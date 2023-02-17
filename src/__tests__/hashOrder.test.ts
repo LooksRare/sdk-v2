@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { getMakerHash } from "../utils/hashOrder";
-import { Maker, AssetType, QuoteType } from "../types";
+import { Maker, CollectionType, QuoteType } from "../types";
 
 describe("Hash orders", () => {
   let mocks: SetupMocks;
@@ -18,7 +18,7 @@ describe("Hash orders", () => {
       globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       orderNonce: 1,
       collection: mocks.contracts.collection1.address,
       currency: mocks.addresses.WETH,
@@ -33,8 +33,8 @@ describe("Hash orders", () => {
 
     const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerHash(makerAsk);
-    const orderHashHs = getMakerHash(makerAsk);
-    expect(orderHashSc === orderHashHs);
+    const orderHashJs = getMakerHash(makerAsk);
+    expect(orderHashSc).to.equal(orderHashJs);
   });
   it("validate maker bid order hash", async () => {
     const makerBid: Maker = {
@@ -42,7 +42,7 @@ describe("Hash orders", () => {
       globalNonce: 1,
       subsetNonce: 1,
       strategyId: 1,
-      assetType: AssetType.ERC721,
+      collectionType: CollectionType.ERC721,
       orderNonce: 1,
       collection: mocks.contracts.collection1.address,
       currency: mocks.addresses.WETH,
@@ -57,7 +57,7 @@ describe("Hash orders", () => {
 
     const { verifier } = mocks.contracts;
     const orderHashSc = await verifier.getMakerHash(makerBid);
-    const orderHashHs = getMakerHash(makerBid);
-    expect(orderHashSc === orderHashHs);
+    const orderHashJs = getMakerHash(makerBid);
+    expect(orderHashSc).to.equal(orderHashJs);
   });
 });
