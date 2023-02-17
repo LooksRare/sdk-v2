@@ -343,7 +343,7 @@ Check whether or not an operator has been approved by the user
 
 `Promise`<`boolean`\>
 
-true of the operator is approved, false otherwise
+true if the operator is approved, false otherwise
 
 ___
 
