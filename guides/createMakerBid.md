@@ -21,7 +21,7 @@ const { makerBid, approval } = await lr.createMakerBid({
   endTime: Math.floor(Date.now() / 1000), // If you use a timestamp in ms, the function will revert
   price: ethers.utils.parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
   itemIds: [0], // Token id of the NFT you want to buy
-  amounts: [1], // Default to 1, use it for listing several ERC1155 (Optional, Default to 1)
+  amounts: [1], // Use it for listing several ERC-1155 (Optional, Default to [1])
   startTime: Math.floor(Date.now() / 1000), // Default to now, use it to create an order that will be valid in the future (Optional, Default to now)
 });
 
