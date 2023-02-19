@@ -26,7 +26,7 @@
 
 Ƭ **EIP712TypedData**: `Record`<`string`, `TypedDataField`[]\>
 
-EIP712 type data
+EIP-712 typed data
 
 ___
 
