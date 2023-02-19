@@ -402,7 +402,7 @@ export class LooksRare {
     merkleTrees?: MerkleTree[]
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    const defaultMerkleRoot = { root: constants.HashZero, proof: [] };
+    const defaultMerkleTree = { root: constants.HashZero, proof: [] };
     const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleRoot);
     return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, _merkleTrees);
   }
