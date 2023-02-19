@@ -34,7 +34,7 @@ const tx = await lr.cancelSubsetOrders([0, 12]).call();
 const receipt = await tx.wait();
 ```
 
-## Cancell all your bids and/or all your asks
+## Cancel all your bids and/or all your asks
 
 ```ts
 import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
