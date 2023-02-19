@@ -393,7 +393,7 @@ export class LooksRare {
    * Verify if a set of orders can be executed (i.e are valid)
    * @param makerOrders List of maker orders
    * @param signatures List of signatures
-   * @param merkleTrees List of merkle tree (optional)
+   * @param merkleTrees List of merkle trees (optional)
    * @returns A list of OrderValidatorCode for each order (code 0 being valid)
    */
   public async verifyMakerOrders(
