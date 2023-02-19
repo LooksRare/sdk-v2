@@ -406,7 +406,7 @@ Sign multiple maker orders with a single signature
 
 `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
-Signature and Merkletree
+Signature and Merkle tree
 
 ___
 
