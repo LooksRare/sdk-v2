@@ -18,7 +18,7 @@ const tx = await lr.cancelOrders([0, 12]).call();
 const receipt = await tx.wait();
 ```
 
-## Cancell orders using subset nonces
+## Cancel orders using subset nonces
 
 ```ts
 import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
