@@ -260,7 +260,7 @@ export class LooksRare {
 
   /**
    * Sign multiple maker orders with a single signature
-   * /!\ Use this function for an UI implementation only
+   * /!\ Use this function for UI implementation only
    * @param makerOrders Array of maker orders
    * @returns Signature and Merkletree
    */
@@ -347,7 +347,7 @@ export class LooksRare {
   /**
    * Check whether or not an operator has been approved by the user
    * @param operator Operator address (default to the exchange address)
-   * @returns true of the operator is approved, false otherwise
+   * @returns true if the operator is approved, false otherwise
    */
   public async isTransferManagerApproved(operator: string = this.addresses.EXCHANGE_V2): Promise<boolean> {
     const signer = this.getSigner();
@@ -403,7 +403,7 @@ export class LooksRare {
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
     const defaultMerkleTree = { root: constants.HashZero, proof: [] };
-    const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleRoot);
+    const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
     return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, _merkleTrees);
   }
 }

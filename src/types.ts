@@ -161,7 +161,7 @@ export interface Maker {
   additionalParameters: BytesLike;
 }
 
-/** Taker order used to execute a maker order */
+/** Taker order */
 export interface Taker {
   /** Recipient of the transaction */
   recipient: string;

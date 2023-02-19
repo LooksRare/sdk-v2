@@ -1,4 +1,4 @@
-:warning: These code snippets are example and the data should never be used as it :warning:
+:warning: These code snippets are just examples and the data should never be used as is :warning:
 
 # How to create a maker ask order
 

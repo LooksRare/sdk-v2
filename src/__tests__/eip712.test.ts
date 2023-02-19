@@ -10,7 +10,7 @@ describe("EIP-712", () => {
   let mocks: SetupMocks;
   let signers: Signers;
   let domain: TypedDataDomain;
-  let makerOrder: Maker;
+  let makerAskOrder: Maker;
 
   beforeEach(async () => {
     mocks = await setUpContracts();
@@ -23,7 +23,7 @@ describe("EIP-712", () => {
       verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
 
-    makerOrder = {
+    makerAskOrder = {
       quoteType: QuoteType.Ask,
       globalNonce: 1,
       subsetNonce: 1,
@@ -49,51 +49,20 @@ describe("EIP-712", () => {
   });
   it("validate maker order digest", async () => {
     const { verifier } = mocks.contracts;
-    const digestSc = await verifier.computeMakerDigest(makerOrder);
-    const digestJs = computeDigestMaker(domain, makerOrder);
+    const digestSc = await verifier.computeMakerDigest(makerAskOrder);
+    const digestJs = computeDigestMaker(domain, makerAskOrder);
     expect(digestSc === digestJs);
   });
   it("validate maker ask order hash", async () => {
-    const makerAsk: Maker = {
-      quoteType: QuoteType.Ask,
-      globalNonce: 1,
-      subsetNonce: 1,
-      strategyId: 1,
-      collectionType: CollectionType.ERC721,
-      orderNonce: 1,
-      collection: mocks.contracts.collection1.address,
-      currency: mocks.addresses.WETH,
-      signer: signers.user1.address,
-      startTime: Math.floor(Date.now() / 1000),
-      endTime: Math.floor(Date.now() / 1000 + 3600),
-      price: utils.parseEther("1").toString(),
-      itemIds: [1],
-      amounts: [1],
-      additionalParameters: utils.defaultAbiCoder.encode([], []),
-    };
-
     const { verifier } = mocks.contracts;
-    const orderHashSc = await verifier.getMakerHash(makerAsk);
-    const orderHashJs = getMakerHash(makerAsk);
+    const orderHashSc = await verifier.getMakerHash(makerAskOrder);
+    const orderHashJs = getMakerHash(makerAskOrder);
     expect(orderHashSc).to.equal(orderHashJs);
   });
   it("validate maker bid order hash", async () => {
     const makerBid: Maker = {
+      ...makerAskOrder,
       quoteType: QuoteType.Bid,
-      globalNonce: 1,
-      subsetNonce: 1,
-      strategyId: 1,
-      collectionType: CollectionType.ERC721,
-      orderNonce: 1,
-      collection: mocks.contracts.collection1.address,
-      currency: mocks.addresses.WETH,
-      signer: signers.user1.address,
-      startTime: Math.floor(Date.now() / 1000),
-      endTime: Math.floor(Date.now() / 1000 + 3600),
-      price: utils.parseEther("1").toString(),
-      itemIds: [1],
-      amounts: [1],
-      additionalParameters: utils.defaultAbiCoder.encode([], []),
     };
 
     const { verifier } = mocks.contracts;
