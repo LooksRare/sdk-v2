@@ -7,6 +7,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Addresses } from "../../types";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
+import type { StrategyCollectionOffer } from "../../../typechain/contracts-exchange-v2/contracts/executionStrategies/StrategyCollectionOffer";
 import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
 import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
@@ -79,6 +80,7 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
     transferManager.address,
     weth.address
   )) as LooksRareProtocol;
+  const strategyCollectionOffer = (await deploy("StrategyCollectionOffer")) as StrategyCollectionOffer;
 
   tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
   await tx.wait();
@@ -87,6 +89,15 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
   tx = await looksRareProtocol.updateCurrencyStatus(weth.address, true);
   await tx.wait();
   tx = await transferManager.allowOperator(looksRareProtocol.address);
+  await tx.wait();
+  tx = await looksRareProtocol.addStrategy(
+    250,
+    250,
+    300,
+    strategyCollectionOffer.interface.getSighash("executeCollectionStrategyWithTakerAsk"),
+    true,
+    strategyCollectionOffer.address
+  );
   await tx.wait();
 
   const orderValidator = (await deploy("OrderValidatorV2A", looksRareProtocol.address)) as OrderValidatorV2A;

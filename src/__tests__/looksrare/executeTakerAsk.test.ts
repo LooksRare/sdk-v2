@@ -47,7 +47,7 @@ describe("execute taker ask", () => {
     await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const taker = lrUser1.createTaker(maker, signers.user2.address);
 
-    const contractMethods = await lrUser1.executeOrder(maker, taker, signature);
+    const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
