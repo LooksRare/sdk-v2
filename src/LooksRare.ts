@@ -273,47 +273,26 @@ export class LooksRare {
   }
 
   /**
-   * Execute a trade with a taker ask and a maker bid
-   * @param makerBid Maker bid
+   * Execute a trade
+   * @param makerBid Maker order
    * @param taker Taker order
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
    * @param referrer Referrer address if applicable
    */
-  public executeTakerAsk(
+  public executeOrder(
     maker: Maker,
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
-  ): ContractMethods {
-    if (maker.quoteType !== QuoteType.Bid) {
-      throw this.ERROR_WRONG_QUOTE_TYPE;
-    }
+  ) {
     const signer = this.getSigner();
-    return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
-  }
-
-  /**
-   * Execute a trade with a taker bid and a maker ask
-   * @param makerAsk Maker ask
-   * @param taker Taker order
-   * @param signature Signature of the maker order
-   * @param merkleTree If the maker has been signed with a merkle tree
-   * @param referrer Referrer address if applicable
-   */
-  public executeTakerBid(
-    maker: Maker,
-    taker: Taker,
-    signature: string,
-    merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
-    referrer: string = constants.AddressZero
-  ): ContractMethods {
-    if (maker.quoteType !== QuoteType.Ask) {
-      throw this.ERROR_WRONG_QUOTE_TYPE;
+    if (maker.quoteType === QuoteType.Ask) {
+      return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
+    } else {
+      return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
     }
-    const signer = this.getSigner();
-    return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
   }
 
   /**
