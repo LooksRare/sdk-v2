@@ -1,8 +1,8 @@
-# Interface: MakerBidOutputs
+# Interface: CreateMakerOutput
 
-[types](../modules/types.md).MakerBidOutputs
+[types](../modules/types.md).CreateMakerOutput
 
-Output of the createMakerBid function
+Output of the createMakerAsk function
 
 ## Properties
 
@@ -22,8 +22,8 @@ Function to be called before signing the order
 
 ___
 
-### makerBid
+### maker
 
-• **makerBid**: [`MakerBid`](types.MakerBid.md)
+• **maker**: [`Maker`](types.Maker.md)
 
 Maker order ready to be signed

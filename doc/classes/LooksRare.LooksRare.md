@@ -17,7 +17,7 @@ LooksRare protocol main class
 | `chainId` | [`SupportedChainId`](../enums/types.SupportedChainId.md) | Current app chain id |
 | `provider` | `Provider` | Ethers provider |
 | `signer?` | [`Signer`](../modules/types.md#signer) | Ethers signer |
-| `override?` | `Addresses` | Overrides contract addresses for hardhat setup |
+| `override?` | [`Addresses`](../interfaces/types.Addresses.md) | Overrides contract addresses for hardhat setup |
 
 ## Properties
 
@@ -45,9 +45,17 @@ Custom error invalid timestamp
 
 ___
 
+### ERROR\_WRONG\_QUOTE\_TYPE
+
+• `Readonly` **ERROR\_WRONG\_QUOTE\_TYPE**: `Error`
+
+Custom error wrong quote type is being used
+
+___
+
 ### addresses
 
-• `Readonly` **addresses**: `Addresses`
+• `Readonly` **addresses**: [`Addresses`](../interfaces/types.Addresses.md)
 
 Mapping of LooksRare protocol addresses for the current chain
 
@@ -143,7 +151,7 @@ ___
 
 ### createMakerAsk
 
-▸ **createMakerAsk**(`makerAskInputs`): `Promise`<[`MakerAskOutputs`](../interfaces/types.MakerAskOutputs.md)\>
+▸ **createMakerAsk**(`CreateMakerInput`): `Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
 
 Create a maker ask object ready to be signed
 
@@ -151,19 +159,19 @@ Create a maker ask object ready to be signed
 
 | Name | Type |
 | :------ | :------ |
-| `makerAskInputs` | [`MakerAskInputs`](../interfaces/types.MakerAskInputs.md) |
+| `CreateMakerInput` | [`CreateMakerInput`](../interfaces/types.CreateMakerInput.md) |
 
 #### Returns
 
-`Promise`<[`MakerAskOutputs`](../interfaces/types.MakerAskOutputs.md)\>
+`Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
 
-MakerAskOutputs
+CreateMakerOutput
 
 ___
 
 ### createMakerBid
 
-▸ **createMakerBid**(`makerBidOutputs`): `Promise`<[`MakerBidOutputs`](../interfaces/types.MakerBidOutputs.md)\>
+▸ **createMakerBid**(`CreateMakerInput`): `Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
 
 Create a maker bid object ready to be signed
 
@@ -171,19 +179,19 @@ Create a maker bid object ready to be signed
 
 | Name | Type |
 | :------ | :------ |
-| `makerBidOutputs` | [`MakerBidInputs`](../interfaces/types.MakerBidInputs.md) |
+| `CreateMakerInput` | [`CreateMakerInput`](../interfaces/types.CreateMakerInput.md) |
 
 #### Returns
 
-`Promise`<[`MakerBidOutputs`](../interfaces/types.MakerBidOutputs.md)\>
+`Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
 
-MakerBidOutputs
+CreateMakerOutput
 
 ___
 
-### createTakerAsk
+### createTaker
 
-▸ **createTakerAsk**(`makerBid`, `recipient`, `additionalParameters?`): [`TakerAsk`](../interfaces/types.TakerAsk.md)
+▸ **createTaker**(`maker`, `recipient?`, `additionalParameters?`): [`Taker`](../interfaces/types.Taker.md)
 
 Create a taker ask ready to be executed against a maker bid
 
@@ -191,39 +199,43 @@ Create a taker ask ready to be executed against a maker bid
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `makerBid` | [`MakerBid`](../interfaces/types.MakerBid.md) | `undefined` | Maker bid that will be used as counterparty for the taker ask |
-| `recipient` | `string` | `undefined` | Recipient address of the taker |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | Maker order that will be used as counterparty for the taker |
+| `recipient` | `string` | `constants.AddressZero` | Recipient address of the taker (if none, it will use the sender) |
 | `additionalParameters` | `any`[] | `[]` | Additional parameters used to support complex orders |
 
 #### Returns
 
-[`TakerAsk`](../interfaces/types.TakerAsk.md)
+[`Taker`](../interfaces/types.Taker.md)
 
 ___
 
-### createTakerBid
+### createTakerForCollectionOrder
 
-▸ **createTakerBid**(`makerAsk`, `recipient`, `additionalParameters?`): [`TakerBid`](../interfaces/types.TakerBid.md)
+▸ **createTakerForCollectionOrder**(`maker`, `itemId`, `recipient?`): [`Taker`](../interfaces/types.Taker.md)
 
-Create a taker bid ready to be executed against a maker ask
+Wrapper of createTaker to facilitate taker creation for collection orders
+
+**`See`**
+
+this.createTaker
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `makerAsk` | [`MakerAsk`](../interfaces/types.MakerAsk.md) | `undefined` | Maker ask that will be used as counterparty for the taker bid |
-| `recipient` | `string` | `undefined` | Recipient address of the taker |
-| `additionalParameters` | `any`[] | `[]` | Additional parameters used to support complex orders |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | - |
+| `itemId` | `BigNumberish` | Token id to use as a counterparty for the collection order |
+| `recipient?` | `string` | Recipient address of the taker (if none, it will use the sender) |
 
 #### Returns
 
-[`TakerBid`](../interfaces/types.TakerBid.md)
+[`Taker`](../interfaces/types.Taker.md)
 
 ___
 
 ### executeTakerAsk
 
-▸ **executeTakerAsk**(`makerBid`, `takerAsk`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **executeTakerAsk**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Execute a trade with a taker ask and a maker bid
 
@@ -231,8 +243,8 @@ Execute a trade with a taker ask and a maker bid
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `makerBid` | [`MakerBid`](../interfaces/types.MakerBid.md) | `undefined` | Maker bid |
-| `takerAsk` | [`TakerAsk`](../interfaces/types.TakerAsk.md) | `undefined` | Taker ask |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | - |
+| `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
 | `signature` | `string` | `undefined` | Signature of the maker order |
 | `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
 | `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
@@ -245,7 +257,7 @@ ___
 
 ### executeTakerBid
 
-▸ **executeTakerBid**(`makerAsk`, `takerBid`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **executeTakerBid**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Execute a trade with a taker bid and a maker ask
 
@@ -253,8 +265,8 @@ Execute a trade with a taker bid and a maker ask
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `makerAsk` | [`MakerAsk`](../interfaces/types.MakerAsk.md) | `undefined` | Maker ask |
-| `takerBid` | [`TakerBid`](../interfaces/types.TakerBid.md) | `undefined` | Taker bid |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | - |
+| `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
 | `signature` | `string` | `undefined` | Signature of the maker order |
 | `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
 | `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
@@ -317,7 +329,7 @@ ___
 
 ### isTransferManagerApproved
 
-▸ **isTransferManagerApproved**(`operators?`): `Promise`<`boolean`\>
+▸ **isTransferManagerApproved**(`operator?`): `Promise`<`boolean`\>
 
 Check whether or not an operator has been approved by the user
 
@@ -325,11 +337,13 @@ Check whether or not an operator has been approved by the user
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `operators` | `string` | List of operators (default to the exchange address) |
+| `operator` | `string` | Operator address (default to the exchange address) |
 
 #### Returns
 
 `Promise`<`boolean`\>
+
+true if the operator is approved, false otherwise
 
 ___
 
@@ -355,17 +369,17 @@ Exchange address
 
 ___
 
-### signMakerAsk
+### signMakerOrder
 
-▸ **signMakerAsk**(`makerAsk`): `Promise`<`string`\>
+▸ **signMakerOrder**(`maker`): `Promise`<`string`\>
 
-Sign a maker ask using the signer provided in the constructor
+Sign a maker order using the signer provided in the constructor
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `makerAsk` | [`MakerAsk`](../interfaces/types.MakerAsk.md) | Order to be signed by the user |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | Order to be signed by the user |
 
 #### Returns
 
@@ -375,43 +389,24 @@ Signature
 
 ___
 
-### signMakerBid
+### signMultipleMakerOrders
 
-▸ **signMakerBid**(`makerBid`): `Promise`<`string`\>
+▸ **signMultipleMakerOrders**(`makerOrders`): `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
-Sign a maker bid using the signer provided in the constructor
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerBid` | [`MakerBid`](../interfaces/types.MakerBid.md) | Order to be signed by the user |
-
-#### Returns
-
-`Promise`<`string`\>
-
-Signature
-
-___
-
-### signMultipleMakers
-
-▸ **signMultipleMakers**(`makerOrders`): `Promise`<[`MultipleOrdersWithMerkleTree`](../interfaces/types.MultipleOrdersWithMerkleTree.md)\>
-
-Sign multiple maker orders (bids or asks) with a single signature
+Sign multiple maker orders with a single signature
+/!\ Use this function for an UI implementation only
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `makerOrders` | ([`MakerAsk`](../interfaces/types.MakerAsk.md) \| [`MakerBid`](../interfaces/types.MakerBid.md))[] | Array of maker orders |
+| `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | Array of maker orders |
 
 #### Returns
 
-`Promise`<[`MultipleOrdersWithMerkleTree`](../interfaces/types.MultipleOrdersWithMerkleTree.md)\>
+`Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
-MultipleOrdersWithMerkleTree Orders data with their proof
+Signature and Merkle tree
 
 ___
 
@@ -425,7 +420,7 @@ Transfer a list of items across different collections
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `to` | `string` |  |
+| `to` | `string` | Recipient address |
 | `collectionItems` | [`BatchTransferItem`](../interfaces/types.BatchTransferItem.md)[] | Each object in the array represent a list of items for a specific collection |
 
 #### Returns
@@ -434,37 +429,19 @@ Transfer a list of items across different collections
 
 ___
 
-### verifyMakerAskOrders
+### verifyMakerOrders
 
-▸ **verifyMakerAskOrders**(`makerAskOrders`, `signatures`, `merkleTrees`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+▸ **verifyMakerOrders**(`makerOrders`, `signatures`, `merkleTrees?`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
 
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerAskOrders` | [`MakerAsk`](../interfaces/types.MakerAsk.md)[] | List of maker ask orders |
-| `signatures` | `string`[] | List of signatures |
-| `merkleTrees` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (if applicable) |
-
-#### Returns
-
-`Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
-
-A list of OrderValidatorCode for each order (code 0 being valid)
-
-___
-
-### verifyMakerBidOrders
-
-▸ **verifyMakerBidOrders**(`makerBidOrders`, `signatures`, `merkleTrees`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+Verify if a set of orders can be executed (i.e are valid)
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `makerBidOrders` | [`MakerBid`](../interfaces/types.MakerBid.md)[] | List of maker bid orders |
+| `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | List of maker orders |
 | `signatures` | `string`[] | List of signatures |
-| `merkleTrees` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (if applicable) |
+| `merkleTrees?` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (optional) |
 
 #### Returns
 

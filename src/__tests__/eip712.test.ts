@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
-import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
+import { computeDigestMaker, getDomainSeparator, getMakerHash } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
 import { SupportedChainId, Maker, CollectionType, QuoteType } from "../types";
 
@@ -10,7 +10,7 @@ describe("EIP-712", () => {
   let mocks: SetupMocks;
   let signers: Signers;
   let domain: TypedDataDomain;
-  let makerOrder: Maker;
+  let makerAskOrder: Maker;
 
   beforeEach(async () => {
     mocks = await setUpContracts();
@@ -23,7 +23,7 @@ describe("EIP-712", () => {
       verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
 
-    makerOrder = {
+    makerAskOrder = {
       quoteType: QuoteType.Ask,
       globalNonce: 1,
       subsetNonce: 1,
@@ -49,8 +49,25 @@ describe("EIP-712", () => {
   });
   it("validate maker order digest", async () => {
     const { verifier } = mocks.contracts;
-    const digestSc = await verifier.computeMakerDigest(makerOrder);
-    const digestJs = computeDigestMaker(domain, makerOrder);
+    const digestSc = await verifier.computeMakerDigest(makerAskOrder);
+    const digestJs = computeDigestMaker(domain, makerAskOrder);
     expect(digestSc === digestJs);
+  });
+  it("validate maker ask order hash", async () => {
+    const { verifier } = mocks.contracts;
+    const orderHashSc = await verifier.getMakerHash(makerAskOrder);
+    const orderHashJs = getMakerHash(makerAskOrder);
+    expect(orderHashSc).to.equal(orderHashJs);
+  });
+  it("validate maker bid order hash", async () => {
+    const makerBid: Maker = {
+      ...makerAskOrder,
+      quoteType: QuoteType.Bid,
+    };
+
+    const { verifier } = mocks.contracts;
+    const orderHashSc = await verifier.getMakerHash(makerBid);
+    const orderHashJs = getMakerHash(makerBid);
+    expect(orderHashSc).to.equal(orderHashJs);
   });
 });

@@ -1,6 +1,6 @@
-# Interface: MakerAskInputs
+# Interface: CreateMakerInput
 
-[types](../modules/types.md).MakerAskInputs
+[types](../modules/types.md).CreateMakerInput
 
 Input of the createMakerAsk function
 
@@ -26,19 +26,19 @@ Amount for each item ids (needs to have the same length as itemIds array)
 
 ___
 
-### assetType
-
-• **assetType**: [`AssetType`](../enums/types.AssetType.md)
-
-Asset type, 0: ERC-721, 1:ERC-1155, etc
-
-___
-
 ### collection
 
 • **collection**: `string`
 
 Collection address
+
+___
+
+### collectionType
+
+• **collectionType**: [`CollectionType`](../enums/types.CollectionType.md)
+
+Collection type, 0: ERC-721, 1:ERC-1155, etc
 
 ___
 

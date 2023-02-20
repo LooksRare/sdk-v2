@@ -1,11 +1,9 @@
 import { expect } from "chai";
-import { utils, constants } from "ethers";
+import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, OrderValidatorCode } from "../../types";
-
-const defaultMerkleRoot = { root: constants.HashZero, proof: [] };
 
 describe("Order validation", () => {
   let mocks: SetupMocks;
@@ -35,12 +33,12 @@ describe("Order validation", () => {
     const { maker, approval } = await lr.createMakerAsk(baseMakerAskInput);
     const signature = await lr.signMakerOrder(maker);
 
-    let orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
+    let orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC721_NO_APPROVAL_FOR_ALL_OR_ITEM_ID)).to.be.true;
 
     await approval!();
 
-    orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
+    orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].every((code) => code === OrderValidatorCode.ORDER_EXPECTED_TO_BE_VALID)).to.be.true;
   });
   it("verify maker bid orders", async () => {
@@ -59,18 +57,18 @@ describe("Order validation", () => {
     const { maker, approval } = await lr.createMakerBid(baseMakerBidInput);
     const signature = await lr.signMakerOrder(maker);
 
-    let orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
+    let orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_BALANCE_INFERIOR_TO_PRICE)).to.be.true;
 
     const tx = await mocks.contracts.weth.mint(signers.user1.address, utils.parseEther("10"));
     await tx.wait();
 
-    orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
+    orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_APPROVAL_INFERIOR_TO_PRICE)).to.be.true;
 
     await approval!();
 
-    orders = await lr.verifyMakerOrders([maker], [signature], [defaultMerkleRoot]);
+    orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].every((code) => code === OrderValidatorCode.ORDER_EXPECTED_TO_BE_VALID)).to.be.true;
   });
 });

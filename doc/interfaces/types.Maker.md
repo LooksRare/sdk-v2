@@ -1,8 +1,8 @@
-# Interface: MakerBid
+# Interface: Maker
 
-[types](../modules/types.md).MakerBid
+[types](../modules/types.md).Maker
 
-Maker bid object to be used in execute functions
+Maker object to be used in execute functions
 
 ## Properties
 
@@ -22,27 +22,19 @@ List of amount for each item ID (1 for ERC721)
 
 ___
 
-### assetType
-
-• **assetType**: [`AssetType`](../enums/types.AssetType.md)
-
-Asset type, 0: ERC-721, 1:ERC-1155, etc
-
-___
-
-### bidNonce
-
-• **bidNonce**: `BigNumberish`
-
-User's current bid nonce
-
-___
-
 ### collection
 
 • **collection**: `string`
 
 Collection address
+
+___
+
+### collectionType
+
+• **collectionType**: [`CollectionType`](../enums/types.CollectionType.md)
+
+Asset type, 0: ERC-721, 1:ERC-1155, etc
 
 ___
 
@@ -62,6 +54,14 @@ Timestamp in second of the time when the order becomes invalid
 
 ___
 
+### globalNonce
+
+• **globalNonce**: `BigNumberish`
+
+User's current bid / ask nonce
+
+___
+
 ### itemIds
 
 • **itemIds**: `BigNumberish`[]
@@ -70,19 +70,27 @@ List of item IDS
 
 ___
 
-### maxPrice
-
-• **maxPrice**: `BigNumberish`
-
-Maximum price to be paid for the trade
-
-___
-
 ### orderNonce
 
 • **orderNonce**: `BigNumberish`
 
 Nonce for this specific order
+
+___
+
+### price
+
+• **price**: `BigNumberish`
+
+Minimum price to be received after the trade
+
+___
+
+### quoteType
+
+• **quoteType**: [`QuoteType`](../enums/types.QuoteType.md)
+
+Ask or bid
 
 ___
 

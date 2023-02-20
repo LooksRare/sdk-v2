@@ -1,7 +1,7 @@
 import { BigNumber, providers, constants, BigNumberish } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
-import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { addressesByNetwork } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "./constants";
 import { signMakerOrder, signMerkleTreeOrders } from "./utils/signMakerOrders";
@@ -22,6 +22,7 @@ import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import {
+  Addresses,
   Maker,
   Taker,
   SupportedChainId,
@@ -259,6 +260,7 @@ export class LooksRare {
 
   /**
    * Sign multiple maker orders with a single signature
+   * /!\ Use this function for UI implementation only
    * @param makerOrders Array of maker orders
    * @returns Signature and Merkletree
    */
@@ -344,13 +346,13 @@ export class LooksRare {
 
   /**
    * Check whether or not an operator has been approved by the user
-   * @param operators List of operators (default to the exchange address)
-   * @returns
+   * @param operator Operator address (default to the exchange address)
+   * @returns true if the operator is approved, false otherwise
    */
-  public async isTransferManagerApproved(operators: string = this.addresses.EXCHANGE_V2): Promise<boolean> {
+  public async isTransferManagerApproved(operator: string = this.addresses.EXCHANGE_V2): Promise<boolean> {
     const signer = this.getSigner();
     const signerAddress = await signer.getAddress();
-    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER_V2, signerAddress, operators);
+    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER_V2, signerAddress, operator);
   }
 
   /**
@@ -375,7 +377,7 @@ export class LooksRare {
 
   /**
    * Transfer a list of items across different collections
-   * @param to
+   * @param to Recipient address
    * @param collectionItems Each object in the array represent a list of items for a specific collection
    */
   public async transferItemsAcrossCollection(
@@ -388,18 +390,20 @@ export class LooksRare {
   }
 
   /**
-   *
-   * @param makerAskOrders List of maker ask orders
+   * Verify if a set of orders can be executed (i.e are valid)
+   * @param makerOrders List of maker orders
    * @param signatures List of signatures
-   * @param merkleTrees List of merkle tree (if applicable)
+   * @param merkleTrees List of merkle trees (optional)
    * @returns A list of OrderValidatorCode for each order (code 0 being valid)
    */
   public async verifyMakerOrders(
     makerOrders: Maker[],
     signatures: string[],
-    merkleTrees: MerkleTree[]
+    merkleTrees?: MerkleTree[]
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, merkleTrees);
+    const defaultMerkleTree = { root: constants.HashZero, proof: [] };
+    const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
+    return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, _merkleTrees);
   }
 }

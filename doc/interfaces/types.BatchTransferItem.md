@@ -2,7 +2,7 @@
 
 [types](../modules/types.md).BatchTransferItem
 
-Item structure used for batc transfer
+Item structure used for batch transfers
 
 **`See`**
 
@@ -16,15 +16,15 @@ https://github.com/LooksRare/contracts-exchange-v2/blob/8de425de2571a57112e9e67c
 
 ___
 
-### assetType
-
-• **assetType**: [`AssetType`](../enums/types.AssetType.md)
-
-___
-
 ### collection
 
 • **collection**: `string`
+
+___
+
+### collectionType
+
+• **collectionType**: [`CollectionType`](../enums/types.CollectionType.md)
 
 ___
 

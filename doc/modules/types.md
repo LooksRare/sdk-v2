@@ -2,27 +2,33 @@
 
 ## Enumerations
 
-- [AssetType](../enums/types.AssetType.md)
+- [CollectionType](../enums/types.CollectionType.md)
 - [OrderValidatorCode](../enums/types.OrderValidatorCode.md)
+- [QuoteType](../enums/types.QuoteType.md)
 - [StrategyType](../enums/types.StrategyType.md)
 - [SupportedChainId](../enums/types.SupportedChainId.md)
 
 ## Interfaces
 
+- [Addresses](../interfaces/types.Addresses.md)
 - [BatchTransferItem](../interfaces/types.BatchTransferItem.md)
 - [ContractMethods](../interfaces/types.ContractMethods.md)
-- [MakerAsk](../interfaces/types.MakerAsk.md)
-- [MakerAskInputs](../interfaces/types.MakerAskInputs.md)
-- [MakerAskOutputs](../interfaces/types.MakerAskOutputs.md)
-- [MakerBid](../interfaces/types.MakerBid.md)
-- [MakerBidInputs](../interfaces/types.MakerBidInputs.md)
-- [MakerBidOutputs](../interfaces/types.MakerBidOutputs.md)
+- [CreateMakerInput](../interfaces/types.CreateMakerInput.md)
+- [CreateMakerOutput](../interfaces/types.CreateMakerOutput.md)
+- [Maker](../interfaces/types.Maker.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)
-- [MultipleOrdersWithMerkleTree](../interfaces/types.MultipleOrdersWithMerkleTree.md)
-- [TakerAsk](../interfaces/types.TakerAsk.md)
-- [TakerBid](../interfaces/types.TakerBid.md)
+- [SignMerkleTreeOrdersOutput](../interfaces/types.SignMerkleTreeOrdersOutput.md)
+- [Taker](../interfaces/types.Taker.md)
 
 ## Type Aliases
+
+### EIP712TypedData
+
+Ƭ **EIP712TypedData**: `Record`<`string`, `TypedDataField`[]\>
+
+EIP-712 typed data
+
+___
 
 ### Signer
 

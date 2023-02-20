@@ -1,6 +1,7 @@
 import { constants } from "ethers";
 import { Maker } from "../types";
 
+/** Default maker value used for merkle tree creation */
 export const defaultMaker: Maker = {
   quoteType: 0,
   globalNonce: 0,
