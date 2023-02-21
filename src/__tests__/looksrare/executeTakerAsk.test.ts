@@ -14,20 +14,13 @@ describe("execute taker ask", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
 
-    {
-      const tx = await mocks.contracts.weth.mint(signers.user2.address, utils.parseEther("10"));
-      await tx.wait();
-    }
-
-    {
-      const tx = await mocks.contracts.transferManager
-        .connect(signers.user1)
-        .grantApprovals([mocks.addresses.EXCHANGE_V2]);
-      await tx.wait();
-    }
+    const tx = await mocks.contracts.transferManager
+      .connect(signers.user1)
+      .grantApprovals([mocks.addresses.EXCHANGE_V2]);
+    await tx.wait();
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -47,7 +40,7 @@ describe("execute taker ask", () => {
     await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const taker = lrUser1.createTaker(maker, signers.user2.address);
 
-    const contractMethods = await lrUser1.executeOrder(maker, taker, signature);
+    const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);

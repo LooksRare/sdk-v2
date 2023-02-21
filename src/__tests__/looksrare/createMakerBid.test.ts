@@ -14,7 +14,7 @@ describe("Create maker bid", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
     baseMakerInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,

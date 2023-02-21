@@ -12,49 +12,64 @@ describe("Tokens", () => {
   });
   it("approve ERC721", async () => {
     const provider = ethers.provider;
-    const { collection1 } = mocks.contracts;
+    const { collectionERC721 } = mocks.contracts;
 
     let isApproved = await isApprovedForAll(
       provider,
-      collection1.address,
+      collectionERC721.address,
       signers.user1.address,
       signers.operator.address
     );
     expect(isApproved).to.be.false;
 
     // Approve
-    let transaction = await setApprovalForAll(signers.user1, collection1.address, signers.operator.address);
+    let transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address);
     let receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
-    isApproved = await isApprovedForAll(provider, collection1.address, signers.user1.address, signers.operator.address);
+    isApproved = await isApprovedForAll(
+      provider,
+      collectionERC721.address,
+      signers.user1.address,
+      signers.operator.address
+    );
     expect(isApproved).to.be.true;
 
     // Cancel approval
-    transaction = await setApprovalForAll(signers.user1, collection1.address, signers.operator.address, false);
+    transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address, false);
     receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
-    isApproved = await isApprovedForAll(provider, collection1.address, signers.user1.address, signers.operator.address);
-    expect(isApproved).to.be.false;
-  });
-  it("approve ERC1155", async () => {
-    const provider = ethers.provider;
-    const { collection2 } = mocks.contracts;
-
-    let isApproved = await isApprovedForAll(
+    isApproved = await isApprovedForAll(
       provider,
-      collection2.address,
+      collectionERC721.address,
       signers.user1.address,
       signers.operator.address
     );
     expect(isApproved).to.be.false;
+  });
+  it("approve ERC1155", async () => {
+    const provider = ethers.provider;
+    const { collectionERC1155 } = mocks.contracts;
 
-    const transaction = await setApprovalForAll(signers.user1, collection2.address, signers.operator.address);
+    let isApproved = await isApprovedForAll(
+      provider,
+      collectionERC1155.address,
+      signers.user2.address,
+      signers.operator.address
+    );
+    expect(isApproved).to.be.false;
+
+    const transaction = await setApprovalForAll(signers.user2, collectionERC1155.address, signers.operator.address);
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
-    isApproved = await isApprovedForAll(provider, collection2.address, signers.user1.address, signers.operator.address);
+    isApproved = await isApprovedForAll(
+      provider,
+      collectionERC1155.address,
+      signers.user2.address,
+      signers.operator.address
+    );
     expect(isApproved).to.be.true;
   });
 });

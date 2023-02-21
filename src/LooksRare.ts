@@ -35,6 +35,7 @@ import {
   BatchTransferItem,
   QuoteType,
   SignMerkleTreeOrdersOutput,
+  StrategyType,
 } from "./types";
 
 export class LooksRare {
@@ -65,6 +66,9 @@ export class LooksRare {
 
   /** Custom error wrong quote type is being used */
   public readonly ERROR_WRONG_QUOTE_TYPE = new Error("Wrong quote type");
+
+  /** Custom error wrong strategy type is being used */
+  public readonly ERROR_WRONG_STRATEGY_TYPE = new Error("Wrong strategy type");
 
   /**
    * LooksRare protocol main class
@@ -209,7 +213,7 @@ export class LooksRare {
       price: price,
       itemIds: itemIds,
       amounts: amounts,
-      additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(strategyId)),
+      additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
     };
 
     return {
@@ -244,6 +248,9 @@ export class LooksRare {
   public createTakerForCollectionOrder(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
     if (maker.quoteType !== QuoteType.Bid) {
       throw this.ERROR_WRONG_QUOTE_TYPE;
+    }
+    if (maker.strategyId !== StrategyType.collection) {
+      throw this.ERROR_WRONG_STRATEGY_TYPE;
     }
     return this.createTaker(maker, recipient, [itemId]);
   }

@@ -57,20 +57,20 @@ describe("Transfer manager", () => {
   it("transfer items from a single collection", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER_V2);
+    await setApprovalForAll(signers.user1, contracts.collectionERC721.address, addresses.TRANSFER_MANAGER_V2);
     (await lr.grantTransferManagerApproval().call()).wait();
-    const collection1 = new Contract(contracts.collection1.address, abiIERC721, ethers.provider) as ERC721;
+    const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
 
     const receipient = signers.user3.address;
     const tokenId = 0;
 
     // Check the initial owner
-    const initialOwner = await collection1.ownerOf(tokenId);
+    const initialOwner = await collectionERC721.ownerOf(tokenId);
     expect(initialOwner).to.be.equal(signers.user1.address);
 
     const items: BatchTransferItem[] = [
       {
-        collection: contracts.collection1.address,
+        collection: contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         itemIds: [tokenId],
         amounts: [1],
@@ -88,25 +88,34 @@ describe("Transfer manager", () => {
     expect(receipt.status).to.equal(1);
 
     // Check the new owner
-    const newOwner = await collection1.ownerOf(tokenId);
+    const newOwner = await collectionERC721.ownerOf(tokenId);
     expect(newOwner).to.be.equal(receipient);
   });
   it("transfer items from multiple collections", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collection1.address, addresses.TRANSFER_MANAGER_V2);
-    await setApprovalForAll(signers.user1, contracts.collection2.address, addresses.TRANSFER_MANAGER_V2);
+    await setApprovalForAll(signers.user1, contracts.collectionERC721.address, addresses.TRANSFER_MANAGER_V2);
+    await setApprovalForAll(signers.user1, contracts.collectionERC1155.address, addresses.TRANSFER_MANAGER_V2);
     (await lr.grantTransferManagerApproval().call()).wait();
-    const collection1 = new Contract(contracts.collection1.address, abiIERC721, ethers.provider) as ERC721;
-    const collection2 = new Contract(contracts.collection2.address, abiIERC1155, ethers.provider) as ERC1155;
+    const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
+    const collectionERC1155 = new Contract(
+      contracts.collectionERC1155.address,
+      abiIERC1155,
+      ethers.provider
+    ) as ERC1155;
 
     const receipient = signers.user3.address;
 
     // Execute the transfer
     const items: BatchTransferItem[] = [
-      { collection: contracts.collection1.address, collectionType: CollectionType.ERC721, itemIds: [0], amounts: [1] },
       {
-        collection: contracts.collection2.address,
+        collection: contracts.collectionERC721.address,
+        collectionType: CollectionType.ERC721,
+        itemIds: [0],
+        amounts: [1],
+      },
+      {
+        collection: contracts.collectionERC1155.address,
         collectionType: CollectionType.ERC1155,
         itemIds: [0],
         amounts: [10],
@@ -124,9 +133,9 @@ describe("Transfer manager", () => {
     expect(receipt.status).to.equal(1);
 
     // Check the new owner
-    const newOwner = await collection1.ownerOf(0);
+    const newOwner = await collectionERC721.ownerOf(0);
     expect(newOwner).to.be.equal(receipient);
-    const newBalance = await collection2.balanceOf(receipient, 0);
+    const newBalance = await collectionERC1155.balanceOf(receipient, 0);
     expect(newBalance).to.be.equal(10);
   });
 });

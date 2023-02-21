@@ -7,11 +7,12 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Addresses } from "../../types";
 import type { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../../typechain/contracts-exchange-v2/contracts/TransferManager";
+import type { StrategyCollectionOffer } from "../../../typechain/contracts-exchange-v2/contracts/executionStrategies/StrategyCollectionOffer";
 import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
 import type { OrderValidatorV2A } from "../../../typechain/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
-import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
+import type { WETH } from "../../../typechain/solmate/src/tokens/WETH";
 import type { Verifier } from "../../../typechain/src/contracts/tests/Verifier";
 
 chai.use(chaiAsPromised);
@@ -20,10 +21,9 @@ export interface SetupMocks {
   contracts: {
     looksRareProtocol: LooksRareProtocol;
     transferManager: TransferManager;
-    collection1: MockERC721;
-    collection2: MockERC1155;
-    collection3: MockERC721;
-    weth: MockERC20;
+    collectionERC721: MockERC721;
+    collectionERC1155: MockERC1155;
+    weth: WETH;
     verifier: Verifier;
     orderValidator: OrderValidatorV2A;
   };
@@ -71,7 +71,7 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
     "CreatorFeeManagerWithRoyalties",
     royaltyFeeRegistry.address
   )) as CreatorFeeManagerWithRoyalties;
-  const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
+  const weth = (await deploy("WETH")) as WETH;
   const looksRareProtocol = (await deploy(
     "LooksRareProtocol",
     signers.owner.address,
@@ -79,6 +79,7 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
     transferManager.address,
     weth.address
   )) as LooksRareProtocol;
+  const strategyCollectionOffer = (await deploy("StrategyCollectionOffer")) as StrategyCollectionOffer;
 
   tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
   await tx.wait();
@@ -88,30 +89,45 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
   await tx.wait();
   tx = await transferManager.allowOperator(looksRareProtocol.address);
   await tx.wait();
+  tx = await looksRareProtocol.addStrategy(
+    250,
+    250,
+    300,
+    strategyCollectionOffer.interface.getSighash("executeCollectionStrategyWithTakerAsk"),
+    true,
+    strategyCollectionOffer.address
+  );
+  await tx.wait();
 
   const orderValidator = (await deploy("OrderValidatorV2A", looksRareProtocol.address)) as OrderValidatorV2A;
-  const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
-  const collection2 = (await deploy("MockERC1155")) as MockERC1155;
-  const collection3 = (await deploy("MockERC721", "Collection3", "COL3")) as MockERC721;
+  const collectionERC721 = (await deploy("MockERC721", "collectionERC721", "COL1")) as MockERC721;
+  const collectionERC1155 = (await deploy("MockERC1155")) as MockERC1155;
   const verifier = (await deploy("Verifier", looksRareProtocol.address)) as Verifier;
 
   // Setup balances
+  const wethUser1 = new ethers.Contract(weth.address, weth.interface, signers.user1);
+  tx = await wethUser1.deposit({ value: ethers.utils.parseEther("10") });
+  await tx.wait();
+
+  const wethUser2 = new ethers.Contract(weth.address, weth.interface, signers.user2);
+  tx = await wethUser2.deposit({ value: ethers.utils.parseEther("10") });
+  await tx.wait();
+
   for (let i = 0; i < NB_NFT_PER_USER; i++) {
-    tx = await collection1.mint(signers.user1.address, i);
+    tx = await collectionERC721.mint(signers.user1.address);
     await tx.wait();
-    tx = await collection2.mint(signers.user2.address, i, 10);
+    tx = await collectionERC1155.mint(signers.user2.address, i, 10);
     await tx.wait();
   }
-  tx = await collection2.mint(signers.user1.address, 0, 10);
+  tx = await collectionERC1155.mint(signers.user1.address, 0, 10);
   await tx.wait();
 
   return {
     contracts: {
       looksRareProtocol,
       transferManager,
-      collection1,
-      collection2,
-      collection3,
+      collectionERC721,
+      collectionERC1155,
       weth,
       verifier,
       orderValidator,

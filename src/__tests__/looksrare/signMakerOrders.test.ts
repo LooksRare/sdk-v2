@@ -30,7 +30,7 @@ describe("Sign maker orders", () => {
   describe("Sign single maker orders", () => {
     it("sign maker ask order", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { collection1, verifier } = mocks.contracts;
+      const { collectionERC721, verifier } = mocks.contracts;
 
       const makerOrder: Maker = {
         quoteType: QuoteType.Ask,
@@ -39,7 +39,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collection1.address,
+        collection: collectionERC721.address,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
@@ -60,7 +60,7 @@ describe("Sign maker orders", () => {
     });
     it("sign maker bid order", async () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { collection1, verifier } = mocks.contracts;
+      const { collectionERC721, verifier } = mocks.contracts;
 
       const makerOrder: Maker = {
         quoteType: QuoteType.Bid,
@@ -69,7 +69,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collection1.address,
+        collection: collectionERC721.address,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
@@ -92,7 +92,7 @@ describe("Sign maker orders", () => {
 
   describe("Sign multiple maker orders", () => {
     it("sign multiple maker bid order (merkle tree)", async () => {
-      const { collection1, verifier } = mocks.contracts;
+      const { collectionERC721, verifier } = mocks.contracts;
       const makerOrders: Maker[] = [
         {
           quoteType: QuoteType.Bid,
@@ -101,7 +101,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collection1.address,
+          collection: collectionERC721.address,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -118,7 +118,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collection1.address,
+          collection: collectionERC721.address,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -135,7 +135,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collection1.address,
+          collection: collectionERC721.address,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -161,7 +161,7 @@ describe("Sign maker orders", () => {
       });
     });
     it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
-      const { collection1 } = mocks.contracts;
+      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -169,7 +169,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collection1.address,
+        collection: collectionERC721.address,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
@@ -184,7 +184,7 @@ describe("Sign maker orders", () => {
       await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
     });
     it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
-      const { collection1 } = mocks.contracts;
+      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -192,7 +192,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collection1.address,
+        collection: collectionERC721.address,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
