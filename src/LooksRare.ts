@@ -67,7 +67,7 @@ export class LooksRare {
   /** Custom error wrong quote type is being used */
   public readonly ERROR_WRONG_QUOTE_TYPE = new Error("Wrong quote type");
 
-  /** Custom error wrong quote type is being used */
+  /** Custom error wrong strategy type is being used */
   public readonly ERROR_WRONG_STRATEGY_TYPE = new Error("Wrong strategy type");
 
   /**
