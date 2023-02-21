@@ -20,6 +20,7 @@ const utils = {
 };
 export { utils };
 
+export * from "./errors";
 export * from "./types";
 
 export { LooksRare } from "./LooksRare";

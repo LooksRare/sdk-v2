@@ -21,6 +21,7 @@ import {
 import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
+import { ErrorMerkleTreeDepth, ErrorQuoteType, ErrorSigner, ErrorTimestamp, ErrorStrategyType } from "./errors";
 import {
   Addresses,
   Maker,
@@ -55,21 +56,6 @@ export class LooksRare {
    */
   public readonly provider: providers.Provider;
 
-  /** Custom error invalid timestamp */
-  public readonly ERROR_TIMESTAMP = new Error("Timestamps should be in seconds");
-
-  /** Custom error undefined signer */
-  public readonly ERROR_SIGNER = new Error("Signer is undefined");
-
-  /** Custom error too many orders in one merkle tree */
-  public readonly ERROR_MERKLE_TREE_DEPTH = new Error(`Too many orders (limit: ${MAX_ORDERS_PER_TREE})`);
-
-  /** Custom error wrong quote type is being used */
-  public readonly ERROR_WRONG_QUOTE_TYPE = new Error("Wrong quote type");
-
-  /** Custom error wrong strategy type is being used */
-  public readonly ERROR_WRONG_STRATEGY_TYPE = new Error("Wrong strategy type");
-
   /**
    * LooksRare protocol main class
    * @param chainId Current app chain id
@@ -90,7 +76,7 @@ export class LooksRare {
    */
   private getSigner(): Signer {
     if (!this.signer) {
-      throw this.ERROR_SIGNER;
+      throw new ErrorSigner();
     }
     return this.signer;
   }
@@ -130,7 +116,7 @@ export class LooksRare {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw this.ERROR_TIMESTAMP;
+      throw new ErrorTimestamp();
     }
 
     const signerAddress = await signer.getAddress();
@@ -187,7 +173,7 @@ export class LooksRare {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
-      throw this.ERROR_TIMESTAMP;
+      throw new ErrorTimestamp();
     }
 
     const signerAddress = await signer.getAddress();
@@ -247,10 +233,10 @@ export class LooksRare {
    */
   public createTakerForCollectionOrder(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
     if (maker.quoteType !== QuoteType.Bid) {
-      throw this.ERROR_WRONG_QUOTE_TYPE;
+      throw new ErrorQuoteType();
     }
     if (maker.strategyId !== StrategyType.collection) {
-      throw this.ERROR_WRONG_STRATEGY_TYPE;
+      throw new ErrorStrategyType();
     }
     return this.createTaker(maker, recipient, [itemId]);
   }
@@ -273,7 +259,7 @@ export class LooksRare {
    */
   public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<SignMerkleTreeOrdersOutput> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
-      throw this.ERROR_MERKLE_TREE_DEPTH;
+      throw new ErrorMerkleTreeDepth();
     }
     const signer = this.getSigner();
     return signMerkleTreeOrders(signer, this.getTypedDataDomain(), makerOrders);

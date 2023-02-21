@@ -8,6 +8,7 @@ import { contractName, version, makerTypes } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType } from "../../types";
+import { ErrorMerkleTreeDepth } from "../../errors";
 
 const faultySignature =
   "0xcafe829116da9a4b31a958aa790682228b85e5d03b1ae7bb15f8ce4c8432a20813934991833da8e913894c9f35f1f018948c58d68fb61bbca0e07bd43c4492fa2b";
@@ -204,7 +205,7 @@ describe("Sign maker orders", () => {
       }));
 
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(lr.ERROR_MERKLE_TREE_DEPTH);
+      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(ErrorMerkleTreeDepth);
     });
   });
 });
