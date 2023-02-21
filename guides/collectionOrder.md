@@ -1,6 +1,6 @@
 :warning: These code snippets are just examples and the data should never be used as is :warning:
 
-# How to create a maker ask order
+# How to create a collection order (maker bid with collection strategy)
 
 ```ts
 import { ethers } from "ethers";
@@ -12,10 +12,10 @@ const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 // It will grant the Exchange contract with the right to use your collections approvals done on the transfer manager.
 await lr.grantTransferManagerApproval().call();
 
-const { makerAsk, approval } = await lr.createMakerAsk({
+const { makerAsk, approval } = await lr.createMakerBid({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
-  strategyId: StrategyType.standard,
+  strategyId: StrategyType.collection,
   subsetNonce: 0, // keep 0 if you don't know what it is used for
   orderNonce: 0, // You need to retrieve this value from the API
   endTime: Math.floor(Date.now() / 1000), // If you use a timestamp in ms, the function will revert
@@ -35,15 +35,17 @@ if (approval) {
 const signature = await lr.signMakerOrder(makerAsk);
 ```
 
-# How to create a maker ask order for bundle
+# How to execute a collection offer
 
-To create a bundle, provide several items ids (don't forget to add the correct amount for each token id). You cannot create cross collection bundles.
+`createTakerForCollectionOrder` is just a convenient wrapper around `createTaker`.
 
 ```ts
-{
-    ...
-    itemIds: [0, 1, 5],
-    amounts: [1, 1, 1],
-    ...
-}
+import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
+
+const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+
+const taker = lr.createTakerForCollectionOrder(maker, TOKEN_ID); // Change the token id
+const { call } = lr.executeOrder(maker, taker, signature);
+const tx = await call();
+const receipt = await tx.wait();
 ```
