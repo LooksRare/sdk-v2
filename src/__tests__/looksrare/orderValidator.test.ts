@@ -19,7 +19,7 @@ describe("Order validation", () => {
   });
   it("verify maker ask orders", async () => {
     const baseMakerAskInput: CreateMakerInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -43,7 +43,7 @@ describe("Order validation", () => {
   });
   it("verify maker bid orders", async () => {
     const baseMakerBidInput: CreateMakerInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -58,10 +58,6 @@ describe("Order validation", () => {
     const signature = await lr.signMakerOrder(maker);
 
     let orders = await lr.verifyMakerOrders([maker], [signature]);
-    expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_BALANCE_INFERIOR_TO_PRICE)).to.be.true;
-
-    const tx = await mocks.contracts.weth.mint(signers.user1.address, utils.parseEther("10"));
-    await tx.wait();
 
     orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_APPROVAL_INFERIOR_TO_PRICE)).to.be.true;

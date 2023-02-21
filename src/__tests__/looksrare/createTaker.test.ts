@@ -26,7 +26,7 @@ describe("Create takers", () => {
     it("create taker with recipient", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
-        collection: mocks.contracts.collection1.address,
+        collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         strategyId: StrategyType.standard,
       };
@@ -40,7 +40,7 @@ describe("Create takers", () => {
     it("create taker without recipient", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
-        collection: mocks.contracts.collection1.address,
+        collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         strategyId: StrategyType.standard,
       };
@@ -56,7 +56,7 @@ describe("Create takers", () => {
     it("create taker for collection order", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
-        collection: mocks.contracts.collection1.address,
+        collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         strategyId: StrategyType.collection,
       };
@@ -71,7 +71,7 @@ describe("Create takers", () => {
     it("throw when quote type is wrong", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
-        collection: mocks.contracts.collection1.address,
+        collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         strategyId: StrategyType.collection,
       };
@@ -85,7 +85,7 @@ describe("Create takers", () => {
     it("throw when strategy type is wrong", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
-        collection: mocks.contracts.collection1.address,
+        collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
         strategyId: StrategyType.standard,
       };

@@ -14,20 +14,13 @@ describe("execute taker ask", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
 
-    {
-      const tx = await mocks.contracts.weth.mint(signers.user2.address, utils.parseEther("10"));
-      await tx.wait();
-    }
-
-    {
-      const tx = await mocks.contracts.transferManager
-        .connect(signers.user1)
-        .grantApprovals([mocks.addresses.EXCHANGE_V2]);
-      await tx.wait();
-    }
+    const tx = await mocks.contracts.transferManager
+      .connect(signers.user1)
+      .grantApprovals([mocks.addresses.EXCHANGE_V2]);
+    await tx.wait();
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,

@@ -19,7 +19,7 @@ describe("execute taker bid", () => {
     await tx.wait();
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,

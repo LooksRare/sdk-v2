@@ -15,7 +15,7 @@ describe("Create maker ask", () => {
     signers = await getSigners();
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,

@@ -20,7 +20,7 @@ describe("execute collection order", () => {
     await tx.wait();
 
     baseMakerBidInput = {
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.collection,
       subsetNonce: 0,
@@ -41,7 +41,7 @@ describe("execute collection order", () => {
     await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
     const taker = lrUser1.createTakerForCollectionOrder(maker, 0);
 
-    const contractMethods = lrUser2.executeOrder(maker, taker, signature);
+    const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const tx = await contractMethods.call();
     const receipt = await tx.wait();

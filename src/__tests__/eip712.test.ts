@@ -30,7 +30,7 @@ describe("EIP-712", () => {
       strategyId: 1,
       collectionType: CollectionType.ERC721,
       orderNonce: 1,
-      collection: mocks.contracts.collection1.address,
+      collection: mocks.contracts.collectionERC721.address,
       currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
