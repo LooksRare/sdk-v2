@@ -34,7 +34,7 @@ export class ErrorQuoteType extends Error {
 
 /** Wrong strategy type */
 export class ErrorStrategyType extends Error {
-  public readonly name = "Wrong strategy type";
+  public readonly name = "ErrorStrategyType";
   constructor() {
     super("Wrong strategy type");
   }
