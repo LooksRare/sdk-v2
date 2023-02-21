@@ -11,6 +11,7 @@ export interface Addresses {
   ORDER_VALIDATOR_V2: string;
   REVERSE_RECORDS: string;
   LOOKS_LP_V3: string;
+  STRATEGY_COLLECTION_OFFER: string;
 }
 
 /** List of supported chains */

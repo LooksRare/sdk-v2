@@ -9,6 +9,7 @@ const mainnetAddresses: Addresses = {
   ORDER_VALIDATOR_V2: "",
   REVERSE_RECORDS: "",
   LOOKS_LP_V3: "",
+  STRATEGY_COLLECTION_OFFER: "",
 };
 
 const goerliAddresses: Addresses = {
@@ -19,6 +20,7 @@ const goerliAddresses: Addresses = {
   ORDER_VALIDATOR_V2: "0x7454Cc9AEB024bcE6A2CDC49ad4733B4D8215fb8",
   REVERSE_RECORDS: "",
   LOOKS_LP_V3: "",
+  STRATEGY_COLLECTION_OFFER: "0x17094C21e1936056Fcae6DE32bd6FB015dB743F7",
 };
 
 /**
