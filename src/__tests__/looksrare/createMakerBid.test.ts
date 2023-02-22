@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { constants, utils } from "ethers";
+import { constants, utils, BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -34,12 +34,13 @@ describe("Create maker bid", () => {
       ErrorTimestamp
     );
   });
-  it("returns approval function if no approval was made", async () => {
+  it("approvals checks are false if no approval was made", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { approval } = await looksrare.createMakerBid(baseMakerInput);
-    expect(approval).to.not.be.undefined;
+    const { isCurrencyApproved } = await looksrare.createMakerBid(baseMakerInput);
 
-    await approval!();
+    expect(isCurrencyApproved).to.be.false;
+
+    await looksrare.approveErc20(looksrare.addresses.WETH);
     const valueApproved = await allowance(
       ethers.provider,
       mocks.addresses.WETH,
@@ -48,12 +49,12 @@ describe("Create maker bid", () => {
     );
     expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
-  it("returns undefined approval function if approval was made", async () => {
+  it("approval checks are true if approval were made", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const tx = await looksrare.approveErc20(looksrare.addresses.WETH);
     await tx.wait();
-    const output = await looksrare.createMakerBid(baseMakerInput);
-    expect(output.approval).to.be.undefined;
+    const { isCurrencyApproved } = await looksrare.createMakerBid(baseMakerInput);
+    expect(isCurrencyApproved).to.be.true;
   });
   it("create a simple maker bid with default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);

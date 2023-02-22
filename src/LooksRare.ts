@@ -30,7 +30,6 @@ import {
   SupportedChainId,
   Signer,
   CreateMakerInput,
-  CreateMakerOutput,
   MerkleTree,
   ContractMethods,
   OrderValidatorCode,
@@ -99,7 +98,7 @@ export class LooksRare {
   /**
    * Create a maker ask object ready to be signed
    * @param CreateMakerInput
-   * @returns CreateMakerOutput
+   * @returns maker object and checks results
    */
   public async createMakerAsk({
     collection,
@@ -114,7 +113,11 @@ export class LooksRare {
     currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: CreateMakerInput): Promise<CreateMakerOutput> {
+  }: CreateMakerInput): Promise<{
+    maker: Maker;
+    isTransferManagerApproved: boolean;
+    isCollectionApproved: boolean;
+  }> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -124,9 +127,15 @@ export class LooksRare {
     const signerAddress = await signer.getAddress();
     const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
 
-    const [isCollectionApproved, userBidAskNonce] = await Promise.all([
+    const [isCollectionApproved, userBidAskNonce, isTransferManagerApproved] = await Promise.all([
       isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
+      hasUserApprovedOperator(
+        this.getSigner(),
+        this.addresses.TRANSFER_MANAGER_V2,
+        signerAddress,
+        this.addresses.EXCHANGE_V2
+      ),
     ]);
 
     const order: Maker = {
@@ -149,14 +158,15 @@ export class LooksRare {
 
     return {
       maker: order,
-      approval: isCollectionApproved ? undefined : () => this.approveAllCollectionItems(collection),
+      isTransferManagerApproved,
+      isCollectionApproved,
     };
   }
 
   /**
    * Create a maker bid object ready to be signed
    * @param CreateMakerInput
-   * @returns CreateMakerOutput
+   * @returns maker object and checks results
    */
   public async createMakerBid({
     collection,
@@ -171,7 +181,10 @@ export class LooksRare {
     currency = this.addresses.WETH,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: CreateMakerInput): Promise<CreateMakerOutput> {
+  }: CreateMakerInput): Promise<{
+    maker: Maker;
+    isCurrencyApproved: boolean;
+  }> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -206,7 +219,7 @@ export class LooksRare {
 
     return {
       maker: order,
-      approval: BigNumber.from(currentAllowance).lt(price) ? () => this.approveErc20(currency) : undefined,
+      isCurrencyApproved: BigNumber.from(currentAllowance).gte(price),
     };
   }
 

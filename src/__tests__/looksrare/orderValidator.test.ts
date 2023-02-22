@@ -30,13 +30,14 @@ describe("Order validation", () => {
       itemIds: [1],
     };
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { maker, approval } = await lr.createMakerAsk(baseMakerAskInput);
+    const { maker } = await lr.createMakerAsk(baseMakerAskInput);
     const signature = await lr.signMakerOrder(maker);
 
     let orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC721_NO_APPROVAL_FOR_ALL_OR_ITEM_ID)).to.be.true;
 
-    await approval!();
+    const tx = await lr.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
 
     orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].every((code) => code === OrderValidatorCode.ORDER_EXPECTED_TO_BE_VALID)).to.be.true;
@@ -54,7 +55,7 @@ describe("Order validation", () => {
     };
 
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { maker, approval } = await lr.createMakerBid(baseMakerBidInput);
+    const { maker } = await lr.createMakerBid(baseMakerBidInput);
     const signature = await lr.signMakerOrder(maker);
 
     let orders = await lr.verifyMakerOrders([maker], [signature]);
@@ -62,7 +63,8 @@ describe("Order validation", () => {
     orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].some((code) => code === OrderValidatorCode.ERC20_APPROVAL_INFERIOR_TO_PRICE)).to.be.true;
 
-    await approval!();
+    const tx = await lr.approveErc20(lr.addresses.WETH);
+    await tx.wait();
 
     orders = await lr.verifyMakerOrders([maker], [signature]);
     expect(orders[0].every((code) => code === OrderValidatorCode.ORDER_EXPECTED_TO_BE_VALID)).to.be.true;
