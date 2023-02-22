@@ -2,15 +2,13 @@
 
 # How to create a collection order (maker bid with collection strategy)
 
+A collection order is just a amker bid order using the `collection strategy`.
+
 ```ts
 import { ethers } from "ethers";
 import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
-
-// To be done only once the first a user is interacting with the V2.
-// It will grant the Exchange contract with the right to use your collections approvals done on the transfer manager.
-await lr.grantTransferManagerApproval().call();
 
 const { makerAsk, approval } = await lr.createMakerBid({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
@@ -25,8 +23,8 @@ const { makerAsk, approval } = await lr.createMakerBid({
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)
 });
 
-// If you didn't approve this NFT collection before, the createMaker function populate an approval function for you.
-// It will call the setApprovalForAll function with the right parameters.
+// If you didn't approve your weth, the createMaker function populate an approval function for you.
+// It will call the approve function with the max value.
 if (approval) {
   await approval();
 }
@@ -43,6 +41,11 @@ const signature = await lr.signMakerOrder(makerAsk);
 import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+
+// To be done only once the first a user is interacting with the V2.
+// It will grant the Exchange contract with the right to use your collections approvals done on the transfer manager.
+await lr.grantTransferManagerApproval().call();
+await setApprovalForAll(signer, maker.collection, lr.addresses.TRANSFER_MANAGER_V2);
 
 const taker = lr.createTakerForCollectionOrder(maker, TOKEN_ID); // Change the token id
 const { call } = lr.executeOrder(maker, taker, signature);
