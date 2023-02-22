@@ -2,7 +2,7 @@
 
 [types](../modules/types.md).Taker
 
-Taker order used to execute a maker order
+Taker order
 
 ## Properties
 

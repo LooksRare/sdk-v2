@@ -32,7 +32,7 @@ describe("Nonces and order cancellation", () => {
 
       const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
-      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+      await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
     });
   });
   describe("cancelSubsetOrders", () => {
@@ -54,7 +54,7 @@ describe("Nonces and order cancellation", () => {
 
       const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
-      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+      await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
     });
   });
   describe("cancelAllOrders", () => {
@@ -94,7 +94,7 @@ describe("Nonces and order cancellation", () => {
 
       const estimatedGas = await lr.cancelAllOrders(true, true).estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
-      await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+      await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
     });
   });
 });

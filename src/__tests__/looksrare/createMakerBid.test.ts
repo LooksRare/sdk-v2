@@ -4,6 +4,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { allowance, approve } from "../../utils/calls/tokens";
+import { ErrorTimestamp } from "../../errors";
 import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("Create maker bid", () => {
@@ -26,8 +27,12 @@ describe("Create maker bid", () => {
   });
   it("create maker bid with wrong time format", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejected;
-    await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejected;
+    await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejectedWith(
+      ErrorTimestamp
+    );
+    await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejectedWith(
+      ErrorTimestamp
+    );
   });
   it("returns approval function if no approval was made", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);

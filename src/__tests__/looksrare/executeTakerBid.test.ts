@@ -43,7 +43,7 @@ describe("execute taker bid", () => {
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    await expect(contractMethods.callStatic()).to.eventually.not.be.rejected;
+    await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
 
     const tx = await contractMethods.call();
     const receipt = await tx.wait();

@@ -21,38 +21,6 @@ LooksRare protocol main class
 
 ## Properties
 
-### ERROR\_MERKLE\_TREE\_DEPTH
-
-• `Readonly` **ERROR\_MERKLE\_TREE\_DEPTH**: `Error`
-
-Custom error too many orders in one merkle tree
-
-___
-
-### ERROR\_SIGNER
-
-• `Readonly` **ERROR\_SIGNER**: `Error`
-
-Custom error undefined signer
-
-___
-
-### ERROR\_TIMESTAMP
-
-• `Readonly` **ERROR\_TIMESTAMP**: `Error`
-
-Custom error invalid timestamp
-
-___
-
-### ERROR\_WRONG\_QUOTE\_TYPE
-
-• `Readonly` **ERROR\_WRONG\_QUOTE\_TYPE**: `Error`
-
-Custom error wrong quote type is being used
-
-___
-
 ### addresses
 
 • `Readonly` **addresses**: [`Addresses`](../interfaces/types.Addresses.md)
@@ -233,33 +201,11 @@ this.createTaker
 
 ___
 
-### executeTakerAsk
+### executeOrder
 
-▸ **executeTakerAsk**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **executeOrder**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
-Execute a trade with a taker ask and a maker bid
-
-#### Parameters
-
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | - |
-| `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
-| `signature` | `string` | `undefined` | Signature of the maker order |
-| `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
-| `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
-
-#### Returns
-
-[`ContractMethods`](../interfaces/types.ContractMethods.md)
-
-___
-
-### executeTakerBid
-
-▸ **executeTakerBid**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
-
-Execute a trade with a taker bid and a maker ask
+Execute a trade
 
 #### Parameters
 
@@ -394,7 +340,7 @@ ___
 ▸ **signMultipleMakerOrders**(`makerOrders`): `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
 Sign multiple maker orders with a single signature
-/!\ Use this function for an UI implementation only
+/!\ Use this function for UI implementation only
 
 #### Parameters
 
@@ -406,7 +352,7 @@ Sign multiple maker orders with a single signature
 
 `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
-Signature and Merkle tree
+Signature and Merkletree
 
 ___
 
@@ -441,7 +387,7 @@ Verify if a set of orders can be executed (i.e are valid)
 | :------ | :------ | :------ |
 | `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | List of maker orders |
 | `signatures` | `string`[] | List of signatures |
-| `merkleTrees?` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle tree (optional) |
+| `merkleTrees?` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle trees (optional) |
 
 #### Returns
 

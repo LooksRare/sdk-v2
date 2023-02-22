@@ -38,7 +38,7 @@ ___
 
 • **collectionType**: [`CollectionType`](../enums/types.CollectionType.md)
 
-Collection type, 0: ERC-721, 1:ERC-1155, etc
+Asset type, 0: ERC-721, 1:ERC-1155, etc
 
 ___
 

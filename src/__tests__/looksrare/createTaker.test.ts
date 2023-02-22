@@ -4,6 +4,7 @@ import { ethers } from "hardhat";
 import { getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { LooksRare } from "../../LooksRare";
 import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
+import { ErrorStrategyType, ErrorQuoteType } from "../../errors";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 
 const baseInput = {
@@ -78,9 +79,7 @@ describe("Create takers", () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { maker } = await lr.createMakerAsk(baseMakerAskInput);
 
-      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(
-        lr.ERROR_WRONG_QUOTE_TYPE
-      );
+      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(ErrorQuoteType);
     });
     it("throw when strategy type is wrong", async () => {
       const baseMakerAskInput: CreateMakerInput = {
@@ -92,9 +91,7 @@ describe("Create takers", () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { maker } = await lr.createMakerBid(baseMakerAskInput);
 
-      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(
-        lr.ERROR_WRONG_STRATEGY_TYPE
-      );
+      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(ErrorStrategyType);
     });
   });
 });

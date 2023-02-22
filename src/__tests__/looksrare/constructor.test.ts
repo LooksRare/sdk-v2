@@ -3,6 +3,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
 import { SupportedChainId } from "../../types";
+import { ErrorSigner } from "../../errors";
 
 describe("LooksRare class", () => {
   let mocks: SetupMocks;
@@ -25,6 +26,6 @@ describe("LooksRare class", () => {
   it("instanciate LooksRare object without a signer and reject a contract call", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider);
     expect(lr.getTypedDataDomain().chainId).to.be.eql(SupportedChainId.HARDHAT);
-    expect(() => lr.cancelAllOrders(true, true)).to.throw(lr.ERROR_SIGNER);
+    expect(() => lr.cancelAllOrders(true, true)).to.throw(ErrorSigner);
   });
 });
