@@ -2,7 +2,7 @@
 
 # How to create a collection order (maker bid with collection strategy)
 
-A collection order is just a amker bid order using the `collection strategy`.
+A collection order is just a maker bid order using the `collection strategy`.
 
 ```ts
 import { ethers } from "ethers";
