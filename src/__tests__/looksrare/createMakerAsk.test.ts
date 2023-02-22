@@ -3,7 +3,7 @@ import { constants, utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { isApprovedForAll, setApprovalForAll } from "../../utils/calls/tokens";
+import { isApprovedForAll } from "../../utils/calls/tokens";
 import { ErrorTimestamp } from "../../errors";
 import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
@@ -50,8 +50,9 @@ describe("Create maker ask", () => {
     expect(isApproved).to.be.true;
   });
   it("returns undefined approval function if approval was made", async () => {
-    await setApprovalForAll(signers.user1, baseMakerAskInput.collection, mocks.addresses.TRANSFER_MANAGER_V2);
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    const tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
     const output = await looksrare.createMakerAsk(baseMakerAskInput);
     expect(output.approval).to.be.undefined;
   });

@@ -1,4 +1,4 @@
-import { BigNumber, providers, constants, BigNumberish } from "ethers";
+import { BigNumber, providers, constants, BigNumberish, ContractTransaction } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork } from "./constants/addresses";
@@ -147,7 +147,7 @@ export class LooksRare {
 
     return {
       maker: order,
-      approval: isCollectionApproved ? undefined : () => setApprovalForAll(signer, collection, spenderAddress),
+      approval: isCollectionApproved ? undefined : () => this.approveAllCollectionItems(collection),
     };
   }
 
@@ -204,9 +204,7 @@ export class LooksRare {
 
     return {
       maker: order,
-      approval: BigNumber.from(currentAllowance).lt(price)
-        ? () => approve(signer, currency, spenderAddress)
-        : undefined,
+      approval: BigNumber.from(currentAllowance).lt(price) ? () => this.approveErc20(currency) : undefined,
     };
   }
 
@@ -314,6 +312,32 @@ export class LooksRare {
   public cancelSubsetOrders(nonces: BigNumberish[]): ContractMethods {
     const signer = this.getSigner();
     return cancelSubsetNonces(signer, this.addresses.EXCHANGE_V2, nonces);
+  }
+
+  /**
+   * Approve all the items of a collection, to eventually be traded on LooksRare
+   * The spender is the TransferManager.
+   * @param collectionAddress Address of the collection to be approved.
+   * @param approved true to approve, false to revoke the approval.
+   * @returns ContractTransaction
+   */
+  public approveAllCollectionItems(collectionAddress: string, approved?: boolean): Promise<ContractTransaction> {
+    const signer = this.getSigner();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
+    return setApprovalForAll(signer, collectionAddress, spenderAddress, approved);
+  }
+
+  /**
+   * Approve an ERC20 to be used as a currency on LooksRare.
+   * The spender is the LooksRare contract.
+   * @param tokenAddress Address of the ERC20 to approve
+   * @param amount Default to MaxUint256
+   * @returns ContractTransaction
+   */
+  public approveErc20(tokenAddress: string, amount?: BigNumber): Promise<ContractTransaction> {
+    const signer = this.getSigner();
+    const spenderAddress = this.addresses.EXCHANGE_V2;
+    return approve(signer, tokenAddress, spenderAddress, amount);
   }
 
   /**

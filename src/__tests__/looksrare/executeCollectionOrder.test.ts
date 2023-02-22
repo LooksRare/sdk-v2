@@ -3,7 +3,6 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { setApprovalForAll } from "../../utils/calls/tokens";
 import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
 
 describe("execute collection order", () => {
@@ -38,12 +37,13 @@ describe("execute collection order", () => {
     await approval!();
     const signature = await lrUser2.signMakerOrder(maker);
 
-    await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
+    let tx = await lrUser1.approveAllCollectionItems(maker.collection);
+    await tx.wait();
     const taker = lrUser1.createTakerForCollectionOrder(maker, 0);
 
     const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
-    const tx = await contractMethods.call();
+    tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });

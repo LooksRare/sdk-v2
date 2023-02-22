@@ -3,7 +3,7 @@ import { constants, utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { allowance, approve } from "../../utils/calls/tokens";
+import { allowance } from "../../utils/calls/tokens";
 import { ErrorTimestamp } from "../../errors";
 import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
@@ -49,8 +49,9 @@ describe("Create maker bid", () => {
     expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
   it("returns undefined approval function if approval was made", async () => {
-    await approve(signers.user1, mocks.addresses.WETH, mocks.addresses.EXCHANGE_V2);
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    const tx = await looksrare.approveErc20(looksrare.addresses.WETH);
+    await tx.wait();
     const output = await looksrare.createMakerBid(baseMakerInput);
     expect(output.approval).to.be.undefined;
   });
