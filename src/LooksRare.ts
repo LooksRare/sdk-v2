@@ -344,7 +344,7 @@ export class LooksRare {
 
   /**
    * Approve an ERC20 to be used as a currency on LooksRare.
-   * The spender is the LooksRare contract.
+   * The spender is the LooksRareProtocol contract.
    * @param tokenAddress Address of the ERC20 to approve
    * @param amount Amount to be approved (default to MaxUint256)
    * @returns ContractTransaction

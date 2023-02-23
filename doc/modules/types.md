@@ -14,10 +14,10 @@
 - [BatchTransferItem](../interfaces/types.BatchTransferItem.md)
 - [ContractMethods](../interfaces/types.ContractMethods.md)
 - [CreateMakerInput](../interfaces/types.CreateMakerInput.md)
-- [CreateMakerOutput](../interfaces/types.CreateMakerOutput.md)
 - [Maker](../interfaces/types.Maker.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)
 - [SignMerkleTreeOrdersOutput](../interfaces/types.SignMerkleTreeOrdersOutput.md)
+- [StrategyInfo](../interfaces/types.StrategyInfo.md)
 - [Taker](../interfaces/types.Taker.md)
 
 ## Type Aliases
