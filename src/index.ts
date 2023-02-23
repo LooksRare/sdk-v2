@@ -7,6 +7,7 @@ import * as exchange from "./utils/calls/exchange";
 import * as nonces from "./utils/calls/nonces";
 import * as transferManager from "./utils/calls/transferManager";
 import * as orderValidator from "./utils/calls/orderValidator";
+import * as strategies from "./utils/calls/strategies";
 import * as encode from "./utils/encodeOrderParams";
 import * as signMakerOrders from "./utils/signMakerOrders";
 const utils = {
@@ -17,6 +18,7 @@ const utils = {
   ...transferManager,
   ...orderValidator,
   ...signMakerOrders,
+  ...strategies,
 };
 export { utils };
 

@@ -23,7 +23,7 @@ describe("Tokens", () => {
     expect(isApproved).to.be.false;
 
     // Approve
-    let transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address);
+    let transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address, true);
     let receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 
@@ -60,7 +60,12 @@ describe("Tokens", () => {
     );
     expect(isApproved).to.be.false;
 
-    const transaction = await setApprovalForAll(signers.user2, collectionERC1155.address, signers.operator.address);
+    const transaction = await setApprovalForAll(
+      signers.user2,
+      collectionERC1155.address,
+      signers.operator.address,
+      true
+    );
     const receipt = await transaction.wait();
     expect(receipt.status).to.equal(1);
 

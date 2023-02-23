@@ -79,6 +79,14 @@ export interface ContractMethods {
   callStatic: () => Promise<any>;
 }
 
+/** Return type for strategyInfo */
+export interface StrategyInfo {
+  isActive: boolean;
+  standardProtocolFeeBp: number;
+  minTotalFeeBp: number;
+  maxProtocolFeeBp: number;
+}
+
 /** Output of the createMakerAsk function */
 export interface CreateMakerOutput {
   /** Maker order ready to be signed */

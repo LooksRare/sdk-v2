@@ -21,6 +21,7 @@ import {
 import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
+import { strategyInfo } from "./utils/calls/strategies";
 import { ErrorMerkleTreeDepth, ErrorQuoteType, ErrorSigner, ErrorTimestamp, ErrorStrategyType } from "./errors";
 import {
   Addresses,
@@ -37,6 +38,7 @@ import {
   QuoteType,
   SignMerkleTreeOrdersOutput,
   StrategyType,
+  StrategyInfo,
 } from "./types";
 
 export class LooksRare {
@@ -318,10 +320,10 @@ export class LooksRare {
    * Approve all the items of a collection, to eventually be traded on LooksRare
    * The spender is the TransferManager.
    * @param collectionAddress Address of the collection to be approved.
-   * @param approved true to approve, false to revoke the approval.
+   * @param approved true to approve, false to revoke the approval (default to true)
    * @returns ContractTransaction
    */
-  public approveAllCollectionItems(collectionAddress: string, approved?: boolean): Promise<ContractTransaction> {
+  public approveAllCollectionItems(collectionAddress: string, approved = true): Promise<ContractTransaction> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
     return setApprovalForAll(signer, collectionAddress, spenderAddress, approved);
@@ -331,10 +333,10 @@ export class LooksRare {
    * Approve an ERC20 to be used as a currency on LooksRare.
    * The spender is the LooksRare contract.
    * @param tokenAddress Address of the ERC20 to approve
-   * @param amount Default to MaxUint256
+   * @param amount Amount to be approved (default to MaxUint256)
    * @returns ContractTransaction
    */
-  public approveErc20(tokenAddress: string, amount?: BigNumber): Promise<ContractTransaction> {
+  public approveErc20(tokenAddress: string, amount: BigNumber = constants.MaxUint256): Promise<ContractTransaction> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.EXCHANGE_V2;
     return approve(signer, tokenAddress, spenderAddress, amount);
@@ -401,5 +403,14 @@ export class LooksRare {
     const defaultMerkleTree = { root: constants.HashZero, proof: [] };
     const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
     return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, _merkleTrees);
+  }
+
+  /**
+   * Retrieve strategy info
+   * @param strategyId use the enum StrategyType
+   * @returns StrategyType
+   */
+  public async strategyInfo(strategyId: StrategyType): Promise<StrategyInfo> {
+    return strategyInfo(this.provider, this.addresses.EXCHANGE_V2, strategyId);
   }
 }
