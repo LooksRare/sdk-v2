@@ -32,5 +32,5 @@ if (approval) {
 }
 
 // Sign your maker order
-const signature = await lr.signMakerBid(makerBid);
+const signature = await lr.signMakerOrder(makerBid);
 ```
