@@ -177,7 +177,7 @@ Create a maker ask object ready to be signed
 
 `Promise`<{ `isCollectionApproved`: `boolean` ; `isTransferManagerApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
 
-maker object and checks results
+the maker object, isTransferManagerApproved, and isTransferManagerApproved
 
 ___
 
@@ -197,7 +197,7 @@ Create a maker bid object ready to be signed
 
 `Promise`<{ `isCurrencyApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
 
-maker object and checks results
+the maker object and isCurrencyApproved
 
 ___
 

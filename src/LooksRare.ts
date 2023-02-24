@@ -98,7 +98,7 @@ export class LooksRare {
   /**
    * Create a maker ask object ready to be signed
    * @param CreateMakerInput
-   * @returns maker object and checks results
+   * @returns the maker object, isTransferManagerApproved, and isTransferManagerApproved
    */
   public async createMakerAsk({
     collection,
@@ -166,7 +166,7 @@ export class LooksRare {
   /**
    * Create a maker bid object ready to be signed
    * @param CreateMakerInput
-   * @returns maker object and checks results
+   * @returns the maker object and isCurrencyApproved
    */
   public async createMakerBid({
     collection,
