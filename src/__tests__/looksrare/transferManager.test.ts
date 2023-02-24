@@ -7,7 +7,6 @@ import abiIERC721 from "../../abis/IERC721.json";
 import abiIERC1155 from "../../abis/IERC1155.json";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { setApprovalForAll } from "../../utils/calls/tokens";
 import { SupportedChainId, CollectionType, BatchTransferItem } from "../../types";
 
 describe("Transfer manager", () => {
@@ -42,7 +41,7 @@ describe("Transfer manager", () => {
   });
   it("revoke operator approvals", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    (await lr.grantTransferManagerApproval().call()).wait();
+    await (await lr.grantTransferManagerApproval().call()).wait();
     const contractMethods = lr.revokeTransferManagerApproval();
 
     const estimatedGas = await contractMethods.estimateGas();
@@ -57,8 +56,8 @@ describe("Transfer manager", () => {
   it("transfer items from a single collection", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collectionERC721.address, addresses.TRANSFER_MANAGER_V2);
-    (await lr.grantTransferManagerApproval().call()).wait();
+    await (await lr.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
+    await (await lr.grantTransferManagerApproval().call()).wait();
     const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
 
     const receipient = signers.user3.address;
@@ -94,8 +93,8 @@ describe("Transfer manager", () => {
   it("transfer items from multiple collections", async () => {
     const { addresses, contracts } = mocks;
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await setApprovalForAll(signers.user1, contracts.collectionERC721.address, addresses.TRANSFER_MANAGER_V2);
-    await setApprovalForAll(signers.user1, contracts.collectionERC1155.address, addresses.TRANSFER_MANAGER_V2);
+    await (await lr.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
+    await (await lr.approveAllCollectionItems(contracts.collectionERC1155.address)).wait();
     (await lr.grantTransferManagerApproval().call()).wait();
     const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
     const collectionERC1155 = new Contract(

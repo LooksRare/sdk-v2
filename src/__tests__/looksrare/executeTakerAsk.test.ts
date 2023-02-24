@@ -3,7 +3,6 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { setApprovalForAll } from "../../utils/calls/tokens";
 import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
 
 describe("execute taker ask", () => {
@@ -37,7 +36,8 @@ describe("execute taker ask", () => {
     const { maker, approval } = await lrUser2.createMakerBid(baseMakerAskInput);
     await approval!();
     const signature = await lrUser2.signMakerOrder(maker);
-    await setApprovalForAll(signers.user1, maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
+    let tx = await lrUser1.approveAllCollectionItems(maker.collection);
+    await tx.wait();
     const taker = lrUser1.createTaker(maker, signers.user2.address);
 
     const contractMethods = lrUser1.executeOrder(maker, taker, signature);
@@ -47,7 +47,7 @@ describe("execute taker ask", () => {
 
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
 
-    const tx = await contractMethods.call();
+    tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
@@ -60,7 +60,8 @@ describe("execute taker ask", () => {
 
     await order1.approval!();
 
-    await setApprovalForAll(signers.user1, order1.maker.collection, lrUser1.addresses.TRANSFER_MANAGER_V2);
+    let tx = await lrUser1.approveAllCollectionItems(order1.maker.collection);
+    await tx.wait();
     const taker = lrUser1.createTaker(order1.maker, signers.user2.address);
 
     const { estimateGas, call } = lrUser1.executeOrder(order1.maker, taker, signature, merkleTreeProofs[0]);
@@ -68,7 +69,7 @@ describe("execute taker ask", () => {
     const estimatedGas = await estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await call();
+    tx = await call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });

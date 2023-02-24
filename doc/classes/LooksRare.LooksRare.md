@@ -62,6 +62,50 @@ https://docs.ethers.io/v5/api/signer/
 
 ## Methods
 
+### approveAllCollectionItems
+
+▸ **approveAllCollectionItems**(`collectionAddress`, `approved?`): `Promise`<`ContractTransaction`\>
+
+Approve all the items of a collection, to eventually be traded on LooksRare
+The spender is the TransferManager.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `collectionAddress` | `string` | Address of the collection to be approved. |
+| `approved?` | `boolean` | true to approve, false to revoke the approval. |
+
+#### Returns
+
+`Promise`<`ContractTransaction`\>
+
+ContractTransaction
+
+___
+
+### approveErc20
+
+▸ **approveErc20**(`tokenAddress`, `amount?`): `Promise`<`ContractTransaction`\>
+
+Approve an ERC20 to be used as a currency on LooksRare.
+The spender is the LooksRare contract.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `tokenAddress` | `string` | Address of the ERC20 to approve |
+| `amount?` | `BigNumber` | Default to MaxUint256 |
+
+#### Returns
+
+`Promise`<`ContractTransaction`\>
+
+ContractTransaction
+
+___
+
 ### cancelAllOrders
 
 ▸ **cancelAllOrders**(`bid`, `ask`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
