@@ -87,12 +87,17 @@ export interface StrategyInfo {
   maxProtocolFeeBp: number;
 }
 
-/** Output of the createMakerAsk function */
-export interface CreateMakerOutput {
-  /** Maker order ready to be signed */
+/** Return object of createMakerAsk  */
+export interface CreateMakerAskOutput {
   maker: Maker;
-  /** Function to be called before signing the order */
-  approval?: () => Promise<ContractTransaction>;
+  isTransferManagerApproved: boolean;
+  isCollectionApproved: boolean;
+}
+
+/** Return object of createMakerBid  */
+export interface CreateMakerBidOutput {
+  maker: Maker;
+  isCurrencyApproved: boolean;
 }
 
 /** Input of the createMakerAsk function */

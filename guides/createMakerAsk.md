@@ -8,11 +8,7 @@ import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@look
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
-// To be done only once the first a user is interacting with the V2.
-// It will grant the Exchange contract with the right to use your collections approvals done on the transfer manager.
-await lr.grantTransferManagerApproval().call();
-
-const { makerAsk, approval } = await lr.createMakerAsk({
+const { makerAsk, isCollectionApproved, isTransferManagerApproved } = await lr.createMakerAsk({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
   strategyId: StrategyType.standard,
@@ -25,10 +21,16 @@ const { makerAsk, approval } = await lr.createMakerAsk({
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)
 });
 
-// If you didn't approve this NFT collection before, the createMaker function populate an approval function for you.
-// It will call the setApprovalForAll function with the right parameters.
-if (approval) {
-  await approval();
+// Grant the TransferManager the right the transfer assets on behalf od the LooksRareProtocol
+if (!isTransferManagerApproved) {
+  const tx = await lr.grantTransferManagerApproval().call();
+  await tx.wait();
+}
+
+// Approve the collection items to be transfered by the TransferManager
+if (!isCollectionApproved) {
+  const tx = await lr.approveAllCollectionItems(makerAsk.collection);
+  await tx.wait();
 }
 
 // Sign your maker order

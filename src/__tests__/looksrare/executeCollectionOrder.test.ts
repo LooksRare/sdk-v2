@@ -33,11 +33,12 @@ describe("execute collection order", () => {
   it("execute collection order", async () => {
     const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
-    const { maker, approval } = await lrUser2.createMakerBid(baseMakerBidInput);
-    await approval!();
+    const { maker } = await lrUser2.createMakerBid(baseMakerBidInput);
+    let tx = await lrUser2.approveErc20(lrUser2.addresses.WETH);
+    await tx.wait();
     const signature = await lrUser2.signMakerOrder(maker);
 
-    let tx = await lrUser1.approveAllCollectionItems(maker.collection);
+    tx = await lrUser1.approveAllCollectionItems(maker.collection);
     await tx.wait();
     const taker = lrUser1.createTakerForCollectionOrder(maker, 0);
 

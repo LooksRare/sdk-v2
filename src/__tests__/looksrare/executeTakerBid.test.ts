@@ -33,8 +33,10 @@ describe("execute taker bid", () => {
   it("execute maker ask and taker bid", async () => {
     const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
-    const { maker, approval } = await lrUser1.createMakerAsk(baseMakerAskInput);
-    await approval!();
+    const { maker } = await lrUser1.createMakerAsk(baseMakerAskInput);
+    let tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
+
     const signature = await lrUser1.signMakerOrder(maker);
     const taker = lrUser2.createTaker(maker, signers.user2.address);
 
@@ -45,7 +47,7 @@ describe("execute taker bid", () => {
 
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
 
-    const tx = await contractMethods.call();
+    tx = await contractMethods.call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });
@@ -56,7 +58,8 @@ describe("execute taker bid", () => {
     const order2 = await lrUser1.createMakerAsk(baseMakerAskInput);
     const { signature, merkleTreeProofs } = await lrUser1.signMultipleMakerOrders([order1.maker, order2.maker]);
 
-    await order1.approval!();
+    let tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
 
     const taker = lrUser2.createTaker(order1.maker, signers.user2.address);
 
@@ -65,7 +68,7 @@ describe("execute taker bid", () => {
     const estimatedGas = await estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
 
-    const tx = await call();
+    tx = await call();
     const receipt = await tx.wait();
     expect(receipt.status).to.be.equal(1);
   });

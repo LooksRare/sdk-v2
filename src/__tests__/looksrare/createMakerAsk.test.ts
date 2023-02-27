@@ -35,12 +35,14 @@ describe("Create maker ask", () => {
       ErrorTimestamp
     );
   });
-  it("returns approval function if no approval was made", async () => {
+  it("approvals checks are false if no approval was made", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { approval } = await looksrare.createMakerAsk(baseMakerAskInput);
-    expect(approval).to.not.be.undefined;
+    const { isCollectionApproved, isTransferManagerApproved } = await looksrare.createMakerAsk(baseMakerAskInput);
+    expect(isCollectionApproved).to.be.false;
+    expect(isTransferManagerApproved).to.be.false;
 
-    await approval!();
+    const tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
     const isApproved = await isApprovedForAll(
       ethers.provider,
       baseMakerAskInput.collection,
@@ -49,12 +51,16 @@ describe("Create maker ask", () => {
     );
     expect(isApproved).to.be.true;
   });
-  it("returns undefined approval function if approval was made", async () => {
+  it("approval checks are true if approval were made", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
+    let tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
     await tx.wait();
-    const output = await looksrare.createMakerAsk(baseMakerAskInput);
-    expect(output.approval).to.be.undefined;
+    tx = await looksrare.grantTransferManagerApproval().call();
+    await tx.wait();
+
+    const { isCollectionApproved, isTransferManagerApproved } = await looksrare.createMakerAsk(baseMakerAskInput);
+    expect(isCollectionApproved).to.be.true;
+    expect(isTransferManagerApproved).to.be.true;
   });
   it("create a simple maker ask with default values", async () => {
     const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);

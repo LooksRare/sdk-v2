@@ -71,10 +71,10 @@ The spender is the TransferManager.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `collectionAddress` | `string` | Address of the collection to be approved. |
-| `approved?` | `boolean` | true to approve, false to revoke the approval. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `collectionAddress` | `string` | `undefined` | Address of the collection to be approved. |
+| `approved` | `boolean` | `true` | true to approve, false to revoke the approval (default to true) |
 
 #### Returns
 
@@ -89,14 +89,14 @@ ___
 ▸ **approveErc20**(`tokenAddress`, `amount?`): `Promise`<`ContractTransaction`\>
 
 Approve an ERC20 to be used as a currency on LooksRare.
-The spender is the LooksRare contract.
+The spender is the LooksRareProtocol contract.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `tokenAddress` | `string` | Address of the ERC20 to approve |
-| `amount?` | `BigNumber` | Default to MaxUint256 |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `tokenAddress` | `string` | `undefined` | Address of the ERC20 to approve |
+| `amount` | `BigNumber` | `constants.MaxUint256` | Amount to be approved (default to MaxUint256) |
 
 #### Returns
 
@@ -163,7 +163,7 @@ ___
 
 ### createMakerAsk
 
-▸ **createMakerAsk**(`CreateMakerInput`): `Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
+▸ **createMakerAsk**(`CreateMakerInput`): `Promise`<[`CreateMakerAskOutput`](../interfaces/types.CreateMakerAskOutput.md)\>
 
 Create a maker ask object ready to be signed
 
@@ -175,15 +175,15 @@ Create a maker ask object ready to be signed
 
 #### Returns
 
-`Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
+`Promise`<[`CreateMakerAskOutput`](../interfaces/types.CreateMakerAskOutput.md)\>
 
-CreateMakerOutput
+the maker object, isTransferManagerApproved, and isTransferManagerApproved
 
 ___
 
 ### createMakerBid
 
-▸ **createMakerBid**(`CreateMakerInput`): `Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
+▸ **createMakerBid**(`CreateMakerInput`): `Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
 
 Create a maker bid object ready to be signed
 
@@ -195,9 +195,9 @@ Create a maker bid object ready to be signed
 
 #### Returns
 
-`Promise`<[`CreateMakerOutput`](../interfaces/types.CreateMakerOutput.md)\>
+`Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
 
-CreateMakerOutput
+the maker object and isCurrencyApproved
 
 ___
 
@@ -397,6 +397,26 @@ Sign multiple maker orders with a single signature
 `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
 Signature and Merkletree
+
+___
+
+### strategyInfo
+
+▸ **strategyInfo**(`strategyId`): `Promise`<[`StrategyInfo`](../interfaces/types.StrategyInfo.md)\>
+
+Retrieve strategy info
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `strategyId` | [`StrategyType`](../enums/types.StrategyType.md) | use the enum StrategyType |
+
+#### Returns
+
+`Promise`<[`StrategyInfo`](../interfaces/types.StrategyInfo.md)\>
+
+StrategyType
 
 ___
 

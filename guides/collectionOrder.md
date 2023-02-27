@@ -10,7 +10,7 @@ import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@look
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
-const { makerAsk, approval } = await lr.createMakerBid({
+const { makerAsk, isCurrencyApproved } = await lr.createMakerBid({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
   strategyId: StrategyType.collection,
@@ -23,10 +23,10 @@ const { makerAsk, approval } = await lr.createMakerBid({
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)
 });
 
-// If you didn't approve your weth, the createMaker function populate an approval function for you.
-// It will call the approve function with the max value.
-if (approval) {
-  await approval();
+// Approve spending of the currency used for bidding
+if (!isCurrencyApproved) {
+  const tx = await lr.approveErc20(lr.addresses.WETH);
+  await tx.wait();
 }
 
 // Sign your maker order
