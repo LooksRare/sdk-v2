@@ -97,12 +97,7 @@ export class LooksRare {
     };
   }
 
-  /**
-   * Create a maker ask object ready to be signed
-   * @param CreateMakerInput
-   * @returns the maker object, isTransferManagerApproved, and isTransferManagerApproved
-   */
-  public async createMakerAsk({
+  public async noCheckCreateMakerAsk({
     collection,
     strategyId,
     collectionType,
@@ -115,30 +110,18 @@ export class LooksRare {
     currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: CreateMakerInput): Promise<CreateMakerAskOutput> {
-    const signer = this.getSigner();
-
+    askNonce,
+  }: CreateMakerInput & { askNonce: BigNumberish }): Promise<Maker> {
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
       throw new ErrorTimestamp();
     }
 
+    const signer = this.getSigner();
     const signerAddress = await signer.getAddress();
-    const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
-
-    const [isCollectionApproved, userBidAskNonce, isTransferManagerApproved] = await Promise.all([
-      isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
-      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
-      hasUserApprovedOperator(
-        this.getSigner(),
-        this.addresses.TRANSFER_MANAGER_V2,
-        signerAddress,
-        this.addresses.EXCHANGE_V2
-      ),
-    ]);
 
     const order: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: userBidAskNonce.askNonce,
+      globalNonce: askNonce,
       subsetNonce: subsetNonce,
       strategyId: strategyId,
       collectionType: collectionType,
@@ -153,6 +136,34 @@ export class LooksRare {
       amounts: amounts,
       additionalParameters: encodeParams(additionalParameters, getMakerParamsTypes(strategyId)),
     };
+    return order;
+  }
+
+  /**
+   * Create a maker ask object ready to be signed
+   * @param CreateMakerInput
+   * @returns the maker object, isTransferManagerApproved, and isTransferManagerApproved
+   */
+  public async createMakerAsk(makerAskInput: CreateMakerInput): Promise<CreateMakerAskOutput> {
+    const signer = this.getSigner();
+    const signerAddress = await signer.getAddress();
+    const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
+
+    const [isCollectionApproved, userBidAskNonce, isTransferManagerApproved] = await Promise.all([
+      isApprovedForAll(this.provider, makerAskInput.collection, signerAddress, spenderAddress),
+      viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
+      hasUserApprovedOperator(
+        this.getSigner(),
+        this.addresses.TRANSFER_MANAGER_V2,
+        signerAddress,
+        this.addresses.EXCHANGE_V2
+      ),
+    ]);
+
+    const order: Maker = await this.noCheckCreateMakerAsk({
+      ...makerAskInput,
+      askNonce: userBidAskNonce.askNonce,
+    });
 
     return {
       maker: order,
