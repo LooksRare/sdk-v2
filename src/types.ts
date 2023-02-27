@@ -87,6 +87,19 @@ export interface StrategyInfo {
   maxProtocolFeeBp: number;
 }
 
+/** Return object of createMakerAsk  */
+export interface CreateMakerAskOutput {
+  maker: Maker;
+  isTransferManagerApproved: boolean;
+  isCollectionApproved: boolean;
+}
+
+/** Return object of createMakerBid  */
+export interface CreateMakerBidOutput {
+  maker: Maker;
+  isCurrencyApproved: boolean;
+}
+
 /** Input of the createMakerAsk function */
 export interface CreateMakerInput {
   /** Collection address */

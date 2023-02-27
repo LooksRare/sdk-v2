@@ -30,6 +30,8 @@ import {
   SupportedChainId,
   Signer,
   CreateMakerInput,
+  CreateMakerAskOutput,
+  CreateMakerBidOutput,
   MerkleTree,
   ContractMethods,
   OrderValidatorCode,
@@ -113,11 +115,7 @@ export class LooksRare {
     currency = constants.AddressZero,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: CreateMakerInput): Promise<{
-    maker: Maker;
-    isTransferManagerApproved: boolean;
-    isCollectionApproved: boolean;
-  }> {
+  }: CreateMakerInput): Promise<CreateMakerAskOutput> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
@@ -181,10 +179,7 @@ export class LooksRare {
     currency = this.addresses.WETH,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
-  }: CreateMakerInput): Promise<{
-    maker: Maker;
-    isCurrencyApproved: boolean;
-  }> {
+  }: CreateMakerInput): Promise<CreateMakerBidOutput> {
     const signer = this.getSigner();
 
     if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {

@@ -13,6 +13,8 @@
 - [Addresses](../interfaces/types.Addresses.md)
 - [BatchTransferItem](../interfaces/types.BatchTransferItem.md)
 - [ContractMethods](../interfaces/types.ContractMethods.md)
+- [CreateMakerAskOutput](../interfaces/types.CreateMakerAskOutput.md)
+- [CreateMakerBidOutput](../interfaces/types.CreateMakerBidOutput.md)
 - [CreateMakerInput](../interfaces/types.CreateMakerInput.md)
 - [Maker](../interfaces/types.Maker.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)

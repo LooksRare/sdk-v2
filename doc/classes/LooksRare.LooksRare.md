@@ -163,7 +163,7 @@ ___
 
 ### createMakerAsk
 
-▸ **createMakerAsk**(`CreateMakerInput`): `Promise`<{ `isCollectionApproved`: `boolean` ; `isTransferManagerApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
+▸ **createMakerAsk**(`CreateMakerInput`): `Promise`<[`CreateMakerAskOutput`](../interfaces/types.CreateMakerAskOutput.md)\>
 
 Create a maker ask object ready to be signed
 
@@ -175,7 +175,7 @@ Create a maker ask object ready to be signed
 
 #### Returns
 
-`Promise`<{ `isCollectionApproved`: `boolean` ; `isTransferManagerApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
+`Promise`<[`CreateMakerAskOutput`](../interfaces/types.CreateMakerAskOutput.md)\>
 
 the maker object, isTransferManagerApproved, and isTransferManagerApproved
 
@@ -183,7 +183,7 @@ ___
 
 ### createMakerBid
 
-▸ **createMakerBid**(`CreateMakerInput`): `Promise`<{ `isCurrencyApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
+▸ **createMakerBid**(`CreateMakerInput`): `Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
 
 Create a maker bid object ready to be signed
 
@@ -195,7 +195,7 @@ Create a maker bid object ready to be signed
 
 #### Returns
 
-`Promise`<{ `isCurrencyApproved`: `boolean` ; `maker`: [`Maker`](../interfaces/types.Maker.md)  }\>
+`Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
 
 the maker object and isCurrencyApproved
 
