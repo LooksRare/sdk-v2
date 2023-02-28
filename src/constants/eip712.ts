@@ -1,4 +1,5 @@
-import { EIP712TypedData } from "../types";
+import { utils } from "ethers";
+import { EIP712TypedData, Maker } from "../types";
 
 // EIP 712 (Typed structured data hashing and signing) related data
 // https://eips.ethereum.org/EIPS/eip-712
@@ -68,4 +69,32 @@ export const getBatchOrderTypes = (height: number): EIP712TypedData => {
       { name: "additionalParameters", type: "bytes" },
     ],
   };
+};
+
+/**
+ * Hash maker ask order.
+ * This function is used for testing purpose in the SDK, but is exposed because it's used by the BE.
+ * @param maker Maker
+ * @returns string (bytes32)
+ */
+export const getMakerHash = (maker: Maker): string => {
+  const values = [
+    MAKER_HASH,
+    maker.quoteType,
+    maker.globalNonce,
+    maker.subsetNonce,
+    maker.orderNonce,
+    maker.strategyId,
+    maker.collectionType,
+    maker.collection,
+    maker.currency,
+    maker.signer,
+    maker.startTime,
+    maker.endTime,
+    maker.price,
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.itemIds])),
+    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.amounts])),
+    utils.keccak256(maker.additionalParameters),
+  ];
+  return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
 };
