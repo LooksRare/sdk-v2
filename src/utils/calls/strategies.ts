@@ -1,5 +1,5 @@
 import { Contract, Overrides, providers } from "ethers";
-import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
+import { LooksRareProtocol } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
 import { Signer, StrategyType, StrategyInfo } from "../../types";
 

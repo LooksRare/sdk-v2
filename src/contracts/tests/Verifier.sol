@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "contracts-exchange-v2/contracts/LooksRareProtocol.sol";
-import "contracts-exchange-v2/contracts/helpers/ProtocolHelpers.sol";
-import "hardhat/console.sol";
+import "@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol.sol";
+import "@looksrare/contracts-exchange-v2/contracts/helpers/ProtocolHelpers.sol";
 
 contract Verifier is ProtocolHelpers {
     using OrderStructs for OrderStructs.Maker;

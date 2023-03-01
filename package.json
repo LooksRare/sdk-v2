@@ -1,15 +1,32 @@
 {
   "name": "@looksrare/sdk-v2",
   "version": "0.0.0",
+  "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "looksrare"
+  ],
+  "homepage": "https://looksrare.org/",
+  "bugs": "https://github.com/LooksRare/sdk-v2/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LooksRare/sdk-v2.git"
+  },
+  "engines": {
+    "node": ">=18.14.0"
+  },
   "scripts": {
     "prebuild": "rm -rf typechain dist artifacts cache",
+    "prepublishOnly": "yarn build",
     "dev": "rollup -c -w",
     "build:ts": "rollup -c && tsc -d",
     "build:sc": "hardhat compile",
@@ -72,7 +89,7 @@
   },
   "dependencies": {
     "@0xsequence/multicall": "^0.41.0",
-    "contracts-exchange-v2": "LooksRare/contracts-exchange-v2",
+    "@looksrare/contracts-exchange-v2": "^0.1.2",
     "merkletreejs": "^0.2.32"
   }
 }

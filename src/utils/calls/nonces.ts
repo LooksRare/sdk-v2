@@ -1,5 +1,5 @@
 import { Contract, BigNumber, Overrides, providers, BigNumberish } from "ethers";
-import { LooksRareProtocol } from "../../../typechain/contracts-exchange-v2/contracts/LooksRareProtocol";
+import { LooksRareProtocol } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
 import { Signer, ContractMethods } from "../../types";
 
