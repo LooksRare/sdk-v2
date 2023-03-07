@@ -1,10 +1,8 @@
-# @looksrare/sdk V2
+# @looksrare/sdk-v2
 
-A collection of tools to interact with LooksRare protocol V2 smart contracts.
+A collection of typescript tools to interact with LooksRare protocol V2 smart contracts 👀💎
 
-## Usage
-
-### Install
+## Install
 
 This package has a peer dependency on [etherjs V5](https://docs.ethers.io/v5/).
 
@@ -16,7 +14,7 @@ yarn add @looksrare/sdk-v2 ethers
 npm install @looksrare/sdk-v2 ethers --save
 ```
 
-### Getting Started
+## Getting Started
 
 The SDK expose a main class used to perform all the onchain operations:
 
@@ -48,17 +46,15 @@ const multicallProvider = looksrare.provider;
 
 See [0xsequence doc](https://github.com/0xsequence/sequence.js/tree/master/packages/multicall) to understand how to use it.
 
-### References
-
-Read the [complete documentation](./doc).
-
-### Guides
+## Documentation
 
 Read the [guides](./guides) if you need help with the implementation.
 
-### FAQ
+You can also read the detailed [api documentation](./doc).
 
-#### How to use ABIs
+## FAQ
+
+### ❓ How to use ABIs
 
 The SDK exposes most of the LooksRare contract [ABIs](https://github.com/LooksRare/sdk-v2/tree/master/src/abis). For convenience, some commonly used ABIs are also exported.
 
@@ -72,23 +68,23 @@ You can also export the JSON file directly:
 import LooksRareProtocol from "@looksrare/sdk-v2/dist/abis/LooksRareProtocol.json";
 ```
 
-#### How to retrieve order nonce
+### ❓ How to retrieve order nonce ?
 
 Call the public api endpoint [/orders/nonce](https://looksrare.dev/reference/getordernonce), and use this nonce directly.
 
-#### What to do when the order is created and signed ?
+### ❓ What to do when the order is created and signed ?
 
 Use the public api endpoint [/orders](https://looksrare.dev/reference/createorder) to push the order to the database. After that, the order will be visible by everyone using the API (looksrare.org, aggregators, etc..).
 
-#### When should I use merkle tree orders ?
+### ❓ When should I use merkle tree orders ?
 
 Merkle tree orders are used to create several orders with a single signature. You shouldn't use them when using a bot. Their main purpose is to facilitate orders creation using a user interface.
 
-#### Why do I need to call grantTransferManagerApproval ?
+### ❓ Why do I need to call grantTransferManagerApproval ?
 
 When you approve a collection to be traded on LooksRare, you approve the TransferManager instead of the exchange. Calling `grantTransferManagerApproval` gives the exchange contract the right to call the transfer function on the TransferManager. You need to call this function only once, the first time you use the V2.
 
-#### What are subset nonces and how to use them
+### ❓ What are subset nonces and how to use them ?
 
 tl;dr subset nonces allow you to cancel all the orders sharing the same subset nonce.
 Subset nonces allow you to group some orders together according to arbitrary rules (for example all your orders for a specific collection, all your orders above a certain threshold, etc). You can then cancel them all with a single call to `cancelSubsetOrders`.
@@ -96,6 +92,8 @@ Subset nonces allow you to group some orders together according to arbitrary rul
 
 ## Resources
 
-- [Developer documentation](https://docs.looksrare.org/developers/welcome)
-- [Public API documentation](https://looksrare.dev/reference/important-information)
-- [Developer discord](https://discord.gg/jJA4qM5dXz)
+🔗 [Developer documentation](https://docs.looksrare.org/developers/welcome)
+
+🔗 [Public API documentation](https://looksrare.dev/reference/important-information)
+
+🔗 [Developer discord](https://discord.gg/jJA4qM5dXz)
