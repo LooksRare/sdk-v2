@@ -1,6 +1,6 @@
 import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber } from "ethers";
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
-import { Eip712MerkleTree } from "./utils/Eip712MerkleTree";
+import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
 /** Addresses used to create a LooksRare instance */
 export interface Addresses {
@@ -201,7 +201,7 @@ export interface MerkleTree {
 export interface SignMerkleTreeOrdersOutput {
   signature: string;
   merkleTreeProofs: MerkleTree[];
-  tree: Eip712MerkleTree<Maker>;
+  tree: Eip712MakerMerkleTree;
 }
 
 /** Error codes returned by the order validator contract */
