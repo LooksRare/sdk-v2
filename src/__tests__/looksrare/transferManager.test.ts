@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
-import { ERC721 } from "../../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
-import { ERC1155 } from "../../../typechain/solmate/src/tokens/ERC1155.sol/ERC1155";
+import { ERC721 } from "../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
+import { ERC1155 } from "../../typechain/solmate/src/tokens/ERC1155.sol/ERC1155";
 import abiIERC721 from "../../abis/IERC721.json";
 import abiIERC1155 from "../../abis/IERC1155.json";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";

@@ -5,15 +5,15 @@ import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Addresses } from "../../types";
-import type { LooksRareProtocol } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
-import type { TransferManager } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
-import type { StrategyCollectionOffer } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/executionStrategies/StrategyCollectionOffer";
-import type { CreatorFeeManagerWithRoyalties } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
-import type { OrderValidatorV2A } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
-import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
-import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
-import type { WETH } from "../../../typechain/solmate/src/tokens/WETH";
-import type { Verifier } from "../../../typechain/src/contracts/tests/Verifier";
+import type { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
+import type { TransferManager } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
+import type { StrategyCollectionOffer } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/executionStrategies/StrategyCollectionOffer";
+import type { CreatorFeeManagerWithRoyalties } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/CreatorFeeManagerWithRoyalties";
+import type { OrderValidatorV2A } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
+import type { MockERC721 } from "../../typechain/src/contracts/tests/MockERC721";
+import type { MockERC1155 } from "../../typechain/src/contracts/tests/MockERC1155";
+import type { WETH } from "../../typechain/solmate/src/tokens/WETH";
+import type { Verifier } from "../../typechain/src/contracts/tests/Verifier";
 
 chai.use(chaiAsPromised);
 
