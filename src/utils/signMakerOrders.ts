@@ -1,6 +1,6 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { Eip712MerkleTree } from "./Eip712MerkleTree";
-import { makerTypes, getBatchOrderTypes } from "../constants/eip712";
+import { Eip712MakerMerkleTree } from "./Eip712MakerMerkleTree";
+import { makerTypes } from "../constants/eip712";
 import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
 
 /**
@@ -30,12 +30,9 @@ export const signMerkleTreeOrders = async (
   domain: TypedDataDomain,
   makerOrders: Maker[]
 ): Promise<SignMerkleTreeOrdersOutput> => {
-  const height = Math.max(Math.ceil(Math.log2(makerOrders.length)), 1);
-  const types = getBatchOrderTypes(height);
-  const tree = new Eip712MerkleTree(types, "BatchOrder", "Maker", makerOrders, height);
+  const tree = new Eip712MakerMerkleTree(makerOrders);
 
-  const hexRoot = tree.getHexRoot();
-
+  const hexRoot = tree.hexRoot;
   const merkleTreeProofs: MerkleTree[] = makerOrders.map((_, index) => {
     const { proof } = tree.getPositionalProof(index);
     return {
@@ -49,6 +46,6 @@ export const signMerkleTreeOrders = async (
     };
   });
 
-  const signature = await signer._signTypedData(domain, types, tree.getDataToSign());
+  const signature = await signer._signTypedData(domain, tree.types, tree.getDataToSign());
   return { signature, merkleTreeProofs, tree };
 };

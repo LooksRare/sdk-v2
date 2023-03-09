@@ -1,50 +1,57 @@
 import { _TypedDataEncoder as TypedDataEncoder } from "@ethersproject/hash";
 import { keccak256, BytesLike } from "ethers/lib/utils";
 import { MerkleTree } from "merkletreejs";
-import { defaultMaker } from "../constants/defaultValues";
-import { Maker, EIP712TypedData } from "../types";
+import { EIP712TypedData } from "../types";
 
-type BatchOrderElements = [Maker, Maker] | [BatchOrderElements, BatchOrderElements];
-
-const makeArray = <T>(len: number, getValue: (i: number) => T) =>
-  Array(len)
-    .fill(0)
-    .map((_, i) => getValue(i));
-
-const chunk = <T>(array: T[], size: number) => {
-  return makeArray(Math.ceil(array.length / size), (i) => array.slice(i * size, (i + 1) * size));
-};
+type BatchOrderElements<T> = [T, T] | [BatchOrderElements<T>, BatchOrderElements<T>];
 
 const hexToBuffer = (value: string) => Buffer.from(value.slice(2), "hex");
 
-const fillArray = <T>(arr: T[], length: number, value: T) => {
+const chunk = <T>(array: T[], size: number): T[][] =>
+  Array(Math.ceil(array.length / size))
+    .fill(0)
+    .map((_, i) => array.slice(i * size, (i + 1) * size));
+
+const fillArray = <T>(arr: T[], length: number, value: T): T[] => {
+  const arrCopy = [...arr];
   if (length > arr.length) {
-    arr.push(...Array(length - arr.length).fill(value));
+    arrCopy.push(...Array(length - arr.length).fill(value));
   }
-  return arr;
+  return arrCopy;
 };
 
 /**
- * Wrapper around MerkleTreeJS to support EIP signing
+ * Generic wrapper around MerkleTreeJS to support EIP signing
  */
 export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   public tree: MerkleTree;
-  private defaultNode: any;
   private completeLeaves: string[];
+  private completeElements: BaseType[];
 
+  /**
+   *
+   * @param types EIP712 Typed data
+   * @param leafType Leaf type used in the Typed data
+   * @param defaultNode Dummy node
+   * @param elements Array of data blocks
+   * @param depth tree depth
+   */
   constructor(
     public types: EIP712TypedData,
-    public rootType: string,
     public leafType: string,
+    defaultNode: BaseType,
     public elements: BaseType[],
     public depth: number
   ) {
     const encoder = TypedDataEncoder.from(types);
     const leafHasher = (leaf: BaseType) => encoder.hashStruct(leafType, leaf);
-    this.defaultNode = defaultMaker;
-    const defaultLeaf = leafHasher(this.defaultNode);
+
     const leaves = this.elements.map(leafHasher);
-    this.completeLeaves = fillArray([...leaves], this.completedSize, defaultLeaf);
+    const defaultLeaf = leafHasher(defaultNode);
+
+    this.completeLeaves = fillArray(leaves, this.completedSize, defaultLeaf);
+    this.completeElements = fillArray(elements, this.completedSize, defaultNode);
+
     this.tree = new MerkleTree(
       this.completeLeaves.map(hexToBuffer),
       (value: BytesLike) => hexToBuffer(keccak256(value)),
@@ -60,7 +67,7 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return Math.pow(2, this.depth);
   }
 
-  public getHexRoot() {
+  get hexRoot() {
     return this.tree.getHexRoot();
   }
 
@@ -70,13 +77,8 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
     return { leaf, proof };
   }
 
-  private getCompleteElements() {
-    const elements = this.elements;
-    return fillArray([...elements], this.completedSize, this.defaultNode);
-  }
-
-  public getDataToSign(): { tree: BatchOrderElements } {
-    let layer = this.getCompleteElements() as any;
+  public getDataToSign(): { tree: BatchOrderElements<BaseType> } {
+    let layer = this.completeElements as any;
     while (layer.length > 2) {
       layer = chunk(layer, 2);
     }
