@@ -42,6 +42,10 @@ import {
   StrategyInfo,
 } from "./types";
 
+/**
+ * LooksRare
+ * This class provides helpers to interact with the LooksRare V2 contracts
+ */
 export class LooksRare {
   /** Current app chain ID */
   public readonly chainId: SupportedChainId;
@@ -85,6 +89,15 @@ export class LooksRare {
   }
 
   /**
+   * Validate a timestamp format (seconds)
+   * @param timestamp
+   * @returns boolean
+   */
+  private isTimestampValid(timestamp: BigNumberish): boolean {
+    return BigNumber.from(timestamp).toString().length <= 10;
+  }
+
+  /**
    * Retrieve EIP-712 domain
    * @returns TypedDataDomain
    */
@@ -118,18 +131,19 @@ export class LooksRare {
   }: CreateMakerInput): Promise<CreateMakerAskOutput> {
     const signer = this.getSigner();
 
-    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+    if (!this.isTimestampValid(startTime) || !this.isTimestampValid(endTime)) {
       throw new ErrorTimestamp();
     }
 
     const signerAddress = await signer.getAddress();
     const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
 
+    // Use this.provider (MulticallProvider) in order to batch the calls
     const [isCollectionApproved, userBidAskNonce, isTransferManagerApproved] = await Promise.all([
       isApprovedForAll(this.provider, collection, signerAddress, spenderAddress),
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
       hasUserApprovedOperator(
-        this.getSigner(),
+        this.provider,
         this.addresses.TRANSFER_MANAGER_V2,
         signerAddress,
         this.addresses.EXCHANGE_V2
@@ -182,13 +196,14 @@ export class LooksRare {
   }: CreateMakerInput): Promise<CreateMakerBidOutput> {
     const signer = this.getSigner();
 
-    if (BigNumber.from(startTime).toString().length > 10 || BigNumber.from(endTime).toString().length > 10) {
+    if (!this.isTimestampValid(startTime) || !this.isTimestampValid(endTime)) {
       throw new ErrorTimestamp();
     }
 
     const signerAddress = await signer.getAddress();
     const spenderAddress = this.addresses.EXCHANGE_V2;
 
+    // Use this.provider (MulticallProvider) in order to batch the calls
     const [currentAllowance, userBidAskNonce] = await Promise.all([
       allowance(this.provider, currency, signerAddress, spenderAddress),
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
@@ -223,6 +238,7 @@ export class LooksRare {
    * @param maker Maker order that will be used as counterparty for the taker
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @param additionalParameters Additional parameters used to support complex orders
+   * @returns Taker object
    */
   public createTaker(maker: Maker, recipient: string = constants.AddressZero, additionalParameters: any[] = []): Taker {
     const order: Taker = {
@@ -238,6 +254,7 @@ export class LooksRare {
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
    * @param recipient Recipient address of the taker (if none, it will use the sender)
+   * @returns Taker object
    */
   public createTakerForCollectionOrder(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
     if (maker.quoteType !== QuoteType.Bid) {
@@ -263,7 +280,7 @@ export class LooksRare {
    * Sign multiple maker orders with a single signature
    * /!\ Use this function for UI implementation only
    * @param makerOrders Array of maker orders
-   * @returns Signature and Merkletree
+   * @returns Signature, proofs, and Merkletree object
    */
   public async signMultipleMakerOrders(makerOrders: Maker[]): Promise<SignMerkleTreeOrdersOutput> {
     if (makerOrders.length > MAX_ORDERS_PER_TREE) {
@@ -280,6 +297,7 @@ export class LooksRare {
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
    * @param referrer Referrer address if applicable
+   * @returns ContractMethods
    */
   public executeOrder(
     maker: Maker,
@@ -287,7 +305,7 @@ export class LooksRare {
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
     referrer: string = constants.AddressZero
-  ) {
+  ): ContractMethods {
     const signer = this.getSigner();
     if (maker.quoteType === QuoteType.Ask) {
       return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
@@ -300,6 +318,7 @@ export class LooksRare {
    * Cancell all maker bid and/or ask orders for the current user
    * @param bid Cancel all bids
    * @param ask Cancel all asks
+   * @returns ContractMethods
    */
   public cancelAllOrders(bid: boolean, ask: boolean): ContractMethods {
     const signer = this.getSigner();
@@ -309,6 +328,7 @@ export class LooksRare {
   /**
    * Cancel a list of specific orders
    * @param nonces List of nonces to be cancelled
+   * @returns ContractMethods
    */
   public cancelOrders(nonces: BigNumberish[]): ContractMethods {
     const signer = this.getSigner();
@@ -318,6 +338,7 @@ export class LooksRare {
   /**
    * Cancel a list of specific subset orders
    * @param nonces List of nonces to be cancelled
+   * @returns ContractMethods
    */
   public cancelSubsetOrders(nonces: BigNumberish[]): ContractMethods {
     const signer = this.getSigner();
@@ -365,6 +386,7 @@ export class LooksRare {
    * Grant a list of operators the rights to transfer user's assets using the transfer manager
    * @param operators List of operators (default to the exchange address)
    * @defaultValue Exchange address
+   * @returns ContractMethods
    */
   public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
     const signer = this.getSigner();
@@ -375,6 +397,7 @@ export class LooksRare {
    * Revoke a list of operators the rights to transfer user's assets using the transfer manager
    * @param operators List of operators
    * @defaultValue Exchange address
+   * @returns ContractMethods
    */
   public revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
     const signer = this.getSigner();
@@ -385,6 +408,7 @@ export class LooksRare {
    * Transfer a list of items across different collections
    * @param to Recipient address
    * @param collectionItems Each object in the array represent a list of items for a specific collection
+   * @returns ContractMethods
    */
   public async transferItemsAcrossCollection(
     to: string,
@@ -416,7 +440,7 @@ export class LooksRare {
   /**
    * Retrieve strategy info
    * @param strategyId use the enum StrategyType
-   * @returns StrategyType
+   * @returns StrategyInfo
    */
   public async strategyInfo(strategyId: StrategyType): Promise<StrategyInfo> {
     return strategyInfo(this.provider, this.addresses.EXCHANGE_V2, strategyId);
