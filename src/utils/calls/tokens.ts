@@ -1,6 +1,6 @@
 import { Contract, providers, Overrides, CallOverrides, BigNumber } from "ethers";
-import { ERC721 } from "../../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
-import { ERC20 } from "../../../typechain/solmate/src/tokens/ERC20";
+import { ERC721 } from "../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
+import { ERC20 } from "../../typechain/solmate/src/tokens/ERC20";
 import abiIERC721 from "../../abis/IERC721.json";
 import abiIERC20 from "../../abis/IERC20.json";
 import { Signer } from "../../types";

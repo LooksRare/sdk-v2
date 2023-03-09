@@ -41,12 +41,12 @@ const config = {
     only: ["LooksRareProtocol", "TransferManager", "OrderValidatorV2A", "IERC721", "IERC1155", "IERC20", "IWETH"],
   },
   typechain: {
-    outDir: "typechain",
+    outDir: "src/typechain",
     target: "ethers-v5",
   },
   paths: {
     tests: "src/__tests__",
-    artifacts: "artifacts",
+    artifacts: "src/artifacts",
     sources: "src/contracts",
   },
 };
