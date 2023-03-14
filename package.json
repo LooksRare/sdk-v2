@@ -22,7 +22,7 @@
     "url": "https://github.com/LooksRare/sdk-v2.git"
   },
   "engines": {
-    "node": ">= 16.15.1 <=18.14.2"
+    "node": ">= 16.15.1 <=18.x"
   },
   "scripts": {
     "prebuild": "rm -rf ./src/typechain ./src/artifacts cache dist",
