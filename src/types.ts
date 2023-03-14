@@ -30,6 +30,7 @@ export enum CollectionType {
 export enum StrategyType {
   standard = 0,
   collection = 1,
+  collectionWithMerkleTree = 2,
 }
 
 /** Type for maker order */
