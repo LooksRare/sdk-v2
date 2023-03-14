@@ -1,4 +1,4 @@
-import { BigNumber, providers, constants, BigNumberish, ContractTransaction } from "ethers";
+import { BigNumber, providers, constants, BigNumberish, ContractTransaction, Overrides } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork } from "./constants/addresses";
@@ -304,14 +304,12 @@ export class LooksRare {
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
-    referrer: string = constants.AddressZero
+    referrer: string = constants.AddressZero,
+    overrides?: Overrides
   ): ContractMethods {
     const signer = this.getSigner();
-    if (maker.quoteType === QuoteType.Ask) {
-      return executeTakerBid(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
-    } else {
-      return executeTakerAsk(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer);
-    }
+    const execute = maker.quoteType === QuoteType.Ask ? executeTakerBid : executeTakerAsk;
+    return execute(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer, overrides);
   }
 
   /**
@@ -320,9 +318,9 @@ export class LooksRare {
    * @param ask Cancel all asks
    * @returns ContractMethods
    */
-  public cancelAllOrders(bid: boolean, ask: boolean): ContractMethods {
+  public cancelAllOrders(bid: boolean, ask: boolean, overrides?: Overrides): ContractMethods {
     const signer = this.getSigner();
-    return incrementBidAskNonces(signer, this.addresses.EXCHANGE_V2, bid, ask);
+    return incrementBidAskNonces(signer, this.addresses.EXCHANGE_V2, bid, ask, overrides);
   }
 
   /**
@@ -330,9 +328,9 @@ export class LooksRare {
    * @param nonces List of nonces to be cancelled
    * @returns ContractMethods
    */
-  public cancelOrders(nonces: BigNumberish[]): ContractMethods {
+  public cancelOrders(nonces: BigNumberish[], overrides?: Overrides): ContractMethods {
     const signer = this.getSigner();
-    return cancelOrderNonces(signer, this.addresses.EXCHANGE_V2, nonces);
+    return cancelOrderNonces(signer, this.addresses.EXCHANGE_V2, nonces, overrides);
   }
 
   /**
@@ -340,9 +338,9 @@ export class LooksRare {
    * @param nonces List of nonces to be cancelled
    * @returns ContractMethods
    */
-  public cancelSubsetOrders(nonces: BigNumberish[]): ContractMethods {
+  public cancelSubsetOrders(nonces: BigNumberish[], overrides?: Overrides): ContractMethods {
     const signer = this.getSigner();
-    return cancelSubsetNonces(signer, this.addresses.EXCHANGE_V2, nonces);
+    return cancelSubsetNonces(signer, this.addresses.EXCHANGE_V2, nonces, overrides);
   }
 
   /**
@@ -352,10 +350,14 @@ export class LooksRare {
    * @param approved true to approve, false to revoke the approval (default to true)
    * @returns ContractTransaction
    */
-  public approveAllCollectionItems(collectionAddress: string, approved = true): Promise<ContractTransaction> {
+  public approveAllCollectionItems(
+    collectionAddress: string,
+    approved = true,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
-    return setApprovalForAll(signer, collectionAddress, spenderAddress, approved);
+    return setApprovalForAll(signer, collectionAddress, spenderAddress, approved, overrides);
   }
 
   /**
@@ -365,10 +367,14 @@ export class LooksRare {
    * @param amount Amount to be approved (default to MaxUint256)
    * @returns ContractTransaction
    */
-  public approveErc20(tokenAddress: string, amount: BigNumber = constants.MaxUint256): Promise<ContractTransaction> {
+  public approveErc20(
+    tokenAddress: string,
+    amount: BigNumber = constants.MaxUint256,
+    overrides?: Overrides
+  ): Promise<ContractTransaction> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.EXCHANGE_V2;
-    return approve(signer, tokenAddress, spenderAddress, amount);
+    return approve(signer, tokenAddress, spenderAddress, amount, overrides);
   }
 
   /**
@@ -376,10 +382,13 @@ export class LooksRare {
    * @param operator Operator address (default to the exchange address)
    * @returns true if the operator is approved, false otherwise
    */
-  public async isTransferManagerApproved(operator: string = this.addresses.EXCHANGE_V2): Promise<boolean> {
+  public async isTransferManagerApproved(
+    operator: string = this.addresses.EXCHANGE_V2,
+    overrides?: Overrides
+  ): Promise<boolean> {
     const signer = this.getSigner();
     const signerAddress = await signer.getAddress();
-    return hasUserApprovedOperator(this.getSigner(), this.addresses.TRANSFER_MANAGER_V2, signerAddress, operator);
+    return hasUserApprovedOperator(signer, this.addresses.TRANSFER_MANAGER_V2, signerAddress, operator, overrides);
   }
 
   /**
@@ -388,9 +397,12 @@ export class LooksRare {
    * @defaultValue Exchange address
    * @returns ContractMethods
    */
-  public grantTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
+  public grantTransferManagerApproval(
+    operators: string[] = [this.addresses.EXCHANGE_V2],
+    overrides?: Overrides
+  ): ContractMethods {
     const signer = this.getSigner();
-    return grantApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators);
+    return grantApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators, overrides);
   }
 
   /**
@@ -399,9 +411,12 @@ export class LooksRare {
    * @defaultValue Exchange address
    * @returns ContractMethods
    */
-  public revokeTransferManagerApproval(operators: string[] = [this.addresses.EXCHANGE_V2]): ContractMethods {
+  public revokeTransferManagerApproval(
+    operators: string[] = [this.addresses.EXCHANGE_V2],
+    overrides?: Overrides
+  ): ContractMethods {
     const signer = this.getSigner();
-    return revokeApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators);
+    return revokeApprovals(signer, this.addresses.TRANSFER_MANAGER_V2, operators, overrides);
   }
 
   /**
@@ -412,11 +427,19 @@ export class LooksRare {
    */
   public async transferItemsAcrossCollection(
     to: string,
-    collectionItems: BatchTransferItem[]
+    collectionItems: BatchTransferItem[],
+    overrides?: Overrides
   ): Promise<ContractMethods> {
     const signer = this.getSigner();
     const from = await signer.getAddress();
-    return transferBatchItemsAcrossCollections(signer, this.addresses.TRANSFER_MANAGER_V2, collectionItems, from, to);
+    return transferBatchItemsAcrossCollections(
+      signer,
+      this.addresses.TRANSFER_MANAGER_V2,
+      collectionItems,
+      from,
+      to,
+      overrides
+    );
   }
 
   /**
@@ -429,12 +452,20 @@ export class LooksRare {
   public async verifyMakerOrders(
     makerOrders: Maker[],
     signatures: string[],
-    merkleTrees?: MerkleTree[]
+    merkleTrees?: MerkleTree[],
+    overrides?: Overrides
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
     const defaultMerkleTree = { root: constants.HashZero, proof: [] };
     const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
-    return verifyMakerOrders(signer, this.addresses.ORDER_VALIDATOR_V2, makerOrders, signatures, _merkleTrees);
+    return verifyMakerOrders(
+      signer,
+      this.addresses.ORDER_VALIDATOR_V2,
+      makerOrders,
+      signatures,
+      _merkleTrees,
+      overrides
+    );
   }
 
   /**
@@ -442,7 +473,7 @@ export class LooksRare {
    * @param strategyId use the enum StrategyType
    * @returns StrategyInfo
    */
-  public async strategyInfo(strategyId: StrategyType): Promise<StrategyInfo> {
-    return strategyInfo(this.provider, this.addresses.EXCHANGE_V2, strategyId);
+  public async strategyInfo(strategyId: StrategyType, overrides?: Overrides): Promise<StrategyInfo> {
+    return strategyInfo(this.provider, this.addresses.EXCHANGE_V2, strategyId, overrides);
   }
 }
