@@ -5,7 +5,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setu
 import { LooksRare } from "../../LooksRare";
 import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
 
-describe("execute taker bid", () => {
+describe("execute multiple taker bids", () => {
   let mocks: SetupMocks;
   let signers: Signers;
   let baseMakerAskInput: CreateMakerInput;
