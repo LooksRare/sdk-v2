@@ -53,7 +53,7 @@ describe("Create takers", () => {
       expect(taker.additionalParameters).to.be.equal("0x");
     });
   });
-  describe("createTakerForCollectionOrder", async () => {
+  describe("createTakerCollectionOffer", async () => {
     it("create taker for collection order", async () => {
       const baseMakerAskInput: CreateMakerInput = {
         ...baseInput,
@@ -63,7 +63,7 @@ describe("Create takers", () => {
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { maker } = await lr.createMakerBid(baseMakerAskInput);
-      const taker = lr.createTakerForCollectionOrder(maker, 1, signers.user2.address);
+      const taker = lr.createTakerCollectionOffer(maker, 1, signers.user2.address);
 
       const [itemId] = utils.defaultAbiCoder.decode(getTakerParamsTypes(maker.strategyId), taker.additionalParameters);
       expect(taker.recipient).to.be.equal(signers.user2.address);
@@ -79,7 +79,7 @@ describe("Create takers", () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { maker } = await lr.createMakerAsk(baseMakerAskInput);
 
-      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(ErrorQuoteType);
+      expect(() => lr.createTakerCollectionOffer(maker, 1, signers.user2.address)).to.throw(ErrorQuoteType);
     });
     it("throw when strategy type is wrong", async () => {
       const baseMakerAskInput: CreateMakerInput = {
@@ -91,7 +91,7 @@ describe("Create takers", () => {
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { maker } = await lr.createMakerBid(baseMakerAskInput);
 
-      expect(() => lr.createTakerForCollectionOrder(maker, 1, signers.user2.address)).to.throw(ErrorStrategyType);
+      expect(() => lr.createTakerCollectionOffer(maker, 1, signers.user2.address)).to.throw(ErrorStrategyType);
     });
   });
 });
