@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber, Overrides, PayableOverrides } from "ethers";
+import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber, PayableOverrides } from "ethers";
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
 import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
