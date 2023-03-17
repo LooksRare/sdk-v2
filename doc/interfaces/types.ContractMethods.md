@@ -8,11 +8,17 @@ Return type for any on chain call
 
 ### call
 
-• **call**: () => `Promise`<`ContractTransaction`\>
+• **call**: (`additionalOverrides?`: `Overrides`) => `Promise`<`ContractTransaction`\>
 
 #### Type declaration
 
-▸ (): `Promise`<`ContractTransaction`\>
+▸ (`additionalOverrides?`): `Promise`<`ContractTransaction`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `additionalOverrides?` | `Overrides` |
 
 ##### Returns
 
@@ -22,11 +28,17 @@ ___
 
 ### callStatic
 
-• **callStatic**: () => `Promise`<`any`\>
+• **callStatic**: (`additionalOverrides?`: `Overrides`) => `Promise`<`any`\>
 
 #### Type declaration
 
-▸ (): `Promise`<`any`\>
+▸ (`additionalOverrides?`): `Promise`<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `additionalOverrides?` | `Overrides` |
 
 ##### Returns
 
@@ -36,11 +48,17 @@ ___
 
 ### estimateGas
 
-• **estimateGas**: () => `Promise`<`BigNumber`\>
+• **estimateGas**: (`additionalOverrides?`: `Overrides`) => `Promise`<`BigNumber`\>
 
 #### Type declaration
 
-▸ (): `Promise`<`BigNumber`\>
+▸ (`additionalOverrides?`): `Promise`<`BigNumber`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `additionalOverrides?` | `Overrides` |
 
 ##### Returns
 

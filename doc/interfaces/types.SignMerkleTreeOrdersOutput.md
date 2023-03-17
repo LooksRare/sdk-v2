@@ -20,4 +20,4 @@ ___
 
 ### tree
 
-• **tree**: `Eip712MerkleTree`<[`Maker`](types.Maker.md)\>
+• **tree**: `Eip712MakerMerkleTree`

@@ -296,7 +296,7 @@ export class LooksRare {
    * @param taker Taker order
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
-   * @param referrer Referrer address if applicable
+   * @param affiliate Affiliate address if applicable
    * @returns ContractMethods
    */
   public executeOrder(
@@ -304,19 +304,19 @@ export class LooksRare {
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = defaultMerkleTree,
-    referrer: string = constants.AddressZero,
+    affiliate: string = constants.AddressZero,
     overrides?: Overrides
   ): ContractMethods {
     const signer = this.getSigner();
     const execute = maker.quoteType === QuoteType.Ask ? executeTakerBid : executeTakerAsk;
-    return execute(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer, overrides);
+    return execute(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, affiliate, overrides);
   }
 
   /**
    * Execute several orders
    * @param orders List of orders data
    * @param isAtomic Should the transaction revert or not if a trade fails
-   * @param referrer Referrer address
+   * @param affiliate Affiliate address
    * @param overrides Call overrides
    * @returns ContractMethods
    */
@@ -328,7 +328,7 @@ export class LooksRare {
       merkleTree?: MerkleTree;
     }[],
     isAtomic: boolean,
-    referrer: string = constants.AddressZero,
+    affiliate: string = constants.AddressZero,
     overrides?: Overrides
   ) {
     const signer = this.getSigner();
@@ -356,7 +356,7 @@ export class LooksRare {
       signatures,
       isAtomic,
       merkleTrees,
-      referrer,
+      affiliate,
       overrides
     );
   }
