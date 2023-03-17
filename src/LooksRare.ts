@@ -3,7 +3,7 @@ import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
 import { addressesByNetwork } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
-import { MAX_ORDERS_PER_TREE } from "./constants";
+import { MAX_ORDERS_PER_TREE, defaultMerkleTree } from "./constants";
 import { signMakerOrder, signMerkleTreeOrders } from "./utils/signMakerOrders";
 import {
   incrementBidAskNonces,
@@ -11,7 +11,7 @@ import {
   cancelSubsetNonces,
   viewUserBidAskNonces,
 } from "./utils/calls/nonces";
-import { executeTakerAsk, executeTakerBid } from "./utils/calls/exchange";
+import { executeTakerAsk, executeTakerBid, executeMultipleTakerBids } from "./utils/calls/exchange";
 import {
   transferBatchItemsAcrossCollections,
   grantApprovals,
@@ -296,20 +296,69 @@ export class LooksRare {
    * @param taker Taker order
    * @param signature Signature of the maker order
    * @param merkleTree If the maker has been signed with a merkle tree
-   * @param referrer Referrer address if applicable
+   * @param affiliate Affiliate address if applicable
    * @returns ContractMethods
    */
   public executeOrder(
     maker: Maker,
     taker: Taker,
     signature: string,
-    merkleTree: MerkleTree = { root: constants.HashZero, proof: [] },
-    referrer: string = constants.AddressZero,
+    merkleTree: MerkleTree = defaultMerkleTree,
+    affiliate: string = constants.AddressZero,
     overrides?: Overrides
   ): ContractMethods {
     const signer = this.getSigner();
     const execute = maker.quoteType === QuoteType.Ask ? executeTakerBid : executeTakerAsk;
-    return execute(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, referrer, overrides);
+    return execute(signer, this.addresses.EXCHANGE_V2, taker, maker, signature, merkleTree, affiliate, overrides);
+  }
+
+  /**
+   * Execute several orders
+   * @param orders List of orders data
+   * @param isAtomic Should the transaction revert or not if a trade fails
+   * @param affiliate Affiliate address
+   * @param overrides Call overrides
+   * @returns ContractMethods
+   */
+  public executeMultipleOrders(
+    orders: {
+      maker: Maker;
+      taker: Taker;
+      signature: string;
+      merkleTree?: MerkleTree;
+    }[],
+    isAtomic: boolean,
+    affiliate: string = constants.AddressZero,
+    overrides?: Overrides
+  ) {
+    const signer = this.getSigner();
+
+    const makers: Maker[] = [];
+    const takers: Taker[] = [];
+    const signatures: string[] = [];
+    const merkleTrees: MerkleTree[] = [];
+
+    orders.forEach((order) => {
+      if (order.maker.quoteType === QuoteType.Bid) {
+        throw new ErrorQuoteType();
+      }
+      makers.push(order.maker);
+      takers.push(order.taker);
+      signatures.push(order.signature);
+      merkleTrees.push(order.merkleTree ?? defaultMerkleTree);
+    });
+
+    return executeMultipleTakerBids(
+      signer,
+      this.addresses.EXCHANGE_V2,
+      takers,
+      makers,
+      signatures,
+      isAtomic,
+      merkleTrees,
+      affiliate,
+      overrides
+    );
   }
 
   /**
@@ -456,7 +505,6 @@ export class LooksRare {
     overrides?: Overrides
   ): Promise<OrderValidatorCode[][]> {
     const signer = this.getSigner();
-    const defaultMerkleTree = { root: constants.HashZero, proof: [] };
     const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
     return verifyMakerOrders(
       signer,

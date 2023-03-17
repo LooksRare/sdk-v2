@@ -2,6 +2,9 @@
 
 [LooksRare](../modules/LooksRare.md).LooksRare
 
+LooksRare
+This class provides helpers to interact with the LooksRare V2 contracts
+
 ## Constructors
 
 ### constructor
@@ -64,7 +67,7 @@ https://docs.ethers.io/v5/api/signer/
 
 ### approveAllCollectionItems
 
-▸ **approveAllCollectionItems**(`collectionAddress`, `approved?`): `Promise`<`ContractTransaction`\>
+▸ **approveAllCollectionItems**(`collectionAddress`, `approved?`, `overrides?`): `Promise`<`ContractTransaction`\>
 
 Approve all the items of a collection, to eventually be traded on LooksRare
 The spender is the TransferManager.
@@ -75,6 +78,7 @@ The spender is the TransferManager.
 | :------ | :------ | :------ | :------ |
 | `collectionAddress` | `string` | `undefined` | Address of the collection to be approved. |
 | `approved` | `boolean` | `true` | true to approve, false to revoke the approval (default to true) |
+| `overrides?` | `Overrides` | `undefined` | - |
 
 #### Returns
 
@@ -86,7 +90,7 @@ ___
 
 ### approveErc20
 
-▸ **approveErc20**(`tokenAddress`, `amount?`): `Promise`<`ContractTransaction`\>
+▸ **approveErc20**(`tokenAddress`, `amount?`, `overrides?`): `Promise`<`ContractTransaction`\>
 
 Approve an ERC20 to be used as a currency on LooksRare.
 The spender is the LooksRareProtocol contract.
@@ -97,6 +101,7 @@ The spender is the LooksRareProtocol contract.
 | :------ | :------ | :------ | :------ |
 | `tokenAddress` | `string` | `undefined` | Address of the ERC20 to approve |
 | `amount` | `BigNumber` | `constants.MaxUint256` | Amount to be approved (default to MaxUint256) |
+| `overrides?` | `Overrides` | `undefined` | - |
 
 #### Returns
 
@@ -108,7 +113,7 @@ ___
 
 ### cancelAllOrders
 
-▸ **cancelAllOrders**(`bid`, `ask`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **cancelAllOrders**(`bid`, `ask`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancell all maker bid and/or ask orders for the current user
 
@@ -118,16 +123,19 @@ Cancell all maker bid and/or ask orders for the current user
 | :------ | :------ | :------ |
 | `bid` | `boolean` | Cancel all bids |
 | `ask` | `boolean` | Cancel all asks |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
+ContractMethods
+
 ___
 
 ### cancelOrders
 
-▸ **cancelOrders**(`nonces`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **cancelOrders**(`nonces`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancel a list of specific orders
 
@@ -136,16 +144,19 @@ Cancel a list of specific orders
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
+ContractMethods
+
 ___
 
 ### cancelSubsetOrders
 
-▸ **cancelSubsetOrders**(`nonces`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **cancelSubsetOrders**(`nonces`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Cancel a list of specific subset orders
 
@@ -154,10 +165,13 @@ Cancel a list of specific subset orders
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
+
+ContractMethods
 
 ___
 
@@ -219,6 +233,8 @@ Create a taker ask ready to be executed against a maker bid
 
 [`Taker`](../interfaces/types.Taker.md)
 
+Taker object
+
 ___
 
 ### createTakerForCollectionOrder
@@ -243,11 +259,42 @@ this.createTaker
 
 [`Taker`](../interfaces/types.Taker.md)
 
+Taker object
+
+___
+
+### executeMultipleOrders
+
+▸ **executeMultipleOrders**(`orders`, `isAtomic`, `affiliate?`, `overrides?`): `Object`
+
+Execute several orders
+
+#### Parameters
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `orders` | { `maker`: [`Maker`](../interfaces/types.Maker.md) ; `merkleTree?`: [`MerkleTree`](../interfaces/types.MerkleTree.md) ; `signature`: `string` ; `taker`: [`Taker`](../interfaces/types.Taker.md)  }[] | `undefined` | List of orders data |
+| `isAtomic` | `boolean` | `undefined` | Should the transaction revert or not if a trade fails |
+| `affiliate` | `string` | `constants.AddressZero` | Affiliate address |
+| `overrides?` | `Overrides` | `undefined` | Call overrides |
+
+#### Returns
+
+`Object`
+
+ContractMethods
+
+| Name | Type |
+| :------ | :------ |
+| `call` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`ContractTransaction`\> |
+| `callStatic` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`void`\> |
+| `estimateGas` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`BigNumber`\> |
+
 ___
 
 ### executeOrder
 
-▸ **executeOrder**(`maker`, `taker`, `signature`, `merkleTree?`, `referrer?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **executeOrder**(`maker`, `taker`, `signature`, `merkleTree?`, `affiliate?`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Execute a trade
 
@@ -258,12 +305,15 @@ Execute a trade
 | `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | - |
 | `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
 | `signature` | `string` | `undefined` | Signature of the maker order |
-| `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `undefined` | If the maker has been signed with a merkle tree |
-| `referrer` | `string` | `constants.AddressZero` | Referrer address if applicable |
+| `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `defaultMerkleTree` | If the maker has been signed with a merkle tree |
+| `affiliate` | `string` | `constants.AddressZero` | Affiliate address if applicable |
+| `overrides?` | `Overrides` | `undefined` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
+
+ContractMethods
 
 ___
 
@@ -297,7 +347,7 @@ ___
 
 ### grantTransferManagerApproval
 
-▸ **grantTransferManagerApproval**(`operators?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **grantTransferManagerApproval**(`operators?`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Grant a list of operators the rights to transfer user's assets using the transfer manager
 
@@ -310,16 +360,39 @@ Exchange address
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `operators` | `string`[] | List of operators (default to the exchange address) |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
+ContractMethods
+
+___
+
+### isTimestampValid
+
+▸ `Private` **isTimestampValid**(`timestamp`): `boolean`
+
+Validate a timestamp format (seconds)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `timestamp` | `BigNumberish` |
+
+#### Returns
+
+`boolean`
+
+boolean
+
 ___
 
 ### isTransferManagerApproved
 
-▸ **isTransferManagerApproved**(`operator?`): `Promise`<`boolean`\>
+▸ **isTransferManagerApproved**(`operator?`, `overrides?`): `Promise`<`boolean`\>
 
 Check whether or not an operator has been approved by the user
 
@@ -328,6 +401,7 @@ Check whether or not an operator has been approved by the user
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `operator` | `string` | Operator address (default to the exchange address) |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
@@ -339,7 +413,7 @@ ___
 
 ### revokeTransferManagerApproval
 
-▸ **revokeTransferManagerApproval**(`operators?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
+▸ **revokeTransferManagerApproval**(`operators?`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
 Revoke a list of operators the rights to transfer user's assets using the transfer manager
 
@@ -352,10 +426,13 @@ Exchange address
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `operators` | `string`[] | List of operators |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 [`ContractMethods`](../interfaces/types.ContractMethods.md)
+
+ContractMethods
 
 ___
 
@@ -396,13 +473,13 @@ Sign multiple maker orders with a single signature
 
 `Promise`<[`SignMerkleTreeOrdersOutput`](../interfaces/types.SignMerkleTreeOrdersOutput.md)\>
 
-Signature and Merkletree
+Signature, proofs, and Merkletree object
 
 ___
 
 ### strategyInfo
 
-▸ **strategyInfo**(`strategyId`): `Promise`<[`StrategyInfo`](../interfaces/types.StrategyInfo.md)\>
+▸ **strategyInfo**(`strategyId`, `overrides?`): `Promise`<[`StrategyInfo`](../interfaces/types.StrategyInfo.md)\>
 
 Retrieve strategy info
 
@@ -411,18 +488,19 @@ Retrieve strategy info
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `strategyId` | [`StrategyType`](../enums/types.StrategyType.md) | use the enum StrategyType |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 `Promise`<[`StrategyInfo`](../interfaces/types.StrategyInfo.md)\>
 
-StrategyType
+StrategyInfo
 
 ___
 
 ### transferItemsAcrossCollection
 
-▸ **transferItemsAcrossCollection**(`to`, `collectionItems`): `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
+▸ **transferItemsAcrossCollection**(`to`, `collectionItems`, `overrides?`): `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
 
 Transfer a list of items across different collections
 
@@ -432,16 +510,19 @@ Transfer a list of items across different collections
 | :------ | :------ | :------ |
 | `to` | `string` | Recipient address |
 | `collectionItems` | [`BatchTransferItem`](../interfaces/types.BatchTransferItem.md)[] | Each object in the array represent a list of items for a specific collection |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 
 `Promise`<[`ContractMethods`](../interfaces/types.ContractMethods.md)\>
 
+ContractMethods
+
 ___
 
 ### verifyMakerOrders
 
-▸ **verifyMakerOrders**(`makerOrders`, `signatures`, `merkleTrees?`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
+▸ **verifyMakerOrders**(`makerOrders`, `signatures`, `merkleTrees?`, `overrides?`): `Promise`<[`OrderValidatorCode`](../enums/types.OrderValidatorCode.md)[][]\>
 
 Verify if a set of orders can be executed (i.e are valid)
 
@@ -452,6 +533,7 @@ Verify if a set of orders can be executed (i.e are valid)
 | `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | List of maker orders |
 | `signatures` | `string`[] | List of signatures |
 | `merkleTrees?` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle trees (optional) |
+| `overrides?` | `Overrides` | - |
 
 #### Returns
 

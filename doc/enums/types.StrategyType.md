@@ -12,6 +12,12 @@ List of trading strategies
 
 ___
 
+### collectionWithMerkleTree
+
+• **collectionWithMerkleTree** = ``2``
+
+___
+
 ### standard
 
 • **standard** = ``0``
