@@ -24,6 +24,12 @@
 
 ## Type Aliases
 
+### CreateMakerCollectionOfferInput
+
+Ƭ **CreateMakerCollectionOfferInput**: `Omit`<[`CreateMakerInput`](../interfaces/types.CreateMakerInput.md), ``"strategyId"`` \| ``"itemIds"``\>
+
+___
+
 ### EIP712TypedData
 
 Ƭ **EIP712TypedData**: `Record`<`string`, `TypedDataField`[]\>

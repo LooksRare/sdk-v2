@@ -141,6 +141,8 @@ export interface CreateMakerInput {
   additionalParameters?: any[];
 }
 
+export type CreateMakerCollectionOfferInput = Omit<CreateMakerInput, "strategyId" | "itemIds">;
+
 /** Maker object to be used in execute functions */
 export interface Maker {
   /** Ask or bid */

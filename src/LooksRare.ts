@@ -32,6 +32,7 @@ import {
   CreateMakerInput,
   CreateMakerAskOutput,
   CreateMakerBidOutput,
+  CreateMakerCollectionOfferInput,
   MerkleTree,
   ContractMethods,
   OrderValidatorCode,
@@ -254,9 +255,7 @@ export class LooksRare {
    * @param orderInputs Order data
    * @returns CreateMakerBidOutput
    */
-  public createMakerCollectionOffer(
-    orderInputs: Omit<CreateMakerInput, "strategyId" | "itemIds">
-  ): Promise<CreateMakerBidOutput> {
+  public createMakerCollectionOffer(orderInputs: CreateMakerCollectionOfferInput): Promise<CreateMakerBidOutput> {
     return this.createMakerBid({ ...orderInputs, strategyId: StrategyType.collection, itemIds: [] });
   }
 
