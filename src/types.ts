@@ -75,9 +75,9 @@ export type Signer = ethers.Signer & TypedDataSigner;
 
 /** Return type for any on chain call */
 export interface ContractMethods {
-  call: (additionalOverrides?: Overrides | PayableOverrides) => Promise<ContractTransaction>;
-  estimateGas: (additionalOverrides?: Overrides | PayableOverrides) => Promise<BigNumber>;
-  callStatic: (additionalOverrides?: Overrides | PayableOverrides) => Promise<any>;
+  call: (additionalOverrides?: PayableOverrides) => Promise<ContractTransaction>;
+  estimateGas: (additionalOverrides?: PayableOverrides) => Promise<BigNumber>;
+  callStatic: (additionalOverrides?: PayableOverrides) => Promise<any>;
 }
 
 /** Return type for strategyInfo */
