@@ -2,23 +2,24 @@ import { expect } from "chai";
 import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
+import { ownerOf } from "../helpers/tokens";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, Maker } from "../../types";
 
 describe("execute multiple taker bids", () => {
   let mocks: SetupMocks;
   let signers: Signers;
-  let baseMakerAskInput: CreateMakerInput;
+  let lrUser1: LooksRare;
+  let lrUser2: LooksRare;
+  let makers: Maker[] = [];
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
+    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
-    const tx = await mocks.contracts.transferManager
-      .connect(signers.user1)
-      .grantApprovals([mocks.addresses.EXCHANGE_V2]);
-    await tx.wait();
-
-    baseMakerAskInput = {
+    const baseMakerAskInput: CreateMakerInput = {
       collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
@@ -29,69 +30,100 @@ describe("execute multiple taker bids", () => {
       price: utils.parseEther("1"),
       itemIds: [0],
     };
-  });
-  it("execute multiple taker bid", async () => {
-    const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
-    let tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
+
+    let tx = await lrUser1.grantTransferManagerApproval().call();
     await tx.wait();
 
-    // Order 1
-    const { maker: maker1 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput });
-    const signature1 = await lrUser1.signMakerOrder(maker1);
-    const taker1 = lrUser2.createTaker(maker1, signers.user2.address);
+    tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
+    await tx.wait();
 
-    // Order 2
+    const { maker: maker1 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput });
     const { maker: maker2 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput, itemIds: [1], orderNonce: 1 });
-    const signature2 = await lrUser1.signMakerOrder(maker2);
-    const taker2 = lrUser2.createTaker(maker2, signers.user2.address);
+    makers = [maker1, maker2];
+  });
+
+  it("execute estimatedGas and callStatic", async () => {
+    const taker1 = lrUser2.createTaker(makers[0], signers.user2.address);
+    const taker2 = lrUser2.createTaker(makers[1], signers.user2.address);
+    const signature1 = await lrUser1.signMakerOrder(makers[0]);
+    const signature2 = await lrUser1.signMakerOrder(makers[1]);
 
     const orders = [
-      { maker: maker1, taker: taker1, signature: signature1 },
-      { maker: maker2, taker: taker2, signature: signature2 },
+      { maker: makers[0], taker: taker1, signature: signature1 },
+      { maker: makers[1], taker: taker2, signature: signature2 },
     ];
-
     const contractMethods = lrUser2.executeMultipleOrders(orders, true);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
-
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
-
-    tx = await contractMethods.call();
-    const receipt = await tx.wait();
-    expect(receipt.status).to.be.equal(1);
   });
+
+  it("execute multiple taker bid atomically", async () => {
+    const taker1 = lrUser2.createTaker(makers[0], signers.user2.address);
+    const taker2 = lrUser2.createTaker(makers[1], signers.user2.address);
+    const signature1 = await lrUser1.signMakerOrder(makers[0]);
+    const signature2 = await lrUser1.signMakerOrder(makers[1]);
+
+    const orders = [
+      { maker: makers[0], taker: taker1, signature: signature1 },
+      { maker: makers[1], taker: taker2, signature: signature2 },
+    ];
+    const user1InitialBalance = await signers.user1.getBalance();
+    const contractMethods = lrUser2.executeMultipleOrders(orders, true);
+
+    const receipt = await (await contractMethods.call()).wait();
+    expect(receipt.status).to.be.equal(1);
+
+    const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
+    expect(owner).to.be.equal(signers.user2.address);
+
+    const user1UpdatedBalance = await signers.user1.getBalance();
+    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+  });
+
+  it("execute multiple taker bid non atomically", async () => {
+    const taker1 = lrUser2.createTaker(makers[0], signers.user2.address);
+    const taker2 = lrUser2.createTaker(makers[1], signers.user2.address);
+    const signature1 = await lrUser1.signMakerOrder(makers[0]);
+    const signature2 = await lrUser1.signMakerOrder(makers[1]);
+
+    const orders = [
+      { maker: makers[0], taker: taker1, signature: signature1 },
+      { maker: makers[1], taker: taker2, signature: signature2 },
+    ];
+    const user1InitialBalance = await signers.user1.getBalance();
+    const contractMethods = lrUser2.executeMultipleOrders(orders, false);
+
+    const receipt = await (await contractMethods.call()).wait();
+    expect(receipt.status).to.be.equal(1);
+
+    const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
+    expect(owner).to.be.equal(signers.user2.address);
+
+    const user1UpdatedBalance = await signers.user1.getBalance();
+    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+  });
+
   it("execute multiple taker bid with a merkle tree", async () => {
-    const lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
-    let tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
-    await tx.wait();
-
-    // Order 1
-    const { maker: maker1 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput });
-    const taker1 = lrUser2.createTaker(maker1, signers.user2.address);
-
-    // Order 2
-    const { maker: maker2 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput, itemIds: [1], orderNonce: 1 });
-    const taker2 = lrUser2.createTaker(maker2, signers.user2.address);
-
-    const { signature, merkleTreeProofs } = await lrUser1.signMultipleMakerOrders([maker1, maker2]);
+    const taker1 = lrUser2.createTaker(makers[0], signers.user2.address);
+    const taker2 = lrUser2.createTaker(makers[1], signers.user2.address);
+    const { signature, merkleTreeProofs } = await lrUser1.signMultipleMakerOrders(makers);
 
     const orders = [
-      { maker: maker1, taker: taker1, signature: signature, merkleTree: merkleTreeProofs[0] },
-      { maker: maker2, taker: taker2, signature: signature, merkleTree: merkleTreeProofs[1] },
+      { maker: makers[0], taker: taker1, signature: signature, merkleTree: merkleTreeProofs[0] },
+      { maker: makers[1], taker: taker2, signature: signature, merkleTree: merkleTreeProofs[1] },
     ];
-
+    const user1InitialBalance = await signers.user1.getBalance();
     const contractMethods = lrUser2.executeMultipleOrders(orders, true);
 
-    const estimatedGas = await contractMethods.estimateGas();
-    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
-
-    await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
-
-    tx = await contractMethods.call();
-    const receipt = await tx.wait();
+    const receipt = await (await contractMethods.call()).wait();
     expect(receipt.status).to.be.equal(1);
+
+    const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
+    expect(owner).to.be.equal(signers.user2.address);
+
+    const user1UpdatedBalance = await signers.user1.getBalance();
+    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
   });
 });
