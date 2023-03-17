@@ -1,4 +1,4 @@
-import { Contract, PayableOverrides, constants, Overrides } from "ethers";
+import { Contract, PayableOverrides, Overrides, constants } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
 import { Maker, MerkleTree, Taker, Signer, ContractMethods } from "../../types";
