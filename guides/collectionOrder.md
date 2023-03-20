@@ -1,6 +1,6 @@
 :warning: These code snippets are just examples and the data should never be used as is :warning:
 
-# How to create a collection order (maker bid with collection strategy)
+# How to create a collection offer (maker bid with collection strategy)
 
 A collection order is just a maker bid order using the `collection strategy`.
 
@@ -10,15 +10,13 @@ import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@look
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
-const { makerAsk, isCurrencyApproved } = await lr.createMakerBid({
+const { makerAsk, isCurrencyApproved } = await lr.createMakerCollectionOffer({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
-  strategyId: StrategyType.collection,
   subsetNonce: 0, // keep 0 if you don't know what it is used for
   orderNonce: 0, // You need to retrieve this value from the API
   endTime: Math.floor(Date.now() / 1000), // If you use a timestamp in ms, the function will revert
   price: ethers.utils.parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
-  itemIds: [0], // Token id of the NFT(s) you want to sell, add several ids to create a bundle
   amounts: [1], // Use it for listing multiple ERC-1155 (Optional, Default to [1])
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)
 });

@@ -3,8 +3,8 @@ import { ERC721 } from "../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
 import abiIERC721 from "../../abis/IERC721.json";
 import { Signer } from "../../types";
 
-export const balanceOf = async (signer: Signer, collection: string, owner?: string, overrides?: Overrides) => {
-  const contract = new Contract(collection, abiIERC721, signer) as ERC721;
+export const balanceOf = async (signer: Signer, contractAddress: string, owner?: string, overrides?: Overrides) => {
+  const contract = new Contract(contractAddress, abiIERC721, signer) as ERC721;
   return contract.balanceOf(owner ?? (await signer.getAddress()), { ...overrides });
 };
 

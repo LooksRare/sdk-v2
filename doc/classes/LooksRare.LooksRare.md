@@ -215,6 +215,30 @@ the maker object and isCurrencyApproved
 
 ___
 
+### createMakerCollectionOffer
+
+▸ **createMakerCollectionOffer**(`orderInputs`): `Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
+
+Create a maker bid for collection offer.
+
+**`See`**
+
+this.createMakerBid
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `orderInputs` | [`CreateMakerCollectionOfferInput`](../modules/types.md#createmakercollectionofferinput) | Order data |
+
+#### Returns
+
+`Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
+
+CreateMakerBidOutput
+
+___
+
 ### createTaker
 
 ▸ **createTaker**(`maker`, `recipient?`, `additionalParameters?`): [`Taker`](../interfaces/types.Taker.md)
@@ -237,11 +261,11 @@ Taker object
 
 ___
 
-### createTakerForCollectionOrder
+### createTakerCollectionOffer
 
-▸ **createTakerForCollectionOrder**(`maker`, `itemId`, `recipient?`): [`Taker`](../interfaces/types.Taker.md)
+▸ **createTakerCollectionOffer**(`maker`, `itemId`, `recipient?`): [`Taker`](../interfaces/types.Taker.md)
 
-Wrapper of createTaker to facilitate taker creation for collection orders
+Create a taker ask order for collection order.
 
 **`See`**
 

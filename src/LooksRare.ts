@@ -32,6 +32,7 @@ import {
   CreateMakerInput,
   CreateMakerAskOutput,
   CreateMakerBidOutput,
+  CreateMakerCollectionOfferInput,
   MerkleTree,
   ContractMethods,
   OrderValidatorCode,
@@ -249,14 +250,24 @@ export class LooksRare {
   }
 
   /**
-   * Wrapper of createTaker to facilitate taker creation for collection orders
+   * Create a maker bid for collection offer.
+   * @see this.createMakerBid
+   * @param orderInputs Order data
+   * @returns CreateMakerBidOutput
+   */
+  public createMakerCollectionOffer(orderInputs: CreateMakerCollectionOfferInput): Promise<CreateMakerBidOutput> {
+    return this.createMakerBid({ ...orderInputs, strategyId: StrategyType.collection, itemIds: [] });
+  }
+
+  /**
+   * Create a taker ask order for collection order.
    * @see this.createTaker
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @returns Taker object
    */
-  public createTakerForCollectionOrder(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
+  public createTakerCollectionOffer(maker: Maker, itemId: BigNumberish, recipient?: string): Taker {
     if (maker.quoteType !== QuoteType.Bid) {
       throw new ErrorQuoteType();
     }
