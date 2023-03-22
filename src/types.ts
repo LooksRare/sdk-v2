@@ -145,7 +145,7 @@ export type CreateMakerCollectionOfferInput = Omit<CreateMakerInput, "strategyId
 
 /** Maker object to be used in execute functions */
 export interface Maker {
-  /** Ask or bid */
+  /** Bid or ask, 0: bid, 1: ask */
   quoteType: QuoteType;
   /** User's current bid / ask nonce */
   globalNonce: BigNumberish;
