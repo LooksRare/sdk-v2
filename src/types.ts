@@ -186,9 +186,9 @@ export interface Taker {
 }
 
 /** Merkle tree node position (needed by the SC) */
-enum MerkleTreeNodePosition {
-  Left,
-  Right,
+export enum MerkleTreeNodePosition {
+  Left = 0,
+  Right = 1,
 }
 
 /** Merkle root object to be used in the execute function for a multi listing */
