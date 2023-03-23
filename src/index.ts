@@ -1,5 +1,4 @@
-export { addressesByNetwork } from "./constants/addresses";
-export { chainInfo } from "./constants/chains";
+export * from "./constants";
 
 import * as tokens from "./utils/calls/tokens";
 import * as exchange from "./utils/calls/exchange";
