@@ -515,10 +515,9 @@ export class LooksRare {
     merkleTrees?: MerkleTree[],
     overrides?: Overrides
   ): Promise<OrderValidatorCode[][]> {
-    const signer = this.getSigner();
     const _merkleTrees = merkleTrees ?? makerOrders.map(() => defaultMerkleTree);
     return verifyMakerOrders(
-      signer,
+      this.provider,
       this.addresses.ORDER_VALIDATOR_V2,
       makerOrders,
       signatures,
