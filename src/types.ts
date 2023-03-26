@@ -191,13 +191,16 @@ export enum MerkleTreeNodePosition {
   Right = 1,
 }
 
+/** Merkle tree proof to be used within a merkle tree */
+export interface MerkleTreeProof {
+  value: string;
+  position: MerkleTreeNodePosition;
+}
+
 /** Merkle root object to be used in the execute function for a multi listing */
 export interface MerkleTree {
   root: string;
-  proof: {
-    value: string;
-    position: MerkleTreeNodePosition;
-  }[];
+  proof: MerkleTreeProof[];
 }
 
 /** Return type of the sign multiple orders function */
