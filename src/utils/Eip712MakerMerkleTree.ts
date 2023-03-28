@@ -26,7 +26,7 @@ const defaultMaker: Maker = {
  */
 export class Eip712MakerMerkleTree extends Eip712MerkleTree<Maker> {
   constructor(public makerOrders: Maker[]) {
-    const height = Math.max(Math.ceil(Math.log2(makerOrders.length)), 1);
+    const height = Eip712MerkleTree.getTreeHeight(makerOrders.length);
     const types = getBatchOrderTypes(height);
 
     super(types, "Maker", defaultMaker, makerOrders, height);

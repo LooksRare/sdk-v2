@@ -29,6 +29,13 @@ export class Eip712MerkleTree<BaseType extends Record<string, any> = any> {
   private completeElements: BaseType[];
 
   /**
+   * Compute the tree height
+   * @param length length of the array of elements
+   * @returns height as a number
+   */
+  static getTreeHeight = (length: number): number => Math.max(Math.ceil(Math.log2(length)), 1);
+
+  /**
    *
    * @param types EIP712 Typed data
    * @param leafType Leaf type used in the Typed data
