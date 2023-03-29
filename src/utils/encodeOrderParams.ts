@@ -10,6 +10,9 @@ export const getMakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
   if (strategy === StrategyType.standard || strategy === StrategyType.collection) {
     return [];
   }
+  if (strategy === StrategyType.collectionWithMerkleTree) {
+    return ["bytes32"]; // Merkle tree root
+  }
   return [];
 };
 
@@ -19,11 +22,14 @@ export const getMakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
  * @returns Array of solidity types for encoding
  */
 export const getTakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
+  if (strategy === StrategyType.standard) {
+    return [];
+  }
   if (strategy === StrategyType.collection) {
     return ["uint256"]; // Item id
   }
-  if (strategy === StrategyType.standard) {
-    return [];
+  if (strategy === StrategyType.collectionWithMerkleTree) {
+    return ["uint256", "bytes32[]"]; // Item id, merkle proof
   }
   return [];
 };

@@ -1,6 +1,8 @@
-import { BigNumber, providers, constants, BigNumberish, ContractTransaction, Overrides } from "ethers";
+import { BigNumber, providers, constants, BigNumberish, ContractTransaction, Overrides, utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import * as multicall from "@0xsequence/multicall";
+import { MerkleTree as MerkleTreeJS } from "merkletreejs";
+import { keccak256 } from "js-sha3";
 import { addressesByNetwork } from "./constants/addresses";
 import { contractName, version } from "./constants/eip712";
 import { MAX_ORDERS_PER_TREE, defaultMerkleTree } from "./constants";
@@ -235,6 +237,48 @@ export class LooksRare {
   }
 
   /**
+   * Create a maker bid for collection offer.
+   * @see this.createMakerBid
+   * @param orderInputs Order data
+   * @returns CreateMakerBidOutput
+   */
+  public createMakerCollectionOffer(orderInputs: CreateMakerCollectionOfferInput): Promise<CreateMakerBidOutput> {
+    return this.createMakerBid({ ...orderInputs, strategyId: StrategyType.collection, itemIds: [] });
+  }
+
+  public async createMakerCollectionOfferWithMerkleTree(
+    orderInputs: CreateMakerCollectionOfferInput,
+    itemIds: BigNumberish[]
+  ): Promise<CreateMakerBidOutput & { proofs: { itemId: BigNumberish; proof: string[] }[] }> {
+    const leaves = itemIds.map((itemId) => {
+      const hash = utils.keccak256(utils.solidityPack(["uint256"], [itemId]));
+      return Buffer.from(hash.slice(2), "hex");
+    });
+    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
+    const root = tree.getHexRoot();
+
+    const output = await this.createMakerBid({
+      ...orderInputs,
+      strategyId: StrategyType.collectionWithMerkleTree,
+      additionalParameters: [root],
+      itemIds: [],
+    });
+
+    const proofs = itemIds.map((itemId, index) => {
+      const leaf = leaves[index];
+      return {
+        itemId,
+        proof: [tree.getHexProof(leaf).join(",")],
+      };
+    });
+
+    return {
+      ...output,
+      proofs,
+    };
+  }
+
+  /**
    * Create a taker ask ready to be executed against a maker bid
    * @param maker Maker order that will be used as counterparty for the taker
    * @param recipient Recipient address of the taker (if none, it will use the sender)
@@ -247,16 +291,6 @@ export class LooksRare {
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(maker.strategyId)),
     };
     return order;
-  }
-
-  /**
-   * Create a maker bid for collection offer.
-   * @see this.createMakerBid
-   * @param orderInputs Order data
-   * @returns CreateMakerBidOutput
-   */
-  public createMakerCollectionOffer(orderInputs: CreateMakerCollectionOfferInput): Promise<CreateMakerBidOutput> {
-    return this.createMakerBid({ ...orderInputs, strategyId: StrategyType.collection, itemIds: [] });
   }
 
   /**
@@ -275,6 +309,21 @@ export class LooksRare {
       throw new ErrorStrategyType();
     }
     return this.createTaker(maker, recipient, [itemId]);
+  }
+
+  public createTakerCollectionOfferWithMerkleTree(
+    maker: Maker,
+    itemId: BigNumberish,
+    proof: string[],
+    recipient?: string
+  ): Taker {
+    if (maker.quoteType !== QuoteType.Bid) {
+      throw new ErrorQuoteType();
+    }
+    if (maker.strategyId !== StrategyType.collectionWithMerkleTree) {
+      throw new ErrorStrategyType();
+    }
+    return this.createTaker(maker, recipient, [itemId, proof]);
   }
 
   /**
