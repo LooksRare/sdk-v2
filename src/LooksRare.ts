@@ -268,7 +268,7 @@ export class LooksRare {
       const leaf = leaves[index];
       return {
         itemId,
-        proof: [tree.getHexProof(leaf).join(",")],
+        proof: tree.getHexProof(leaf),
       };
     });
 
