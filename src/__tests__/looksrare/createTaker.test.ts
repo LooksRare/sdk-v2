@@ -11,7 +11,7 @@ import {
   CreateMakerCollectionOfferWithProofInput,
   QuoteType,
 } from "../../types";
-import { ErrorStrategyType, ErrorQuoteType } from "../../errors";
+import { ErrorStrategyType, ErrorQuoteType, ErrorItemId } from "../../errors";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 
 const baseInput = {
@@ -109,22 +109,17 @@ describe("Create takers", () => {
   });
 
   describe("createTakerCollectionOfferWithMerkleTree", async () => {
+    const itemIds = [0, 1, 2];
     it("create taker for collection order", async () => {
       const makerBidInput: CreateMakerCollectionOfferWithProofInput = {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
-        itemIds: [0, 1, 2],
+        itemIds,
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
-
-      const taker = lr.createTakerCollectionOfferWithProof(
-        maker,
-        proofs[1].itemId,
-        proofs[1].proof,
-        signers.user2.address
-      );
+      const { maker } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
+      const taker = lr.createTakerCollectionOfferWithProof(maker, 1, itemIds, signers.user2.address);
 
       const [itemId] = utils.defaultAbiCoder.decode(getTakerParamsTypes(maker.strategyId), taker.additionalParameters);
       expect(taker.recipient).to.be.equal(signers.user2.address);
@@ -136,16 +131,16 @@ describe("Create takers", () => {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
-        itemIds: [0, 1, 2],
+        itemIds,
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
+      const { maker } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
 
       const callback = () =>
         lr.createTakerCollectionOfferWithProof(
           { ...maker, quoteType: QuoteType.Ask },
-          proofs[1].itemId,
-          proofs[1].proof,
+          1,
+          itemIds,
           signers.user2.address
         );
       expect(callback).to.throw(ErrorQuoteType);
@@ -156,19 +151,33 @@ describe("Create takers", () => {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
-        itemIds: [0, 1, 2],
+        itemIds,
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
+      const { maker } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
 
       const callback = () =>
         lr.createTakerCollectionOfferWithProof(
           { ...maker, strategyId: StrategyType.collection },
-          proofs[1].itemId,
-          proofs[1].proof,
+          1,
+          itemIds,
           signers.user2.address
         );
       expect(callback).to.throw(ErrorStrategyType);
+    });
+
+    it("throw when item cannot be found", async () => {
+      const makerBidInput: CreateMakerCollectionOfferWithProofInput = {
+        ...baseInput,
+        collection: mocks.contracts.collectionERC721.address,
+        collectionType: CollectionType.ERC721,
+        itemIds,
+      };
+      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+      const { maker } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
+
+      const callback = () => lr.createTakerCollectionOfferWithProof(maker, 4, itemIds, signers.user2.address);
+      expect(callback).to.throw(ErrorItemId);
     });
   });
 });

@@ -12,6 +12,7 @@ describe("execute collection order with proof", () => {
   let signers: Signers;
   let lrUser2: LooksRare;
   let collectionOfferInput: CreateMakerCollectionOfferInput;
+  const itemIds = [0, 1, 2];
 
   beforeEach(async () => {
     mocks = await setUpContracts();
@@ -40,18 +41,13 @@ describe("execute collection order with proof", () => {
   });
 
   it("execute estimatedGas and callStatic", async () => {
-    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithProof({
+    const { maker } = await lrUser2.createMakerCollectionOfferWithProof({
       ...collectionOfferInput,
-      itemIds: [0, 1, 2],
+      itemIds,
     });
     const signature = await lrUser2.signMakerOrder(maker);
 
-    const taker = lrUser1.createTakerCollectionOfferWithProof(
-      maker,
-      proofs[1].itemId,
-      proofs[1].proof,
-      signers.user1.address
-    );
+    const taker = lrUser1.createTakerCollectionOfferWithProof(maker, 1, itemIds, signers.user1.address);
     const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
@@ -61,18 +57,13 @@ describe("execute collection order with proof", () => {
 
   it("execute collection order", async () => {
     const itemId = 0;
-    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithProof({
+    const { maker } = await lrUser2.createMakerCollectionOfferWithProof({
       ...collectionOfferInput,
-      itemIds: [0, 1, 2],
+      itemIds,
     });
     const signature = await lrUser2.signMakerOrder(maker);
 
-    const taker = lrUser1.createTakerCollectionOfferWithProof(
-      maker,
-      proofs[itemId].itemId,
-      proofs[itemId].proof,
-      signers.user1.address
-    );
+    const taker = lrUser1.createTakerCollectionOfferWithProof(maker, itemId, itemIds, signers.user1.address);
 
     const user1InitialBalance = await balanceOf(signers.user1, mocks.addresses.WETH);
     const { call } = lrUser1.executeOrder(maker, taker, signature);

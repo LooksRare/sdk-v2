@@ -24,7 +24,14 @@ import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
 import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
 import { strategyInfo } from "./utils/calls/strategies";
-import { ErrorMerkleTreeDepth, ErrorQuoteType, ErrorSigner, ErrorTimestamp, ErrorStrategyType } from "./errors";
+import {
+  ErrorMerkleTreeDepth,
+  ErrorQuoteType,
+  ErrorSigner,
+  ErrorTimestamp,
+  ErrorStrategyType,
+  ErrorItemId,
+} from "./errors";
 import {
   Addresses,
   Maker,
@@ -251,11 +258,11 @@ export class LooksRare {
    * Create a maker bid for collection, with a list of item id that can be used for the taker order
    * @see this.createMakerBid
    * @param orderInputs Order data
-   * @returns CreateMakerBidOutput and merkle proofs
+   * @returns CreateMakerBidOutput
    */
   public async createMakerCollectionOfferWithProof(
     orderInputs: CreateMakerCollectionOfferWithProofInput
-  ): Promise<CreateMakerBidOutput & { proofs: { itemId: BigNumberish; proof: string[] }[] }> {
+  ): Promise<CreateMakerBidOutput> {
     const { itemIds, ...otherInputs } = orderInputs;
     const leaves = itemIds.map((itemId) => {
       const hash = utils.keccak256(utils.solidityPack(["uint256"], [itemId]));
@@ -264,25 +271,12 @@ export class LooksRare {
     const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
     const root = tree.getHexRoot();
 
-    const output = await this.createMakerBid({
+    return this.createMakerBid({
       ...otherInputs,
       strategyId: StrategyType.collectionWithMerkleTree,
       additionalParameters: [root],
       itemIds: [],
     });
-
-    const proofs = itemIds.map((itemId, index) => {
-      const leaf = leaves[index];
-      return {
-        itemId,
-        proof: tree.getHexProof(leaf),
-      };
-    });
-
-    return {
-      ...output,
-      proofs,
-    };
   }
 
   /**
@@ -325,14 +319,14 @@ export class LooksRare {
    * @see this.createMakerCollectionOfferWithMerkleTree
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
-   * @param proof Proof associated with the item id
+   * @param itemIds List of item ids used during the maker creation
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @returns Taker object
    */
   public createTakerCollectionOfferWithProof(
     maker: Maker,
     itemId: BigNumberish,
-    proof: string[],
+    itemIds: BigNumberish[],
     recipient?: string
   ): Taker {
     if (maker.quoteType !== QuoteType.Bid) {
@@ -341,6 +335,18 @@ export class LooksRare {
     if (maker.strategyId !== StrategyType.collectionWithMerkleTree) {
       throw new ErrorStrategyType();
     }
+    const index = itemIds.findIndex((id) => BigNumber.from(id).eq(itemId));
+    if (index === -1) {
+      throw new ErrorItemId();
+    }
+
+    const leaves = itemIds.map((id) => {
+      const hash = utils.keccak256(utils.solidityPack(["uint256"], [id]));
+      return Buffer.from(hash.slice(2), "hex");
+    });
+    const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
+    const proof = tree.getHexProof(leaves[index]);
+
     return this.createTaker(maker, recipient, [itemId, proof]);
   }
 
