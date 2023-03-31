@@ -35,6 +35,7 @@ import {
   CreateMakerAskOutput,
   CreateMakerBidOutput,
   CreateMakerCollectionOfferInput,
+  CreateMakerCollectionOfferWithProofInput,
   MerkleTree,
   ContractMethods,
   OrderValidatorCode,
@@ -250,13 +251,12 @@ export class LooksRare {
    * Create a maker bid for collection, with a list of item id that can be used for the taker order
    * @see this.createMakerBid
    * @param orderInputs Order data
-   * @param itemIds
    * @returns CreateMakerBidOutput and merkle proofs
    */
-  public async createMakerCollectionOfferWithMerkleTree(
-    orderInputs: CreateMakerCollectionOfferInput,
-    itemIds: BigNumberish[]
+  public async createMakerCollectionOfferWithProof(
+    orderInputs: CreateMakerCollectionOfferWithProofInput
   ): Promise<CreateMakerBidOutput & { proofs: { itemId: BigNumberish; proof: string[] }[] }> {
+    const { itemIds, ...otherInputs } = orderInputs;
     const leaves = itemIds.map((itemId) => {
       const hash = utils.keccak256(utils.solidityPack(["uint256"], [itemId]));
       return Buffer.from(hash.slice(2), "hex");
@@ -265,7 +265,7 @@ export class LooksRare {
     const root = tree.getHexRoot();
 
     const output = await this.createMakerBid({
-      ...orderInputs,
+      ...otherInputs,
       strategyId: StrategyType.collectionWithMerkleTree,
       additionalParameters: [root],
       itemIds: [],
@@ -327,9 +327,9 @@ export class LooksRare {
    * @param itemId Token id to use as a counterparty for the collection order
    * @param proof Proof associated with the item id
    * @param recipient Recipient address of the taker (if none, it will use the sender)
-   * @returns
+   * @returns Taker object
    */
-  public createTakerCollectionOfferWithMerkleTree(
+  public createTakerCollectionOfferWithProof(
     maker: Maker,
     itemId: BigNumberish,
     proof: string[],

@@ -8,7 +8,7 @@ import {
   CollectionType,
   StrategyType,
   CreateMakerInput,
-  CreateMakerCollectionOfferInput,
+  CreateMakerCollectionOfferWithProofInput,
   QuoteType,
 } from "../../types";
 import { ErrorStrategyType, ErrorQuoteType } from "../../errors";
@@ -110,15 +110,16 @@ describe("Create takers", () => {
 
   describe("createTakerCollectionOfferWithMerkleTree", async () => {
     it("create taker for collection order", async () => {
-      const baseMakerAskInput: CreateMakerCollectionOfferInput = {
+      const makerBidInput: CreateMakerCollectionOfferWithProofInput = {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
+        itemIds: [0, 1, 2],
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithMerkleTree(baseMakerAskInput, [0, 1, 2]);
+      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
 
-      const taker = lr.createTakerCollectionOfferWithMerkleTree(
+      const taker = lr.createTakerCollectionOfferWithProof(
         maker,
         proofs[1].itemId,
         proofs[1].proof,
@@ -131,16 +132,17 @@ describe("Create takers", () => {
     });
 
     it("throw when quote type is wrong", async () => {
-      const baseMakerAskInput: CreateMakerCollectionOfferInput = {
+      const makerBidInput: CreateMakerCollectionOfferWithProofInput = {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
+        itemIds: [0, 1, 2],
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithMerkleTree(baseMakerAskInput, [0, 1, 2]);
+      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
 
       const callback = () =>
-        lr.createTakerCollectionOfferWithMerkleTree(
+        lr.createTakerCollectionOfferWithProof(
           { ...maker, quoteType: QuoteType.Ask },
           proofs[1].itemId,
           proofs[1].proof,
@@ -150,16 +152,17 @@ describe("Create takers", () => {
     });
 
     it("throw when strategy type is wrong", async () => {
-      const baseMakerAskInput: CreateMakerCollectionOfferInput = {
+      const makerBidInput: CreateMakerCollectionOfferWithProofInput = {
         ...baseInput,
         collection: mocks.contracts.collectionERC721.address,
         collectionType: CollectionType.ERC721,
+        itemIds: [0, 1, 2],
       };
       const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { maker, proofs } = await lr.createMakerCollectionOfferWithMerkleTree(baseMakerAskInput, [0, 1, 2]);
+      const { maker, proofs } = await lr.createMakerCollectionOfferWithProof(makerBidInput);
 
       const callback = () =>
-        lr.createTakerCollectionOfferWithMerkleTree(
+        lr.createTakerCollectionOfferWithProof(
           { ...maker, strategyId: StrategyType.collection },
           proofs[1].itemId,
           proofs[1].proof,

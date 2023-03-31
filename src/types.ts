@@ -143,6 +143,8 @@ export interface CreateMakerInput {
 
 export type CreateMakerCollectionOfferInput = Omit<CreateMakerInput, "strategyId" | "itemIds">;
 
+export type CreateMakerCollectionOfferWithProofInput = Omit<CreateMakerInput, "strategyId">;
+
 /** Maker object to be used in execute functions */
 export interface Maker {
   /** Bid or ask, 0: bid, 1: ask */

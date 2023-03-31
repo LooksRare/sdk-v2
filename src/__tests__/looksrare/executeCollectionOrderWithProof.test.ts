@@ -6,7 +6,7 @@ import { ownerOf, balanceOf } from "../helpers/tokens";
 import { LooksRare } from "../../LooksRare";
 import { SupportedChainId, CollectionType, CreateMakerCollectionOfferInput } from "../../types";
 
-describe("execute collection order with merkle tree", () => {
+describe("execute collection order with proof", () => {
   let mocks: SetupMocks;
   let lrUser1: LooksRare;
   let signers: Signers;
@@ -40,10 +40,13 @@ describe("execute collection order with merkle tree", () => {
   });
 
   it("execute estimatedGas and callStatic", async () => {
-    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithMerkleTree(collectionOfferInput, [0, 1, 2]);
+    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithProof({
+      ...collectionOfferInput,
+      itemIds: [0, 1, 2],
+    });
     const signature = await lrUser2.signMakerOrder(maker);
 
-    const taker = lrUser1.createTakerCollectionOfferWithMerkleTree(
+    const taker = lrUser1.createTakerCollectionOfferWithProof(
       maker,
       proofs[1].itemId,
       proofs[1].proof,
@@ -58,10 +61,13 @@ describe("execute collection order with merkle tree", () => {
 
   it("execute collection order", async () => {
     const itemId = 0;
-    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithMerkleTree(collectionOfferInput, [0, 1, 2]);
+    const { maker, proofs } = await lrUser2.createMakerCollectionOfferWithProof({
+      ...collectionOfferInput,
+      itemIds: [0, 1, 2],
+    });
     const signature = await lrUser2.signMakerOrder(maker);
 
-    const taker = lrUser1.createTakerCollectionOfferWithMerkleTree(
+    const taker = lrUser1.createTakerCollectionOfferWithProof(
       maker,
       proofs[itemId].itemId,
       proofs[itemId].proof,
