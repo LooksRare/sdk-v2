@@ -3,8 +3,9 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { ownerOf } from "../helpers/tokens";
+import { ErrorQuoteType } from "../../errors";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, Maker } from "../../types";
+import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("execute multiple taker bids", () => {
   let mocks: SetupMocks;
@@ -125,5 +126,20 @@ describe("execute multiple taker bids", () => {
 
     const user1UpdatedBalance = await signers.user1.getBalance();
     expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+  });
+
+  it("throw when the quote type is incorrect", async () => {
+    const taker1 = lrUser2.createTaker(makers[0], signers.user2.address);
+    const taker2 = lrUser2.createTaker(makers[1], signers.user2.address);
+    const signature1 = await lrUser1.signMakerOrder(makers[0]);
+    const signature2 = await lrUser1.signMakerOrder(makers[1]);
+
+    const orders = [
+      { maker: makers[0], taker: taker1, signature: signature1 },
+      { maker: { ...makers[1], quoteType: QuoteType.Bid }, taker: taker2, signature: signature2 },
+    ];
+
+    const callback = () => lrUser2.executeMultipleOrders(orders, true);
+    expect(callback).to.throw(ErrorQuoteType);
   });
 });
