@@ -39,3 +39,11 @@ export class ErrorStrategyType extends Error {
     super("Wrong strategy type");
   }
 }
+
+/** Invalid item ID for orders with proof */
+export class ErrorItemId extends Error {
+  public readonly name = "ErrorItemId";
+  constructor() {
+    super("Item id is not in the list");
+  }
+}

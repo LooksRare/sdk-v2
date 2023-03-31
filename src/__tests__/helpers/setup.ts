@@ -97,6 +97,14 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
     true,
     strategyCollectionOffer.address
   );
+  tx = await looksRareProtocol.addStrategy(
+    250,
+    250,
+    300,
+    strategyCollectionOffer.interface.getSighash("executeCollectionStrategyWithTakerAskWithProof"),
+    true,
+    strategyCollectionOffer.address
+  );
   await tx.wait();
 
   const orderValidator = (await deploy("OrderValidatorV2A", looksRareProtocol.address)) as OrderValidatorV2A;
