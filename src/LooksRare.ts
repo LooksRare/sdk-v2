@@ -246,6 +246,13 @@ export class LooksRare {
     return this.createMakerBid({ ...orderInputs, strategyId: StrategyType.collection, itemIds: [] });
   }
 
+  /**
+   * Create a maker bid for collection, with a list of item id that can be used for the taker order
+   * @see this.createMakerBid
+   * @param orderInputs Order data
+   * @param itemIds
+   * @returns CreateMakerBidOutput and merkle proofs
+   */
   public async createMakerCollectionOfferWithMerkleTree(
     orderInputs: CreateMakerCollectionOfferInput,
     itemIds: BigNumberish[]
@@ -296,6 +303,7 @@ export class LooksRare {
   /**
    * Create a taker ask order for collection order.
    * @see this.createTaker
+   * @see this.createMakerCollectionOffer
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
    * @param recipient Recipient address of the taker (if none, it will use the sender)
@@ -311,6 +319,16 @@ export class LooksRare {
     return this.createTaker(maker, recipient, [itemId]);
   }
 
+  /**
+   * Create a taker ask to fulfill a collection order (maker bid) created with a whitelist of item ids
+   * @see this.createTaker
+   * @see this.createMakerCollectionOfferWithMerkleTree
+   * @param makerBid Maker bid that will be used as counterparty for the taker
+   * @param itemId Token id to use as a counterparty for the collection order
+   * @param proof Proof associated with the item id
+   * @param recipient Recipient address of the taker (if none, it will use the sender)
+   * @returns
+   */
   public createTakerCollectionOfferWithMerkleTree(
     maker: Maker,
     itemId: BigNumberish,
