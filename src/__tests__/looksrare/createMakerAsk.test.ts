@@ -10,10 +10,14 @@ import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerI
 describe("Create maker ask", () => {
   let mocks: SetupMocks;
   let signers: Signers;
+  let lrUser1: LooksRare;
   let baseMakerAskInput: CreateMakerInput;
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
+
+    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerAskInput = {
       collection: mocks.contracts.collectionERC721.address,
@@ -26,22 +30,22 @@ describe("Create maker ask", () => {
       itemIds: [1],
     };
   });
-  it("create maker ask with wrong time format", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    await expect(
-      looksrare.createMakerAsk({ ...baseMakerAskInput, startTime: Date.now() })
-    ).to.eventually.be.rejectedWith(ErrorTimestamp);
-    await expect(looksrare.createMakerAsk({ ...baseMakerAskInput, endTime: Date.now() })).to.eventually.be.rejectedWith(
+
+  it("throws an error when creating maker ask with wrong time format", async () => {
+    await expect(lrUser1.createMakerAsk({ ...baseMakerAskInput, startTime: Date.now() })).to.eventually.be.rejectedWith(
+      ErrorTimestamp
+    );
+    await expect(lrUser1.createMakerAsk({ ...baseMakerAskInput, endTime: Date.now() })).to.eventually.be.rejectedWith(
       ErrorTimestamp
     );
   });
+
   it("approvals checks are false if no approval was made", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { isCollectionApproved, isTransferManagerApproved } = await looksrare.createMakerAsk(baseMakerAskInput);
+    const { isCollectionApproved, isTransferManagerApproved } = await lrUser1.createMakerAsk(baseMakerAskInput);
     expect(isCollectionApproved).to.be.false;
     expect(isTransferManagerApproved).to.be.false;
 
-    const tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
+    const tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
     await tx.wait();
     const isApproved = await isApprovedForAll(
       ethers.provider,
@@ -51,20 +55,20 @@ describe("Create maker ask", () => {
     );
     expect(isApproved).to.be.true;
   });
+
   it("approval checks are true if approval were made", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    let tx = await looksrare.approveAllCollectionItems(baseMakerAskInput.collection);
+    let tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
     await tx.wait();
-    tx = await looksrare.grantTransferManagerApproval().call();
+    tx = await lrUser1.grantTransferManagerApproval().call();
     await tx.wait();
 
-    const { isCollectionApproved, isTransferManagerApproved } = await looksrare.createMakerAsk(baseMakerAskInput);
+    const { isCollectionApproved, isTransferManagerApproved } = await lrUser1.createMakerAsk(baseMakerAskInput);
     expect(isCollectionApproved).to.be.true;
     expect(isTransferManagerApproved).to.be.true;
   });
+
   it("create a simple maker ask with default values", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const output = await looksrare.createMakerAsk(baseMakerAskInput);
+    const output = await lrUser1.createMakerAsk(baseMakerAskInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
       globalNonce: constants.Zero,
@@ -84,8 +88,8 @@ describe("Create maker ask", () => {
     };
     expect(output.maker).to.eql(makerOrder);
   });
+
   it("create a simple maker ask with non default values", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const input = {
       ...baseMakerAskInput,
       amounts: [1],
@@ -94,7 +98,7 @@ describe("Create maker ask", () => {
       recipient: signers.user2.address,
       additionalParameters: [],
     };
-    const output = await looksrare.createMakerAsk(input);
+    const output = await lrUser1.createMakerAsk(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
       globalNonce: constants.Zero,

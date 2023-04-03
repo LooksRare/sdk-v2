@@ -38,7 +38,10 @@ describe("execute multiple taker bids", () => {
     tx = await lrUser1.approveAllCollectionItems(baseMakerAskInput.collection);
     await tx.wait();
 
-    const { maker: maker1 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput });
+    tx = await lrUser2.approveErc20(mocks.addresses.WETH);
+    await tx.wait();
+
+    const { maker: maker1 } = await lrUser1.createMakerAsk(baseMakerAskInput);
     const { maker: maker2 } = await lrUser1.createMakerAsk({ ...baseMakerAskInput, itemIds: [1], orderNonce: 1 });
     makers = [maker1, maker2];
   });

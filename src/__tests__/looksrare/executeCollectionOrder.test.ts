@@ -8,8 +8,8 @@ import { SupportedChainId, CollectionType, CreateMakerCollectionOfferInput } fro
 
 describe("execute collection order", () => {
   let mocks: SetupMocks;
-  let lrUser1: LooksRare;
   let signers: Signers;
+  let lrUser1: LooksRare;
   let lrUser2: LooksRare;
   let collectionOfferInput: CreateMakerCollectionOfferInput;
 

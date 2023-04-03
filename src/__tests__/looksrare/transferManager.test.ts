@@ -12,23 +12,26 @@ import { SupportedChainId, CollectionType, BatchTransferItem } from "../../types
 describe("Transfer manager", () => {
   let mocks: SetupMocks;
   let signers: Signers;
+  let lrUser1: LooksRare;
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
+    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
   });
-  it("has user approved", async () => {
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    expect(await lr.isTransferManagerApproved()).to.be.false;
 
-    const methods = lr.grantTransferManagerApproval();
+  it("has user approved", async () => {
+    expect(await lrUser1.isTransferManagerApproved()).to.be.false;
+
+    const methods = lrUser1.grantTransferManagerApproval();
     const tx = await methods.call();
     await tx.wait();
-    expect(await lr.isTransferManagerApproved()).to.be.true;
+
+    expect(await lrUser1.isTransferManagerApproved()).to.be.true;
   });
+
   it("grant operator approvals", async () => {
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-
-    const contractMethods = lr.grantTransferManagerApproval();
+    const contractMethods = lrUser1.grantTransferManagerApproval();
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
@@ -39,10 +42,10 @@ describe("Transfer manager", () => {
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
+
   it("revoke operator approvals", async () => {
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    await (await lr.grantTransferManagerApproval().call()).wait();
-    const contractMethods = lr.revokeTransferManagerApproval();
+    await (await lrUser1.grantTransferManagerApproval().call()).wait();
+    const contractMethods = lrUser1.revokeTransferManagerApproval();
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
@@ -53,11 +56,11 @@ describe("Transfer manager", () => {
     const receipt = await tx.wait();
     expect(receipt.status).to.equal(1);
   });
+
   it("transfer items from a single collection", async () => {
-    const { addresses, contracts } = mocks;
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await (await lr.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
-    await (await lr.grantTransferManagerApproval().call()).wait();
+    const { contracts } = mocks;
+    await (await lrUser1.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
+    await (await lrUser1.grantTransferManagerApproval().call()).wait();
     const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
 
     const receipient = signers.user3.address;
@@ -75,7 +78,7 @@ describe("Transfer manager", () => {
         amounts: [1],
       },
     ];
-    const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
+    const contractMethods = await lrUser1.transferItemsAcrossCollection(receipient, items);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);
@@ -90,12 +93,12 @@ describe("Transfer manager", () => {
     const newOwner = await collectionERC721.ownerOf(tokenId);
     expect(newOwner).to.be.equal(receipient);
   });
+
   it("transfer items from multiple collections", async () => {
-    const { addresses, contracts } = mocks;
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, addresses);
-    await (await lr.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
-    await (await lr.approveAllCollectionItems(contracts.collectionERC1155.address)).wait();
-    (await lr.grantTransferManagerApproval().call()).wait();
+    const { contracts } = mocks;
+    await (await lrUser1.approveAllCollectionItems(contracts.collectionERC721.address)).wait();
+    await (await lrUser1.approveAllCollectionItems(contracts.collectionERC1155.address)).wait();
+    (await lrUser1.grantTransferManagerApproval().call()).wait();
     const collectionERC721 = new Contract(contracts.collectionERC721.address, abiIERC721, ethers.provider) as ERC721;
     const collectionERC1155 = new Contract(
       contracts.collectionERC1155.address,
@@ -120,7 +123,7 @@ describe("Transfer manager", () => {
         amounts: [10],
       },
     ];
-    const contractMethods = await lr.transferItemsAcrossCollection(receipient, items);
+    const contractMethods = await lrUser1.transferItemsAcrossCollection(receipient, items);
 
     const estimatedGas = await contractMethods.estimateGas();
     expect(estimatedGas.toNumber()).to.be.greaterThan(0);

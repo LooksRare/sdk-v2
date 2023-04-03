@@ -47,25 +47,21 @@ export const executeTakerAsk = (
   affiliate: string,
   overrides?: PayableOverrides
 ): ContractMethods => {
-  const overridesWithValue: PayableOverrides = {
-    ...overrides,
-    ...(maker.currency === constants.AddressZero && { value: maker.price }),
-  };
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
       contract.executeTakerAsk(taker, maker, makerSignature, merkleTree, affiliate, {
-        ...overridesWithValue,
+        ...overrides,
         ...additionalOverrides,
       }),
     estimateGas: (additionalOverrides?: PayableOverrides) =>
       contract.estimateGas.executeTakerAsk(taker, maker, makerSignature, merkleTree, affiliate, {
-        ...overridesWithValue,
+        ...overrides,
         ...additionalOverrides,
       }),
     callStatic: (additionalOverrides?: PayableOverrides) =>
       contract.callStatic.executeTakerAsk(taker, maker, makerSignature, merkleTree, affiliate, {
-        ...overridesWithValue,
+        ...overrides,
         ...additionalOverrides,
       }),
   };
