@@ -7,10 +7,12 @@ import { SupportedChainId, StrategyType } from "../../types";
 describe("Strategies", () => {
   let mocks: SetupMocks;
   let signers: Signers;
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
   });
+
   it("fetch strategies info", async () => {
     const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const standardStrategy = await lr.strategyInfo(StrategyType.standard);

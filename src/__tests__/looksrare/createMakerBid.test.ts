@@ -10,10 +10,15 @@ import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerI
 describe("Create maker bid", () => {
   let mocks: SetupMocks;
   let signers: Signers;
+  let lrUser1: LooksRare;
   let baseMakerInput: CreateMakerInput;
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
+
+    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+
     baseMakerInput = {
       collection: mocks.contracts.collectionERC721.address,
       collectionType: CollectionType.ERC721,
@@ -25,22 +30,21 @@ describe("Create maker bid", () => {
       itemIds: [1],
     };
   });
-  it("create maker bid with wrong time format", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    await expect(looksrare.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejectedWith(
+
+  it("throws an error when creating maker bid with wrong time format", async () => {
+    await expect(lrUser1.createMakerBid({ ...baseMakerInput, startTime: Date.now() })).to.eventually.be.rejectedWith(
       ErrorTimestamp
     );
-    await expect(looksrare.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejectedWith(
+    await expect(lrUser1.createMakerBid({ ...baseMakerInput, endTime: Date.now() })).to.eventually.be.rejectedWith(
       ErrorTimestamp
     );
   });
-  it("approvals checks are false if no approval was made", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const { isCurrencyApproved } = await looksrare.createMakerBid(baseMakerInput);
 
+  it("approvals checks are false if no approval was made", async () => {
+    const { isCurrencyApproved } = await lrUser1.createMakerBid(baseMakerInput);
     expect(isCurrencyApproved).to.be.false;
 
-    await looksrare.approveErc20(looksrare.addresses.WETH);
+    await lrUser1.approveErc20(mocks.addresses.WETH);
     const valueApproved = await allowance(
       ethers.provider,
       mocks.addresses.WETH,
@@ -49,16 +53,16 @@ describe("Create maker bid", () => {
     );
     expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
   });
+
   it("approval checks are true if approval were made", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const tx = await looksrare.approveErc20(looksrare.addresses.WETH);
+    const tx = await lrUser1.approveErc20(mocks.addresses.WETH);
     await tx.wait();
-    const { isCurrencyApproved } = await looksrare.createMakerBid(baseMakerInput);
+    const { isCurrencyApproved } = await lrUser1.createMakerBid(baseMakerInput);
     expect(isCurrencyApproved).to.be.true;
   });
+
   it("create a simple maker bid with default values", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    const output = await looksrare.createMakerBid(baseMakerInput);
+    const output = await lrUser1.createMakerBid(baseMakerInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
       globalNonce: constants.Zero,
@@ -69,7 +73,7 @@ describe("Create maker bid", () => {
       collection: baseMakerInput.collection,
       currency: mocks.addresses.WETH,
       signer: signers.user1.address,
-      startTime: output.maker.startTime, // Can't really test the Date.now( executed inside the function)
+      startTime: output.maker.startTime, // Can't really test the Date.now (executed inside the function)
       endTime: baseMakerInput.endTime,
       price: baseMakerInput.price,
       itemIds: baseMakerInput.itemIds,
@@ -78,8 +82,8 @@ describe("Create maker bid", () => {
     };
     expect(output.maker).to.eql(makerOrder);
   });
+
   it("create a simple maker bid with non default values", async () => {
-    const looksrare = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const input = {
       ...baseMakerInput,
       amounts: [1],
@@ -88,7 +92,7 @@ describe("Create maker bid", () => {
       recipient: signers.user2.address,
       additionalParameters: [],
     };
-    const output = await looksrare.createMakerBid(input);
+    const output = await lrUser1.createMakerBid(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
       globalNonce: constants.Zero,

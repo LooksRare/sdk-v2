@@ -16,10 +16,13 @@ const faultySignature =
 describe("Sign maker orders", () => {
   let mocks: SetupMocks;
   let signers: Signers;
+  let lrUser1: LooksRare;
   let domain: TypedDataDomain;
+
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
+    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     domain = {
       name: contractName,
@@ -28,11 +31,10 @@ describe("Sign maker orders", () => {
       verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
   });
+
   describe("Sign single maker orders", () => {
     it("sign maker ask order", async () => {
-      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
       const { collectionERC721, verifier } = mocks.contracts;
-
       const makerOrder: Maker = {
         quoteType: QuoteType.Ask,
         globalNonce: 1,
@@ -51,7 +53,7 @@ describe("Sign maker orders", () => {
         additionalParameters: encodeParams([], getMakerParamsTypes(StrategyType.standard)),
       };
 
-      const signature = await lr.signMakerOrder(makerOrder);
+      const signature = await lrUser1.signMakerOrder(makerOrder);
 
       expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
@@ -59,10 +61,9 @@ describe("Sign maker orders", () => {
         "call revert exception"
       );
     });
-    it("sign maker bid order", async () => {
-      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      const { collectionERC721, verifier } = mocks.contracts;
 
+    it("sign maker bid order", async () => {
+      const { collectionERC721, verifier } = mocks.contracts;
       const makerOrder: Maker = {
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -81,7 +82,7 @@ describe("Sign maker orders", () => {
         additionalParameters: encodeParams([], getTakerParamsTypes(StrategyType.standard)),
       };
 
-      const signature = await lr.signMakerOrder(makerOrder);
+      const signature = await lrUser1.signMakerOrder(makerOrder);
 
       expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
@@ -147,9 +148,8 @@ describe("Sign maker orders", () => {
           additionalParameters: utils.defaultAbiCoder.encode([], []),
         },
       ];
-      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
-      const { signature, merkleTreeProofs, tree } = await lr.signMultipleMakerOrders(makerOrders);
+      const { signature, merkleTreeProofs, tree } = await lrUser1.signMultipleMakerOrders(makerOrders);
       const signerAddress = signers.user1.address;
 
       expect(utils.verifyTypedData(domain, tree.types, tree.getDataToSign(), signature)).to.equal(signerAddress);
@@ -161,6 +161,7 @@ describe("Sign maker orders", () => {
         ).to.eventually.be.rejectedWith("call revert exception");
       });
     });
+
     it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
       const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
@@ -181,9 +182,9 @@ describe("Sign maker orders", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       }));
 
-      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
+      await expect(lrUser1.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
     });
+
     it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
       const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
@@ -204,8 +205,7 @@ describe("Sign maker orders", () => {
         additionalParameters: utils.defaultAbiCoder.encode([], []),
       }));
 
-      const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-      await expect(lr.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(ErrorMerkleTreeDepth);
+      await expect(lrUser1.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(ErrorMerkleTreeDepth);
     });
   });
 });
