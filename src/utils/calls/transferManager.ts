@@ -1,4 +1,4 @@
-import { Contract, Overrides, providers } from "ethers";
+import { Contract, Overrides, CallOverrides, providers } from "ethers";
 import { TransferManager } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
 import abi from "../../abis/TransferManager.json";
 import { Signer, ContractMethods, BatchTransferItem } from "../../types";
@@ -8,7 +8,7 @@ export const hasUserApprovedOperator = async (
   address: string,
   user: string,
   operator: string,
-  overrides?: Overrides
+  overrides?: CallOverrides
 ): Promise<boolean> => {
   const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
   const hasApproved = await contract.hasUserApprovedOperator(user, operator, { ...overrides });

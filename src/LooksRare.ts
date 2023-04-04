@@ -22,7 +22,7 @@ import {
 } from "./utils/calls/transferManager";
 import { verifyMakerOrders } from "./utils/calls/orderValidator";
 import { encodeParams, getTakerParamsTypes, getMakerParamsTypes } from "./utils/encodeOrderParams";
-import { setApprovalForAll, isApprovedForAll, allowance, approve } from "./utils/calls/tokens";
+import { setApprovalForAll, isApprovedForAll, allowance, approve, balanceOf } from "./utils/calls/tokens";
 import { strategyInfo } from "./utils/calls/strategies";
 import {
   ErrorMerkleTreeDepth,
@@ -189,7 +189,7 @@ export class LooksRare {
   /**
    * Create a maker bid object ready to be signed
    * @param CreateMakerInput
-   * @returns the maker object and isCurrencyApproved
+   * @returns the maker object, isCurrencyApproved, and isBalanceSufficient
    */
   public async createMakerBid({
     collection,
@@ -215,7 +215,8 @@ export class LooksRare {
     const spenderAddress = this.addresses.EXCHANGE_V2;
 
     // Use this.provider (MulticallProvider) in order to batch the calls
-    const [currentAllowance, userBidAskNonce] = await Promise.all([
+    const [balance, currentAllowance, userBidAskNonce] = await Promise.all([
+      balanceOf(this.provider, currency, signerAddress),
       allowance(this.provider, currency, signerAddress, spenderAddress),
       viewUserBidAskNonces(this.provider, this.addresses.EXCHANGE_V2, signerAddress),
     ]);
@@ -241,6 +242,7 @@ export class LooksRare {
     return {
       maker: order,
       isCurrencyApproved: BigNumber.from(currentAllowance).gte(price),
+      isBalanceSufficient: BigNumber.from(balance).gte(price),
     };
   }
 

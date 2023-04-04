@@ -1,4 +1,4 @@
-import { Contract, providers, Overrides, CallOverrides, BigNumber } from "ethers";
+import { Contract, providers, Overrides, CallOverrides, BigNumber, ContractTransaction } from "ethers";
 import { ERC721 } from "../../typechain/solmate/src/tokens/ERC721.sol/ERC721";
 import { ERC20 } from "../../typechain/solmate/src/tokens/ERC20";
 import abiIERC721 from "../../abis/IERC721.json";
@@ -13,7 +13,7 @@ export const setApprovalForAll = (
   operator: string,
   approved: boolean,
   overrides?: Overrides
-) => {
+): Promise<ContractTransaction> => {
   const contract = new Contract(collection, abiIERC721, signer) as ERC721;
   return contract.setApprovalForAll(operator, approved, { ...overrides });
 };
@@ -24,7 +24,7 @@ export const isApprovedForAll = (
   account: string,
   operator: string,
   overrides?: CallOverrides
-) => {
+): Promise<boolean> => {
   const contract = new Contract(collection, abiIERC721, signerOrProvider) as ERC721;
   return contract.isApprovedForAll(account, operator, { ...overrides });
 };
@@ -37,7 +37,7 @@ export const allowance = (
   account: string,
   operator: string,
   overrides?: Overrides
-) => {
+): Promise<BigNumber> => {
   const contract = new Contract(currency, abiIERC20, signerOrProvider) as ERC20;
   return contract.allowance(account, operator, { ...overrides });
 };
@@ -48,7 +48,17 @@ export const approve = (
   operator: string,
   amount: BigNumber,
   overrides?: Overrides
-) => {
+): Promise<ContractTransaction> => {
   const contract = new Contract(currency, abiIERC20, signer) as ERC20;
   return contract.approve(operator, amount, { ...overrides });
+};
+
+export const balanceOf = (
+  signerOrProvider: providers.Provider | Signer,
+  currency: string,
+  account: string,
+  overrides?: CallOverrides
+): Promise<BigNumber> => {
+  const contract = new Contract(currency, abiIERC20, signerOrProvider) as ERC20;
+  return contract.balanceOf(account, { ...overrides });
 };
