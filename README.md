@@ -1,5 +1,7 @@
 # @looksrare/sdk-v2
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/LooksRare/sdk-v2) ![GitHub](https://img.shields.io/github/license/LooksRare/sdk-v2) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/LooksRare/sdk-v2/build.yml) ![npm](https://img.shields.io/npm/dt/@looksrare/sdk-v2)
+
 A collection of typescript tools to interact with LooksRare protocol V2 smart contracts 👀💎
 
 ## Install
