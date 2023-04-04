@@ -1,4 +1,4 @@
-import { Contract, Overrides, providers } from "ethers";
+import { Contract, CallOverrides, providers } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
 import { Signer, StrategyType, StrategyInfo } from "../../types";
@@ -7,7 +7,7 @@ export const strategyInfo = async (
   signerOrProvider: providers.Provider | Signer,
   address: string,
   strategyId: StrategyType,
-  overrides?: Overrides
+  overrides?: CallOverrides
 ): Promise<StrategyInfo> => {
   const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
   const strategy = await contract.strategyInfo(strategyId, { ...overrides });

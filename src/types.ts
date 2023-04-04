@@ -99,6 +99,7 @@ export interface CreateMakerAskOutput {
 export interface CreateMakerBidOutput {
   maker: Maker;
   isCurrencyApproved: boolean;
+  isBalanceSufficient: boolean;
 }
 
 /** Input of the createMakerAsk function */

@@ -61,6 +61,19 @@ describe("Create maker bid", () => {
     expect(isCurrencyApproved).to.be.true;
   });
 
+  it("balance checks are false if balance is not sufficient", async () => {
+    const { isBalanceSufficient } = await lrUser1.createMakerBid({
+      ...baseMakerInput,
+      price: utils.parseEther("100000"),
+    });
+    expect(isBalanceSufficient).to.be.false;
+  });
+
+  it("balance checks are true if balance is sufficient", async () => {
+    const { isBalanceSufficient } = await lrUser1.createMakerBid(baseMakerInput);
+    expect(isBalanceSufficient).to.be.true;
+  });
+
   it("create a simple maker bid with default values", async () => {
     const output = await lrUser1.createMakerBid(baseMakerInput);
     const makerOrder: Maker = {
