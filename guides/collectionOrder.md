@@ -13,6 +13,8 @@ The main steps are:
 3. Check and grant necessary approvals for transferring assets.
 4. Sign the maker bid order with `signMakerOrder` method.
 
+> The `orderNonce` has to be retrieved via our Public API, see [get order nonce](https://looksrare.dev/v2/reference/getordernonce).
+
 Here is an example:
 
 ```ts
