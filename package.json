@@ -1,6 +1,6 @@
 {
   "name": "@looksrare/sdk-v2",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -28,7 +28,7 @@
     "prebuild": "rm -rf ./src/typechain ./src/artifacts cache dist",
     "prepublishOnly": "yarn build",
     "dev": "rollup -c --bundleConfigAsCjs -w",
-    "build:ts": "rollup -c --bundleConfigAsCjs && tsc -d",
+    "build:ts": "rollup -c --bundleConfigAsCjs",
     "build:sc": "hardhat compile",
     "build": "yarn build:sc && yarn build:ts",
     "test": "nyc hardhat test",

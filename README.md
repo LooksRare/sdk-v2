@@ -60,14 +60,8 @@ You can also read the detailed [api documentation](./doc).
 
 The SDK exposes most of the LooksRare contract [ABIs](https://github.com/LooksRare/sdk-v2/tree/master/src/abis). For convenience, some commonly used ABIs are also exported.
 
-```ts
-import { LooksRareProtocol } from "@looksrare/sdk-v2";
-```
-
-You can also export the JSON file directly:
-
 ```js
-import LooksRareProtocol from "@looksrare/sdk-v2/dist/abis/LooksRareProtocol.json";
+import LooksRareProtocolABI from "@looksrare/sdk-v2/dist/abis/LooksRareProtocol.json";
 ```
 
 ### ❓ How to retrieve order nonce ?
