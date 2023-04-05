@@ -7,7 +7,7 @@ import abiIERC721 from "../../abis/IERC721.json";
 import abiIERC1155 from "../../abis/IERC1155.json";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, BatchTransferItem } from "../../types";
+import { ChainId, CollectionType, BatchTransferItem } from "../../types";
 
 describe("Transfer manager", () => {
   let mocks: SetupMocks;
@@ -17,7 +17,7 @@ describe("Transfer manager", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
   });
 
   it("has user approved", async () => {

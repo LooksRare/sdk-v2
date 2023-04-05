@@ -8,7 +8,7 @@ import { contractName, version } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { makerTypes } from "../../utils/eip712";
-import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType } from "../../types";
+import { ChainId, Maker, CollectionType, StrategyType, QuoteType } from "../../types";
 import { ErrorMerkleTreeDepth } from "../../errors";
 
 const faultySignature =
@@ -23,12 +23,12 @@ describe("Sign maker orders", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     domain = {
       name: contractName,
       version: version.toString(),
-      chainId: SupportedChainId.HARDHAT,
+      chainId: ChainId.HARDHAT,
       verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
   });

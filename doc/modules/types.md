@@ -2,12 +2,12 @@
 
 ## Enumerations
 
+- [ChainId](../enums/types.ChainId.md)
 - [CollectionType](../enums/types.CollectionType.md)
 - [MerkleTreeNodePosition](../enums/types.MerkleTreeNodePosition.md)
 - [OrderValidatorCode](../enums/types.OrderValidatorCode.md)
 - [QuoteType](../enums/types.QuoteType.md)
 - [StrategyType](../enums/types.StrategyType.md)
-- [SupportedChainId](../enums/types.SupportedChainId.md)
 
 ## Interfaces
 

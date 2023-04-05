@@ -5,7 +5,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup
 import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
 import { contractName, version } from "../constants/eip712";
 import { getMakerHash } from "../utils/eip712";
-import { SupportedChainId, Maker, CollectionType, QuoteType } from "../types";
+import { ChainId, Maker, CollectionType, QuoteType } from "../types";
 
 describe("EIP-712", () => {
   let mocks: SetupMocks;
@@ -20,7 +20,7 @@ describe("EIP-712", () => {
     domain = {
       name: contractName,
       version: version.toString(),
-      chainId: SupportedChainId.HARDHAT,
+      chainId: ChainId.HARDHAT,
       verifyingContract: mocks.addresses.EXCHANGE_V2,
     };
 

@@ -36,7 +36,7 @@ import {
   Addresses,
   Maker,
   Taker,
-  SupportedChainId,
+  ChainId,
   Signer,
   CreateMakerInput,
   CreateMakerAskOutput,
@@ -59,7 +59,7 @@ import {
  */
 export class LooksRare {
   /** Current app chain ID */
-  public readonly chainId: SupportedChainId;
+  public readonly chainId: ChainId;
   /** Mapping of LooksRare protocol addresses for the current chain */
   public readonly addresses: Addresses;
   /**
@@ -81,7 +81,7 @@ export class LooksRare {
    * @param signer Ethers signer
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(chainId: SupportedChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
+  constructor(chainId: ChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;

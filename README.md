@@ -21,15 +21,15 @@ npm install @looksrare/sdk-v2 ethers --save
 The SDK expose a main class used to perform all the onchain operations:
 
 ```ts
-import { SupportedChainId } from "@looksrare/sdk-v2";
-const looksrare = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+import { ChainId } from "@looksrare/sdk-v2";
+const looksrare = new LooksRare(ChainId.MAINNET, provider, signer);
 ```
 
 The signer is optional if you need access to read only data (:warning: Calls to function that need a signer will throw a `Signer is undefined` exception):
 
 ```ts
-import { SupportedChainId } from "@looksrare/sdk-v2";
-const looksrare = new LooksRare(SupportedChainId.MAINNET, provider);
+import { ChainId } from "@looksrare/sdk-v2";
+const looksrare = new LooksRare(ChainId.MAINNET, provider);
 ```
 
 If you work on a hardhat setup, you can override the addresses as follow:
@@ -37,7 +37,7 @@ If you work on a hardhat setup, you can override the addresses as follow:
 ```ts
 import { Addresses } from "@looksrare/sdk-v2";
 const addresses: Addresses = {...};
-const looksrare = new LooksRare(SupportedChainId.HARDHAT, provider, signer, addresses);
+const looksrare = new LooksRare(ChainId.HARDHAT, provider, signer, addresses);
 ```
 
 :information_source: You can access the multicall provider after the instance creation:

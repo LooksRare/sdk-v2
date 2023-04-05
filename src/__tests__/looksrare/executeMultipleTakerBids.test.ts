@@ -5,7 +5,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setu
 import { ownerOf } from "../helpers/tokens";
 import { ErrorQuoteType } from "../../errors";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
+import { ChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("execute multiple taker bids", () => {
   let mocks: SetupMocks;
@@ -17,8 +17,8 @@ describe("execute multiple taker bids", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser2 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
     const baseMakerAskInput: CreateMakerInput = {
       collection: mocks.contracts.collectionERC721.address,
