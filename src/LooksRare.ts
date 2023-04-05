@@ -36,7 +36,7 @@ import {
   Addresses,
   Maker,
   Taker,
-  SupportedChainId,
+  ChainId,
   Signer,
   CreateMakerInput,
   CreateMakerAskOutput,
@@ -59,18 +59,18 @@ import {
  */
 export class LooksRare {
   /** Current app chain ID */
-  public readonly chainId: SupportedChainId;
+  public readonly chainId: ChainId;
   /** Mapping of LooksRare protocol addresses for the current chain */
   public readonly addresses: Addresses;
   /**
    * Ethers signer
-   * @see https://docs.ethers.io/v5/api/signer/
+   * @see {@link https://docs.ethers.io/v5/api/signer/ Ethers signer doc}
    */
   public readonly signer?: Signer;
   /**
    * Ethers multicall provider
-   * @see https://docs.ethers.io/v5/api/providers/
-   * @see https://github.com/0xsequence/sequence.js/tree/master/packages/multicall
+   * @see {@link https://docs.ethers.io/v5/api/providers/ Ethers providers doc}
+   * @see {@link https://github.com/0xsequence/sequence.js/tree/master/packages/multicall 0xsequence multicall doc}
    */
   public readonly provider: providers.Provider;
 
@@ -81,7 +81,7 @@ export class LooksRare {
    * @param signer Ethers signer
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(chainId: SupportedChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
+  constructor(chainId: ChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
@@ -321,7 +321,7 @@ export class LooksRare {
    * @see this.createMakerCollectionOfferWithMerkleTree
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
-   * @param itemIds List of item ids used during the maker creation
+   * @param itemIds List of token ids used during the maker creation
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @returns Taker object
    */

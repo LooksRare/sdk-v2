@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, StrategyType } from "../../types";
+import { ChainId, StrategyType } from "../../types";
 
 describe("Strategies", () => {
   let mocks: SetupMocks;
@@ -14,7 +14,7 @@ describe("Strategies", () => {
   });
 
   it("fetch strategies info", async () => {
-    const lr = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    const lr = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
     const standardStrategy = await lr.strategyInfo(StrategyType.standard);
     expect(standardStrategy).to.not.be.undefined;
     expect(standardStrategy.isActive).to.be.true;

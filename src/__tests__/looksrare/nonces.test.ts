@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { viewUserBidAskNonces } from "../../utils/calls/nonces";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId } from "../../types";
+import { ChainId } from "../../types";
 
 describe("Nonces and order cancellation", () => {
   let mocks: SetupMocks;
@@ -14,7 +14,7 @@ describe("Nonces and order cancellation", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
   });
 
   describe("cancelOrders", () => {

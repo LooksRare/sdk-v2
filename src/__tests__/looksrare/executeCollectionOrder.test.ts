@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { ownerOf, balanceOf } from "../helpers/tokens";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, CreateMakerCollectionOfferInput } from "../../types";
+import { ChainId, CollectionType, CreateMakerCollectionOfferInput } from "../../types";
 
 describe("execute collection order", () => {
   let mocks: SetupMocks;
@@ -16,8 +16,8 @@ describe("execute collection order", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
-    lrUser2 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser2 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
     collectionOfferInput = {
       collection: mocks.contracts.collectionERC721.address,
