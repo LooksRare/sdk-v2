@@ -1,6 +1,6 @@
-# Enumeration: SupportedChainId
+# Enumeration: ChainId
 
-[types](../modules/types.md).SupportedChainId
+[types](../modules/types.md).ChainId
 
 List of supported chains
 

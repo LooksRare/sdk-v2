@@ -14,7 +14,7 @@ export interface Addresses {
 }
 
 /** List of supported chains */
-export enum SupportedChainId {
+export enum ChainId {
   MAINNET = 1,
   GOERLI = 5,
   HARDHAT = 31337,

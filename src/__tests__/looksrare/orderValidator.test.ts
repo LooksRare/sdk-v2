@@ -3,7 +3,7 @@ import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, OrderValidatorCode } from "../../types";
+import { ChainId, CollectionType, StrategyType, CreateMakerInput, OrderValidatorCode } from "../../types";
 
 describe("Order validation", () => {
   let mocks: SetupMocks;
@@ -16,7 +16,7 @@ describe("Order validation", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
 
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerAskInput = {
       collection: mocks.contracts.collectionERC721.address,

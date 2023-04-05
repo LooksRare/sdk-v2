@@ -1,4 +1,4 @@
-import { SupportedChainId } from "../types";
+import { ChainId } from "../types";
 import { Addresses } from "../types";
 
 const mainnetAddresses: Addresses = {
@@ -24,8 +24,8 @@ const goerliAddresses: Addresses = {
 /**
  * List of useful contract addresses
  */
-export const addressesByNetwork: { [chainId in SupportedChainId]: Addresses } = {
-  [SupportedChainId.MAINNET]: mainnetAddresses,
-  [SupportedChainId.GOERLI]: goerliAddresses,
-  [SupportedChainId.HARDHAT]: goerliAddresses,
+export const addressesByNetwork: { [chainId in ChainId]: Addresses } = {
+  [ChainId.MAINNET]: mainnetAddresses,
+  [ChainId.GOERLI]: goerliAddresses,
+  [ChainId.HARDHAT]: goerliAddresses,
 };

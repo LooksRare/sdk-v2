@@ -1,4 +1,4 @@
-import { SupportedChainId } from "../types";
+import { ChainId } from "../types";
 
 interface ChainInfo {
   label: string;
@@ -12,8 +12,8 @@ interface ChainInfo {
   cloudinaryUrl: string;
 }
 
-export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
-  [SupportedChainId.MAINNET]: {
+export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
+  [ChainId.MAINNET]: {
     label: "Ethereum",
     appUrl: "https://looksrare.org",
     explorer: "https://etherscan.io",
@@ -24,7 +24,7 @@ export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/looksrare/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net",
   },
-  [SupportedChainId.GOERLI]: {
+  [ChainId.GOERLI]: {
     label: "Goerli",
     appUrl: "https://goerli.looksrare.org",
     explorer: "https://goerli.etherscan.io",
@@ -35,7 +35,7 @@ export const chainInfo: { [chainId in SupportedChainId]: ChainInfo } = {
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/goerli",
   },
-  [SupportedChainId.HARDHAT]: {
+  [ChainId.HARDHAT]: {
     label: "Hardhat",
     appUrl: "http://localhost:3000",
     explorer: "https://etherscan.io",

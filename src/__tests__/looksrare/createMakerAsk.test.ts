@@ -5,7 +5,7 @@ import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setu
 import { LooksRare } from "../../LooksRare";
 import { isApprovedForAll } from "../../utils/calls/tokens";
 import { ErrorTimestamp } from "../../errors";
-import { SupportedChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
+import { ChainId, CollectionType, StrategyType, QuoteType, CreateMakerInput, Maker } from "../../types";
 
 describe("Create maker ask", () => {
   let mocks: SetupMocks;
@@ -17,7 +17,7 @@ describe("Create maker ask", () => {
     mocks = await setUpContracts();
     signers = await getSigners();
 
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerAskInput = {
       collection: mocks.contracts.collectionERC721.address,

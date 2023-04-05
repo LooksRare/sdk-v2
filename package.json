@@ -32,7 +32,7 @@
     "build:sc": "hardhat compile",
     "build": "yarn build:sc && yarn build:ts",
     "test": "nyc hardhat test",
-    "doc": "typedoc --plugin typedoc-plugin-markdown",
+    "doc": "typedoc --plugin typedoc-plugin-markdown --tsconfig tsconfig.build.json",
     "lint": "eslint --max-warnings 0 'src/**/*.{js,ts}'",
     "format:check": "prettier --check 'src/**/*.{js,ts,json,yaml,yml,md}'",
     "format:write": "prettier --write 'src/**/*.{js,ts,json,yaml,yml,md}'",

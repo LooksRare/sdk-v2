@@ -17,7 +17,7 @@ LooksRare protocol main class
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `chainId` | [`SupportedChainId`](../enums/types.SupportedChainId.md) | Current app chain id |
+| `chainId` | [`ChainId`](../enums/types.ChainId.md) | Current app chain id |
 | `provider` | `Provider` | Ethers provider |
 | `signer?` | [`Signer`](../modules/types.md#signer) | Ethers signer |
 | `override?` | [`Addresses`](../interfaces/types.Addresses.md) | Overrides contract addresses for hardhat setup |
@@ -34,7 +34,7 @@ ___
 
 ### chainId
 
-• `Readonly` **chainId**: [`SupportedChainId`](../enums/types.SupportedChainId.md)
+• `Readonly` **chainId**: [`ChainId`](../enums/types.ChainId.md)
 
 Current app chain ID
 

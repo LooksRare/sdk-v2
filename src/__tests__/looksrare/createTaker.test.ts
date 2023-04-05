@@ -3,7 +3,7 @@ import { BigNumber, utils } from "ethers";
 import { ethers } from "hardhat";
 import { getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { LooksRare } from "../../LooksRare";
-import { SupportedChainId, CollectionType, StrategyType, CreateMakerInput, QuoteType } from "../../types";
+import { ChainId, CollectionType, StrategyType, CreateMakerInput, QuoteType } from "../../types";
 import { ErrorStrategyType, ErrorQuoteType, ErrorItemId } from "../../errors";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 
@@ -16,7 +16,7 @@ describe("Create takers", () => {
   beforeEach(async () => {
     mocks = await setUpContracts();
     signers = await getSigners();
-    lrUser1 = new LooksRare(SupportedChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
+    lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerInput = {
       collection: mocks.contracts.collectionERC721.address,
