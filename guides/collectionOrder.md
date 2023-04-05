@@ -23,7 +23,7 @@ import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@look
 
 const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
-const { makerBid, isCurrencyApproved } = await lr.createMakerCollectionOffer({
+const { makerBid, isCurrencyApproved, isBalanceSufficient } = await lr.createMakerCollectionOffer({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
   subsetNonce: 0, // keep 0 if you don't know what it is used for
@@ -38,6 +38,11 @@ const { makerBid, isCurrencyApproved } = await lr.createMakerCollectionOffer({
 if (!isCurrencyApproved) {
   const tx = await lr.approveErc20(lr.addresses.WETH);
   await tx.wait();
+}
+
+// Checks if the WETH balance is enough to cover the bid
+if (!isBalanceSufficient) {
+  throw new Error(`WETH balance too low.`);
 }
 
 // Sign your maker order

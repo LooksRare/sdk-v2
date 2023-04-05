@@ -40,7 +40,7 @@ if (!isTransferManagerApproved) {
   await tx.wait();
 }
 
-// Approve the collection items to be transfered by the TransferManager
+// Approve the collection items to be transferred by the TransferManager
 if (!isCollectionApproved) {
   const tx = await lr.approveAllCollectionItems(makerAsk.collection);
   await tx.wait();
