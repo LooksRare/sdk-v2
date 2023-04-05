@@ -13,14 +13,10 @@ const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
 // Cancel order nonce 0
 const tx = await lr.cancelOrders([0]).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 
 // Cancel order nonce 0 and 12
 const tx = await lr.cancelOrders([0, 12]).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 ```
 
@@ -35,14 +31,10 @@ const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
 // Cancel order with the subset nonce 0
 const tx = await lr.cancelSubsetOrders([0]).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 
 // Cancel order with the subset 0 and 12
 const tx = await lr.cancelSubsetOrders([0, 12]).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 ```
 
@@ -57,20 +49,14 @@ const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
 
 // Cancel all bids
 const tx = await lr.cancelAllOrders(true, false).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 
 // Cancel all asks
 const tx = await lr.cancelAllOrders(false, true).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 
 // Cancel all bids and asks
 const tx = await lr.cancelAllOrders(true, true).call();
-
-// Wait for the transaction to be processed
 const receipt = await tx.wait();
 ```
 

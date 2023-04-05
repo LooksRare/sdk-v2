@@ -36,19 +36,13 @@ const { makerAsk, isCollectionApproved, isTransferManagerApproved } = await lr.c
 
 // Grant the TransferManager the right the transfer assets on behalf od the LooksRareProtocol
 if (!isTransferManagerApproved) {
-  // Send approval transaction on-chain
   const tx = await lr.grantTransferManagerApproval().call();
-
-  // Wait for the transaction to be processed
   await tx.wait();
 }
 
 // Approve the collection items to be transfered by the TransferManager
 if (!isCollectionApproved) {
-  // Send approval transaction on-chain
   const tx = await lr.approveAllCollectionItems(makerAsk.collection);
-
-  // Wait for the transaction to be processed
   await tx.wait();
 }
 
@@ -56,37 +50,7 @@ if (!isCollectionApproved) {
 const signature = await lr.signMakerOrder(makerAsk);
 ```
 
-## How to send the order via our Public API
-
-Once the maker ask has been created, the approvals sorted and the order signed, you will have to send the resulting order to the `POST /api/v2/orders` endpoint (see [create order](https://looksrare.dev/v2/reference/createorder)).
-
-Here is an example of how you can achieve that:
-
-```ts
-// In this example axios is being used, but you can use any http client
-import axios from "axios";
-
-/**
- * Generate the maker ask, sort the approvals and sign the order here. As shown in the example above.
- */
-
-// Cast the globalNonce and price to string as expected by the API
-const order = { ...makerAsk, globalNonce: makerAsk.globalNonce.toString(), price: makerAsk.price.toString() };
-
-await axios.post(
-  `https://api.looksrare.org/api/v2/orders`, // For Goerli use https://api-goerli.looksrare.org/api/v2/orders
-  { ...order, signature },
-  {
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-      "X-Looks-Api-Key": "YOUR_API_KEY", // Remove the header if on Goerli
-    },
-  }
-);
-```
-
-For more details, see our API reference: [https://looksrare.dev](https://looksrare.dev)
+> Once, the maker ask for your collection offer has been created, the approvals sorted and the order signed, you will have to send it along with the signature to the `POST /api/v2/orders` endpoint. For more details and examples, see [create order](https://looksrare.dev/v2/reference/createorder)).
 
 ## Need help?
 

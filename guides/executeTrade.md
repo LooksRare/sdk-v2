@@ -16,13 +16,8 @@ const takerOrder = lr.createTaker(makerOrder, recipientAddress);
 From the API response, you will also get the `signature`, which is necessary to execute the trade on-chain. To execute the trade, you can call the `executeOrder` method passing the `Maker`, `Taker` and the `signature`. The method will return a contract call. Here is an example:
 
 ```ts
-// Generate the contract call
 const { call } = lr.executeOrder(makerOrder, takerOrder, signature);
-
-// Send the transaction on-chain
 const tx = await call();
-
-// Wait for the transaction to be completed and get the receipt
 const receipt = await tx.wait();
 ```
 
