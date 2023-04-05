@@ -38,7 +38,16 @@ const config = {
     clear: true,
     flat: true,
     pretty: false,
-    only: ["LooksRareProtocol", "TransferManager", "OrderValidatorV2A", "IERC721", "IERC1155", "IERC20", "IWETH"],
+    only: [
+      "LooksRareProtocol",
+      "TransferManager",
+      "OrderValidatorV2A",
+      "IERC721",
+      "IERC1155",
+      "IERC20",
+      "WETH",
+      "ProtocolHelpers",
+    ],
   },
   typechain: {
     outDir: "src/typechain",
