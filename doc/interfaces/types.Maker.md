@@ -90,7 +90,7 @@ ___
 
 • **quoteType**: [`QuoteType`](../enums/types.QuoteType.md)
 
-Ask or bid
+Bid (0) or Ask (1)
 
 ___
 

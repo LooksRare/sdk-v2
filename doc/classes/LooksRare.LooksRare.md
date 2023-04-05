@@ -211,7 +211,7 @@ Create a maker bid object ready to be signed
 
 `Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
 
-the maker object and isCurrencyApproved
+the maker object, isCurrencyApproved, and isBalanceSufficient
 
 ___
 
@@ -230,6 +230,30 @@ this.createMakerBid
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderInputs` | [`CreateMakerCollectionOfferInput`](../modules/types.md#createmakercollectionofferinput) | Order data |
+
+#### Returns
+
+`Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
+
+CreateMakerBidOutput
+
+___
+
+### createMakerCollectionOfferWithProof
+
+▸ **createMakerCollectionOfferWithProof**(`orderInputs`): `Promise`<[`CreateMakerBidOutput`](../interfaces/types.CreateMakerBidOutput.md)\>
+
+Create a maker bid for collection, with a list of item id that can be used for the taker order
+
+**`See`**
+
+this.createMakerBid
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `orderInputs` | [`CreateMakerCollectionOfferWithProofInput`](../modules/types.md#createmakercollectionofferwithproofinput) | Order data |
 
 #### Returns
 
@@ -269,7 +293,8 @@ Create a taker ask order for collection order.
 
 **`See`**
 
-this.createTaker
+ - this.createTaker
+ - this.createMakerCollectionOffer
 
 #### Parameters
 
@@ -277,6 +302,34 @@ this.createTaker
 | :------ | :------ | :------ |
 | `maker` | [`Maker`](../interfaces/types.Maker.md) | - |
 | `itemId` | `BigNumberish` | Token id to use as a counterparty for the collection order |
+| `recipient?` | `string` | Recipient address of the taker (if none, it will use the sender) |
+
+#### Returns
+
+[`Taker`](../interfaces/types.Taker.md)
+
+Taker object
+
+___
+
+### createTakerCollectionOfferWithProof
+
+▸ **createTakerCollectionOfferWithProof**(`maker`, `itemId`, `itemIds`, `recipient?`): [`Taker`](../interfaces/types.Taker.md)
+
+Create a taker ask to fulfill a collection order (maker bid) created with a whitelist of item ids
+
+**`See`**
+
+ - this.createTaker
+ - this.createMakerCollectionOfferWithMerkleTree
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `maker` | [`Maker`](../interfaces/types.Maker.md) | - |
+| `itemId` | `BigNumberish` | Token id to use as a counterparty for the collection order |
+| `itemIds` | `BigNumberish`[] | List of token ids used during the maker creation |
 | `recipient?` | `string` | Recipient address of the taker (if none, it will use the sender) |
 
 #### Returns

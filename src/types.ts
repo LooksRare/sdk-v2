@@ -148,7 +148,7 @@ export type CreateMakerCollectionOfferWithProofInput = Omit<CreateMakerInput, "s
 
 /** Maker object to be used in execute functions */
 export interface Maker {
-  /** Bid or ask, 0: bid, 1: ask */
+  /** Bid (0) or Ask (1) */
   quoteType: QuoteType;
   /** User's current bid / ask nonce */
   globalNonce: BigNumberish;

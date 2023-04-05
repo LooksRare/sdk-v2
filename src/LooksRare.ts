@@ -321,7 +321,7 @@ export class LooksRare {
    * @see this.createMakerCollectionOfferWithMerkleTree
    * @param makerBid Maker bid that will be used as counterparty for the taker
    * @param itemId Token id to use as a counterparty for the collection order
-   * @param itemIds List of item ids used during the maker creation
+   * @param itemIds List of token ids used during the maker creation
    * @param recipient Recipient address of the taker (if none, it will use the sender)
    * @returns Taker object
    */

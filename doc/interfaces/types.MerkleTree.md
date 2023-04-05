@@ -8,7 +8,7 @@ Merkle root object to be used in the execute function for a multi listing
 
 ### proof
 
-• **proof**: { `position`: `MerkleTreeNodePosition` ; `value`: `string`  }[]
+• **proof**: [`MerkleTreeProof`](types.MerkleTreeProof.md)[]
 
 ___
 
