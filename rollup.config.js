@@ -16,7 +16,7 @@ export default {
       targets: [{ src: "src/abis/**/*", dest: "dist/abis" }],
     }),
     json(),
-    typescript({ module: "ESNext" }),
+    typescript({ tsconfig: "./tsconfig.build.json" }),
     bundleSize(),
   ],
 };
