@@ -3,6 +3,7 @@
 ## Enumerations
 
 - [CollectionType](../enums/types.CollectionType.md)
+- [MerkleTreeNodePosition](../enums/types.MerkleTreeNodePosition.md)
 - [OrderValidatorCode](../enums/types.OrderValidatorCode.md)
 - [QuoteType](../enums/types.QuoteType.md)
 - [StrategyType](../enums/types.StrategyType.md)
@@ -18,6 +19,7 @@
 - [CreateMakerInput](../interfaces/types.CreateMakerInput.md)
 - [Maker](../interfaces/types.Maker.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)
+- [MerkleTreeProof](../interfaces/types.MerkleTreeProof.md)
 - [SignMerkleTreeOrdersOutput](../interfaces/types.SignMerkleTreeOrdersOutput.md)
 - [StrategyInfo](../interfaces/types.StrategyInfo.md)
 - [Taker](../interfaces/types.Taker.md)
@@ -27,6 +29,12 @@
 ### CreateMakerCollectionOfferInput
 
 Ƭ **CreateMakerCollectionOfferInput**: `Omit`<[`CreateMakerInput`](../interfaces/types.CreateMakerInput.md), ``"strategyId"`` \| ``"itemIds"``\>
+
+___
+
+### CreateMakerCollectionOfferWithProofInput
+
+Ƭ **CreateMakerCollectionOfferWithProofInput**: `Omit`<[`CreateMakerInput`](../interfaces/types.CreateMakerInput.md), ``"strategyId"``\>
 
 ___
 
@@ -46,7 +54,7 @@ Temporary type until full of TypedDataSigner in ethers V6
 
 **`See`**
 
-https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53
+[Ethers TypedDataSigner](https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53)
 
 ___
 

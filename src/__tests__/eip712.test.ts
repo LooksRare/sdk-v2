@@ -3,7 +3,8 @@ import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
-import { contractName, version, getMakerHash } from "../constants/eip712";
+import { contractName, version } from "../constants/eip712";
+import { getMakerHash } from "../utils/eip712";
 import { SupportedChainId, Maker, CollectionType, QuoteType } from "../types";
 
 describe("EIP-712", () => {

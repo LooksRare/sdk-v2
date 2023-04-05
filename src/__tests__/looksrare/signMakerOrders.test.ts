@@ -4,9 +4,10 @@ import { ethers } from "hardhat";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { LooksRare } from "../../LooksRare";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
-import { contractName, version, makerTypes } from "../../constants/eip712";
+import { contractName, version } from "../../constants/eip712";
 import { MAX_ORDERS_PER_TREE } from "../../constants";
 import { encodeParams, getMakerParamsTypes, getTakerParamsTypes } from "../../utils/encodeOrderParams";
+import { makerTypes } from "../../utils/eip712";
 import { SupportedChainId, Maker, CollectionType, StrategyType, QuoteType } from "../../types";
 import { ErrorMerkleTreeDepth } from "../../errors";
 

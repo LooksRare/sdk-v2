@@ -6,6 +6,12 @@ Return object of createMakerBid
 
 ## Properties
 
+### isBalanceSufficient
+
+• **isBalanceSufficient**: `boolean`
+
+___
+
 ### isCurrencyApproved
 
 • **isCurrencyApproved**: `boolean`
