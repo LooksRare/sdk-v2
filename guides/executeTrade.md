@@ -5,9 +5,9 @@
 Trades are executed on-chain by matching a `Maker` order with a `Taker` order. The maker order can be retrieved from the API, see [get v2 orders](https://looksrare.dev/v2/reference/getorders) for more details. While the taker order can be obtained by calling the `createTaker` method as shown here:
 
 ```ts
-import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 // The recipient address is optional, if you don't provide it will use your signer address
 const takerOrder = lr.createTaker(makerOrder, recipientAddress);

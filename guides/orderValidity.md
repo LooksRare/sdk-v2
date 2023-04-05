@@ -5,9 +5,9 @@
 The LooksRare SDK also provides a method to validate your order. It can be used as follows:
 
 ```ts
-import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 const validatorCodes = await lr.verifyMakerOrders([makerOrder], [signature]);
 ```

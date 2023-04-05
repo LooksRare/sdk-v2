@@ -19,9 +19,9 @@ Here is an example:
 
 ```ts
 import { ethers } from "ethers";
-import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 const { makerBid, isCurrencyApproved, isBalanceSufficient } = await lr.createMakerCollectionOffer({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
@@ -56,9 +56,9 @@ const signature = await lr.signMakerOrder(makerBid);
 `createTakerForCollectionOrder` is just a convenient wrapper around `createTaker`.
 
 ```ts
-import { LooksRare, SupportedChainId } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 // To be done only once the first a user is interacting with the V2.
 // It will grant the Exchange contract with the right to use your collections approvals done on the transfer manager.

@@ -8,9 +8,9 @@ The code snippet below is an example of how to sign multiple orders with one sig
 
 ```ts
 import { ethers } from "ethers";
-import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 const order1 = await lr.createMakerAsk(...);
 const order2 = await lr.createMakerAsk(...);

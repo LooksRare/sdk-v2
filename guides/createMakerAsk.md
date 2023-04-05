@@ -17,9 +17,9 @@ Here is an example:
 
 ```ts
 import { ethers } from "ethers";
-import { LooksRare, SupportedChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
+import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
 
-const lr = new LooksRare(SupportedChainId.MAINNET, provider, signer);
+const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
 const { makerAsk, isCollectionApproved, isTransferManagerApproved } = await lr.createMakerAsk({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
