@@ -1,7 +1,7 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
 import { utils } from "ethers";
 import { Eip712MakerMerkleTree } from "./Eip712MakerMerkleTree";
-import { makerTypes } from "../constants/eip712";
+import { makerTypes } from "./eip712";
 import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
 
 /**

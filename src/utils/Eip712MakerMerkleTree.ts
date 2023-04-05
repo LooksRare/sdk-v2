@@ -1,6 +1,6 @@
 import { constants } from "ethers";
 import { Eip712MerkleTree } from "./Eip712MerkleTree";
-import { getBatchOrderTypes } from "../constants/eip712";
+import { getBatchOrderTypes } from "./eip712";
 import { Maker, QuoteType, StrategyType, CollectionType } from "../types";
 
 const defaultMaker: Maker = {
@@ -23,6 +23,7 @@ const defaultMaker: Maker = {
 
 /**
  * Specific implementation of Eip712MerkleTree for Maker type
+ * @extends Eip712MerkleTree
  */
 export class Eip712MakerMerkleTree extends Eip712MerkleTree<Maker> {
   constructor(public makerOrders: Maker[]) {

@@ -1,6 +1,6 @@
 import { utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import { getMakerHash } from "../../constants/eip712";
+import { getMakerHash } from "../../utils/eip712";
 import { Maker, SolidityType } from "../../types";
 
 // Emulate contract cryptographic functions using JS. Used for testing purpose.
