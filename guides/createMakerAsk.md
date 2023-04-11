@@ -21,7 +21,7 @@ import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk
 
 const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
-const { makerAsk, isCollectionApproved, isTransferManagerApproved } = await lr.createMakerAsk({
+const { maker, isCollectionApproved, isTransferManagerApproved } = await lr.createMakerAsk({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
   strategyId: StrategyType.standard,
@@ -42,12 +42,12 @@ if (!isTransferManagerApproved) {
 
 // Approve the collection items to be transferred by the TransferManager
 if (!isCollectionApproved) {
-  const tx = await lr.approveAllCollectionItems(makerAsk.collection);
+  const tx = await lr.approveAllCollectionItems(maker.collection);
   await tx.wait();
 }
 
 // Sign your maker order
-const signature = await lr.signMakerOrder(makerAsk);
+const signature = await lr.signMakerOrder(maker);
 ```
 
 > Once, the maker ask for your collection offer has been created, the approvals sorted and the order signed, you will have to send it along with the signature to the `POST /api/v2/orders` endpoint. For more details and examples, see [create order](https://looksrare.dev/v2/reference/createorder)).

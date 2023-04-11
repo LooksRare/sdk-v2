@@ -23,7 +23,7 @@ import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk
 
 const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
-const { makerBid, isCurrencyApproved, isBalanceSufficient } = await lr.createMakerCollectionOffer({
+const { maker, isCurrencyApproved, isBalanceSufficient } = await lr.createMakerCollectionOffer({
   collection: "0x0000000000000000000000000000000000000000", // Collection address
   collectionType: CollectionType.ERC721,
   subsetNonce: 0, // keep 0 if you don't know what it is used for
@@ -46,7 +46,7 @@ if (!isBalanceSufficient) {
 }
 
 // Sign your maker order
-const signature = await lr.signMakerOrder(makerBid);
+const signature = await lr.signMakerOrder(maker);
 ```
 
 > Once, the maker bid for your collection offer has been created, the approvals sorted and the order signed, you will have to send it along with the signature to the `POST /api/v2/orders` endpoint. For more details and examples, see [create order](https://looksrare.dev/v2/reference/createorder)).
