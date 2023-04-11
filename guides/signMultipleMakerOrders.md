@@ -36,7 +36,7 @@ for (const order of orders) {
 const { signature, merkleTreeProofs } = await lr.signMultipleMakerOrders(orders);
 ```
 
-> The maker orders, merkleTreeProofs and signature will have be sent to the `POST /api/v2/orders/tree` endpoint. For more details and examples, see [create Merkle tree order](https://looksrare.dev/v2/reference/createmerkletree)).
+> The maker orders, merkleTreeProofs and signature will have be sent to the `POST /api/v2/orders/tree` endpoint. For more details and examples, see [create Merkle tree order](https://looksrare.dev/v2/reference/createmerkletree).
 
 For more information on how to create your orders, see the [createMakerAsk](./createMakerAsk.md) and [createMakerBid](./createMakerBid.md) documentation.
 
