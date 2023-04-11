@@ -20,23 +20,13 @@ const tx = await lr.cancelOrders([0, 12]).call();
 const receipt = await tx.wait();
 ```
 
-## Cancel orders using subset nonces
+## (Don't) Cancel orders using subset nonces
 
-The `subsetNonce` can only be invalidated/cancelled manually. The purpose of the `subsetNonce` is to allow the user to arbitrarily group different orders under the same `subsetNonce`, for example, all the orders from the same collection could have the same `subsetNonce`, allowing for a more targeted cancel functionality.
+> NOTE: **Feature not implemented yet, DO NOT cancel subset nonces at this time.**
 
-```ts
-import { LooksRare, ChainId } from "@looksrare/sdk-v2";
+We restrict the `subsetNonce` at order creation to always be 0, at the moment.
 
-const lr = new LooksRare(ChainId.MAINNET, provider, signer);
-
-// Cancel order with the subset nonce 0
-const tx = await lr.cancelSubsetOrders([0]).call();
-const receipt = await tx.wait();
-
-// Cancel order with the subset 0 and 12
-const tx = await lr.cancelSubsetOrders([0, 12]).call();
-const receipt = await tx.wait();
-```
+The `subsetNonce` can only be invalidated/cancelled manually. The purpose of the `subsetNonce` is to allow the user to arbitrarily group different orders under the same `subsetNonce`, for example, all the orders from the same collection could have the same `subsetNonce`, allowing for a more targeted cancel functionality. _(pending implementation)_
 
 ## Cancel all your bids and/or all your asks
 
