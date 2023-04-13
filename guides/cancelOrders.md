@@ -35,11 +35,11 @@ import { LooksRare, ChainId } from "@looksrare/sdk-v2";
 
 const lr = new LooksRare(ChainId.MAINNET, provider, signer);
 
-// Cancel order with the subset nonce 0
+// Cancel order with the subset nonce 1
 const tx = await lr.cancelSubsetOrders([1]).call();
 const receipt = await tx.wait();
 
-// Cancel order with the subset 0 and 12
+// Cancel order with the subset 1 and 12
 const tx = await lr.cancelSubsetOrders([1, 12]).call();
 const receipt = await tx.wait();
 ```
