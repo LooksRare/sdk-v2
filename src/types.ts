@@ -20,6 +20,19 @@ export enum ChainId {
   HARDHAT = 31337,
 }
 
+/** ChainInfo data used to interact with LooksRare ecosystem */
+export interface ChainInfo {
+  label: string;
+  appUrl: string;
+  rpcUrl: string;
+  explorer: string;
+  baseApiUrl: string;
+  osApiUrl: string;
+  cdnUrl: string;
+  rewardsSubgraphUrl: string;
+  cloudinaryUrl: string;
+}
+
 /** List of collection types supported by the protocol */
 export enum CollectionType {
   ERC721 = 0,
