@@ -1,5 +1,4 @@
-import { ChainId } from "../types";
-import { Addresses } from "../types";
+import { Addresses, ChainId } from "../types";
 
 const mainnetAddresses: Addresses = {
   LOOKS: "0xf4d2888d29D722226FafA5d9B24F9164c092421E",

@@ -1,16 +1,4 @@
-import { ChainId } from "../types";
-
-interface ChainInfo {
-  label: string;
-  appUrl: string;
-  rpcUrl: string;
-  explorer: string;
-  baseApiUrl: string;
-  osApiUrl: string;
-  cdnUrl: string;
-  rewardsSubgraphUrl: string;
-  cloudinaryUrl: string;
-}
+import { ChainId, ChainInfo } from "../types";
 
 export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
   [ChainId.MAINNET]: {
