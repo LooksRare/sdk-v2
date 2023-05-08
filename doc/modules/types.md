@@ -13,6 +13,7 @@
 
 - [Addresses](../interfaces/types.Addresses.md)
 - [BatchTransferItem](../interfaces/types.BatchTransferItem.md)
+- [ChainInfo](../interfaces/types.ChainInfo.md)
 - [ContractMethods](../interfaces/types.ContractMethods.md)
 - [CreateMakerAskOutput](../interfaces/types.CreateMakerAskOutput.md)
 - [CreateMakerBidOutput](../interfaces/types.CreateMakerBidOutput.md)

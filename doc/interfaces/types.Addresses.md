@@ -6,6 +6,12 @@ Addresses used to create a LooksRare instance
 
 ## Properties
 
+### AGGREGATOR\_UNISWAP\_V3
+
+• **AGGREGATOR\_UNISWAP\_V3**: `string`
+
+___
+
 ### EXCHANGE\_V2
 
 • **EXCHANGE\_V2**: `string`
@@ -33,6 +39,12 @@ ___
 ### REVERSE\_RECORDS
 
 • **REVERSE\_RECORDS**: `string`
+
+___
+
+### STAKING\_POOL\_FOR\_LOOKS\_LP
+
+• **STAKING\_POOL\_FOR\_LOOKS\_LP**: `string`
 
 ___
 
