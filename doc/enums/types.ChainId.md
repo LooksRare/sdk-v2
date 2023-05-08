@@ -21,3 +21,9 @@ ___
 ### MAINNET
 
 • **MAINNET** = ``1``
+
+___
+
+### SEPOLIA
+
+• **SEPOLIA** = ``11155111``

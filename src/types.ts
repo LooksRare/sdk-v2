@@ -11,6 +11,8 @@ export interface Addresses {
   ORDER_VALIDATOR_V2: string;
   REVERSE_RECORDS: string;
   LOOKS_LP_V3: string;
+  STAKING_POOL_FOR_LOOKS_LP: string;
+  AGGREGATOR_UNISWAP_V3: string;
 }
 
 /** List of supported chains */

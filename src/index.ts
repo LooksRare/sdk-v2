@@ -23,6 +23,7 @@ export { utils };
 export * from "./constants";
 export * from "./errors";
 export * from "./types";
+export * from "./abis";
 
 export { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 export { Eip712MerkleTree } from "./utils/Eip712MerkleTree";
