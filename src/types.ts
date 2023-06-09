@@ -204,6 +204,12 @@ export interface Taker {
   additionalParameters: BytesLike;
 }
 
+/** Referrer object to be used in maker order API */
+export interface Referrer {
+  address: string;
+  rate: BigNumberish;
+}
+
 /** Merkle tree node position (needed by the SC) */
 export enum MerkleTreeNodePosition {
   Left = 0,
