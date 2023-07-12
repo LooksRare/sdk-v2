@@ -34,6 +34,7 @@ export interface ChainInfo {
   cdnUrl: string;
   rewardsSubgraphUrl: string;
   cloudinaryUrl: string;
+  wsUrl: string;
 }
 
 /** List of collection types supported by the protocol */
