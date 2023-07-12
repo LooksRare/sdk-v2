@@ -6,7 +6,7 @@ The code snippet below is an example of how to create a maker bid using the `@lo
 
 The main steps are:
 
-1. Initialize a LooksRare class instance by providing the chain id, [RPC provider](https://docs.ethers.io/v5/api/providers/) and a [signer](https://docs.ethers.io/v5/api/signer/).
+1. Initialize a LooksRare class instance by providing the chain id, [JSON-RPC provider](https://docs.ethers.org/v6/api/providers/jsonrpc/) and a [signer](https://docs.ethers.org/v6/api/providers/#Signer).
 2. Use the `createMakerBid` method to create a maker bid with the parameters of your order.
 3. Check and grant necessary approvals for transferring assets.
 4. Sign the maker bid order with `signMakerOrder` method.
@@ -28,7 +28,7 @@ const { maker, isCurrencyApproved, isBalanceSufficient } = await lr.createMakerB
   subsetNonce: 0, // keep 0 if you don't know what it is used for
   orderNonce: 0, // You need to retrieve this value from the API
   endTime: Math.floor(Date.now() / 1000) + 86400, // If you use a timestamp in ms, the function will revert
-  price: ethers.utils.parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
+  price: parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
   itemIds: [0], // Token id of the NFT you want to buy
   amounts: [1], // Use it for listing several ERC-1155 (Optional, Default to [1])
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)

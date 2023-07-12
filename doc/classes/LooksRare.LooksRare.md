@@ -15,11 +15,11 @@ LooksRare protocol main class
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `chainId` | [`ChainId`](../enums/types.ChainId.md) | Current app chain id |
-| `provider` | `Provider` | Ethers provider |
-| `signer?` | [`Signer`](../modules/types.md#signer) | Ethers signer |
+| Name        | Type                                            | Description                                    |
+| :---------- | :---------------------------------------------- | :--------------------------------------------- |
+| `chainId`   | [`ChainId`](../enums/types.ChainId.md)          | Current app chain id                           |
+| `provider`  | `Provider`                                      | Ethers provider                                |
+| `signer?`   | [`Signer`](../modules/types.md#signer)          | Ethers signer                                  |
 | `override?` | [`Addresses`](../interfaces/types.Addresses.md) | Overrides contract addresses for hardhat setup |
 
 ## Properties
@@ -30,7 +30,7 @@ LooksRare protocol main class
 
 Mapping of LooksRare protocol addresses for the current chain
 
-___
+---
 
 ### chainId
 
@@ -38,7 +38,7 @@ ___
 
 Current app chain ID
 
-___
+---
 
 ### provider
 
@@ -48,10 +48,9 @@ Ethers multicall provider
 
 **`See`**
 
- - [Ethers providers doc](https://docs.ethers.io/v5/api/providers/)
- - [0xsequence multicall doc](https://github.com/0xsequence/sequence.js/tree/master/packages/multicall)
+- [Ethers providers doc](https://docs.ethers.io/v5/api/providers/)
 
-___
+---
 
 ### signer
 
@@ -74,11 +73,11 @@ The spender is the TransferManager.
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `collectionAddress` | `string` | `undefined` | Address of the collection to be approved. |
-| `approved` | `boolean` | `true` | true to approve, false to revoke the approval (default to true) |
-| `overrides?` | `Overrides` | `undefined` | - |
+| Name                | Type        | Default value | Description                                                     |
+| :------------------ | :---------- | :------------ | :-------------------------------------------------------------- |
+| `collectionAddress` | `string`    | `undefined`   | Address of the collection to be approved.                       |
+| `approved`          | `boolean`   | `true`        | true to approve, false to revoke the approval (default to true) |
+| `overrides?`        | `Overrides` | `undefined`   | -                                                               |
 
 #### Returns
 
@@ -86,7 +85,7 @@ The spender is the TransferManager.
 
 ContractTransaction
 
-___
+---
 
 ### approveErc20
 
@@ -97,11 +96,11 @@ The spender is the LooksRareProtocol contract.
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `tokenAddress` | `string` | `undefined` | Address of the ERC20 to approve |
-| `amount` | `BigNumber` | `constants.MaxUint256` | Amount to be approved (default to MaxUint256) |
-| `overrides?` | `Overrides` | `undefined` | - |
+| Name           | Type        | Default value          | Description                                   |
+| :------------- | :---------- | :--------------------- | :-------------------------------------------- |
+| `tokenAddress` | `string`    | `undefined`            | Address of the ERC20 to approve               |
+| `amount`       | `BigNumber` | `constants.MaxUint256` | Amount to be approved (default to MaxUint256) |
+| `overrides?`   | `Overrides` | `undefined`            | -                                             |
 
 #### Returns
 
@@ -109,7 +108,7 @@ The spender is the LooksRareProtocol contract.
 
 ContractTransaction
 
-___
+---
 
 ### cancelAllOrders
 
@@ -119,11 +118,11 @@ Cancell all maker bid and/or ask orders for the current user
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `bid` | `boolean` | Cancel all bids |
-| `ask` | `boolean` | Cancel all asks |
-| `overrides?` | `Overrides` | - |
+| Name         | Type        | Description     |
+| :----------- | :---------- | :-------------- |
+| `bid`        | `boolean`   | Cancel all bids |
+| `ask`        | `boolean`   | Cancel all asks |
+| `overrides?` | `Overrides` | -               |
 
 #### Returns
 
@@ -131,7 +130,7 @@ Cancell all maker bid and/or ask orders for the current user
 
 ContractMethods
 
-___
+---
 
 ### cancelOrders
 
@@ -141,10 +140,10 @@ Cancel a list of specific orders
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
-| `overrides?` | `Overrides` | - |
+| Name         | Type             | Description                    |
+| :----------- | :--------------- | :----------------------------- |
+| `nonces`     | `BigNumberish`[] | List of nonces to be cancelled |
+| `overrides?` | `Overrides`      | -                              |
 
 #### Returns
 
@@ -152,7 +151,7 @@ Cancel a list of specific orders
 
 ContractMethods
 
-___
+---
 
 ### cancelSubsetOrders
 
@@ -162,10 +161,10 @@ Cancel a list of specific subset orders
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `nonces` | `BigNumberish`[] | List of nonces to be cancelled |
-| `overrides?` | `Overrides` | - |
+| Name         | Type             | Description                    |
+| :----------- | :--------------- | :----------------------------- |
+| `nonces`     | `BigNumberish`[] | List of nonces to be cancelled |
+| `overrides?` | `Overrides`      | -                              |
 
 #### Returns
 
@@ -173,7 +172,7 @@ Cancel a list of specific subset orders
 
 ContractMethods
 
-___
+---
 
 ### createMakerAsk
 
@@ -183,8 +182,8 @@ Create a maker ask object ready to be signed
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name               | Type                                                          |
+| :----------------- | :------------------------------------------------------------ |
 | `CreateMakerInput` | [`CreateMakerInput`](../interfaces/types.CreateMakerInput.md) |
 
 #### Returns
@@ -193,7 +192,7 @@ Create a maker ask object ready to be signed
 
 the maker object, isTransferManagerApproved, and isTransferManagerApproved
 
-___
+---
 
 ### createMakerBid
 
@@ -203,8 +202,8 @@ Create a maker bid object ready to be signed
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name               | Type                                                          |
+| :----------------- | :------------------------------------------------------------ |
 | `CreateMakerInput` | [`CreateMakerInput`](../interfaces/types.CreateMakerInput.md) |
 
 #### Returns
@@ -213,7 +212,7 @@ Create a maker bid object ready to be signed
 
 the maker object, isCurrencyApproved, and isBalanceSufficient
 
-___
+---
 
 ### createMakerCollectionOffer
 
@@ -227,9 +226,9 @@ this.createMakerBid
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `orderInputs` | [`CreateMakerCollectionOfferInput`](../modules/types.md#createmakercollectionofferinput) | Order data |
+| Name          | Type                                                                                     | Description |
+| :------------ | :--------------------------------------------------------------------------------------- | :---------- |
+| `orderInputs` | [`CreateMakerCollectionOfferInput`](../modules/types.md#createmakercollectionofferinput) | Order data  |
 
 #### Returns
 
@@ -237,7 +236,7 @@ this.createMakerBid
 
 CreateMakerBidOutput
 
-___
+---
 
 ### createMakerCollectionOfferWithProof
 
@@ -251,9 +250,9 @@ this.createMakerBid
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `orderInputs` | [`CreateMakerCollectionOfferWithProofInput`](../modules/types.md#createmakercollectionofferwithproofinput) | Order data |
+| Name          | Type                                                                                                       | Description |
+| :------------ | :--------------------------------------------------------------------------------------------------------- | :---------- |
+| `orderInputs` | [`CreateMakerCollectionOfferWithProofInput`](../modules/types.md#createmakercollectionofferwithproofinput) | Order data  |
 
 #### Returns
 
@@ -261,7 +260,7 @@ this.createMakerBid
 
 CreateMakerBidOutput
 
-___
+---
 
 ### createTaker
 
@@ -271,11 +270,11 @@ Create a taker ask ready to be executed against a maker bid
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | Maker order that will be used as counterparty for the taker |
-| `recipient` | `string` | `constants.AddressZero` | Recipient address of the taker (if none, it will use the sender) |
-| `additionalParameters` | `any`[] | `[]` | Additional parameters used to support complex orders |
+| Name                   | Type                                    | Default value | Description                                                      |
+| :--------------------- | :-------------------------------------- | :------------ | :--------------------------------------------------------------- |
+| `maker`                | [`Maker`](../interfaces/types.Maker.md) | `undefined`   | Maker order that will be used as counterparty for the taker      |
+| `recipient`            | `string`                                | `ZeroAddress` | Recipient address of the taker (if none, it will use the sender) |
+| `additionalParameters` | `any`[]                                 | `[]`          | Additional parameters used to support complex orders             |
 
 #### Returns
 
@@ -283,7 +282,7 @@ Create a taker ask ready to be executed against a maker bid
 
 Taker object
 
-___
+---
 
 ### createTakerCollectionOffer
 
@@ -293,16 +292,16 @@ Create a taker ask order for collection order.
 
 **`See`**
 
- - this.createTaker
- - this.createMakerCollectionOffer
+- this.createTaker
+- this.createMakerCollectionOffer
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `maker` | [`Maker`](../interfaces/types.Maker.md) | - |
-| `itemId` | `BigNumberish` | Token id to use as a counterparty for the collection order |
-| `recipient?` | `string` | Recipient address of the taker (if none, it will use the sender) |
+| Name         | Type                                    | Description                                                      |
+| :----------- | :-------------------------------------- | :--------------------------------------------------------------- |
+| `maker`      | [`Maker`](../interfaces/types.Maker.md) | -                                                                |
+| `itemId`     | `BigNumberish`                          | Token id to use as a counterparty for the collection order       |
+| `recipient?` | `string`                                | Recipient address of the taker (if none, it will use the sender) |
 
 #### Returns
 
@@ -310,7 +309,7 @@ Create a taker ask order for collection order.
 
 Taker object
 
-___
+---
 
 ### createTakerCollectionOfferWithProof
 
@@ -320,17 +319,17 @@ Create a taker ask to fulfill a collection order (maker bid) created with a whit
 
 **`See`**
 
- - this.createTaker
- - this.createMakerCollectionOfferWithMerkleTree
+- this.createTaker
+- this.createMakerCollectionOfferWithMerkleTree
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `maker` | [`Maker`](../interfaces/types.Maker.md) | - |
-| `itemId` | `BigNumberish` | Token id to use as a counterparty for the collection order |
-| `itemIds` | `BigNumberish`[] | List of token ids used during the maker creation |
-| `recipient?` | `string` | Recipient address of the taker (if none, it will use the sender) |
+| Name         | Type                                    | Description                                                      |
+| :----------- | :-------------------------------------- | :--------------------------------------------------------------- |
+| `maker`      | [`Maker`](../interfaces/types.Maker.md) | -                                                                |
+| `itemId`     | `BigNumberish`                          | Token id to use as a counterparty for the collection order       |
+| `itemIds`    | `BigNumberish`[]                        | List of token ids used during the maker creation                 |
+| `recipient?` | `string`                                | Recipient address of the taker (if none, it will use the sender) |
 
 #### Returns
 
@@ -338,7 +337,7 @@ Create a taker ask to fulfill a collection order (maker bid) created with a whit
 
 Taker object
 
-___
+---
 
 ### executeMultipleOrders
 
@@ -348,12 +347,12 @@ Execute several orders
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `orders` | { `maker`: [`Maker`](../interfaces/types.Maker.md) ; `merkleTree?`: [`MerkleTree`](../interfaces/types.MerkleTree.md) ; `signature`: `string` ; `taker`: [`Taker`](../interfaces/types.Taker.md)  }[] | `undefined` | List of orders data |
-| `isAtomic` | `boolean` | `undefined` | Should the transaction revert or not if a trade fails |
-| `affiliate` | `string` | `constants.AddressZero` | Affiliate address |
-| `overrides?` | `Overrides` | `undefined` | Call overrides |
+| Name         | Type                                                                                                                                                                                                 | Default value | Description                                           |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ | :---------------------------------------------------- |
+| `orders`     | { `maker`: [`Maker`](../interfaces/types.Maker.md) ; `merkleTree?`: [`MerkleTree`](../interfaces/types.MerkleTree.md) ; `signature`: `string` ; `taker`: [`Taker`](../interfaces/types.Taker.md) }[] | `undefined`   | List of orders data                                   |
+| `isAtomic`   | `boolean`                                                                                                                                                                                            | `undefined`   | Should the transaction revert or not if a trade fails |
+| `affiliate`  | `string`                                                                                                                                                                                             | `ZeroAddress` | Affiliate address                                     |
+| `overrides?` | `Overrides`                                                                                                                                                                                          | `undefined`   | Call overrides                                        |
 
 #### Returns
 
@@ -361,13 +360,13 @@ Execute several orders
 
 ContractMethods
 
-| Name | Type |
-| :------ | :------ |
-| `call` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`ContractTransaction`\> |
-| `callStatic` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`void`\> |
-| `estimateGas` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`BigNumber`\> |
+| Name          | Type                                                                              |
+| :------------ | :-------------------------------------------------------------------------------- |
+| `call`        | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`ContractTransaction`\> |
+| `callStatic`  | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`void`\>                |
+| `estimateGas` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`BigNumber`\>           |
 
-___
+---
 
 ### executeOrder
 
@@ -377,14 +376,14 @@ Execute a trade
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | - |
-| `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
-| `signature` | `string` | `undefined` | Signature of the maker order |
+| Name         | Type                                              | Default value       | Description                                     |
+| :----------- | :------------------------------------------------ | :------------------ | :---------------------------------------------- |
+| `maker`      | [`Maker`](../interfaces/types.Maker.md)           | `undefined`         | -                                               |
+| `taker`      | [`Taker`](../interfaces/types.Taker.md)           | `undefined`         | Taker order                                     |
+| `signature`  | `string`                                          | `undefined`         | Signature of the maker order                    |
 | `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `defaultMerkleTree` | If the maker has been signed with a merkle tree |
-| `affiliate` | `string` | `constants.AddressZero` | Affiliate address if applicable |
-| `overrides?` | `Overrides` | `undefined` | - |
+| `affiliate`  | `string`                                          | `ZeroAddress`       | Affiliate address if applicable                 |
+| `overrides?` | `Overrides`                                       | `undefined`         | -                                               |
 
 #### Returns
 
@@ -392,7 +391,7 @@ Execute a trade
 
 ContractMethods
 
-___
+---
 
 ### getSigner
 
@@ -406,7 +405,7 @@ Return the signer it it's set, throw an exception otherwise
 
 Signer
 
-___
+---
 
 ### getTypedDataDomain
 
@@ -420,7 +419,7 @@ Retrieve EIP-712 domain
 
 TypedDataDomain
 
-___
+---
 
 ### grantTransferManagerApproval
 
@@ -434,10 +433,10 @@ Exchange address
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `operators` | `string`[] | List of operators (default to the exchange address) |
-| `overrides?` | `Overrides` | - |
+| Name         | Type        | Description                                         |
+| :----------- | :---------- | :-------------------------------------------------- |
+| `operators`  | `string`[]  | List of operators (default to the exchange address) |
+| `overrides?` | `Overrides` | -                                                   |
 
 #### Returns
 
@@ -445,7 +444,7 @@ Exchange address
 
 ContractMethods
 
-___
+---
 
 ### isTimestampValid
 
@@ -455,8 +454,8 @@ Validate a timestamp format (seconds)
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name        | Type           |
+| :---------- | :------------- |
 | `timestamp` | `BigNumberish` |
 
 #### Returns
@@ -465,7 +464,7 @@ Validate a timestamp format (seconds)
 
 boolean
 
-___
+---
 
 ### isTransferManagerApproved
 
@@ -475,10 +474,10 @@ Check whether or not an operator has been approved by the user
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `operator` | `string` | Operator address (default to the exchange address) |
-| `overrides?` | `Overrides` | - |
+| Name         | Type        | Description                                        |
+| :----------- | :---------- | :------------------------------------------------- |
+| `operator`   | `string`    | Operator address (default to the exchange address) |
+| `overrides?` | `Overrides` | -                                                  |
 
 #### Returns
 
@@ -486,7 +485,7 @@ Check whether or not an operator has been approved by the user
 
 true if the operator is approved, false otherwise
 
-___
+---
 
 ### revokeTransferManagerApproval
 
@@ -500,10 +499,10 @@ Exchange address
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `operators` | `string`[] | List of operators |
-| `overrides?` | `Overrides` | - |
+| Name         | Type        | Description       |
+| :----------- | :---------- | :---------------- |
+| `operators`  | `string`[]  | List of operators |
+| `overrides?` | `Overrides` | -                 |
 
 #### Returns
 
@@ -511,7 +510,7 @@ Exchange address
 
 ContractMethods
 
-___
+---
 
 ### signMakerOrder
 
@@ -521,8 +520,8 @@ Sign a maker order using the signer provided in the constructor
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name    | Type                                    | Description                    |
+| :------ | :-------------------------------------- | :----------------------------- |
 | `maker` | [`Maker`](../interfaces/types.Maker.md) | Order to be signed by the user |
 
 #### Returns
@@ -531,7 +530,7 @@ Sign a maker order using the signer provided in the constructor
 
 Signature
 
-___
+---
 
 ### signMultipleMakerOrders
 
@@ -542,8 +541,8 @@ Sign multiple maker orders with a single signature
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name          | Type                                      | Description           |
+| :------------ | :---------------------------------------- | :-------------------- |
 | `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | Array of maker orders |
 
 #### Returns
@@ -552,7 +551,7 @@ Sign multiple maker orders with a single signature
 
 Signature, proofs, and Merkletree object
 
-___
+---
 
 ### strategyInfo
 
@@ -562,10 +561,10 @@ Retrieve strategy info
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name         | Type                                             | Description               |
+| :----------- | :----------------------------------------------- | :------------------------ |
 | `strategyId` | [`StrategyType`](../enums/types.StrategyType.md) | use the enum StrategyType |
-| `overrides?` | `Overrides` | - |
+| `overrides?` | `Overrides`                                      | -                         |
 
 #### Returns
 
@@ -573,7 +572,7 @@ Retrieve strategy info
 
 StrategyInfo
 
-___
+---
 
 ### transferItemsAcrossCollection
 
@@ -583,11 +582,11 @@ Transfer a list of items across different collections
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `to` | `string` | Recipient address |
+| Name              | Type                                                              | Description                                                                  |
+| :---------------- | :---------------------------------------------------------------- | :--------------------------------------------------------------------------- |
+| `to`              | `string`                                                          | Recipient address                                                            |
 | `collectionItems` | [`BatchTransferItem`](../interfaces/types.BatchTransferItem.md)[] | Each object in the array represent a list of items for a specific collection |
-| `overrides?` | `Overrides` | - |
+| `overrides?`      | `Overrides`                                                       | -                                                                            |
 
 #### Returns
 
@@ -595,7 +594,7 @@ Transfer a list of items across different collections
 
 ContractMethods
 
-___
+---
 
 ### verifyMakerOrders
 
@@ -605,12 +604,12 @@ Verify if a set of orders can be executed (i.e are valid)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `makerOrders` | [`Maker`](../interfaces/types.Maker.md)[] | List of maker orders |
-| `signatures` | `string`[] | List of signatures |
+| Name           | Type                                                | Description                     |
+| :------------- | :-------------------------------------------------- | :------------------------------ |
+| `makerOrders`  | [`Maker`](../interfaces/types.Maker.md)[]           | List of maker orders            |
+| `signatures`   | `string`[]                                          | List of signatures              |
 | `merkleTrees?` | [`MerkleTree`](../interfaces/types.MerkleTree.md)[] | List of merkle trees (optional) |
-| `overrides?` | `Overrides` | - |
+| `overrides?`   | `Overrides`                                         | -                               |
 
 #### Returns
 

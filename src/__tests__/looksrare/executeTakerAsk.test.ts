@@ -27,7 +27,7 @@ describe("execute taker ask", () => {
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
 

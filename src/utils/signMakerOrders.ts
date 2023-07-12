@@ -1,5 +1,5 @@
 import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { utils } from "ethers";
+import { ethers } from "ethers";
 import { Eip712MakerMerkleTree } from "./Eip712MakerMerkleTree";
 import { makerTypes } from "./eip712";
 import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
@@ -17,7 +17,7 @@ export const signMakerOrder = async (
   makerOrder: Maker
 ): Promise<string> => {
   const signature = await signer._signTypedData(domain, makerTypes, makerOrder);
-  return utils.joinSignature(signature);
+  return ethers.Signature.from(signature).serialized;
 };
 
 /**
@@ -49,5 +49,5 @@ export const signMerkleTreeOrders = async (
   });
 
   const signature = await signer._signTypedData(domain, tree.types, tree.getDataToSign());
-  return { signature: utils.joinSignature(signature), merkleTreeProofs, tree };
+  return { signature: ethers.Signature.from(signature).serialized, merkleTreeProofs, tree };
 };

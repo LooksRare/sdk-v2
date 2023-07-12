@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber, Overrides } from "ethers";
+import { ethers, BigNumberish, BytesLike, ContractTransaction, Overrides } from "ethers";
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
 import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
@@ -92,7 +92,7 @@ export type Signer = ethers.Signer & TypedDataSigner;
 /** Return type for any on chain call */
 export interface ContractMethods {
   call: (additionalOverrides?: Overrides) => Promise<ContractTransaction>;
-  estimateGas: (additionalOverrides?: Overrides) => Promise<BigNumber>;
+  estimateGas: (additionalOverrides?: Overrides) => Promise<bigint>;
   callStatic: (additionalOverrides?: Overrides) => Promise<any>;
 }
 

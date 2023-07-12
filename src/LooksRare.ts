@@ -1,6 +1,12 @@
-import { BigNumber, providers, constants, BigNumberish, ContractTransaction, Overrides, utils } from "ethers";
+import {
+  BigNumberish,
+  ContractTransaction,
+  Overrides,
+  JsonRpcProvider,
+  solidityPackedKeccak256,
+  ZeroAddress,
+} from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
-import * as multicall from "@0xsequence/multicall";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
 import { addressesByNetwork } from "./constants/addresses";
@@ -64,28 +70,27 @@ export class LooksRare {
   public readonly addresses: Addresses;
   /**
    * Ethers signer
-   * @see {@link https://docs.ethers.io/v5/api/signer/ Ethers signer doc}
+   * @see {@link https://docs.ethers.org/v6/api/providers/#Signer Ethers signer doc}
    */
   public readonly signer?: Signer;
   /**
-   * Ethers multicall provider
-   * @see {@link https://docs.ethers.io/v5/api/providers/ Ethers providers doc}
-   * @see {@link https://github.com/0xsequence/sequence.js/tree/master/packages/multicall 0xsequence multicall doc}
+   * Ethers JsonRPC provider with batch functionality
+   * @see {@link https://docs.ethers.org/v6/api/providers/jsonrpc/#about-jsonrpcProvider Ethers providers doc}
    */
-  public readonly provider: providers.Provider;
+  public readonly provider: JsonRpcProvider;
 
   /**
    * LooksRare protocol main class
    * @param chainId Current app chain id
-   * @param provider Ethers provider
+   * @param provider Ethers JsonRpc provider
    * @param signer Ethers signer
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(chainId: ChainId, provider: providers.Provider, signer?: Signer, override?: Addresses) {
+  constructor(chainId: ChainId, provider: JsonRpcProvider, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
-    this.provider = new multicall.providers.MulticallProvider(provider);
+    this.provider = provider;
   }
 
   /**
@@ -105,7 +110,7 @@ export class LooksRare {
    * @returns boolean
    */
   private isTimestampValid(timestamp: BigNumberish): boolean {
-    return BigNumber.from(timestamp).toString().length <= 10;
+    return BigInt(timestamp).toString().length <= 10;
   }
 
   /**
@@ -136,7 +141,7 @@ export class LooksRare {
     price,
     itemIds,
     amounts = [1],
-    currency = constants.AddressZero,
+    currency = ZeroAddress,
     startTime = Math.floor(Date.now() / 1000),
     additionalParameters = [],
   }: CreateMakerInput): Promise<CreateMakerAskOutput> {
@@ -241,8 +246,8 @@ export class LooksRare {
 
     return {
       maker: order,
-      isCurrencyApproved: BigNumber.from(currentAllowance).gte(price),
-      isBalanceSufficient: BigNumber.from(balance).gte(price),
+      isCurrencyApproved: BigInt(currentAllowance) >= BigInt(price),
+      isBalanceSufficient: BigInt(balance) >= BigInt(price),
     };
   }
 
@@ -267,7 +272,7 @@ export class LooksRare {
   ): Promise<CreateMakerBidOutput> {
     const { itemIds, ...otherInputs } = orderInputs;
     const leaves = itemIds.map((itemId) => {
-      const hash = utils.keccak256(utils.solidityPack(["uint256"], [itemId]));
+      const hash = solidityPackedKeccak256(["uint256"], [itemId]);
       return Buffer.from(hash.slice(2), "hex");
     });
     const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
@@ -288,7 +293,7 @@ export class LooksRare {
    * @param additionalParameters Additional parameters used to support complex orders
    * @returns Taker object
    */
-  public createTaker(maker: Maker, recipient: string = constants.AddressZero, additionalParameters: any[] = []): Taker {
+  public createTaker(maker: Maker, recipient: string = ZeroAddress, additionalParameters: any[] = []): Taker {
     const order: Taker = {
       recipient: recipient,
       additionalParameters: encodeParams(additionalParameters, getTakerParamsTypes(maker.strategyId)),
@@ -337,13 +342,13 @@ export class LooksRare {
     if (maker.strategyId !== StrategyType.collectionWithMerkleTree) {
       throw new ErrorStrategyType();
     }
-    const index = itemIds.findIndex((id) => BigNumber.from(id).eq(itemId));
+    const index = itemIds.findIndex((id) => BigInt(id) === BigInt(itemId));
     if (index === -1) {
       throw new ErrorItemId();
     }
 
     const leaves = itemIds.map((id) => {
-      const hash = utils.keccak256(utils.solidityPack(["uint256"], [id]));
+      const hash = solidityPackedKeccak256(["uint256"], [id]);
       return Buffer.from(hash.slice(2), "hex");
     });
     const tree = new MerkleTreeJS(leaves, keccak256, { sortPairs: true });
@@ -390,7 +395,7 @@ export class LooksRare {
     taker: Taker,
     signature: string,
     merkleTree: MerkleTree = defaultMerkleTree,
-    affiliate: string = constants.AddressZero,
+    affiliate: string = ZeroAddress,
     overrides?: Overrides
   ): ContractMethods {
     const signer = this.getSigner();
@@ -414,7 +419,7 @@ export class LooksRare {
       merkleTree?: MerkleTree;
     }[],
     isAtomic: boolean,
-    affiliate: string = constants.AddressZero,
+    affiliate: string = ZeroAddress,
     overrides?: Overrides
   ) {
     const signer = this.getSigner();

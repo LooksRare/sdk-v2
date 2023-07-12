@@ -27,7 +27,7 @@ describe("execute collection order with proof", () => {
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
     };
 
     let tx = await lrUser1.grantTransferManagerApproval().call();

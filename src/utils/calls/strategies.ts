@@ -1,10 +1,10 @@
-import { Contract, CallOverrides, providers } from "ethers";
+import { Contract, CallOverrides, Provider } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
 import { Signer, StrategyType, StrategyInfo } from "../../types";
 
 export const strategyInfo = async (
-  signerOrProvider: providers.Provider | Signer,
+  signerOrProvider: Provider | Signer,
   address: string,
   strategyId: StrategyType,
   overrides?: CallOverrides

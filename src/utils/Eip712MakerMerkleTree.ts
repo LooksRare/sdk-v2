@@ -1,4 +1,4 @@
-import { constants } from "ethers";
+import { ZeroAddress } from "ethers";
 import { Eip712MerkleTree } from "./Eip712MerkleTree";
 import { getBatchOrderTypes } from "./eip712";
 import { Maker, QuoteType, StrategyType, CollectionType } from "../types";
@@ -10,9 +10,9 @@ const defaultMaker: Maker = {
   orderNonce: 0,
   strategyId: StrategyType.standard,
   collectionType: CollectionType.ERC721,
-  collection: constants.AddressZero,
-  currency: constants.AddressZero,
-  signer: constants.AddressZero,
+  collection: ZeroAddress,
+  currency: ZeroAddress,
+  signer: ZeroAddress,
   startTime: 0,
   endTime: 0,
   price: 0,

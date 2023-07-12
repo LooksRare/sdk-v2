@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { BigNumber, utils } from "ethers";
+import { AbiCoder, parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { getTakerParamsTypes } from "../../utils/encodeOrderParams";
 import { LooksRare } from "../../LooksRare";
@@ -26,7 +26,7 @@ describe("Create takers", () => {
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
   });
@@ -44,7 +44,7 @@ describe("Create takers", () => {
       const { maker } = await lrUser1.createMakerAsk(baseMakerInput);
       const taker = lrUser1.createTaker(maker);
 
-      expect(taker.recipient).to.be.equal(ethers.constants.AddressZero);
+      expect(taker.recipient).to.be.equal(ethers.ZeroAddress);
       expect(taker.additionalParameters).to.be.equal("0x");
     });
   });
@@ -56,10 +56,13 @@ describe("Create takers", () => {
         strategyId: StrategyType.collection,
       });
       const taker = lrUser1.createTakerCollectionOffer(maker, 1, signers.user2.address);
-      const [itemId] = utils.defaultAbiCoder.decode(getTakerParamsTypes(maker.strategyId), taker.additionalParameters);
+      const [itemId] = AbiCoder.defaultAbiCoder().decode(
+        getTakerParamsTypes(maker.strategyId),
+        taker.additionalParameters
+      );
 
       expect(taker.recipient).to.be.equal(signers.user2.address);
-      expect(BigNumber.from(itemId).toNumber()).to.be.equal(1);
+      expect(Number(BigInt(itemId))).to.be.equal(1);
     });
 
     it("throw when quote type is wrong", async () => {
@@ -87,9 +90,12 @@ describe("Create takers", () => {
       });
       const taker = lrUser1.createTakerCollectionOfferWithProof(maker, 1, itemIds, signers.user2.address);
 
-      const [itemId] = utils.defaultAbiCoder.decode(getTakerParamsTypes(maker.strategyId), taker.additionalParameters);
+      const [itemId] = AbiCoder.defaultAbiCoder().decode(
+        getTakerParamsTypes(maker.strategyId),
+        taker.additionalParameters
+      );
       expect(taker.recipient).to.be.equal(signers.user2.address);
-      expect(BigNumber.from(itemId).toNumber()).to.be.equal(1);
+      expect(Number(BigInt(itemId))).to.be.equal(1);
     });
 
     it("throw when quote type is wrong", async () => {

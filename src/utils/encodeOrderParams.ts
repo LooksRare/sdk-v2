@@ -1,4 +1,4 @@
-import { BytesLike, utils } from "ethers";
+import { AbiCoder, BytesLike } from "ethers";
 import { SolidityType, StrategyType } from "../types";
 
 /**
@@ -42,5 +42,5 @@ export const getTakerParamsTypes = (strategy: StrategyType): SolidityType[] => {
  * @returns encoded params
  */
 export const encodeParams = (params: any[], types: SolidityType[]): BytesLike => {
-  return utils.defaultAbiCoder.encode(types, params);
+  return AbiCoder.defaultAbiCoder().encode(types, params);
 };

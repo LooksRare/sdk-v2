@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { utils } from "ethers";
+import { AbiCoder, parseEther, utils } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
@@ -36,10 +36,10 @@ describe("EIP-712", () => {
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000 + 3600),
-      price: utils.parseEther("1").toString(),
+      price: parseEther("1").toString(),
       itemIds: [1],
       amounts: [1],
-      additionalParameters: utils.defaultAbiCoder.encode([], []),
+      additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
     };
   });
   it("validate domain data", async () => {

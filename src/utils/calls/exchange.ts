@@ -1,4 +1,4 @@
-import { Contract, PayableOverrides, constants, BigNumber } from "ethers";
+import { Contract, PayableOverrides, BigNumber, ZeroAddress } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
 import { Maker, MerkleTree, Taker, Signer, ContractMethods } from "../../types";
@@ -15,7 +15,7 @@ export const executeTakerBid = (
 ): ContractMethods => {
   const overridesWithValue: PayableOverrides = {
     ...overrides,
-    ...(maker.currency === constants.AddressZero && { value: maker.price }),
+    ...(maker.currency === ZeroAddress && { value: maker.price }),
   };
   const contract = new Contract(address, abiLooksRareProtocol, signer) as LooksRareProtocol;
   return {
@@ -79,7 +79,7 @@ export const executeMultipleTakerBids = (
   overrides?: PayableOverrides
 ) => {
   const value = maker.reduce(
-    (acc, order) => (order.currency === constants.AddressZero ? acc.add(order.price) : acc),
+    (acc, order) => (order.currency === ZeroAddress ? acc.add(order.price) : acc),
     BigNumber.from(0)
   );
   const overridesWithValue: PayableOverrides = {

@@ -26,7 +26,7 @@ describe("Create maker ask", () => {
       subsetNonce: 0,
       orderNonce: 0,
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
   });
@@ -77,7 +77,7 @@ describe("Create maker ask", () => {
       collectionType: baseMakerAskInput.collectionType,
       orderNonce: baseMakerAskInput.orderNonce,
       collection: baseMakerAskInput.collection,
-      currency: constants.AddressZero,
+      currency: ZeroAddress,
       signer: signers.user1.address,
       startTime: output.maker.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerAskInput.endTime,

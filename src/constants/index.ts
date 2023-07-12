@@ -9,7 +9,7 @@ export const MAX_ORDERS_PER_TREE = 1024;
 /**
  * Default merkle tree value used when the merkle tree can be omitted.
  */
-export const defaultMerkleTree = { root: constants.HashZero, proof: [] };
+export const defaultMerkleTree = { root: ZeroHash, proof: [] };
 
 export { addressesByNetwork } from "./addresses";
 export { chainInfo } from "./chains";

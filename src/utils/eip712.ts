@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { AbiCoder, keccak256, solidityPackedKeccak256 } from "ethers";
 import { EIP712TypedData, Maker } from "../types";
 
 // EIP 712 (Typed structured data hashing and signing) related data
@@ -89,9 +89,9 @@ export const getMakerHash = (maker: Maker): string => {
     maker.startTime,
     maker.endTime,
     maker.price,
-    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.itemIds])),
-    utils.keccak256(utils.solidityPack(["uint256[]"], [maker.amounts])),
-    utils.keccak256(maker.additionalParameters),
+    solidityPackedKeccak256(["uint256[]"], [maker.itemIds]),
+    solidityPackedKeccak256(["uint256[]"], [maker.amounts]),
+    keccak256(maker.additionalParameters),
   ];
-  return utils.keccak256(utils.defaultAbiCoder.encode(hashingMakerTypes, values));
+  return keccak256(AbiCoder.defaultAbiCoder().encode(hashingMakerTypes, values));
 };

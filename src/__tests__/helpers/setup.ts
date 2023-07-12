@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { Contract, constants, ContractTransaction } from "ethers";
+import { Contract, ContractTransaction, ZeroAddress, parseEther } from "ethers";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
@@ -83,7 +83,7 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
 
   tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
   await tx.wait();
-  tx = await looksRareProtocol.updateCurrencyStatus(constants.AddressZero, true);
+  tx = await looksRareProtocol.updateCurrencyStatus(ZeroAddress, true);
   await tx.wait();
   tx = await looksRareProtocol.updateCurrencyStatus(weth.address, true);
   await tx.wait();
@@ -114,11 +114,11 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
 
   // Setup balances
   const wethUser1 = new ethers.Contract(weth.address, weth.interface, signers.user1);
-  tx = await wethUser1.deposit({ value: ethers.utils.parseEther("10") });
+  tx = await wethUser1.deposit({ value: parseEther("10") });
   await tx.wait();
 
   const wethUser2 = new ethers.Contract(weth.address, weth.interface, signers.user2);
-  tx = await wethUser2.deposit({ value: ethers.utils.parseEther("10") });
+  tx = await wethUser2.deposit({ value: parseEther("10") });
   await tx.wait();
 
   for (let i = 0; i < NB_NFT_PER_USER; i++) {
@@ -142,12 +142,12 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
     },
     addresses: {
       EXCHANGE_V2: looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
+      LOOKS: ZeroAddress,
       TRANSFER_MANAGER_V2: transferManager.address,
       WETH: weth.address,
       ORDER_VALIDATOR_V2: orderValidator.address,
-      REVERSE_RECORDS: constants.AddressZero,
-      LOOKS_LP_V3: constants.AddressZero,
+      REVERSE_RECORDS: ZeroAddress,
+      LOOKS_LP_V3: ZeroAddress,
     },
   };
 };
