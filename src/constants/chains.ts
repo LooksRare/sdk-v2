@@ -35,7 +35,7 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cdnUrl: "https://static-sepolia.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
-    wsUrl: "",
+    wsUrl: "wss://ws-sepolia.looksrare.org/ws",
   },
   [ChainId.HARDHAT]: {
     label: "Hardhat",
