@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { viewUserBidAskNonces } from "../../utils/calls/nonces";
@@ -19,19 +18,19 @@ describe("Nonces and order cancellation", () => {
 
   describe("cancelOrders", () => {
     it("cancel a nonce", async () => {
-      const tx = await lrUser1.cancelOrders([BigNumber.from(0)]).call();
+      const tx = await lrUser1.cancelOrders([0]).call();
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
 
     it("cancel several nonces", async () => {
-      const tx = await lrUser1.cancelOrders([BigNumber.from(0), BigNumber.from(1)]).call();
+      const tx = await lrUser1.cancelOrders([0, 1]).call();
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
 
     it("method analysis", async () => {
-      const contractMethods = lrUser1.cancelOrders([BigNumber.from(0), BigNumber.from(1)]);
+      const contractMethods = lrUser1.cancelOrders([0, 1]);
       const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
       await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
@@ -40,19 +39,19 @@ describe("Nonces and order cancellation", () => {
 
   describe("cancelSubsetOrders", () => {
     it("cancel a subset nonce", async () => {
-      const tx = await lrUser1.cancelSubsetOrders([BigNumber.from(0)]).call();
+      const tx = await lrUser1.cancelSubsetOrders([0]).call();
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
 
     it("cancel several subset nonces", async () => {
-      const tx = await lrUser1.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]).call();
+      const tx = await lrUser1.cancelSubsetOrders([0, 1]).call();
       const receipt = await tx.wait();
       expect(receipt.status).to.equal(1);
     });
 
     it("method analysis", async () => {
-      const contractMethods = lrUser1.cancelSubsetOrders([BigNumber.from(0), BigNumber.from(1)]);
+      const contractMethods = lrUser1.cancelSubsetOrders([0, 1]);
       const estimatedGas = await contractMethods.estimateGas();
       expect(estimatedGas.toNumber()).to.be.greaterThan(0);
       await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
@@ -76,8 +75,8 @@ describe("Nonces and order cancellation", () => {
       expect(receipt.status).to.equal(1);
 
       const userNonces = await viewUserBidAskNonces(signers.user1, mocks.addresses.EXCHANGE_V2, signers.user1.address);
-      expect(userNonces.bidNonce.eq(0)).to.be.true;
-      expect(userNonces.askNonce.gt(0)).to.be.true;
+      expect(userNonces.bidNonce).to.be.eq(0);
+      expect(userNonces.askNonce).to.be.gt(0);
     });
 
     it("increment bid/ask nonces", async () => {

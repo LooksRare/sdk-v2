@@ -1,4 +1,4 @@
-import { constants } from "ethers";
+import { ZeroHash } from "ethers";
 
 /** Maximum amount of orders in a merkle tree
  * This limit is enforced in the contract with the value 2^10 (=1024)

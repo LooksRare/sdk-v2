@@ -1,4 +1,4 @@
-import { _TypedDataEncoder as TypedDataEncoder } from "@ethersproject/hash";
+import { TypedDataEncoder } from "ethers";
 import { keccak256, BytesLike } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import { EIP712TypedData } from "../types";

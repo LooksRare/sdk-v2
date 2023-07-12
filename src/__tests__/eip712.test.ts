@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { AbiCoder, parseEther, utils } from "ethers";
+import { AbiCoder, parseEther } from "ethers";
 import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "./helpers/setup";
 import { computeDigestMaker, getDomainSeparator } from "./helpers/eip712";
@@ -31,7 +31,7 @@ describe("EIP-712", () => {
       strategyId: 1,
       collectionType: CollectionType.ERC721,
       orderNonce: 1,
-      collection: mocks.contracts.collectionERC721.address,
+      collection: await mocks.contracts.collectionERC721.getAddress(),
       currency: mocks.addresses.WETH,
       signer: signers.user1.address,
       startTime: Math.floor(Date.now() / 1000),

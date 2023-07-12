@@ -21,6 +21,7 @@
 - [Maker](../interfaces/types.Maker.md)
 - [MerkleTree](../interfaces/types.MerkleTree.md)
 - [MerkleTreeProof](../interfaces/types.MerkleTreeProof.md)
+- [Referrer](../interfaces/types.Referrer.md)
 - [SignMerkleTreeOrdersOutput](../interfaces/types.SignMerkleTreeOrdersOutput.md)
 - [StrategyInfo](../interfaces/types.StrategyInfo.md)
 - [Taker](../interfaces/types.Taker.md)
@@ -49,13 +50,7 @@ ___
 
 ### Signer
 
-Ƭ **Signer**: `ethers.Signer` & `TypedDataSigner`
-
-Temporary type until full of TypedDataSigner in ethers V6
-
-**`See`**
-
-[Ethers TypedDataSigner](https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53)
+Ƭ **Signer**: `ethers.Signer`
 
 ___
 

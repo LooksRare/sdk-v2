@@ -1,5 +1,4 @@
-import { ethers, BigNumberish, BytesLike, ContractTransaction, Overrides } from "ethers";
-import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
+import { ethers, BigNumberish, BytesLike, Overrides, TypedDataField, ContractTransactionResponse } from "ethers";
 import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
 /** Addresses used to create a LooksRare instance */
@@ -83,15 +82,11 @@ export interface BatchTransferItem {
   amounts: BigNumberish[];
 }
 
-/**
- * Temporary type until full of TypedDataSigner in ethers V6
- * @see {@link https://github.com/ethers-io/ethers.js/blob/master/packages/abstract-signer/src.ts/index.ts#L53 Ethers TypedDataSigner}
- */
-export type Signer = ethers.Signer & TypedDataSigner;
+export type Signer = ethers.Signer;
 
 /** Return type for any on chain call */
 export interface ContractMethods {
-  call: (additionalOverrides?: Overrides) => Promise<ContractTransaction>;
+  call: (additionalOverrides?: Overrides) => Promise<ContractTransactionResponse>;
   estimateGas: (additionalOverrides?: Overrides) => Promise<bigint>;
   callStatic: (additionalOverrides?: Overrides) => Promise<any>;
 }

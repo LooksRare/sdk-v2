@@ -1,12 +1,13 @@
 import {
   BigNumberish,
-  ContractTransaction,
-  Overrides,
+  ContractTransactionResponse,
   JsonRpcProvider,
+  MaxUint256,
+  Overrides,
   solidityPackedKeccak256,
+  TypedDataDomain,
   ZeroAddress,
 } from "ethers";
-import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
 import { addressesByNetwork } from "./constants/addresses";
@@ -494,7 +495,7 @@ export class LooksRare {
     collectionAddress: string,
     approved = true,
     overrides?: Overrides
-  ): Promise<ContractTransaction> {
+  ): Promise<ContractTransactionResponse> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.TRANSFER_MANAGER_V2;
     return setApprovalForAll(signer, collectionAddress, spenderAddress, approved, overrides);
@@ -509,9 +510,9 @@ export class LooksRare {
    */
   public approveErc20(
     tokenAddress: string,
-    amount: BigNumber = constants.MaxUint256,
+    amount: bigint = MaxUint256,
     overrides?: Overrides
-  ): Promise<ContractTransaction> {
+  ): Promise<ContractTransactionResponse> {
     const signer = this.getSigner();
     const spenderAddress = this.addresses.EXCHANGE_V2;
     return approve(signer, tokenAddress, spenderAddress, amount, overrides);

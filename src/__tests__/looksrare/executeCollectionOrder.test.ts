@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { ownerOf, balanceOf } from "../helpers/tokens";
 import { LooksRare } from "../../LooksRare";
 import { ChainId, CollectionType, CreateMakerCollectionOfferInput } from "../../types";
+import { parseEther } from "ethers";
 
 describe("execute collection order", () => {
   let mocks: SetupMocks;

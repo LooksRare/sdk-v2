@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { constants, utils } from "ethers";
+import { ZeroAddress } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -71,7 +71,7 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(baseMakerAskInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: constants.Zero,
+      globalNonce: 0,
       subsetNonce: baseMakerAskInput.subsetNonce,
       strategyId: baseMakerAskInput.strategyId,
       collectionType: baseMakerAskInput.collectionType,
@@ -101,7 +101,7 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: constants.Zero,
+      globalNonce: 0,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       collectionType: input.collectionType,
