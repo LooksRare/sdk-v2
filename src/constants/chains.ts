@@ -11,6 +11,7 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cdnUrl: "https://static.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/looksrare/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net",
+    wsUrl: "wss://ws.looksrare.org/ws",
   },
   [ChainId.GOERLI]: {
     label: "Goerli",
@@ -22,6 +23,7 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cdnUrl: "https://static-goerli.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/goerli",
+    wsUrl: "wss://ws-goerli.looksrare.org/ws",
   },
   [ChainId.SEPOLIA]: {
     label: "Sepolia",
@@ -33,6 +35,7 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cdnUrl: "https://static-sepolia.looksnice.org",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
+    wsUrl: "",
   },
   [ChainId.HARDHAT]: {
     label: "Hardhat",
@@ -44,5 +47,6 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cdnUrl: "https://via.placeholder.com",
     rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
     cloudinaryUrl: "",
+    wsUrl: "ws://localhost:5001/ws",
   },
 };
