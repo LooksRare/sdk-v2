@@ -58,7 +58,7 @@ describe("Sign maker orders", () => {
       expect(verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
       await expect(verifier.verifySignature(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
-        "call revert exception"
+        /reverted with/
       );
     });
 
@@ -87,14 +87,14 @@ describe("Sign maker orders", () => {
       expect(verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
       await expect(verifier.verifySignature(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
-        "call revert exception"
+        /reverted with/
       );
     });
   });
 
   describe("Sign multiple maker orders", () => {
     it("sign multiple maker bid order (merkle tree)", async () => {
-      const { collectionERC721, verifier } = mocks.contracts;
+      const { verifier } = mocks.contracts;
       const makerOrders: Maker[] = [
         {
           quoteType: QuoteType.Bid,
@@ -103,7 +103,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -120,7 +120,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -137,7 +137,7 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
@@ -158,12 +158,11 @@ describe("Sign maker orders", () => {
         await expect(verifier.verifyMerkleTree(merkleTreeProof, signature, signerAddress)).to.eventually.be.fulfilled;
         await expect(
           verifier.verifyMerkleTree(merkleTreeProof, faultySignature, signerAddress)
-        ).to.eventually.be.rejectedWith("call revert exception");
+        ).to.eventually.be.rejectedWith(/reverted with/);
       });
     });
 
     it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
-      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -171,7 +170,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: mocks.addresses.MOCK_COLLECTION_ERC721,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
@@ -186,7 +185,6 @@ describe("Sign maker orders", () => {
     });
 
     it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
-      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -194,7 +192,7 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: mocks.addresses.MOCK_COLLECTION_ERC721,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),

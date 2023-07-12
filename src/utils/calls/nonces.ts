@@ -23,7 +23,7 @@ export const cancelOrderNonces = (
   const contract = new Contract(address, abi).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.cancelOrderNonces(nonces, { ...overrides, ...additionalOverrides }),
+      contract.cancelOrderNonces.send(nonces, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.cancelOrderNonces.estimateGas(nonces, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
@@ -40,7 +40,7 @@ export const cancelSubsetNonces = (
   const contract = new Contract(address, abi).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.cancelSubsetNonces(nonces, { ...overrides, ...additionalOverrides }),
+      contract.cancelSubsetNonces.send(nonces, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.cancelSubsetNonces.estimateGas(nonces, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
@@ -58,7 +58,7 @@ export const incrementBidAskNonces = (
   const contract = new Contract(address, abi).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.incrementBidAskNonces(bid, ask, { ...overrides, ...additionalOverrides }),
+      contract.incrementBidAskNonces.send(bid, ask, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.incrementBidAskNonces.estimateGas(bid, ask, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>

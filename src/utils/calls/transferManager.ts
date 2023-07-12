@@ -24,7 +24,7 @@ export const grantApprovals = (
   const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.grantApprovals.send(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.grantApprovals.estimateGas(operators, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
@@ -41,7 +41,7 @@ export const revokeApprovals = (
   const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.revokeApprovals.send(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
       contract.revokeApprovals.estimateGas(operators, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
@@ -60,7 +60,7 @@ export const transferBatchItemsAcrossCollections = (
   const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.transferBatchItemsAcrossCollections(items, from, to, {
+      contract.transferBatchItemsAcrossCollections.send(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),

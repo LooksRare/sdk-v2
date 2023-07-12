@@ -19,7 +19,7 @@ describe("Create takers", () => {
     lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,

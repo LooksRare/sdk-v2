@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ZeroAddress } from "ethers";
+import { ZeroAddress, parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -20,7 +20,7 @@ describe("Create maker ask", () => {
     lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -71,7 +71,7 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(baseMakerAskInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: 0,
+      globalNonce: 0n,
       subsetNonce: baseMakerAskInput.subsetNonce,
       strategyId: baseMakerAskInput.strategyId,
       collectionType: baseMakerAskInput.collectionType,
@@ -101,7 +101,7 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: 0,
+      globalNonce: 0n,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       collectionType: input.collectionType,

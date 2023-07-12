@@ -21,7 +21,7 @@ export const executeTakerBid = (
   const contract = new Contract(address, abiLooksRareProtocol).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
-      contract.executeTakerBid(taker, maker, makerSignature, merkleTree, affiliate, {
+      contract.executeTakerBid.send(taker, maker, makerSignature, merkleTree, affiliate, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),
@@ -51,7 +51,7 @@ export const executeTakerAsk = (
   const contract = new Contract(address, abiLooksRareProtocol).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
-      contract.executeTakerAsk(taker, maker, makerSignature, merkleTree, affiliate, {
+      contract.executeTakerAsk.send(taker, maker, makerSignature, merkleTree, affiliate, {
         ...overrides,
         ...additionalOverrides,
       }),
@@ -87,7 +87,7 @@ export const executeMultipleTakerBids = (
   const contract = new Contract(address, abiLooksRareProtocol).connect(signer) as LooksRareProtocol;
   return {
     call: (additionalOverrides?: PayableOverrides) =>
-      contract.executeMultipleTakerBids(taker, maker, makerSignature, merkleTree, affiliate, isAtomic, {
+      contract.executeMultipleTakerBids.send(taker, maker, makerSignature, merkleTree, affiliate, isAtomic, {
         ...overridesWithValue,
         ...additionalOverrides,
       }),

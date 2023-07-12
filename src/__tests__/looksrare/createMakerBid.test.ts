@@ -20,7 +20,7 @@ describe("Create maker bid", () => {
     lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
@@ -51,7 +51,7 @@ describe("Create maker bid", () => {
       signers.user1.address,
       mocks.addresses.EXCHANGE_V2
     );
-    expect(valueApproved.eq(MaxUint256)).to.be.true;
+    expect(valueApproved).to.be.eq(MaxUint256);
   });
 
   it("approval checks are true if approval were made", async () => {
@@ -78,7 +78,7 @@ describe("Create maker bid", () => {
     const output = await lrUser1.createMakerBid(baseMakerInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
-      globalNonce: 0,
+      globalNonce: 0n,
       subsetNonce: baseMakerInput.subsetNonce,
       strategyId: baseMakerInput.strategyId,
       collectionType: baseMakerInput.collectionType,
@@ -108,7 +108,7 @@ describe("Create maker bid", () => {
     const output = await lrUser1.createMakerBid(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
-      globalNonce: 0,
+      globalNonce: 0n,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       collectionType: input.collectionType,
