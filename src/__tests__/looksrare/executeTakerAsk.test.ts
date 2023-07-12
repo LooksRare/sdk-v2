@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { parseEther, utils } from "ethers";
+import { parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
