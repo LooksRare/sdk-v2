@@ -83,6 +83,9 @@ export interface BatchTransferItem {
   amounts: BigNumberish[];
 }
 
+/**
+ * @see {@link https://docs.ethers.org/v6/api/providers/#Signer Ethers Signer}
+ */
 export type Signer = ethers.Signer;
 
 /** Return type for any on chain call */

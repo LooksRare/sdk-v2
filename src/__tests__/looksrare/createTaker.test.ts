@@ -62,7 +62,7 @@ describe("Create takers", () => {
       );
 
       expect(taker.recipient).to.be.equal(signers.user2.address);
-      expect(Number(BigInt(itemId))).to.be.equal(1);
+      expect(BigInt(itemId)).to.be.equal(1n);
     });
 
     it("throw when quote type is wrong", async () => {
@@ -95,7 +95,7 @@ describe("Create takers", () => {
         taker.additionalParameters
       );
       expect(taker.recipient).to.be.equal(signers.user2.address);
-      expect(Number(BigInt(itemId))).to.be.equal(1);
+      expect(BigInt(itemId)).to.be.equal(1n);
     });
 
     it("throw when quote type is wrong", async () => {

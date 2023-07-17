@@ -52,6 +52,10 @@ ___
 
 Ƭ **Signer**: `ethers.Signer`
 
+**`See`**
+
+[Ethers Signer](https://docs.ethers.org/v6/api/providers/#Signer)
+
 ___
 
 ### SolidityType

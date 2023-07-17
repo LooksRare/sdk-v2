@@ -57,3 +57,9 @@ ___
 ### rpcUrl
 
 • **rpcUrl**: `string`
+
+___
+
+### wsUrl
+
+• **wsUrl**: `string`
