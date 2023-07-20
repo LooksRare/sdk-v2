@@ -18,7 +18,7 @@ LooksRare protocol main class
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `chainId` | [`ChainId`](../enums/types.ChainId.md) | Current app chain id |
-| `provider` | `JsonRpcProvider` | Ethers JsonRpc provider |
+| `provider` | `Provider` | Ethers provider |
 | `signer?` | `Signer` | Ethers signer |
 | `override?` | [`Addresses`](../interfaces/types.Addresses.md) | Overrides contract addresses for hardhat setup |
 
@@ -42,13 +42,13 @@ ___
 
 ### provider
 
-• `Readonly` **provider**: `JsonRpcProvider`
+• `Readonly` **provider**: `Provider`
 
-Ethers JsonRPC provider with batch functionality
+Ethers provider. If you want a batch functionality, use JsonRpcProvider.
 
 **`See`**
 
-[Ethers providers doc](https://docs.ethers.org/v6/api/providers/jsonrpc/#about-jsonrpcProvider)
+[Ethers provider doc](https://docs.ethers.org/v6/api/providers/#Provider)
 
 ___
 

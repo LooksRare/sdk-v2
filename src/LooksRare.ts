@@ -1,12 +1,12 @@
 import {
   BigNumberish,
   ContractTransactionResponse,
-  JsonRpcProvider,
   MaxUint256,
   Overrides,
   solidityPackedKeccak256,
   TypedDataDomain,
   ZeroAddress,
+  Provider,
 } from "ethers";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
@@ -75,19 +75,19 @@ export class LooksRare {
    */
   public readonly signer?: Signer;
   /**
-   * Ethers JsonRPC provider with batch functionality
-   * @see {@link https://docs.ethers.org/v6/api/providers/jsonrpc/#about-jsonrpcProvider Ethers providers doc}
+   * Ethers provider. If you want a batch functionality, use JsonRpcProvider.
+   * @see {@link https://docs.ethers.org/v6/api/providers/#Provider Ethers provider doc}
    */
-  public readonly provider: JsonRpcProvider;
+  public readonly provider: Provider;
 
   /**
    * LooksRare protocol main class
    * @param chainId Current app chain id
-   * @param provider Ethers JsonRpc provider
+   * @param provider Ethers provider
    * @param signer Ethers signer
    * @param override Overrides contract addresses for hardhat setup
    */
-  constructor(chainId: ChainId, provider: JsonRpcProvider, signer?: Signer, override?: Addresses) {
+  constructor(chainId: ChainId, provider: Provider, signer?: Signer, override?: Addresses) {
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];
     this.signer = signer;
