@@ -1,7 +1,7 @@
-import { Contract, Provider, Overrides } from "ethers";
+import { Contract, Provider, Overrides, Signer } from "ethers";
 import { OrderValidatorV2A } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/helpers/OrderValidatorV2A";
 import abi from "../../abis/OrderValidatorV2A.json";
-import { Signer, Maker, MerkleTree, OrderValidatorCode } from "../../types";
+import { Maker, MerkleTree, OrderValidatorCode } from "../../types";
 
 export const verifyMakerOrders = async (
   signerOrProvider: Provider | Signer,

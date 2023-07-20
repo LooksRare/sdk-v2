@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike, Overrides, TypedDataField, ContractTransactionResponse } from "ethers";
+import { BigNumberish, BytesLike, Overrides, TypedDataField, ContractTransactionResponse } from "ethers";
 import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
 /** Addresses used to create a LooksRare instance */
@@ -82,11 +82,6 @@ export interface BatchTransferItem {
   itemIds: BigNumberish[];
   amounts: BigNumberish[];
 }
-
-/**
- * @see {@link https://docs.ethers.org/v6/api/providers/#Signer Ethers Signer}
- */
-export type Signer = ethers.Signer;
 
 /** Return type for any on chain call */
 export interface ContractMethods {

@@ -7,6 +7,7 @@ import {
   TypedDataDomain,
   ZeroAddress,
   Provider,
+  Signer,
 } from "ethers";
 import { MerkleTree as MerkleTreeJS } from "merkletreejs";
 import { keccak256 } from "js-sha3";
@@ -44,7 +45,6 @@ import {
   Maker,
   Taker,
   ChainId,
-  Signer,
   CreateMakerInput,
   CreateMakerAskOutput,
   CreateMakerBidOutput,

@@ -1,7 +1,7 @@
-import { ethers, TypedDataDomain } from "ethers";
+import { ethers, TypedDataDomain, Signer } from "ethers";
 import { Eip712MakerMerkleTree } from "./Eip712MakerMerkleTree";
 import { makerTypes } from "./eip712";
-import { Maker, MerkleTree, Signer, SignMerkleTreeOrdersOutput } from "../types";
+import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
 
 /**
  * Sign a maker order

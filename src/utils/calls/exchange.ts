@@ -1,7 +1,7 @@
-import { Contract, ZeroAddress } from "ethers";
+import { Contract, ZeroAddress, Signer } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abiLooksRareProtocol from "../../abis/LooksRareProtocol.json";
-import { Maker, MerkleTree, Taker, Signer, ContractMethods } from "../../types";
+import { Maker, MerkleTree, Taker, ContractMethods } from "../../types";
 import { PayableOverrides } from "../../typechain/common";
 
 export const executeTakerBid = (

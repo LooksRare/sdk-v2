@@ -1,7 +1,7 @@
-import { Contract, Overrides, BigNumberish, Provider } from "ethers";
+import { Contract, Overrides, BigNumberish, Provider, Signer } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
-import { Signer, ContractMethods } from "../../types";
+import { ContractMethods } from "../../types";
 
 export const viewUserBidAskNonces = async (
   signerOrProvider: Provider | Signer,

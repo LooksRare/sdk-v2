@@ -48,16 +48,6 @@ EIP712 type data
 
 ___
 
-### Signer
-
-Ƭ **Signer**: `ethers.Signer`
-
-**`See`**
-
-[Ethers Signer](https://docs.ethers.org/v6/api/providers/#Signer)
-
-___
-
 ### SolidityType
 
 Ƭ **SolidityType**: ``"bool"`` \| ``"address"`` \| ``"uint8"`` \| ``"uint16"`` \| ``"uint112"`` \| ``"uint256"`` \| ``"uint256[]"`` \| ``"bytes"`` \| ``"bytes32"`` \| ``"bytes32[]"`` \| ``"string"``
