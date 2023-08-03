@@ -19,7 +19,7 @@ LooksRare protocol main class
 | :------ | :------ | :------ |
 | `chainId` | [`ChainId`](../enums/types.ChainId.md) | Current app chain id |
 | `provider` | `Provider` | Ethers provider |
-| `signer?` | [`Signer`](../modules/types.md#signer) | Ethers signer |
+| `signer?` | `Signer` | Ethers signer |
 | `override?` | [`Addresses`](../interfaces/types.Addresses.md) | Overrides contract addresses for hardhat setup |
 
 ## Properties
@@ -44,30 +44,29 @@ ___
 
 • `Readonly` **provider**: `Provider`
 
-Ethers multicall provider
+Ethers provider. If you want a batch functionality, use JsonRpcProvider.
 
 **`See`**
 
- - [Ethers providers doc](https://docs.ethers.io/v5/api/providers/)
- - [0xsequence multicall doc](https://github.com/0xsequence/sequence.js/tree/master/packages/multicall)
+[Ethers provider doc](https://docs.ethers.org/v6/api/providers/#Provider)
 
 ___
 
 ### signer
 
-• `Optional` `Readonly` **signer**: [`Signer`](../modules/types.md#signer)
+• `Optional` `Readonly` **signer**: `Signer`
 
 Ethers signer
 
 **`See`**
 
-[Ethers signer doc](https://docs.ethers.io/v5/api/signer/)
+[Ethers signer doc](https://docs.ethers.org/v6/api/providers/#Signer)
 
 ## Methods
 
 ### approveAllCollectionItems
 
-▸ **approveAllCollectionItems**(`collectionAddress`, `approved?`, `overrides?`): `Promise`<`ContractTransaction`\>
+▸ **approveAllCollectionItems**(`collectionAddress`, `approved?`, `overrides?`): `Promise`<`ContractTransactionResponse`\>
 
 Approve all the items of a collection, to eventually be traded on LooksRare
 The spender is the TransferManager.
@@ -82,7 +81,7 @@ The spender is the TransferManager.
 
 #### Returns
 
-`Promise`<`ContractTransaction`\>
+`Promise`<`ContractTransactionResponse`\>
 
 ContractTransaction
 
@@ -90,7 +89,7 @@ ___
 
 ### approveErc20
 
-▸ **approveErc20**(`tokenAddress`, `amount?`, `overrides?`): `Promise`<`ContractTransaction`\>
+▸ **approveErc20**(`tokenAddress`, `amount?`, `overrides?`): `Promise`<`ContractTransactionResponse`\>
 
 Approve an ERC20 to be used as a currency on LooksRare.
 The spender is the LooksRareProtocol contract.
@@ -100,12 +99,12 @@ The spender is the LooksRareProtocol contract.
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `tokenAddress` | `string` | `undefined` | Address of the ERC20 to approve |
-| `amount` | `BigNumber` | `constants.MaxUint256` | Amount to be approved (default to MaxUint256) |
+| `amount` | `bigint` | `MaxUint256` | Amount to be approved (default to MaxUint256) |
 | `overrides?` | `Overrides` | `undefined` | - |
 
 #### Returns
 
-`Promise`<`ContractTransaction`\>
+`Promise`<`ContractTransactionResponse`\>
 
 ContractTransaction
 
@@ -274,7 +273,7 @@ Create a taker ask ready to be executed against a maker bid
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `maker` | [`Maker`](../interfaces/types.Maker.md) | `undefined` | Maker order that will be used as counterparty for the taker |
-| `recipient` | `string` | `constants.AddressZero` | Recipient address of the taker (if none, it will use the sender) |
+| `recipient` | `string` | `ZeroAddress` | Recipient address of the taker (if none, it will use the sender) |
 | `additionalParameters` | `any`[] | `[]` | Additional parameters used to support complex orders |
 
 #### Returns
@@ -352,7 +351,7 @@ Execute several orders
 | :------ | :------ | :------ | :------ |
 | `orders` | { `maker`: [`Maker`](../interfaces/types.Maker.md) ; `merkleTree?`: [`MerkleTree`](../interfaces/types.MerkleTree.md) ; `signature`: `string` ; `taker`: [`Taker`](../interfaces/types.Taker.md)  }[] | `undefined` | List of orders data |
 | `isAtomic` | `boolean` | `undefined` | Should the transaction revert or not if a trade fails |
-| `affiliate` | `string` | `constants.AddressZero` | Affiliate address |
+| `affiliate` | `string` | `ZeroAddress` | Affiliate address |
 | `overrides?` | `Overrides` | `undefined` | Call overrides |
 
 #### Returns
@@ -363,9 +362,9 @@ ContractMethods
 
 | Name | Type |
 | :------ | :------ |
-| `call` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`ContractTransaction`\> |
+| `call` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`ContractTransactionResponse`\> |
 | `callStatic` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`void`\> |
-| `estimateGas` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`BigNumber`\> |
+| `estimateGas` | (`additionalOverrides?`: `PayableOverrides`) => `Promise`<`bigint`\> |
 
 ___
 
@@ -383,7 +382,7 @@ Execute a trade
 | `taker` | [`Taker`](../interfaces/types.Taker.md) | `undefined` | Taker order |
 | `signature` | `string` | `undefined` | Signature of the maker order |
 | `merkleTree` | [`MerkleTree`](../interfaces/types.MerkleTree.md) | `defaultMerkleTree` | If the maker has been signed with a merkle tree |
-| `affiliate` | `string` | `constants.AddressZero` | Affiliate address if applicable |
+| `affiliate` | `string` | `ZeroAddress` | Affiliate address if applicable |
 | `overrides?` | `Overrides` | `undefined` | - |
 
 #### Returns
@@ -396,13 +395,13 @@ ___
 
 ### getSigner
 
-▸ `Private` **getSigner**(): [`Signer`](../modules/types.md#signer)
+▸ `Private` **getSigner**(): `Signer`
 
 Return the signer it it's set, throw an exception otherwise
 
 #### Returns
 
-[`Signer`](../modules/types.md#signer)
+`Signer`
 
 Signer
 

@@ -13,36 +13,37 @@ describe("Tokens", () => {
   it("approve ERC721", async () => {
     const provider = ethers.provider;
     const { collectionERC721 } = mocks.contracts;
+    const collectionERC721Address = await collectionERC721.getAddress();
 
     let isApproved = await isApprovedForAll(
       provider,
-      collectionERC721.address,
+      collectionERC721Address,
       signers.user1.address,
       signers.operator.address
     );
     expect(isApproved).to.be.false;
 
     // Approve
-    let transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address, true);
+    let transaction = await setApprovalForAll(signers.user1, collectionERC721Address, signers.operator.address, true);
     let receipt = await transaction.wait();
-    expect(receipt.status).to.equal(1);
+    expect(receipt?.status).to.equal(1);
 
     isApproved = await isApprovedForAll(
       provider,
-      collectionERC721.address,
+      collectionERC721Address,
       signers.user1.address,
       signers.operator.address
     );
     expect(isApproved).to.be.true;
 
     // Cancel approval
-    transaction = await setApprovalForAll(signers.user1, collectionERC721.address, signers.operator.address, false);
+    transaction = await setApprovalForAll(signers.user1, collectionERC721Address, signers.operator.address, false);
     receipt = await transaction.wait();
-    expect(receipt.status).to.equal(1);
+    expect(receipt?.status).to.equal(1);
 
     isApproved = await isApprovedForAll(
       provider,
-      collectionERC721.address,
+      collectionERC721Address,
       signers.user1.address,
       signers.operator.address
     );
@@ -51,10 +52,11 @@ describe("Tokens", () => {
   it("approve ERC1155", async () => {
     const provider = ethers.provider;
     const { collectionERC1155 } = mocks.contracts;
+    const collectionERC1155Address = await collectionERC1155.getAddress();
 
     let isApproved = await isApprovedForAll(
       provider,
-      collectionERC1155.address,
+      collectionERC1155Address,
       signers.user2.address,
       signers.operator.address
     );
@@ -62,16 +64,16 @@ describe("Tokens", () => {
 
     const transaction = await setApprovalForAll(
       signers.user2,
-      collectionERC1155.address,
+      collectionERC1155Address,
       signers.operator.address,
       true
     );
     const receipt = await transaction.wait();
-    expect(receipt.status).to.equal(1);
+    expect(receipt?.status).to.equal(1);
 
     isApproved = await isApprovedForAll(
       provider,
-      collectionERC1155.address,
+      collectionERC1155Address,
       signers.user2.address,
       signers.operator.address
     );

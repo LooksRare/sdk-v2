@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { utils } from "ethers";
+import { parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -20,14 +20,14 @@ describe("execute taker ask", () => {
     lrUser2 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
 
@@ -49,7 +49,7 @@ describe("execute taker ask", () => {
     const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
-    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+    expect(Number(estimatedGas)).to.be.greaterThan(0);
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
   });
 
@@ -62,7 +62,7 @@ describe("execute taker ask", () => {
 
     const tx = await contractMethods.call();
     const receipt = await tx.wait();
-    expect(receipt.status).to.be.equal(1);
+    expect(receipt?.status).to.be.equal(1);
   });
 
   it("execute maker bid from a merkle tree signature, and taker ask", async () => {
@@ -75,6 +75,6 @@ describe("execute taker ask", () => {
 
     const tx = await contractMethods.call();
     const receipt = await tx.wait();
-    expect(receipt.status).to.be.equal(1);
+    expect(receipt?.status).to.be.equal(1);
   });
 });

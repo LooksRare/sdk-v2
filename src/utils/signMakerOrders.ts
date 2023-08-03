@@ -1,5 +1,4 @@
-import { TypedDataSigner, TypedDataDomain } from "@ethersproject/abstract-signer";
-import { utils } from "ethers";
+import { ethers, TypedDataDomain, Signer } from "ethers";
 import { Eip712MakerMerkleTree } from "./Eip712MakerMerkleTree";
 import { makerTypes } from "./eip712";
 import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
@@ -11,13 +10,9 @@ import { Maker, MerkleTree, SignMerkleTreeOrdersOutput } from "../types";
  * @param makerOrder Maker order
  * @returns Signature
  */
-export const signMakerOrder = async (
-  signer: TypedDataSigner,
-  domain: TypedDataDomain,
-  makerOrder: Maker
-): Promise<string> => {
-  const signature = await signer._signTypedData(domain, makerTypes, makerOrder);
-  return utils.joinSignature(signature);
+export const signMakerOrder = async (signer: Signer, domain: TypedDataDomain, makerOrder: Maker): Promise<string> => {
+  const signature = await signer.signTypedData(domain, makerTypes, makerOrder);
+  return ethers.Signature.from(signature).serialized;
 };
 
 /**
@@ -28,7 +23,7 @@ export const signMakerOrder = async (
  * @returns Signature, array of proofs, and tree
  */
 export const signMerkleTreeOrders = async (
-  signer: TypedDataSigner,
+  signer: Signer,
   domain: TypedDataDomain,
   makerOrders: Maker[]
 ): Promise<SignMerkleTreeOrdersOutput> => {
@@ -48,6 +43,6 @@ export const signMerkleTreeOrders = async (
     };
   });
 
-  const signature = await signer._signTypedData(domain, tree.types, tree.getDataToSign());
-  return { signature: utils.joinSignature(signature), merkleTreeProofs, tree };
+  const signature = await signer.signTypedData(domain, tree.types, tree.getDataToSign());
+  return { signature: ethers.Signature.from(signature).serialized, merkleTreeProofs, tree };
 };

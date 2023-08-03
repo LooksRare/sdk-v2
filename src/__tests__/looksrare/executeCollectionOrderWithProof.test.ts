@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { utils } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { ownerOf, balanceOf } from "../helpers/tokens";
 import { LooksRare } from "../../LooksRare";
 import { ChainId, CollectionType, CreateMakerCollectionOfferInput } from "../../types";
+import { parseEther } from "ethers";
 
 describe("execute collection order with proof", () => {
   let mocks: SetupMocks;
@@ -21,13 +21,13 @@ describe("execute collection order with proof", () => {
     lrUser2 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
     collectionOfferInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       subsetNonce: 0,
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
     };
 
     let tx = await lrUser1.grantTransferManagerApproval().call();
@@ -36,7 +36,7 @@ describe("execute collection order with proof", () => {
     tx = await lrUser2.approveErc20(mocks.addresses.WETH);
     await tx.wait();
 
-    tx = await lrUser1.approveAllCollectionItems(mocks.contracts.collectionERC721.address);
+    tx = await lrUser1.approveAllCollectionItems(mocks.addresses.MOCK_COLLECTION_ERC721);
     await tx.wait();
   });
 
@@ -51,7 +51,7 @@ describe("execute collection order with proof", () => {
     const contractMethods = lrUser1.executeOrder(maker, taker, signature);
 
     const estimatedGas = await contractMethods.estimateGas();
-    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+    expect(Number(estimatedGas)).to.be.greaterThan(0);
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
   });
 
@@ -69,12 +69,12 @@ describe("execute collection order with proof", () => {
     const { call } = lrUser1.executeOrder(maker, taker, signature);
 
     const receipt = await (await call()).wait();
-    expect(receipt.status).to.be.equal(1);
+    expect(receipt?.status).to.be.equal(1);
 
     const owner = await ownerOf(signers.user2, collectionOfferInput.collection, itemId);
     expect(owner).to.be.equal(signers.user2.address);
 
     const user1UpdatedBalance = await balanceOf(signers.user1, mocks.addresses.WETH);
-    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+    expect(user1UpdatedBalance > user1InitialBalance).to.be.true;
   });
 });

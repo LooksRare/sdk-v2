@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
-import { Contract, constants, ContractTransaction } from "ethers";
+import { ContractTransactionResponse, ZeroAddress, parseEther } from "ethers";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 import { Addresses } from "../../types";
 import type { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import type { TransferManager } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
@@ -27,7 +27,10 @@ export interface SetupMocks {
     verifier: Verifier;
     orderValidator: OrderValidatorV2A;
   };
-  addresses: Addresses;
+  addresses: Addresses & {
+    MOCK_COLLECTION_ERC721: string;
+    MOCK_COLLECTION_ERC1155: string;
+  };
 }
 
 export interface Signers {
@@ -53,72 +56,80 @@ export const getSigners = async (): Promise<Signers> => {
   };
 };
 
-const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
+const deploy = async (name: string, ...args: any[]) => {
   const factory = await ethers.getContractFactory(name);
   const contract = await factory.deploy(...args);
-  await contract.deployed();
+  await contract.waitForDeployment();
   return contract;
 };
 
 export const setUpContracts = async (): Promise<SetupMocks> => {
   const signers = await getSigners();
-  let tx: ContractTransaction;
+  let tx: ContractTransactionResponse;
 
   // Deploy contracts
   const transferManager = (await deploy("TransferManager", signers.owner.address)) as TransferManager;
   const royaltyFeeRegistry = await deploy("MockRoyaltyFeeRegistry", signers.owner.address, 9500);
   const feeManager = (await deploy(
     "CreatorFeeManagerWithRoyalties",
-    royaltyFeeRegistry.address
+    await royaltyFeeRegistry.getAddress()
   )) as CreatorFeeManagerWithRoyalties;
   const weth = (await deploy("WETH")) as WETH;
   const looksRareProtocol = (await deploy(
     "LooksRareProtocol",
     signers.owner.address,
     signers.protocolFeeRecipient.address,
-    transferManager.address,
-    weth.address
+    await transferManager.getAddress(),
+    await weth.getAddress()
   )) as LooksRareProtocol;
   const strategyCollectionOffer = (await deploy("StrategyCollectionOffer")) as StrategyCollectionOffer;
 
-  tx = await looksRareProtocol.updateCreatorFeeManager(feeManager.address);
+  const addresses = {
+    weth: await weth.getAddress(),
+    looksRareProtocol: await looksRareProtocol.getAddress(),
+    strategyCollectionOffer: await strategyCollectionOffer.getAddress(),
+    transferManager: await transferManager.getAddress(),
+    feeManager: await feeManager.getAddress(),
+  };
+
+  tx = await looksRareProtocol.updateCreatorFeeManager.send(addresses.feeManager);
   await tx.wait();
-  tx = await looksRareProtocol.updateCurrencyStatus(constants.AddressZero, true);
+  tx = await looksRareProtocol.updateCurrencyStatus(ZeroAddress, true);
   await tx.wait();
-  tx = await looksRareProtocol.updateCurrencyStatus(weth.address, true);
+  tx = await looksRareProtocol.updateCurrencyStatus(addresses.weth, true);
   await tx.wait();
-  tx = await transferManager.allowOperator(looksRareProtocol.address);
+  tx = await transferManager.allowOperator(addresses.looksRareProtocol);
   await tx.wait();
   tx = await looksRareProtocol.addStrategy(
     250,
     250,
     300,
-    strategyCollectionOffer.interface.getSighash("executeCollectionStrategyWithTakerAsk"),
+    strategyCollectionOffer.interface.getFunction("executeCollectionStrategyWithTakerAsk").selector,
     true,
-    strategyCollectionOffer.address
+    addresses.strategyCollectionOffer
   );
   tx = await looksRareProtocol.addStrategy(
     250,
     250,
     300,
-    strategyCollectionOffer.interface.getSighash("executeCollectionStrategyWithTakerAskWithProof"),
+    strategyCollectionOffer.interface.getFunction("executeCollectionStrategyWithTakerAskWithProof").selector,
     true,
-    strategyCollectionOffer.address
+    addresses.strategyCollectionOffer
   );
   await tx.wait();
 
-  const orderValidator = (await deploy("OrderValidatorV2A", looksRareProtocol.address)) as OrderValidatorV2A;
+  const orderValidator = (await deploy("OrderValidatorV2A", addresses.looksRareProtocol)) as OrderValidatorV2A;
   const collectionERC721 = (await deploy("MockERC721", "collectionERC721", "COL1")) as MockERC721;
   const collectionERC1155 = (await deploy("MockERC1155")) as MockERC1155;
-  const verifier = (await deploy("Verifier", looksRareProtocol.address)) as Verifier;
+  const verifier = (await deploy("Verifier", addresses.looksRareProtocol)) as Verifier;
 
   // Setup balances
-  const wethUser1 = new ethers.Contract(weth.address, weth.interface, signers.user1);
-  tx = await wethUser1.deposit({ value: ethers.utils.parseEther("10") });
+  const wethUser1 = new ethers.Contract(addresses.weth, weth.interface, signers.user1);
+  tx = await wethUser1.deposit({ value: parseEther("10") });
   await tx.wait();
 
-  const wethUser2 = new ethers.Contract(weth.address, weth.interface, signers.user2);
-  tx = await wethUser2.deposit({ value: ethers.utils.parseEther("10") });
+  const wethUser2 = new ethers.Contract(addresses.weth, weth.interface, signers.user2);
+  tx = await wethUser2.deposit({ value: parseEther("10") });
   await tx.wait();
 
   for (let i = 0; i < NB_NFT_PER_USER; i++) {
@@ -141,13 +152,17 @@ export const setUpContracts = async (): Promise<SetupMocks> => {
       orderValidator,
     },
     addresses: {
-      EXCHANGE_V2: looksRareProtocol.address,
-      LOOKS: constants.AddressZero,
-      TRANSFER_MANAGER_V2: transferManager.address,
-      WETH: weth.address,
-      ORDER_VALIDATOR_V2: orderValidator.address,
-      REVERSE_RECORDS: constants.AddressZero,
-      LOOKS_LP_V3: constants.AddressZero,
+      EXCHANGE_V2: addresses.looksRareProtocol,
+      LOOKS: ZeroAddress,
+      TRANSFER_MANAGER_V2: addresses.transferManager,
+      WETH: addresses.weth,
+      ORDER_VALIDATOR_V2: await orderValidator.getAddress(),
+      REVERSE_RECORDS: ZeroAddress,
+      LOOKS_LP_V3: ZeroAddress,
+      MOCK_COLLECTION_ERC721: await collectionERC721.getAddress(),
+      MOCK_COLLECTION_ERC1155: await collectionERC1155.getAddress(),
+      STAKING_POOL_FOR_LOOKS_LP: ZeroAddress,
+      AGGREGATOR_UNISWAP_V3: ZeroAddress,
     },
   };
 };

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { constants, utils } from "ethers";
+import { MaxUint256, parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -20,13 +20,13 @@ describe("Create maker bid", () => {
     lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
   });
@@ -51,7 +51,7 @@ describe("Create maker bid", () => {
       signers.user1.address,
       mocks.addresses.EXCHANGE_V2
     );
-    expect(valueApproved.eq(constants.MaxUint256)).to.be.true;
+    expect(valueApproved).to.be.eq(MaxUint256);
   });
 
   it("approval checks are true if approval were made", async () => {
@@ -64,7 +64,7 @@ describe("Create maker bid", () => {
   it("balance checks are false if balance is not sufficient", async () => {
     const { isBalanceSufficient } = await lrUser1.createMakerBid({
       ...baseMakerInput,
-      price: utils.parseEther("100000"),
+      price: parseEther("100000"),
     });
     expect(isBalanceSufficient).to.be.false;
   });
@@ -78,7 +78,7 @@ describe("Create maker bid", () => {
     const output = await lrUser1.createMakerBid(baseMakerInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
-      globalNonce: constants.Zero,
+      globalNonce: 0n,
       subsetNonce: baseMakerInput.subsetNonce,
       strategyId: baseMakerInput.strategyId,
       collectionType: baseMakerInput.collectionType,
@@ -108,7 +108,7 @@ describe("Create maker bid", () => {
     const output = await lrUser1.createMakerBid(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Bid,
-      globalNonce: constants.Zero,
+      globalNonce: 0n,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       collectionType: input.collectionType,

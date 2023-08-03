@@ -8,11 +8,11 @@ Return type for any on chain call
 
 ### call
 
-• **call**: (`additionalOverrides?`: `Overrides`) => `Promise`<`ContractTransaction`\>
+• **call**: (`additionalOverrides?`: `Overrides`) => `Promise`<`ContractTransactionResponse`\>
 
 #### Type declaration
 
-▸ (`additionalOverrides?`): `Promise`<`ContractTransaction`\>
+▸ (`additionalOverrides?`): `Promise`<`ContractTransactionResponse`\>
 
 ##### Parameters
 
@@ -22,7 +22,7 @@ Return type for any on chain call
 
 ##### Returns
 
-`Promise`<`ContractTransaction`\>
+`Promise`<`ContractTransactionResponse`\>
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 ### estimateGas
 
-• **estimateGas**: (`additionalOverrides?`: `Overrides`) => `Promise`<`BigNumber`\>
+• **estimateGas**: (`additionalOverrides?`: `Overrides`) => `Promise`<`bigint`\>
 
 #### Type declaration
 
-▸ (`additionalOverrides?`): `Promise`<`BigNumber`\>
+▸ (`additionalOverrides?`): `Promise`<`bigint`\>
 
 ##### Parameters
 
@@ -62,4 +62,4 @@ ___
 
 ##### Returns
 
-`Promise`<`BigNumber`\>
+`Promise`<`bigint`\>

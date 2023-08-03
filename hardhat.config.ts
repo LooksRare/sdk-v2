@@ -1,5 +1,4 @@
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-ethers";
+import "@nomicfoundation/hardhat-ethers";
 import "@typechain/hardhat";
 import "hardhat-abi-exporter";
 
@@ -51,7 +50,7 @@ const config = {
   },
   typechain: {
     outDir: "src/typechain",
-    target: "ethers-v5",
+    target: "ethers-v6",
   },
   paths: {
     tests: "src/__tests__",

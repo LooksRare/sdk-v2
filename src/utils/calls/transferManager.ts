@@ -1,16 +1,16 @@
-import { Contract, Overrides, CallOverrides, providers } from "ethers";
+import { Contract, Overrides, Provider, Signer } from "ethers";
 import { TransferManager } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
 import abi from "../../abis/TransferManager.json";
-import { Signer, ContractMethods, BatchTransferItem } from "../../types";
+import { ContractMethods, BatchTransferItem } from "../../types";
 
 export const hasUserApprovedOperator = async (
-  signerOrProvider: providers.Provider | Signer,
+  signerOrProvider: Provider | Signer,
   address: string,
   user: string,
   operator: string,
-  overrides?: CallOverrides
+  overrides?: Overrides
 ): Promise<boolean> => {
-  const contract = new Contract(address, abi, signerOrProvider) as TransferManager;
+  const contract = new Contract(address, abi).connect(signerOrProvider) as TransferManager;
   const hasApproved = await contract.hasUserApprovedOperator(user, operator, { ...overrides });
   return hasApproved;
 };
@@ -21,14 +21,14 @@ export const grantApprovals = (
   operators: string[],
   overrides?: Overrides
 ): ContractMethods => {
-  const contract = new Contract(address, abi, signer) as TransferManager;
+  const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.grantApprovals.send(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
-      contract.estimateGas.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.grantApprovals.estimateGas(operators, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
-      contract.callStatic.grantApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.grantApprovals.staticCall(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -38,14 +38,14 @@ export const revokeApprovals = (
   operators: string[],
   overrides?: Overrides
 ): ContractMethods => {
-  const contract = new Contract(address, abi, signer) as TransferManager;
+  const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.revokeApprovals.send(operators, { ...overrides, ...additionalOverrides }),
     estimateGas: (additionalOverrides?: Overrides) =>
-      contract.estimateGas.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.revokeApprovals.estimateGas(operators, { ...overrides, ...additionalOverrides }),
     callStatic: (additionalOverrides?: Overrides) =>
-      contract.callStatic.revokeApprovals(operators, { ...overrides, ...additionalOverrides }),
+      contract.revokeApprovals.staticCall(operators, { ...overrides, ...additionalOverrides }),
   };
 };
 
@@ -57,20 +57,20 @@ export const transferBatchItemsAcrossCollections = (
   to: string,
   overrides?: Overrides
 ): ContractMethods => {
-  const contract = new Contract(address, abi, signer) as TransferManager;
+  const contract = new Contract(address, abi).connect(signer) as TransferManager;
   return {
     call: (additionalOverrides?: Overrides) =>
-      contract.transferBatchItemsAcrossCollections(items, from, to, {
+      contract.transferBatchItemsAcrossCollections.send(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),
     estimateGas: (additionalOverrides?: Overrides) =>
-      contract.estimateGas.transferBatchItemsAcrossCollections(items, from, to, {
+      contract.transferBatchItemsAcrossCollections.estimateGas(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),
     callStatic: (additionalOverrides?: Overrides) =>
-      contract.callStatic.transferBatchItemsAcrossCollections(items, from, to, {
+      contract.transferBatchItemsAcrossCollections.staticCall(items, from, to, {
         ...overrides,
         ...additionalOverrides,
       }),
