@@ -16,7 +16,7 @@ The main steps are:
 Here is an example:
 
 ```ts
-import { ethers } from "ethers";
+import { parseEther } from "ethers";
 import { LooksRare, ChainId, CollectionType, StrategyType } from "@looksrare/sdk-v2";
 
 const lr = new LooksRare(ChainId.MAINNET, provider, signer);
@@ -28,7 +28,7 @@ const { maker, isCollectionApproved, isTransferManagerApproved } = await lr.crea
   subsetNonce: 0, // keep 0 if you don't know what it is used for
   orderNonce: 0, // You need to retrieve this value from the API
   endTime: Math.floor(Date.now() / 1000) + 86400, // If you use a timestamp in ms, the function will revert
-  price: ethers.utils.parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
+  price: parseEther("1"), // Be careful to use a price in wei, this example is for 1 ETH
   itemIds: [0], // Token id of the NFT(s) you want to sell, add several ids to create a bundle
   amounts: [1], // Use it for listing multiple ERC-1155 (Optional, Default to [1])
   startTime: Math.floor(Date.now() / 1000), // Use it to create an order that will be valid in the future (Optional, Default to now)

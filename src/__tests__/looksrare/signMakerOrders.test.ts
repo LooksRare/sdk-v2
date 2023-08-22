@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import { utils } from "ethers";
+import { AbiCoder, parseEther, verifyTypedData, TypedDataDomain } from "ethers";
 import { ethers } from "hardhat";
-import { TypedDataDomain } from "@ethersproject/abstract-signer";
 import { LooksRare } from "../../LooksRare";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { contractName, version } from "../../constants/eip712";
@@ -43,12 +42,12 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: await collectionERC721.getAddress(),
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        price: utils.parseEther("1").toString(),
+        price: parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
         additionalParameters: encodeParams([], getMakerParamsTypes(StrategyType.standard)),
@@ -56,10 +55,10 @@ describe("Sign maker orders", () => {
 
       const signature = await lrUser1.signMakerOrder(makerOrder);
 
-      expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
+      expect(verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
       await expect(verifier.verifySignature(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
-        "call revert exception"
+        /reverted with/
       );
     });
 
@@ -72,12 +71,12 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: await collectionERC721.getAddress(),
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        price: utils.parseEther("1").toString(),
+        price: parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
         additionalParameters: encodeParams([], getTakerParamsTypes(StrategyType.standard)),
@@ -85,17 +84,17 @@ describe("Sign maker orders", () => {
 
       const signature = await lrUser1.signMakerOrder(makerOrder);
 
-      expect(utils.verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
+      expect(verifyTypedData(domain, makerTypes, makerOrder, signature)).to.equal(signers.user1.address);
       await expect(verifier.verifySignature(makerOrder, signature)).to.eventually.be.fulfilled;
       await expect(verifier.verifySignature(makerOrder, faultySignature)).to.eventually.be.rejectedWith(
-        "call revert exception"
+        /reverted with/
       );
     });
   });
 
   describe("Sign multiple maker orders", () => {
     it("sign multiple maker bid order (merkle tree)", async () => {
-      const { collectionERC721, verifier } = mocks.contracts;
+      const { verifier } = mocks.contracts;
       const makerOrders: Maker[] = [
         {
           quoteType: QuoteType.Bid,
@@ -104,15 +103,15 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
           endTime: Math.floor(Date.now() / 1000 + 3600),
-          price: utils.parseEther("1").toString(),
+          price: parseEther("1").toString(),
           itemIds: [1],
           amounts: [1],
-          additionalParameters: utils.defaultAbiCoder.encode([], []),
+          additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
         },
         {
           quoteType: QuoteType.Bid,
@@ -121,15 +120,15 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
           endTime: Math.floor(Date.now() / 1000 + 3600),
-          price: utils.parseEther("1").toString(),
+          price: parseEther("1").toString(),
           itemIds: [1],
           amounts: [1],
-          additionalParameters: utils.defaultAbiCoder.encode([], []),
+          additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
         },
         {
           quoteType: QuoteType.Bid,
@@ -138,33 +137,32 @@ describe("Sign maker orders", () => {
           strategyId: 1,
           collectionType: CollectionType.ERC721,
           orderNonce: 1,
-          collection: collectionERC721.address,
+          collection: mocks.addresses.MOCK_COLLECTION_ERC721,
           currency: mocks.addresses.WETH,
           signer: signers.user1.address,
           startTime: Math.floor(Date.now() / 1000),
           endTime: Math.floor(Date.now() / 1000 + 3600),
-          price: utils.parseEther("1").toString(),
+          price: parseEther("1").toString(),
           itemIds: [1],
           amounts: [1],
-          additionalParameters: utils.defaultAbiCoder.encode([], []),
+          additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
         },
       ];
 
       const { signature, merkleTreeProofs, tree } = await lrUser1.signMultipleMakerOrders(makerOrders);
       const signerAddress = signers.user1.address;
 
-      expect(utils.verifyTypedData(domain, tree.types, tree.getDataToSign(), signature)).to.equal(signerAddress);
+      expect(verifyTypedData(domain, tree.types, tree.getDataToSign(), signature)).to.equal(signerAddress);
 
       merkleTreeProofs.forEach(async (merkleTreeProof) => {
         await expect(verifier.verifyMerkleTree(merkleTreeProof, signature, signerAddress)).to.eventually.be.fulfilled;
         await expect(
           verifier.verifyMerkleTree(merkleTreeProof, faultySignature, signerAddress)
-        ).to.eventually.be.rejectedWith("call revert exception");
+        ).to.eventually.be.rejectedWith(/reverted with/);
       });
     });
 
     it("sign orders when number of orders = MAX_ORDERS_PER_TREE", async () => {
-      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -172,22 +170,21 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: mocks.addresses.MOCK_COLLECTION_ERC721,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        price: utils.parseEther("1").toString(),
+        price: parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
-        additionalParameters: utils.defaultAbiCoder.encode([], []),
+        additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
       }));
 
       await expect(lrUser1.signMultipleMakerOrders(makerOrders)).to.eventually.be.fulfilled;
     });
 
     it("revert if number of orders > MAX_ORDERS_PER_TREE", async () => {
-      const { collectionERC721 } = mocks.contracts;
       const makerOrders: Maker[] = [...Array(MAX_ORDERS_PER_TREE + 1)].map(() => ({
         quoteType: QuoteType.Bid,
         globalNonce: 1,
@@ -195,15 +192,15 @@ describe("Sign maker orders", () => {
         strategyId: 1,
         collectionType: CollectionType.ERC721,
         orderNonce: 1,
-        collection: collectionERC721.address,
+        collection: mocks.addresses.MOCK_COLLECTION_ERC721,
         currency: mocks.addresses.WETH,
         signer: signers.user1.address,
         startTime: Math.floor(Date.now() / 1000),
         endTime: Math.floor(Date.now() / 1000 + 3600),
-        price: utils.parseEther("1").toString(),
+        price: parseEther("1").toString(),
         itemIds: [1],
         amounts: [1],
-        additionalParameters: utils.defaultAbiCoder.encode([], []),
+        additionalParameters: AbiCoder.defaultAbiCoder().encode([], []),
       }));
 
       await expect(lrUser1.signMultipleMakerOrders(makerOrders)).to.eventually.be.rejectedWith(ErrorMerkleTreeDepth);

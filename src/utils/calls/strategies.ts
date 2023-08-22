@@ -1,20 +1,20 @@
-import { Contract, CallOverrides, providers } from "ethers";
+import { Contract, Overrides, Provider, Signer } from "ethers";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import abi from "../../abis/LooksRareProtocol.json";
-import { Signer, StrategyType, StrategyInfo } from "../../types";
+import { StrategyType, StrategyInfo } from "../../types";
 
 export const strategyInfo = async (
-  signerOrProvider: providers.Provider | Signer,
+  signerOrProvider: Provider | Signer,
   address: string,
   strategyId: StrategyType,
-  overrides?: CallOverrides
+  overrides?: Overrides
 ): Promise<StrategyInfo> => {
-  const contract = new Contract(address, abi, signerOrProvider) as LooksRareProtocol;
+  const contract = new Contract(address, abi).connect(signerOrProvider) as LooksRareProtocol;
   const strategy = await contract.strategyInfo(strategyId, { ...overrides });
   return {
     isActive: strategy.isActive,
-    standardProtocolFeeBp: strategy.standardProtocolFeeBp,
-    minTotalFeeBp: strategy.minTotalFeeBp,
-    maxProtocolFeeBp: strategy.maxProtocolFeeBp,
+    standardProtocolFeeBp: Number(strategy.standardProtocolFeeBp),
+    minTotalFeeBp: Number(strategy.minTotalFeeBp),
+    maxProtocolFeeBp: Number(strategy.maxProtocolFeeBp),
   };
 };

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { utils } from "ethers";
+import { parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { ownerOf } from "../helpers/tokens";
@@ -21,14 +21,14 @@ describe("execute multiple taker bids", () => {
     lrUser2 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user2, mocks.addresses);
 
     const baseMakerAskInput: CreateMakerInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
       startTime: Math.floor(Date.now() / 1000),
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [0],
     };
 
@@ -59,7 +59,7 @@ describe("execute multiple taker bids", () => {
     const contractMethods = lrUser2.executeMultipleOrders(orders, true);
 
     const estimatedGas = await contractMethods.estimateGas();
-    expect(estimatedGas.toNumber()).to.be.greaterThan(0);
+    expect(Number(estimatedGas)).to.be.greaterThan(0);
     await expect(contractMethods.callStatic()).to.eventually.be.fulfilled;
   });
 
@@ -73,17 +73,17 @@ describe("execute multiple taker bids", () => {
       { maker: makers[0], taker: taker1, signature: signature1 },
       { maker: makers[1], taker: taker2, signature: signature2 },
     ];
-    const user1InitialBalance = await signers.user1.getBalance();
+    const user1InitialBalance = await ethers.provider.getBalance(signers.user1.address);
     const contractMethods = lrUser2.executeMultipleOrders(orders, true);
 
     const receipt = await (await contractMethods.call()).wait();
-    expect(receipt.status).to.be.equal(1);
+    expect(receipt?.status).to.be.equal(1);
 
     const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
     expect(owner).to.be.equal(signers.user2.address);
 
-    const user1UpdatedBalance = await signers.user1.getBalance();
-    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+    const user1UpdatedBalance = await ethers.provider.getBalance(signers.user1.address);
+    expect(user1UpdatedBalance > user1InitialBalance).to.be.true;
   });
 
   it("execute multiple taker bid non atomically", async () => {
@@ -96,7 +96,7 @@ describe("execute multiple taker bids", () => {
       { maker: makers[0], taker: taker1, signature: signature1 },
       { maker: makers[1], taker: taker2, signature: signature2 },
     ];
-    const user1InitialBalance = await signers.user1.getBalance();
+    const user1InitialBalance = await ethers.provider.getBalance(signers.user1.address);
     const contractMethods = lrUser2.executeMultipleOrders(orders, false);
 
     const receipt = await (await contractMethods.call()).wait();
@@ -105,8 +105,8 @@ describe("execute multiple taker bids", () => {
     const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
     expect(owner).to.be.equal(signers.user2.address);
 
-    const user1UpdatedBalance = await signers.user1.getBalance();
-    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+    const user1UpdatedBalance = await ethers.provider.getBalance(signers.user1.address);
+    expect(user1UpdatedBalance > user1InitialBalance).to.be.true;
   });
 
   it("execute multiple taker bid with a merkle tree", async () => {
@@ -118,7 +118,7 @@ describe("execute multiple taker bids", () => {
       { maker: makers[0], taker: taker1, signature: signature, merkleTree: merkleTreeProofs[0] },
       { maker: makers[1], taker: taker2, signature: signature, merkleTree: merkleTreeProofs[1] },
     ];
-    const user1InitialBalance = await signers.user1.getBalance();
+    const user1InitialBalance = await ethers.provider.getBalance(signers.user1.address);
     const contractMethods = lrUser2.executeMultipleOrders(orders, true);
 
     const receipt = await (await contractMethods.call()).wait();
@@ -127,8 +127,8 @@ describe("execute multiple taker bids", () => {
     const owner = await ownerOf(signers.user2, makers[0].collection, makers[0].itemIds[0]);
     expect(owner).to.be.equal(signers.user2.address);
 
-    const user1UpdatedBalance = await signers.user1.getBalance();
-    expect(user1UpdatedBalance.gt(user1InitialBalance)).to.be.true;
+    const user1UpdatedBalance = await ethers.provider.getBalance(signers.user1.address);
+    expect(user1UpdatedBalance > user1InitialBalance).to.be.true;
   });
 
   it("throw when the quote type is incorrect", async () => {

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { constants, utils } from "ethers";
+import { ZeroAddress, parseEther } from "ethers";
 import { ethers } from "hardhat";
 import { setUpContracts, SetupMocks, getSigners, Signers } from "../helpers/setup";
 import { LooksRare } from "../../LooksRare";
@@ -20,13 +20,13 @@ describe("Create maker ask", () => {
     lrUser1 = new LooksRare(ChainId.HARDHAT, ethers.provider, signers.user1, mocks.addresses);
 
     baseMakerAskInput = {
-      collection: mocks.contracts.collectionERC721.address,
+      collection: mocks.addresses.MOCK_COLLECTION_ERC721,
       collectionType: CollectionType.ERC721,
       strategyId: StrategyType.standard,
       subsetNonce: 0,
       orderNonce: 0,
       endTime: Math.floor(Date.now() / 1000) + 3600,
-      price: utils.parseEther("1"),
+      price: parseEther("1"),
       itemIds: [1],
     };
   });
@@ -71,13 +71,13 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(baseMakerAskInput);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: constants.Zero,
+      globalNonce: 0n,
       subsetNonce: baseMakerAskInput.subsetNonce,
       strategyId: baseMakerAskInput.strategyId,
       collectionType: baseMakerAskInput.collectionType,
       orderNonce: baseMakerAskInput.orderNonce,
       collection: baseMakerAskInput.collection,
-      currency: constants.AddressZero,
+      currency: ZeroAddress,
       signer: signers.user1.address,
       startTime: output.maker.startTime, // Can't really test the Date.now( executed inside the function)
       endTime: baseMakerAskInput.endTime,
@@ -101,7 +101,7 @@ describe("Create maker ask", () => {
     const output = await lrUser1.createMakerAsk(input);
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
-      globalNonce: constants.Zero,
+      globalNonce: 0n,
       subsetNonce: input.subsetNonce,
       strategyId: input.strategyId,
       collectionType: input.collectionType,

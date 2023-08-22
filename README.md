@@ -40,13 +40,19 @@ const addresses: Addresses = {...};
 const looksrare = new LooksRare(ChainId.HARDHAT, provider, signer, addresses);
 ```
 
-:information_source: You can access the multicall provider after the instance creation:
+:information_source: Use [`JsonRpcProvider`](https://docs.ethers.org/v6/api/providers/jsonrpc/#JsonRpcApiProviderOptions) from `ethers v6` if you want to make batched RPC calls.
 
 ```ts
-const multicallProvider = looksrare.provider;
+import { JsonRpcProvider, Network } from "ethers";
+
+// Create a HTTP/HTTPS batch call provider
+const provider = new JsonRpcProvider(RPC_URL, CHAIN_ID, { staticNetwork: Network.from(CHAIN_ID) });
+
+// Create LooksRare instance using this provider
+const looksrare = new LooksRare(ChainId.HARDHAT, provider, signer, addresses);
 ```
 
-See [0xsequence doc](https://github.com/0xsequence/sequence.js/tree/master/packages/multicall) to understand how to use it.
+Prior to [`@looksrare/sdk-v2@0.9.2`](https://www.npmjs.com/package/@looksrare/sdk-v2/v/0.9.2?activeTab=readme), LooksRareSDK was making batched calls using `0xsequence/multicall`. But this is not natively supported since `@looksrare/sdk-v2@1.0.0`.
 
 ## Documentation
 
