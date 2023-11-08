@@ -1,6 +1,6 @@
 {
-  "name": "@looksrare/sdk-v2",
-  "version": "1.1.0",
+  "name": "@hypercerts-org/marketplace-sdk",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -15,11 +15,11 @@
   "keywords": [
     "looksrare"
   ],
-  "homepage": "https://looksrare.org/",
-  "bugs": "https://github.com/LooksRare/sdk-v2/issues",
+  "homepage": "https://hypercerts.org/",
+  "bugs": "https://github.com/hypercerts-org/hypercerts/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LooksRare/sdk-v2.git"
+    "url": "git@github.com:hypercerts-org/marketplace-sdk.git"
   },
   "engines": {
     "node": ">= 16.15.1 <= 20.x"
