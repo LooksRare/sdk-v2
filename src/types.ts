@@ -16,7 +16,6 @@ export interface Addresses {
 
 /** List of supported chains */
 export enum ChainId {
-  MAINNET = 1,
   GOERLI = 5,
   SEPOLIA = 11155111,
   HARDHAT = 31337,
@@ -40,6 +39,8 @@ export interface ChainInfo {
 export enum CollectionType {
   ERC721 = 0,
   ERC1155 = 1,
+  HYPERCERT = 2,
+  HYPERBOARD = 3,
 }
 
 /** List of trading strategies */
