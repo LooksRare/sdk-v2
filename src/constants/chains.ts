@@ -37,6 +37,18 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
     wsUrl: "wss://ws-sepolia.looksrare.org/ws",
   },
+  [ChainId.ARB_SEPOLIA]: {
+    label: "Arbitrum Sepolia",
+    appUrl: "https://sepolia.looksrare.org",
+    explorer: "https://sepolia.arbiscan.io",
+    rpcUrl: "https://arb-sepolia.g.alchemy.com/v2",
+    baseApiUrl: "https://graphql-sepolia.looksrare.org",
+    osApiUrl: "https://testnets-api.opensea.io",
+    cdnUrl: "https://static-sepolia.looksnice.org",
+    rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
+    cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
+    wsUrl: "wss://ws-sepolia.looksrare.org/ws",
+  },
   [ChainId.HARDHAT]: {
     label: "Hardhat",
     appUrl: "http://localhost:3000",
