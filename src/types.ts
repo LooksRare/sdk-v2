@@ -20,7 +20,7 @@ export enum ChainId {
   GOERLI = 5,
   SEPOLIA = 11155111,
   HARDHAT = 31337,
-  // ARB_MAINNET = 42161,
+  ARB_MAINNET = 42161,
   ARB_SEPOLIA = 421614,
 }
 
