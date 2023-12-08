@@ -1,4 +1,4 @@
-import { ethers, BigNumberish, BytesLike, ContractTransaction, BigNumber, Overrides } from "ethers";
+import { ethers, BigNumberish, BytesLike, ContractTransaction, Overrides, BigNumber } from "ethers";
 import { TypedDataSigner, TypedDataField } from "@ethersproject/abstract-signer";
 import { Eip712MakerMerkleTree } from "./utils/Eip712MakerMerkleTree";
 
@@ -21,6 +21,8 @@ export enum ChainId {
   GOERLI = 5,
   SEPOLIA = 11155111,
   HARDHAT = 31337,
+  ARB_MAINNET = 42161,
+  ARB_SEPOLIA = 421614,
 }
 
 /** ChainInfo data used to interact with LooksRare ecosystem */
