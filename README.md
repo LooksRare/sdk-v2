@@ -93,3 +93,7 @@ Subset nonces allow you to group some orders together according to arbitrary rul
 🔗 [Public API documentation](https://looksrare.dev/reference/important-information)
 
 🔗 [Developer discord](https://discord.gg/jJA4qM5dXz)
+
+## Ethers Version 5 & 6
+
+The SDK maintains a version for Ethers V5 and V6. To use the SDK with Ethers V5 install versions `< 1`, e.g. `0.9.0`. Version 6 of Ethers is on versions `> 1.0.0`
