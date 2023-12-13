@@ -37,7 +37,7 @@ const sepoliaAddresses: Addresses = {
 };
 
 const arbitrumSepoliaAddresses: Addresses = {
-  LOOKS: "0x0000000000000000000000000000000000000000", // bridged LOOKS
+  LOOKS: "0x0d2ddc4A656eB8398499fd7adF3DA7Cc545810Ab", // @note - not "LOOKS", but a test ERC20
   EXCHANGE_V2: "",
   TRANSFER_MANAGER_V2: "0x21D44Cd218895d08bB57E2161A5c8De1CE898165",
   WETH: "",
