@@ -22,6 +22,8 @@ export enum ChainId {
   HARDHAT = 31337,
   ARB_MAINNET = 42161,
   ARB_SEPOLIA = 421614,
+  BASE_MAINNET = 8453,
+  BASE_SEPOLIA = 84532,
 }
 
 /** ChainInfo data used to interact with LooksRare ecosystem */
