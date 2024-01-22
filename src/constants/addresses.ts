@@ -84,6 +84,18 @@ const baseSepoliaAddresses: Addresses = {
   AGGREGATOR_UNISWAP_V3: "",
 };
 
+const blastSepoliaAddresses: Addresses = {
+  LOOKS: "",
+  EXCHANGE_V2: "",
+  TRANSFER_MANAGER_V2: "",
+  WETH: "",
+  ORDER_VALIDATOR_V2: "",
+  REVERSE_RECORDS: "",
+  LOOKS_LP_V3: "",
+  STAKING_POOL_FOR_LOOKS_LP: "",
+  AGGREGATOR_UNISWAP_V3: "",
+};
+
 /**
  * List of useful contract addresses
  */
@@ -96,4 +108,5 @@ export const addressesByNetwork: { [chainId in ChainId]: Addresses } = {
   [ChainId.ARB_MAINNET]: arbitrumMainnetAddresses,
   [ChainId.BASE_MAINNET]: baseMainnetAddresses,
   [ChainId.BASE_SEPOLIA]: baseSepoliaAddresses,
+  [ChainId.BLAST_SEPOLIA]: blastSepoliaAddresses,
 };
