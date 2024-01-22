@@ -24,7 +24,7 @@ export enum ChainId {
   ARB_SEPOLIA = 421614,
   BASE_MAINNET = 8453,
   BASE_SEPOLIA = 84532,
-  BLAST_SEPOLIA = 168587773
+  BLAST_SEPOLIA = 168587773,
 }
 
 /** ChainInfo data used to interact with LooksRare ecosystem */
