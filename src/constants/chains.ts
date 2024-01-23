@@ -97,4 +97,16 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cloudinaryUrl: "",
     wsUrl: "ws://localhost:5001/ws",
   },
+  [ChainId.BLAST_SEPOLIA]: {
+    label: "Blast Sepolia",
+    appUrl: "https://sepolia.looksrare.org",
+    explorer: "https://testnet.blastscan.io/",
+    rpcUrl: "https://sepolia.blast.io",
+    baseApiUrl: "https://graphql-sepolia.looksrare.org",
+    osApiUrl: "https://testnets-api.opensea.io",
+    cdnUrl: "https://static-sepolia.looksnice.org",
+    rewardsSubgraphUrl: "https://api.thegraph.com/subgraphs/name/0xjurassicpunk/looks-distribution",
+    cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
+    wsUrl: "wss://ws-sepolia.looksrare.org/ws",
+  },
 };
