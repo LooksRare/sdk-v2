@@ -37,9 +37,9 @@ const sepoliaAddresses: Addresses = {
 };
 
 const arbitrumSepoliaAddresses: Addresses = {
-  LOOKS: "0x0d2ddc4A656eB8398499fd7adF3DA7Cc545810Ab", // @note - not "LOOKS", but a test ERC20
+  LOOKS: "",
   EXCHANGE_V2: "",
-  TRANSFER_MANAGER_V2: "0x21D44Cd218895d08bB57E2161A5c8De1CE898165",
+  TRANSFER_MANAGER_V2: "",
   WETH: "",
   ORDER_VALIDATOR_V2: "",
   REVERSE_RECORDS: "",
@@ -49,9 +49,45 @@ const arbitrumSepoliaAddresses: Addresses = {
 };
 
 const arbitrumMainnetAddresses: Addresses = {
-  LOOKS: "0x0000000000000000000000000000000000000000", // bridged LOOKS
+  LOOKS: "",
   EXCHANGE_V2: "",
-  TRANSFER_MANAGER_V2: "0x0000000000A3573e1caFe02fe1C3Ac48473C9332",
+  TRANSFER_MANAGER_V2: "",
+  WETH: "",
+  ORDER_VALIDATOR_V2: "",
+  REVERSE_RECORDS: "",
+  LOOKS_LP_V3: "",
+  STAKING_POOL_FOR_LOOKS_LP: "",
+  AGGREGATOR_UNISWAP_V3: "",
+};
+
+const baseMainnetAddresses: Addresses = {
+  LOOKS: "",
+  EXCHANGE_V2: "",
+  TRANSFER_MANAGER_V2: "",
+  WETH: "",
+  ORDER_VALIDATOR_V2: "",
+  REVERSE_RECORDS: "",
+  LOOKS_LP_V3: "",
+  STAKING_POOL_FOR_LOOKS_LP: "",
+  AGGREGATOR_UNISWAP_V3: "",
+};
+
+const baseSepoliaAddresses: Addresses = {
+  LOOKS: "",
+  EXCHANGE_V2: "",
+  TRANSFER_MANAGER_V2: "",
+  WETH: "",
+  ORDER_VALIDATOR_V2: "",
+  REVERSE_RECORDS: "",
+  LOOKS_LP_V3: "",
+  STAKING_POOL_FOR_LOOKS_LP: "",
+  AGGREGATOR_UNISWAP_V3: "",
+};
+
+const blastSepoliaAddresses: Addresses = {
+  LOOKS: "",
+  EXCHANGE_V2: "",
+  TRANSFER_MANAGER_V2: "",
   WETH: "",
   ORDER_VALIDATOR_V2: "",
   REVERSE_RECORDS: "",
@@ -70,4 +106,7 @@ export const addressesByNetwork: { [chainId in ChainId]: Addresses } = {
   [ChainId.SEPOLIA]: sepoliaAddresses,
   [ChainId.ARB_SEPOLIA]: arbitrumSepoliaAddresses,
   [ChainId.ARB_MAINNET]: arbitrumMainnetAddresses,
+  [ChainId.BASE_MAINNET]: baseMainnetAddresses,
+  [ChainId.BASE_SEPOLIA]: baseSepoliaAddresses,
+  [ChainId.BLAST_SEPOLIA]: blastSepoliaAddresses,
 };
