@@ -109,4 +109,18 @@ export const chainInfo: { [chainId in ChainId]: ChainInfo } = {
     cloudinaryUrl: "https://looksrare.mo.cloudinary.net/sepolia",
     wsUrl: "wss://ws-sepolia.looksrare.org/ws",
   },
+  [ChainId.BLAST_MAINNET]: {
+    appUrl: "https://yologames.io",
+    baseApiUrl: "https://graphql.yologames.io",
+    // For potential backwards compatibility of asset urls
+    // use looksnice. Important to note this should not actually be called.
+    cdnUrl: "https://static.looksnice.org",
+    cloudinaryUrl: "https://looksrare.mo.cloudinary.net",
+    explorer: "https://blastscan.io",
+    label: "Blast",
+    osApiUrl: "", // N/A
+    rewardsSubgraphUrl: "", // N/A
+    rpcUrl: "https://rpc.blast.io",
+    wsUrl: "wss://ws.yologames.io/ws",
+  },
 };
