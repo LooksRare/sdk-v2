@@ -454,7 +454,7 @@ export class LooksRare {
   }
 
   /**
-   * Cancell all maker bid and/or ask orders for the current user
+   * Cancel all maker bid and/or ask orders for the current user
    * @param bid Cancel all bids
    * @param ask Cancel all asks
    * @returns ContractMethods

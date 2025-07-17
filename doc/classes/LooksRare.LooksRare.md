@@ -114,7 +114,7 @@ ___
 
 ▸ **cancelAllOrders**(`bid`, `ask`, `overrides?`): [`ContractMethods`](../interfaces/types.ContractMethods.md)
 
-Cancell all maker bid and/or ask orders for the current user
+Cancel all maker bid and/or ask orders for the current user
 
 #### Parameters
 
